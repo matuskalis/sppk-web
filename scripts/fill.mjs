@@ -3,6 +3,11 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { extname } from 'node:path'
 
+// Fills templates/prispevok.html with scraped sppk.sk articles by id, cleans the old
+// CMS markup on the way (see docs/POZNAMKY.md), and writes one folder per article.
+//
+//   node scripts/fill.mjs <article id> [<article id> ...]
+
 const ROOT = new URL('../', import.meta.url).pathname
 const TEMPLATE = ROOT + 'templates/prispevok.html'
 const SCRAPER = process.env.HOME + '/projects/sppk-redesign/scraper/'
