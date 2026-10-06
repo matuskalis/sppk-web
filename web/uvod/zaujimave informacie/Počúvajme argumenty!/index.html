@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Počúvajme argumenty! — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Počúvajme argumenty!</nav>
+
+  <article>
+    <h1 class="doc-title">Počúvajme argumenty!</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Jozef Artim, ústredný riaditeľ SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">25. júna 2020</span></p>
+
+    <div class="doc-body">
+<p><span><em>Adekvátna reakcia na komentáre v&nbsp;médiách sa pohybuje na škále od reakcie s&nbsp;primeranou argumentáciou, cez odpoveď protiotázkou alebo prirovnaním, až po neodpovedanie – v&nbsp;prípade komentáru, ktorý je povrchný a&nbsp;tendenčný.</em></span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/pgjPUoG.jpg"></figure><p></p>
+
+
+
+<p><em>Táto neskoršia reakcia &nbsp;je reakcia na komentár Antona Marcinčina <a href="https://komentare.hnonline.sk/komentare/2156728-pocuvajte-agrokampane" class="external" target="_blank" rel="noopener noreferrer"><span>„Počúvajte agrokampane!“</span></a> (Hospodárske noviny, 2.6.2020). Vzťahuje sa skôr na kredit autora ako na kredit komentára.&nbsp; </em></p>
+
+
+
+<p><em>Zároveň je to pokus o&nbsp;porovnanie tvrdení týkajúcich sa nášho poľnohospodárstva od autora&nbsp; a&nbsp;ďalších „vše znalých ľudí“, ktoré už odbornú verejnosť unavujú. V článku budeme argumentovať a&nbsp;uvítame portiargumentáciu na koncentráciu priamych platieb, ideál tzv. malých fariem, samozásobiteľské farmy ako spasiteľ, zamestnanosť a&nbsp;tzv. veľké farmy, čo znamená v</em><em>eľká farma u nás a v&nbsp;Rakúsku, živočíšnej výrobe sa vraj nevenujú veľké farmy a&nbsp;na záver prinesieme zložitý pohľad na včely. </em></p>
+
+
+
+<h2 class="doc-subheading">Argumenty, ktoré už unavujú: koncentrácia priamych platieb</h2>
+
+
+
+<p>Keď práve nekvitne repka, býva jedným z&nbsp;obľúbených titulkov v&nbsp;médiách koncentrácia priamych platieb na Slovensku (<em>„5% našich najväčších fariem dostáva 73% priamych platieb ročne“)</em>. Nastavenie systému v&nbsp;rámci Spoločnej poľnohospodárskej politiky je nasledovné: jednotná platba na plochu (tzv. SAPS – single area payment scheme) sa poskytuje na každý hektár, na ktorý možno poskytnúť podporu a ktorý žiadateľ nahlásil v súlade so žiadosťou o platbu. Povaha podpory teda principiálne súvisí s veľkosťou plochy. Koncentrácia priamych platieb je na Slovensku naozaj najvyššia zo všetkých členských štátov EÚ. 20% najväčších poberateľov dostáva približne 94% všetkých priamych platieb. Priame platby sú rovnako koncentrované ako pôda – veľké farmy (nad 100ha) obhospodarujú na Slovensku viac ako 90% pôdy (graf 1). A&nbsp;priame platby sú rovnako koncentrované ako produkcia – &nbsp;4% fariem vyprodukujú 80% štandardného výstupu (96% fariem spolu vytvorí zvyšných 20% štandardného výstupu).</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/0tiAbdO.png"></figure><p></p>
+
+
+
+<p>Alokácia priamych platieb teda na Slovensku odráža hektárovú výmeru (z definície). A&nbsp;tá odráža historický spôsob produkcie na Slovensku. Tvrdenie z&nbsp;komentára, že <em>„produkcia obilnín a olejnín je signifikantne dotovaná priamymi platbami, ktoré sú priamoúmerné veľkosti obhospodarovaných plôch“ </em>– akokoľvek odsúdeniahodne chce znieť – je platné z&nbsp;definície. SAPS je platba na plochu – preto tá „signifikantnosť“ a&nbsp;preto tá pšenica.</p>
+
+
+
+<p>Nejde ani tak o&nbsp;to, že <em>„nám svet závidí socialistické združstevňovanie“, </em>ako spomína autor. Veľké podniky si nezaslúžia stigmatizovanie pre svoj pôvod či neidylickosť vzhľadom na romantickú (a donkichotovskú) predstavu prídomového hospodárstva. Akokoľvek nepoeticky to znie – práve veľké podniky produkujú (potravinová bezpečnosť, resp. slovami autora <em>„bez agrobarónov nebudeme mať čo jesť“</em>) a&nbsp;zamestnávajú. Začnime produkciou.</p>
+
+
+
+<p>Pozrime sa na podniky z&nbsp;pohľadu nie fyzickej, ale ekonomickej veľkosti. Tá sa meria prostredníctvom tzv. "štandardného výstupu“, čo je priemerná peňažná hodnota poľnohospodárskej výroby pri výstupe z poľnohospodárskej prevádzky. Štandardný výstup nezahŕňa priame platby, čo ho ďalej kvalifikuje ako dobrý ukazovateľ skutočnej ekonomickej sily podniku. Ak sa na farmy pozrieme takto, Slovensko sa ukazuje ako krajina so skôr menšími podnikmi. Priemerná ekonomická veľkosť farmy bola v&nbsp;roku 2013 v EÚ15 sedemkrát vyššia ako v EÚ-13 (62 tis.€ v EÚ-15 a&nbsp;8,8 tis.€ v EÚ-13).</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/uBEWBvQ.png"></figure><p></p>
+
+
+
+<h2 class="doc-subheading">Ideál malých fariem</h2>
+
+
+
+<p>Malé farmy sú označované za základný kameň poľnohospodárskej činnosti v EÚ. Neexistuje však definícia toho, čo predstavuje „malú“ alebo „veľkú“ farmu. Neexistuje ani definícia toho, kedy je malá farma skôr samozásobiteľskou domácnosťou vyrábajúcou potraviny pre vlastnú spotrebu – a teda nie je hospodárskou jednotkou.</p>
+
+
+
+<p>Aj keď je poľnohospodársky sektor EÚ naďalej charakterizovaný veľkým počtom veľmi malých poľnohospodárskych podnikov, v&nbsp;Európe, ale aj mimo nej prebieha (nutne a&nbsp;potrebne) konsolidácia poľnohospodárstva.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/GWlPmRX.png"></figure><p></p>
+
+
+
+<p>Racionálna ekonomická úvaha, ale aj napr. správy FAO považujú konsolidáciu pôdy za významný faktor zlepšenia poľnohospodárstva (rast konkurencieschopnosti, efektívnosti, zavádzanie inovácií a&nbsp;technológií, zvýšenie hrubého príjmu poľnohospodárov, zníženie pracovného času v&nbsp;teréne). Za touto prirodzenou štrukturálnou zmenou sú faktory ako rast produktivity dosiahnutý technickým a organizačným vývojom a&nbsp;šľachtením, silný dopyt po práci a vysoká produktivita práce v&nbsp;iných sektoroch hospodárstva, zintenzívnenie hospodárskej súťaže v&nbsp;dôsledku globalizácie, zmena preferencií v&nbsp;oblasti vzdelávania a&nbsp;zamestnávania, úspory z&nbsp;rozsahu, problematické medzigeneračné odovzdávanie fariem, atď.</p>
+
+
+
+<p>Komisár Wojciechowski v&nbsp;jednom zo svojich vyhlásení pred výborom AGRI v Európskom parlamente hovoril o „šokujúcej informácii“ o poklese počtu európskych fariem (od roku 2005 do roku 2015 sa v&nbsp;EÚ „stratili“ štyri milióny fariem – z pôvodných 15 miliónov ich počet klesol na menej ako 11 miliónov). Je pravda, že počet fariem ako aj počet zamestnancov v&nbsp;poľnohospodárstve sa znižuje. Pre tvorcov politiky je dôležité si uvedomiť, že tento prirodzený proces sa nedá zvrátiť (bez ohľadu na množstvo peňazí naliatych na podporu malých, mladých, začínajúcich). Konsolidácia a&nbsp;technologizácia je jediným spôsobom, ako môže poľnohospodárstvo dobehnúť produktivitu ostatných sektorov (s čím súvisí aj príjem z&nbsp;poľnohospodárskej činnosti).&nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/QNDZq34.png"></figure><p></p>
+
+
+
+<p>Podľa štrukturálneho zisťovania fariem bolo v roku 2013 v EÚ-28 približne 4,4 milióna fariem, ktoré mali štandardnú produkciu nižšiu ako 2 tis.€, zatiaľ čo ďalších 3,1 milióna fariem malo produkciu v rozmedzí od 2 tis. do 8 tis.€. Mikro a malé podniky tvorili viac ako dve tretiny (69,1%) všetkých fariem v EÚ-28, zatiaľ čo ich podiel na štandardnej produkcii bol len 5%. Dôvodom je vysoký podiel samozásobiteľského hospodárenia v&nbsp;EÚ.</p>
+
+
+
+<p>Naproti tomu bolo v EÚ-28 cca. 680 tis. fariem so štandardnou produkciou najmenej 100 tis.€. Tieto veľmi veľké farmy predstavovali 6,3% z celkového počtu fariem a 71,4% poľnohospodárskej štandardnej produkcie (2013). Ekonomicky veľké farmy nemusia byť nevyhnutne veľké aj fyzicky (produkcia s&nbsp;vysokou pridanou hodnotou).</p>
+
+
+
+<p>Ekonomicky najväčšie farmy má Holandsko (priemerný štandardný výstup 304 tis.€). Ekonomicky sú farmy relatívne veľké aj v Dánsku, Belgicku, Českej republike, Nemecku, Luxembursku, Francúzsku. Ostatné členské krajiny nemajú priemernú ekonomickú veľkosť nad 80 tis.€ na farmu.</p>
+
+
+
+<p>Neexistencia definície „malej farmy“ v&nbsp;EÚ nemá byť príležitosťou na populistické zneužitie termínu. Keďže spoločná definícia neexistuje, termín „malý poľnohospodársky podnik“ bude zrejme špecifický pre každý región. Štrukturálne zisťovanie fariem používa v&nbsp;tomto smere rozdelenie podnikov v&nbsp;každej krajine na kvintily (rozdelenie produkcie na päť rovnakých častí), čo odráža špecifickosť štruktúry fariem v&nbsp;jednotlivých krajinách a&nbsp;regiónoch. Spodná hranica (pod ktorou jednu pätinu celkovej štandardnej produkcie tvorili najmenšie farmy), sa pohybovala v členských štátoch EÚ od úrovne 2 842€ v Rumunsku po 378 tis.€ v&nbsp;Dánsku. Slovensko a Česká republika mali túto prahovú hodnotu okolo 375 tis.€. „Malá farma“ teda neznamená to isté v&nbsp;jednotlivých členských krajinách. Na druhom konci stupnice bola hranica celkovej štandardnej produkcie, ktorú vyprodukovali najväčšie poľnohospodárske podniky, 4,5 mil.€ v&nbsp;prípade ČR a 3,6 mil. v&nbsp;prípade Slovenska (0,5%, resp. 0,2% z&nbsp;celkového počtu fariem). Pomerne vysoký počet fariem v&nbsp;najvyššom kvintile bol v Luxembursku (4,6%), Belgicku (2,6%), Francúzsku (2,4%) a Rakúsku (2,0%).</p>
+
+
+
+<p>Krajiny Beneluxu, Francúzsko a&nbsp;Rakúsko majú pomerne málo malých fariem. Podiel najmenších fariem, ktoré vyprodukovali jednu pätinu štandardnej produkcie, tvoril 60% všetkých fariem v&nbsp;Luxembursku, dve tretiny v Belgicku a vo Francúzsku; v Rakúsku a Holandsku to bolo tesne pod 70%. Najmenšie farmy na Slovensku, ktoré spoločne vyprodukovali jednu pätinu celkovej štandardnej produkcie, tvorili 96% počtu fariem (podiel vyšší ako 90% malo aj Maďarsko, Estónsko, Bulharsko, Česká republika, Cyprus a&nbsp;Lotyšsko).</p>
+
+
+
+<p>Zaujímavé je tiež porovnanie horného a&nbsp;dolného kvintilu. Najväčšie rozdiely medzi veľkými a&nbsp;malými farmami boli zaznamenané v&nbsp;Rumunsku a&nbsp;Lotyšsku: tisíc menších fariem na jednu veľkú (opäť pripomíname, že termíny „malý“, „veľký“ sú regionálne špecifické). Rozdiel bol ešte väčší v Maďarsku, kde tento pomer dosiahol 2&nbsp;360 : 1. Naopak, v Luxembursku bolo relatívne málo malých fariem na väčšiu farmu (12,9 : 1) a menej ako 50 malých fariem na jednu väčšiu farmu bolo v Belgicku, Francúzsku, Rakúsku, Fínsku a&nbsp;Holandsku. Veľkostná štruktúra fariem sa v&nbsp;jednotlivých krajinách líši a odráža charakter produkcie a&nbsp;historický vývoj.</p>
+
+
+
+<p><strong>Ako zdôvodniť podporu samozásobiteľských fariem?</strong></p>
+
+
+
+<p>Podľa Eurostatu 15&nbsp;800 fariem na Slovensku (z celkového počtu 25&nbsp;660) spotrebuje viac ako 50% svojej produkcie (samozásobiteľské hospodárenie). V&nbsp;Rakúsku nie je zo 132 tis. fariem (2016) takáto farma ani jedna.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/YQGIsfE.png"></figure><p></p>
+
+
+
+<p>Tak, ako je otázne, či (ekonomicky) veľké farmy potrebujú podporu príjmu vo forme SAPS (pričom podpora príjmu je v&nbsp;súčasnosti len jednou z funkcií SAPS – popri podpore verejných (predovšetkým) environmentálnych statkov), takisto je otázne, nakoľko je relevantné podporovať príjem samozásobiteľských fariem, v&nbsp;rámci ktorých majiteľ – napríklad finančný analytik – vlastní okrem iných zdrojov príjmov aj malý výbeh pre koňa. Otázne je tiež plnenie environmentálnej funkcie.</p>
+
+
+
+<p>Samozásobiteľstvo je súčasťou potravinovej bezpečnosti v&nbsp;Afrike, Ázii a&nbsp;tiež vo vybraných regiónoch v&nbsp;EÚ (Rumunsko, Bulharsko, Grécko). Vo vyspelých oblastiach sú malé samozásobiteľské farmy súčasťou udržateľného regionálneho rozvoja a&nbsp;prípadný základ pre ďalší rozvoj konkurencieschopných poľnohospodárskych štruktúr. Nie sú však faktorom potravinovej bezpečnosti. Diskusia o&nbsp;význame malých fariem by teda mala rozlišovať medzi rozvinutými a&nbsp;rozvíjajúcimi sa krajinami či regiónmi.</p>
+
+
+
+<h2 class="doc-subheading">Zamestnanosť a veľké farmy </h2>
+
+
+
+<p>A&nbsp;teraz sa pozrime na zamestnávanie onálepkovaných „agrobarónov“ (<em>„Päť percent našich najväčších fariem dostáva 73%, čiže 300 miliónov eur priamych platieb ročne, ale zamestnáva len 25% zamestnancov.</em>)</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/nHOrSDc.png"></figure><p></p>
+
+
+
+<p>Zamestnanosť kopíruje štrukturálne charakteristiky odvetvia v&nbsp;jednotlivých krajinách. Z&nbsp;grafu 6 je vidieť, že na Slovensku veľké a&nbsp;veľmi veľké podniky zamestnávajú takmer 75% pracovnej sily.</p>
+
+
+
+<p>V&nbsp;tomto kontexte je tiež treba vziať do úvahy štruktúru pracovnej sily. Na veľkých farmách dominujú zamestnanci v&nbsp;trvalom pracovnom pomere, ktorí nie sú rodinnými príslušníkmi.<a href="#_ftn1" name="_ftnref1" title="">[1]</a>&nbsp;</p>
+
+<p>------------------------------------------------</p>
+
+<p><span><small>[1] Vo väčšine (19) členských štátov EÚ tvorila nerodinná práca viac ako polovicu poľnohospodárskej pracovnej sily na veľmi veľkých farmách (najvyššie percentá v Maďarsku, Bulharsku, Estónsku, Českej republike, Rumunsku a&nbsp;Slovenska).&nbsp;</small></span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/zJj3JhR.png"></figure><p></p>
+
+
+
+<p>Aj veľké farmy môžu byť rodinnými farmami (netreba preto brať prívlastky „malá“ a „rodinná“ ako synonymá). V&nbsp;deviatich členských štátoch EÚ tvorili rodinní príslušníci väčšinu poľnohospodárskej pracovnej sily na veľmi veľkých farmách – v rozmedzí 50-60% v Grécku, Holandsku, na Malte, vo Fínsku a&nbsp;Rakúsku; 65% v&nbsp;Luxembursku a Belgicku a 82% v Írsku.</p>
+
+
+
+<p>Čo sa týka mikro a malých fariem, tam dominujú živnostníci a&nbsp;rodinní príslušníci.<a href="#_ftn2" name="_ftnref2" title="">[2]</a></p>
+
+
+
+<p>--------------------------------------------------------</p>
+
+<p><small><span>[2] Celkovo v EÚ tvorila v roku 2013 rodinná práca asi tri štvrtiny (76,5%) poľnohospodárskej pracovnej sily EÚ-28. Rodinná práca presiahla 50% pracovnej sily vo väčšine členských krajín EÚ (tento podiel bol nad 90% v Írsku, Chorvátsku, Slovinsku a Poľsku). Výnimkami v tomto smere boli Estónsko (46,4%), Francúzsko (40,9%), Slovensko (27,6%) a Česká republika (25,8%).</span></small></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/oYSwSHx.png"></figure><p></p>
+
+
+
+<p>Farmy s&nbsp;výmerou nad 100ha poskytovali prácu viac ako dvom tretinám pracovnej sily na Slovensku (67,6%) a&nbsp;v Českej republike (68,2%). V&nbsp;prípade týchto krajín boli tieto podiely výrazne vyššie ako v ktoromkoľvek inom členskom štáte EÚ, keďže ďalšie najvyššie podiely boli zaznamenané v Dánsku a&nbsp;Estónsku (40–50%).</p>
+
+
+
+<p>Členské štáty EÚ sa výrazne líšia, čo sa týka podielu pracovnej sily v&nbsp;jednotlivých veľkostných kategóriách podnikov. Mikrofarmy (so štandardnou produkciou pod 2 tis.€) zamestnávali najvyšší podiel pracovnej sily v Bulharsku (33,3%) a Maďarsku (39,4%). V&nbsp;ôsmich členských štátoch bolo najviac pracovníkov zamestnaných na malých farmách v Slovinsku, Rumunsku a&nbsp;Chorvátsku (nad 40%). Stredné podniky (so štandardnou produkciou 8-25 tis.€) zamestnávali najviac pracovníkov v Írsku (32,8%) a Grécku (33,9%). Veľké farmy (so štandardnou produkciou 25-100 tis.€) zamestnávali najvyšší podiel pracovnej sily na Malte, v Taliansku a&nbsp;Rakúsku. Veľmi veľké farmy zamestnávali najvyšší podiel poľnohospodárskej pracovnej sily v 13 členských štátov EÚ. Deväť z&nbsp;nich zamestnávalo viac ako polovicu pracovníkov, resp. okolo troch štvrtín v&nbsp;prípade Českej republiky (75,2%) a Holandska (78,0%).</p>
+
+
+
+<p>Dôležitý je tiež ukazovateľ počtu zamestnancov na farmu. V roku 2013 sa priemerný pracovný vstup na farmu pohyboval od 0,4 AWU (ročná pracovná jednotka) v Rumunsku, 0,5 AWU na Cypre a Malte a 0,7 AWU v Grécku, až po priemerne 2,1 AWU na farmu na Slovensku, 2,3 AWU v&nbsp;Holandsku a 4,0 AWU na farmu v Českej republike.</p>
+
+
+
+<p>K&nbsp;zamestnanosti v&nbsp;poľnohospodárstve je tiež treba dodať, že jej výška a&nbsp;potrebný rast je v&nbsp;kontexte Slovenska a&nbsp;iných krajín súčasťou špecifického vnímania. Vo všeobecnosti by zamestnanosť v&nbsp;poľnohospodárstve mala klesať, nie rásť – v&nbsp;dôsledku štrukturálnych zmien (efektívnosť, automatizácia, meniace sa preferencie pracovnej sily, atď.). Špecifické vnímane na Slovensku vychádza z&nbsp;potrebného posilnenia špeciálnej rastlinnej a&nbsp;živočíšnej výroby, ktoré však tiež samy osebe podliehajú rovnakým zákonitostiam efektívnosti – a&nbsp;tak z&nbsp;dlhodobého hľadiska budú tiež zamestnávať menej.</p>
+
+
+
+<h2 class="doc-subheading"><em>Veľká farma u&nbsp;nás a&nbsp;v Rakúsku</em></h2>
+
+
+
+<p>Komentár „Počúvajte agrokampane!“ tiež porovnáva priemernú korporatívnu farmu na Slovensku a&nbsp;v&nbsp;Rakúsku z&nbsp;pohľadu priamych platieb. Tá slovenská má dostať v&nbsp;priemere viac než 200-tisíc eur ročne, zatiaľ čo tá rakúska len ca. 30-tisíc eur ročne.</p>
+
+
+
+<p>Ako už je zrejmé z&nbsp;predchádzajúceho textu – veľká farma v&nbsp;Rakúsku znamená niečo iné ako veľká farma na Slovensku. Hneď na úvod je teda zrejmé, že autor porovnáva jablká s&nbsp;hruškami, preto mu principiálne musí vyjsť rozdiel.</p>
+
+
+
+<p>Rakúsko je hornatejšia krajina ako Slovensko. Štruktúra poľnohospodárstva nie je poznačená socialistickým štátnym a&nbsp;družstevným vlastníctvom – priemerná rozloha farmy (22 ha) je síce nad priemerom EÚ, ale výrazne nižšia ako na Slovensku (80 ha). Podobne – vzhľadom na historický vývoj – je to aj v&nbsp;Nemecku: priemerná veľkosť farmy vo východnom Nemecku je 230 ha, v&nbsp;západnom okolo 40 ha. Rakúske farmy sú teda menšie ako slovenské, ale tiež sú v&nbsp;procese konsolidácie (graf 9). Masívne znižovanie počtu fariem sa týka predovšetkým regiónov s vysokým podielom ornej pôdy (Burgenland, Dolné Rakúsko), kde sa hnacie sily konsolidácie (vyššia efektívnosť a produktivita) prejavia jednoduchšie ako v horských oblastiach s ťažkými produkčnými podmienkami.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/pGSMrff.png"></figure><p></p>
+
+
+
+<p>Aj v&nbsp;Rakúsku dostávajú malé poľnohospodárske podniky iba 6% prvého a 11% druhého piliera SPP, hoci predstavujú 33% všetkých poľnohospodárskych podnikov (a približne 8% poľnohospodárskej plochy) v Rakúsku.</p>
+
+
+
+<p>Rozdelenie priamych platieb medzi farmy je vzhľadom na štruktúru poľnohospodárstva v&nbsp;Rakúsku rovnomernejšie ako na Slovensku. 33% rakúskych fariem dostáva iba 7% z celkových priamych platieb (v priemer 2,3 tis.€ na farmu). Naopak, najväčšie farmy (1,5% všetkých fariem) dostávajú 10% platieb a v priemere získavajú 78 tis.€ na farmu.</p>
+
+
+
+<p>Rakúsko má v&nbsp;porovnaní so Slovenskom nižšiu priamu platbu na podnik (z dôvodu nižšej priemernej výmery), ale vyššiu priamu platbu na hektár. Rakúsko má tiež veľmi vysoký podiel podpôr alokovaných do druhého piliera (60%) vzhľadom na charakter poľnohospodárskej činnosti (znevýhodnené oblasti, agroenvironmentálne opatrenia).</p>
+
+
+
+<h2 class="doc-subheading">Živočíšnej výrobe sa venujú veľké farmy</h2>
+
+
+
+<p>Tzv. korporatívne farmy sú v&nbsp;komentári kritizované aj za slabý výkon v&nbsp;ovocí a&nbsp;zelenine či živočíšnej výrobe. To málo slovenského ovocia a&nbsp;zeleniny, ktoré sa ešte dá u&nbsp;nás kúpiť, nepochádza z&nbsp;prídomových hospodárstiev a bolo vyprodukované aj napriek nepriaznivému nastaveniu podpôr, ale aj súvisiacich politík – najmä politiky trhu práce. A čo sa týka živočíšnej výroby, tej sa venujú predovšetkým veľké farmy.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/IdyQzaq.png"></figure><p></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/a5UJ2OZ.png"></figure><p></p>
+
+
+
+<p>Podľa Štrukturálneho zisťovania fariem sa takmer tri štvrtiny (72,2%) dobytčích jednotiek v EÚ-28 v roku 2013 chovali na veľmi veľkých farmách (ich počet sa medzi rokmi 2005 a 2013 zvýšil o takmer 10 miliónov kusov a dosiahol 94 miliónov DJ). A naopak, v&nbsp;prípade ostatných veľkostí fariem sa celkový počet hospodárskych zvierat znížil (v prípade mikrofariem na menej ako polovicu – niečo vyše milióna DJ).</p>
+
+
+
+<h2 class="doc-subheading">Problém je produktivita</h2>
+
+
+
+<p>Neoprávnený antagonizmus voči veľkým poľnohospodárskym podnikom na pozadí debaty o&nbsp;akejsi „optimálnej“ veľkostnej štruktúre poľnohospodárskych podnikov je zaoberaním sa problémom, ktorý neexistuje. Ak chceme poctivo hľadať riešenia problémov slovenského poľnohospodárstva, debata „malí-veľkí“ ovocie neprinesie. Stigmatizovanie veľkých a&nbsp;fetišizovanie malých iba vnáša ďalšie zbytočné napätie do už aj tak ubitého sektora. <strong>Veľká farma je v&nbsp;iných členských krajinách symbolom konkurencieschopnosti a&nbsp;zaistenia potravinovej bezpečnosti. Malé farmy sú zase úžitkom pre miestne komunity a&nbsp;rozvoj vidieka. </strong></p>
+
+
+
+<p>Problémom slovenského poľnohospodárstva je nízka produktivita. Teraz by sa nám nemali v&nbsp;mysli objaviť priame platby, lebo tie s&nbsp;produkciou súvisia len okrajovo. Produktivita sektora je ovplyvnená nefungujúcim trhom s&nbsp;pôdou a&nbsp;neflexibilnou politikou zamestnanosti, rozdrobeným vlastníctvom pôdy, nastavením systému poľnohospodárskych podpôr s&nbsp;otáznou motiváciou, korupčné správanie v sektorových inštitúciách či chýbajúci patriotizmus a&nbsp;podpora zo strany spotrebiteľa. Samostatným problémom je chýbajúca komunikácia medzi poľnohospodárom a&nbsp;verejnosťou, medzi poľnohospodárom a&nbsp;ministerstvom a&nbsp;nedostatočné sebavedomie politických predstaviteľov na&nbsp;pôde inštitúcií EÚ.&nbsp;&nbsp;</p>
+
+
+
+<h2 class="doc-subheading">„...keď kapú včely, tak nič to“</h2>
+
+
+
+<p>Komentár spomína aj tvrdenie z&nbsp;neznámeho zdroja, že <em>„...keď kapú včely, tak nič to, že u nás, lebo inde na svete ich počet narastá.“</em> Takéto tvrdenia majú vždy istým spôsobom navrch – pokiaľ si pravda obuje topánky, klamstvo je už v&nbsp;polovici cesty okolo sveta (M. Twain). Počet včelárov na Slovensku je dnes najvyšší za posledných 20 rokov. Slovensko je aj vďaka intenzívnej štátnej podpore jednou z mála krajín EÚ, kde ich počet narastá. Problémom posledných dvoch rokov je mimosezónny úhyn včiel, ktorého dôvody sa určujú ťažko. Isté však je, že pre poľnohospodára (nie pre užívateľa pôdy, ktorý ani nevie, čo na nej rastie) je populácia včiel významným faktorom jeho činnosti a&nbsp;je v&nbsp;zásade partnerom včelára. A&nbsp;čo sa týka spotreby prípravkov na ochranu rastlín – Slovensko je v&nbsp;porovnaní s&nbsp;inými členskými krajinami veľmi ekologickou krajinou.</p>
+
+
+
+<p>Komentár ďalej – v&nbsp;rámci povinnej jazdy – krátko onálepkuje aj repku – opäť tendenčne a bez hlbšej úvahy. A&nbsp;tiež počíta „čistý zisk“ podnikania v&nbsp;poľnohospodárstve – bez zohľadnenia nákladov, resp. spôsobom, kde by sme ziskovosťou prvovýroby konkurovali Holanďanom (čo trochu nesedí s minuloročným výsledkom hospodárenia sektora pred zdanením na úrovni okolo 100 mil.€). Ale predovšetkým – slová sú opäť tendenčné a&nbsp;opäť je za benchmark slovenského poľnohospodára považovaný (samozrejme veľký) „poľnohospodár“, ktorý (podvodne) využil situáciu.</p>
+
+
+
+<p>Sám autor komentára hovorí o&nbsp;potrebe usudzovania na základe zdravého rozumu. S&nbsp;tým samozrejme treba súhlasiť – len škoda, že sa toho pri písaní komentára nedržal.</p>
+
+<p><strong>Ak chceme slovenské poľnohospodárstvo zlepšiť, potrebujeme konštruktívnu debatu, nie lacné a&nbsp;povrchné nálepkovanie, zovšeobecňovanie a osočovanie. Tie síce prinášajú vysokú čítanosť článku, možno prospech konkrétnym skupinám, ale predovšetkým veľa škody. Potrebovali by sme sa trochu učiť od iných krajín, ktoré si vedia podržať svoju prvovýrobu doma aj&nbsp;v&nbsp;zahraničí. Nie opakovať populárne európske frázy, ktoré sú vzdialené reálnym podmienkam, či&nbsp;</strong><strong>stigmatizovať konkrétnych poľnohospodárov a&nbsp;glorifikovať iných na základe utopických predstáv namiesto ich skutočného konania.</strong></p>
+
+
+
+<p><strong>Trochu zovšeobecnenia a&nbsp;nálepkovania na záver – aby sa článok nevymykal štandardu: trúsenie do vlastného hniezda a&nbsp;tiež zakrývanie očí pri podvodných konaniach je také naše. A&nbsp;na škodu.&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </strong></p>
+
+
+
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

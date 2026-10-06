@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UZNESENIE XXXI. Valného zhromaždenia SPPK — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../index.html">Úvod</a><span>/</span><a href="../index.html">ostatne</a><span>/</span>UZNESENIE XXXI. Valného zhromaždenia SPPK</nav>
+
+  <article>
+    <h1 class="doc-title">UZNESENIE XXXI. Valného zhromaždenia SPPK</h1>
+    <p class="doc-meta"><span class="doc-meta-item">SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">7. mája 2018</span></p>
+    <p class="members-note">Tento text je na sppk.sk prístupný len prihláseným členom komory.</p>
+
+    <div class="doc-body">
+<h2 class="doc-subheading">XXXI. Valné zhromaždenie delegátov Slovenskej poľnohospodárskej a&nbsp;potravinárskej komory </h2>
+
+
+
+<p><em>Slovenská poľnohospodárska a potravinárska komora&nbsp;(ďalej SPPK) vznikla v&nbsp;roku 1992 podľa zákona č. 30/1992 Zb. v znení neskorších predpisov. Predstavuje neštátnu, verejnoprávnu a samosprávnu inštitúciu, ktorej poslaním je uplatňovanie oprávnených spoločných záujmov svojich členov pri tvorbe hospodárskej a sociálnej politiky, podpora a ochrana podnikania svojich členov v záujme rozvoja a zveľaďovania poľnohospodárstva a potravinárstva v Slovenskej republike.</em></p>
+
+
+
+<p><em>Nespochybniteľná je reprezentatívnosť SPPK. Združuje zamestnávateľov z viacerých odvetví hospodárstva &nbsp;s&nbsp;takmer 100 000&nbsp; zamestnancami v pracovnom pomere, alebo obdobnom pracovnom vzťahu.</em></p>
+
+
+
+<p><em>K&nbsp;31. januáru 2018 evidovala SPPK spolu 1 535 členov, z&nbsp;toho 1 392 z&nbsp;poľnohospodárskej prvovýroby, 45 potravinárskych subjektov, 55 organizácií služieb a&nbsp;43 ostatných členov. Za posledný rok narástol počet členov SPPK o&nbsp;troch.. Členovia sú organizovaní v 37 regionálnych poľnohospodárskych a&nbsp;potravinárskych komorách, 5 regionálnych komorách so štatútom, 31 zväzov, združení a únií a&nbsp;32 členov je organizovaných priamo cez SPPK. Členská základňa SPPK obhospodaruje takmer 63 % poľnohospodárskej pôdy v&nbsp;SR a&nbsp;70 percent hospodárskych zvierat. </em></p>
+
+
+
+<p><strong>A. Valné zhromaždenie SPPK</strong> <strong>konštatuje, že:</strong></p>
+
+
+
+<ul>
+	<li>na XXXI. Valnom zhromaždení SPPK sa zišli delegáti, ktorí reprezentujú dominantný podiel poľnohospodárskej produkcie Slovenskej republiky, reprezentujú aktívnych poľnohospodárov a&nbsp;rozhodujúcou mierou spravujú udržateľný vidiek, za čo im právom patrí priama podpora ako čiastočná úhrada nákladov za riadne hospodárenie v&nbsp;krajine,</li>
+	<li>naši zástupcovia sú pripravení k&nbsp;aktívnej spolupráci a&nbsp;odbornej diskusii vo všetkých oblastiach pozemkového práva,</li>
+	<li>pokračuje nepriaznivý, viac ako desaťročný trend zvyšovania podielu rastlinnej produkcie nad živočíšnou produkciou,</li>
+	<li>aj naďalej pretrváva kríza v&nbsp;živočíšnej výrobe a&nbsp;špeciálnej rastlinnej výrobe,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+	<li>v&nbsp;produkcií potravín je Slovensko pod kritickou hranicou potravinovej bezpečnosti štátu⁏ nenapĺňajú sa národné koncepcie schválené Vládou SR - Koncepcia rozvoja pôdohospodárstva na roky 2013-2020 a&nbsp;Koncepcia rozvoja potravinárstva na roky 2014-2020, &nbsp;</li>
+	<li>nenapĺňa sa deklarovaná podpora Vlády SR v&nbsp;oblasti obnovy domáceho výrobného a&nbsp;spracovateľského potravinárskeho segmentu,</li>
+	<li>dramaticky sa zhoršila bilancia zahraničného agropotravinárskeho obchodu. V&nbsp;roku 2017 bolo saldo pasívne, v&nbsp;objeme 1 mld. 402 mil. EUR &nbsp;a v&nbsp;porovnaní&nbsp; s&nbsp;rokom 2016 sa zvýšilo o&nbsp;124, 3 mil. EUR,</li>
+	<li>spoločná poľnohospodárska politika nezaručuje konkurencieschopnosť rezortu v&nbsp;porovnaní s&nbsp;okolitými krajinami s&nbsp;vyšším podielom národného spolufinancovania Programu rozvoja vidieka SR 2014 – 2020 a&nbsp;vyššou podporou svojich poľnohospodárov z&nbsp;prostriedkov štátneho rozpočtu,&nbsp;</li>
+	<li>podnikateľské prostredie v&nbsp;sektore poľnohospodárstva a&nbsp;potravinárstva je naďalej zaťažované legislatívou, napr. &nbsp;zákon č. 315/2016 Z. z. o registri partnerov verejného sektora, zákon č. 79/2015 Z. z. o&nbsp;odpadoch a novela zákona č. 504/2003 Z.z.,</li>
+	<li>obchodné reťazce ďalej zvyšujú dovozy potravín a&nbsp;pretrvávajú nekalé praktiky v&nbsp;obchodných vzťahoch, ktorých predmetom sú potraviny, chýba vôľa štátu zverejňovať tvorbu cien vybraných druhov tovarov v&nbsp;potravinovej vertikále,</li>
+	<li>SPPK podporuje a&nbsp;bude podporovať mladých, malých a&nbsp;začínajúcich podnikateľov na pôde, nie však na úkor funkčnej koncentrovanej poľnohospodárskej výroby.</li>
+</ul>
+
+
+
+<p><strong>B. Valné zhromaždenie SPPK žiada vládu Slovenskej republiky a&nbsp;ministerku pôdohospodárstva, aby v&nbsp;sektore agropotravinárstva plnila Programové vyhlásenie vlády SR 2016-2020, a&nbsp;to najmä:</strong></p>
+
+
+
+<ul>
+	<li>zabezpečila vyššie národné spolufinancovanie opatrení PRV SR 2014-2020 na úroveň, ktorá sa priblíži okolitým štátom, minimálne vo výške 35%,</li>
+	<li>navýšila štátnu pomoc na úroveň okolitých krajín a&nbsp;vyčlenila jej použitie na osobitnú podporu citlivých komodít a&nbsp;zabezpečila systémovú podporu živočíšnej výroby a&nbsp;špeciálnej rastlinnej výroby z&nbsp;prostriedkov EÚ a&nbsp;štátneho rozpočtu,&nbsp;</li>
+	<li>dôsledne žiadame a trváme na tom, aby sľúbených 30 mil. €&nbsp; bolo čím skôr prerozdelených&nbsp; na citlivé sektory za účasti samosprávy. Rovnako žiadame, aby pre rok 2019 a&nbsp;ďalšie roky bolo v&nbsp;rozpočte minimálne 70 mil. štátnej podpory o. i. tiež zavedenie refundácie časti spotrebnej dane z&nbsp;motorovej nafty spotrebovanej na poľnohospodársku výrobu,</li>
+	<li>v&nbsp;pripravovanej SPP po roku 2020 boli zamedzené diskriminačné pravidlá a jej negatívny vplyv na náš agropotravinársky sektor vrátane zamedzenie stropovania priamych podpôr.</li>
+	<li>presadzovanie na pôde inštitúcií EÚ a&nbsp;v&nbsp;koordinácii s&nbsp;členskými štátmi, ktoré podpísali Bratislavskú deklaráciu, požiadavky slovenských poľnohospodárov na podobu spoločnej poľnohospodárskej politiky po roku 2020,</li>
+	<li>efektívnu a transparentnú činnosť Pôdohospodárskej platobnej agentúry v&nbsp;súvislosti s&nbsp;príjmom a&nbsp;administráciou žiadostí o&nbsp;priame podpory, ako aj ich vyplatenie v&nbsp;roku&nbsp; 2018,</li>
+	<li>transparentný manažment a&nbsp;administráciu zostávajúcich finančných prostriedkov na projektové opatrenia Programu rozvoja vidieka SR 2014-2020,</li>
+	<li>zamerala sa na riešenie nekalých obchodných praktík v potravinovom reťazci a&nbsp; prijala účinné opatrenia na riešenie problematiky tvorby cien v&nbsp;rámci celej potravinovej vertikály,</li>
+	<li>zvererejňovala &nbsp;štatistiku transparentnej tvorby cien potravín v&nbsp;rámci celej potravinovej vertikály.</li>
+	<li>prijala účinné opatrenia na podporu predaja poľnohospodárskych&nbsp; a&nbsp;potravinárskych výrobkov na domácom trhu &nbsp;a prijala účinné opatrenia na&nbsp;podporu existujúcich domácich výrobných a&nbsp;spracovateľských kapacít,</li>
+	<li>zabezpečila podporu poistenia úrody a&nbsp;chovov hospodárskych zvierat a prípravu systémového nástroja na riadenie rizík poľnohospodárskej výroby,</li>
+	<li>zabezpečila legislatívne riešenie škôd spôsobených poľovnou zverou, &nbsp;</li>
+	<li>presadzovala budovanie bilaterálnych vzťahov pred liberalizáciou medzinárodného obchodu v&nbsp;oblasti agropotravinárstva &nbsp;a presadzovanie urýchlenia vývoja v&nbsp;oblasti rozšírenia obchodnej výmeny s&nbsp;Čínou,</li>
+	<li>presadzovala presun finančných prostriedkov z&nbsp;iných operačných programov do technologického vybavenia pre&nbsp; spracovanie poľnohospodárskej produkcie prostredníctvom rokovania s&nbsp;inštitúciami zaoberajúcimi sa koordináciou eurofondov na národnej úrovni,</li>
+	<li>prehodnotila opatrenia v&nbsp;Zákonníku práce ohľadom sezónnej zamestnanosti a&nbsp;prác vykonávaných mimo hlavného pracovného pomeru v&nbsp;agrosektore,</li>
+	<li>zabezpečila tvorbu legislatívy tak, aby nezhoršovala&nbsp; podnikateľské prostredie v&nbsp;agrosektore a&nbsp;sektore potravinárskej výroby.&nbsp;&nbsp;</li>
+	<li>akceptovala požiadavky potravinárskych subjektov v&nbsp;pripravovanej novele zákona o&nbsp;odpadoch č. 79/2015 Z. z..&nbsp;&nbsp;</li>
+</ul>
+
+
+
+<h2 class="doc-subheading">C. Valné zhromaždenie SPPK schvaľuje:</h2>
+
+
+
+<ol>
+	<li>Správu predstavenstva SPPK o&nbsp;činnosti komory za obdobie od XXX. valného zhromaždenia SPPK a&nbsp;plán hlavných úloh SPPK na ďalšie obdobie.</li>
+	<li>Správu mandátovej komisie.</li>
+	<li>Správu dozornej rady SPPK o&nbsp;jej činnosti, čerpanie rozpočtu a&nbsp;účtovnú závierku úradu SPPK za rok 2017.</li>
+	<li>Rozpočet úradu SPPK na rok 2018.</li>
+	<li>Systém platenia členských príspevkov na rok 2019.</li>
+</ol>
+
+
+
+<h2 class="doc-subheading">D. Valné zhromaždenie SPPK zvolilo:</h2>
+
+<p>Za predsedu SPPK :</p>
+
+<p><em>Bc. Emila Macha</em></p>
+
+
+
+<p>Za podpredsedu pre poľnohospodárstvo a služby :</p>
+
+<p><em>Ing. Miroslava Štefčeka</em></p>
+
+
+
+<p>Za podpredsedu pre potravinárstvo a obchod:</p>
+
+<p><em>MUDr. Mariana Šoltyho</em></p>
+
+
+
+<p>Za členov Predstavenstva SPPK :</p>
+
+<p><em>Ing. Juraja Mačaja</em></p>
+
+<p><em>Ing. Petra Horvátha</em></p>
+
+<p><em>Ing. Olivera Šiatkovského</em></p>
+
+<p><em>Ing. Petra Repiského</em></p>
+
+<p><em>Ing. Petra Schultza</em></p>
+
+<p><em>Ing. Mareka Šimuneka</em></p>
+
+<p><em>Ing. Miroslava Maxona</em></p>
+
+<p><em>Ing. Miroslava Štefčeka</em></p>
+
+<p><em>lng. Mojmíra Haška</em></p>
+
+<p><em>lng. Milana Semančíka</em></p>
+
+<p><em>Ing. Alexandra Palágyiho</em></p>
+
+<p><em>Ing. Adriána Šedivého, MAS.</em></p>
+
+<p><em>MUDr.. Mariána Šoltyho</em></p>
+
+<p><em>Ing. Slavomíra Moravčíka</em></p>
+
+<p><em>Ing. Imricha Alaxu</em></p>
+
+<p><em>Ing. Vladimíra Tamaškoviča</em></p>
+
+<p><em>Ing. Vladimíra Tvarošku</em></p>
+
+
+
+<p>Za členov Dozornej rady SPPK:</p>
+
+<p><em>Ladislava Lukáča</em></p>
+
+<p><em>Ing. Tomáša Luchavu</em></p>
+
+<p><em>Ing. Róberta Kovácsa</em></p>
+
+<p><em>Ing. Jozefa Mészárosa</em></p>
+
+<p><em>Ing. Petra Benčúrika, PhD.</em></p>
+
+
+
+<h2 class="doc-subheading">E. Valné zhromaždenie SPPK ukladá:</h2>
+
+
+
+<h2 class="doc-subheading">1. Predstavenstvu SPPK:</h2>
+
+<p>a. Zabezpečiť realizáciu uznesení a hlavných úloh schválených na XXXI. Valnom zhromaždení SPPK.</p>
+
+<p>Z: predseda SPPK</p>
+
+<p>T: priebežne</p>
+
+
+
+<p>b. Oboznámiť so závermi valného zhromaždenia SPPK štátne orgány a&nbsp;politické strany&nbsp;&nbsp;&nbsp; a požiadať ich o&nbsp;podporu požiadaviek samosprávy.</p>
+
+<p>Z: predseda SPPK</p>
+
+<p>T: priebežne</p>
+
+
+
+<p>c. Vyhodnotiť diskusiu z&nbsp;valného zhromaždenia a&nbsp;predložené návrhy zapracovať do úloh predstavenstva a&nbsp;úradu SPPK.</p>
+
+<p>Z: predseda SPPK, ústredný riaditeľ SPPK</p>
+
+<p>T: do 31.5.2018</p>
+
+
+
+<p>d. Aktívne presadzovať požiadavky SPPK uvedené v&nbsp;časti B tohto Uznesenia, najmä však:</p>
+
+
+
+
+
+<p>I. Navýšenie štátnej pomoci na úroveň okolitých krajín a&nbsp;vyčlenenie jej použitia na osobitnú podporu citlivých komodít.</p>
+
+<p>Z: predseda SPPK</p>
+
+<p>T: priebežne</p>
+
+
+
+<p>II. Presadzovať záujmy slovenských poľnohospodárov pri tvorbe spoločnej poľnohospodárskej politiky po roku 2020 na úrovni EÚ aj SR.</p>
+
+<p>Z: predseda SPPK</p>
+
+<p>T: priebežne</p>
+
+
+
+<p>III. Presadzovať systémové riešenia a prijatie opatrení, ktoré budú smerovať na záchranu&nbsp; odvetvia živočíšnej výroby a&nbsp;špecializovanej rastlinnej výroby.</p>
+
+<p>Z: predseda SPPK</p>
+
+<p>T: priebežne</p>
+
+
+
+<p>IV. Presadzovať presun financií z&nbsp;iných operačných programov do technologického vybavenia pre&nbsp; spracovanie poľnohospodárskej produkcie.</p>
+
+<p>Z: predseda SPPK</p>
+
+<p>T: priebežne</p>
+
+
+
+<p>V. Presadzovať potlačenie dlhodobo negatívne pôsobiacich neprimeraných podmienok v&nbsp;obchodných vzťahoch v&nbsp;potravinovom reťazci na území SR.</p>
+
+<p>Z: predseda SPPK</p>
+
+<p>T: priebežne</p>
+
+
+
+<p>VI. Presadzovať systémové riešenia a prijatie opatrení, ktoré budú smerovať k&nbsp;efektívnej&nbsp; komunikácii a&nbsp;transparentnej činnosti pri riešení problematiky tvorby cien a&nbsp;ich zverejňovania v&nbsp;rámci celej potravinovej vertikály.</p>
+
+<p>Z: predseda SPPK</p>
+
+<p>T: priebežne</p>
+
+
+
+<p>VII. Prehodnotenie prijatých koncepcií rozvoja pôdohospodárstva a&nbsp;potravinárstva a&nbsp;prijatie nových systémových riešení, ktoré budú smerovať k&nbsp;reálnemu dosiahnutiu stanovených cieľov.</p>
+
+<p>Z: predseda SPPK</p>
+
+<p>T: priebežne</p>
+
+
+
+<p>VIII. Presadzovať prijatie systémových opatrení na riadenie&nbsp; rizík v&nbsp;poľnohospodárstve.</p>
+
+<p>Z: predseda SPPK</p>
+
+<p>T: priebežne</p>
+
+
+
+<p>IX. Pokračovať v&nbsp;riešení zjednodušeného systému zamestnávania sezónnych zamestnancov pracujúcich mimo hlavného pracovného pomeru v&nbsp;agrosektore a spracovateľskom potravinárskom sektore.</p>
+
+<p>Z: predseda SPPK</p>
+
+<p>T: priebežne</p>
+
+
+
+
+
+
+
+<p>X. Presadzovať na rezortnej a&nbsp;nadrezortnej úrovni aby do programu vedy a&nbsp;výskumu pre Slovenskú republiku bola zaradená problematika záchrany borievok (Juniperus communis) v&nbsp;kategórii osobitného prístupu zakotveného v&nbsp;ustanovení § 2 ods. (6) zákona č. 132/2002 Z. z. o&nbsp;vede a&nbsp;technike v&nbsp;znení neskorších predpisov.</p>
+
+<p>Z: predseda SPPK</p>
+
+<p>T: priebežne</p>
+
+
+
+<p>XI. Presadzovať také opatrenia, ktoré vytvoria predpoklady na zvýšenie odbytu bravčového mäsa zo slovenských bitúnkov do obchodnej siete.</p>
+
+<p>Z: predseda SPPK</p>
+
+<p>T: priebežne</p>
+
+
+
+<p>XII. Presadzovať účinné systémové opatrenia na trvalo udržateľné pestovanie cukrovej repy a&nbsp;výroby cukru v&nbsp;dôsledku zákazu účinných látok insekticídov typu neonikotinoidov.</p>
+
+<p>Z: predseda SPPK</p>
+
+<p>T: priebežne</p>
+
+
+
+<h2 class="doc-subheading">2. Dozornej rade SPPK:</h2>
+
+<p>a. Dozerať na plnenie odvodu členských príspevkov do SPPK.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Z: Dozorná rada SPPK</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T: priebežne</p>
+
+
+
+<h2 class="doc-subheading">3. Predstavenstvám RPPK a&nbsp;RKŠ:</h2>
+
+<p>a. Zabezpečiť realizáciu hlavných úloh SPPK schválených na XXXI. valnom zhromaždení SPPK vo svojich regionálnych komorách a zabezpečiť v&nbsp;stanovených termínoch úhradu členských príspevkov pre úrad SPPK.</p>
+
+<p>b. Zabezpečiť, aby úrad SPPK okrem doterajšieho spôsobu mediálnej prezentácie zviditeľňoval rezort aj novými mediálnymi aktivitami - teda pravidelnými tematickými tlačovými besedami priamo v regiónoch v spolupráci s RPPK a RKŠ.</p>
+
+<p>c. Rokovať i&nbsp;na regionálnej úrovni s poslancami Národnej rady SR o podpore záujmov&nbsp;členskej základne SPPK v&nbsp;legislatívnej oblasti</p>
+
+<p>d. Napomáhať predstavenstvu SPPK v jeho činnosti a&nbsp; aktívne plniť jeho uznesenia</p>
+
+<p>Z: predsedovia RPPK a RKŠ</p>
+
+<p>T: priebežne</p>
+
+
+
+
+
+<p>V&nbsp;Nitre, 3. mája 2018</p>
+
+
+
+<h2 class="doc-subheading">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ing. Miroslav Maxon</h2>
+
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; predseda návrhovej komisie</p>
+
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

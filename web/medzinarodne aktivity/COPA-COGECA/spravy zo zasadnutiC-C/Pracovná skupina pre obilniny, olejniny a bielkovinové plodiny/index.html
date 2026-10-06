@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pracovná skupina pre obilniny, olejniny a bielkovinové plodiny — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../../index.html">Úvod</a><span>/</span><a href="../../../index.html">medzinarodne aktivity</a><span>/</span><a href="../../index.html">COPA-COGECA</a><span>/</span><a href="../index.html">spravy zo zasadnutiC-C</a><span>/</span>Pracovná skupina pre obilniny, olejniny a bielkovinové plodiny</nav>
+
+  <article>
+    <h1 class="doc-title">Pracovná skupina pre obilniny, olejniny a bielkovinové plodiny</h1>
+    <p class="doc-meta"><span class="doc-meta-item">22. septembra 2022</span></p>
+
+    <div class="doc-body">
+<p>Miesto stretnutia:&nbsp; COPA-COGECA, Rue de Trèves 61, 1040 Brusel</p>
+
+<p>Dátum stretnutia: 6. septembra 2022</p>
+
+<p>Účastník stretnutia: Konzorcium</p>
+
+<p>Názov aktivity: Pracovná skupina pre obilniny, olejniny a&nbsp;bielkovinové plodiny</p>
+
+<p>Predsedal: Pedro Gallardo (ES)</p>
+
+<p>Podrobný popis aktivity:</p>
+
+<h2 class="doc-subheading">Diskusia o situácii na trhu a výhľadoch</h2>
+
+<p>Globálnu situáciu prezentoval Claude Soudé (FR, FOP). Za najdôležitejší&nbsp; aspekt, ktorý teraz ovplyvňuje situáciu na svetových trhoch, označil vysokú mieru inflácie v&nbsp;eurozóne (v júli dosiahla 8,9 %). Druhý dôvod je slabé euro voči doláru, čo má dopady na ceny dovážaných hnojív a&nbsp;energetických surovín. Od roku 2021 zásadným spôsobom rastie cena zemného plynu, čo má veľmi negatívny dopad na európsku produkciu hnojív a&nbsp;produkčné náklady poľnohospodárov. Náklady na prepravu zatiaľ nepredstavujú väčší problém.</p>
+
+<p>Situáciu v&nbsp;Európe ovplyvnilo veľmi teplé a&nbsp;suché leto, úroda olejnín u&nbsp;ostatných svetových producentov je naopak rekordná. Globálny nárast produkcie sóje a&nbsp;repky hlásia Brazília, USA aj Argentína. Objem produkcie sóje tak bude tento rok vyšší než dopyt, dôjde k&nbsp;navýšeniu svetových zásob. Ceny sa svetových trhoch sú pozitívne a&nbsp;relatívne vysoké.</p>
+
+<p>(Celá prezentácia je priložená v&nbsp;samostatnej prílohe k&nbsp;zápisu v&nbsp;českom jazyku.)</p>
+
+<h2 class="doc-subheading">Okrúhly stôl o&nbsp;odhadoch úrody olejnatých semien a&nbsp;bielkovinových plodín v&nbsp;roku 2022</h2>
+
+<p>FR reprezentant referoval o&nbsp;tohtoročnej pozitívnej úrode, plochy olejnín boli navýšené, tohtoročné výnosy sú veľmi priaznivé. Výnosy slnečnice klesli, celková produkcia je však stabilná. Produkčné plochy hrachu a fazule sa v&nbsp;2022 znížili, negatívne sa prejavil aj zákaz používania neonikotínoidov na bielkovinové plodiny.</p>
+
+<p>PL reprezentant referoval o&nbsp;pozitívnom roku pre repku, kvalita je tiež pozitívna (31% obsah oleja). Došlo k&nbsp;zásadnému nárastu plochy slnečnice, ceny sú veľmi priaznivé. PL trh je veľmi zasiahnutý dovozom z&nbsp;UA, podľa posledných informácií sa nezdá, že by vojna na UA zničila poľnohospodárstvo, treba ale sledovať ďalší vývoj.</p>
+
+<p>LT reprezentant referoval o&nbsp;tohtoročných výnosoch olejnín (2,5 t/ha). Za problém označil trh s&nbsp;hnojivami, odporučil preto, aby C-C rokovala s&nbsp;autoritami o&nbsp;riešení situácie, najmä zaistením dovozov z&nbsp;Ruska a&nbsp;Bieloruska.</p>
+
+<p>SK reprezentant referoval o&nbsp;podobnej situácii ako v&nbsp;PL a&nbsp;LT, problémy sú tiež s&nbsp;minerálnymi hnojivami a&nbsp;ich vysokými cenami. Hlavnou olejninou je repka, úroda bola tento rok pozitívna, výnos 3,1 t/ha. Produkcia slnečnice je nižšia o&nbsp;16 %, produkcia sóje je aj napriek zväčšenej produkčnej ploche výrazne nižšia kvôli veľkému suchu. Tohtoročné extrémne sucho bude mať katastrofálny dopad aj na kukuricu.</p>
+
+<p>IE reprezentant referoval o&nbsp;tohtoročnom navýšení produkčnej plochy repky, situácia je pozitívna.</p>
+
+<p>DE reprezentantka uviedla, že najdôležitejšou olejninou v&nbsp;DE je repka ozimná, podmienky nadchádzajúceho výsevu budú závisieť od podmienok a&nbsp;od pokračujúceho sucha.</p>
+
+<p>SE reprezentant referoval o&nbsp;rekordne vysokej produkčnej ploche repky v&nbsp;tomto roku, za najväčší problém označil sucho a&nbsp;vysoké náklady (najmä na hnojivá).</p>
+
+<p>FI reprezentant opísal, že vzhľadom na nepriaznivé podmienky v zime neboli dobré výsledky u ozimnej repky, preto poľnohospodári hľadajú plodiny, pri ktorých by boli úspešnejší.</p>
+
+<p>RO reprezentantka referovala o&nbsp;poklese výnosu slnečnice na 2 t/ha, za veľký problém označila produkty z&nbsp;UA vstupujúce do RO (spôsobujú pokles cien). Tohtoročné sucho malo negatívny dopad na všetky hlavné plodiny v&nbsp;RO, slnečnica je voči suchu rezistentnejšia. Pre ňu bola vyjednaná výnimka na použitie neonikotínoidov. Výsev ozimných plodín je kvôli pokračujúcemu suchu pomalý.</p>
+
+<p>V&nbsp;DK výrazne vzrástla produkčná plocha repky. Aj napriek suchu boli podmienky celkom dobré, výnosy dosiahli 4,5 t/ha, celková produkcia je relatívne vysoká. Na pestovanie cukrovej repy v tomto roku neboli povolené výnimky o&nbsp;použití neonikotínoidov a&nbsp;kvôli suchu zatiaľ nie je možný výsev ozimných plodín.</p>
+
+<p>CZ reprezentant referoval o&nbsp;podobných podmienkach ako v&nbsp;PL a&nbsp;SK, priemerný výnos repky sa zvýšil o&nbsp;8 %, hoci na jar bolo sucho.</p>
+
+<p>IT reprezentant referoval o&nbsp;dopadoch sucha najmä na severe krajiny, kde sa pestuje slnečnica. Objem repky je porovnateľný s&nbsp;minulým rokom.</p>
+
+<p>ES reprezentant referoval o&nbsp;extrémne suchom roku, preto žiadajú ministerstvo o&nbsp;prijatie mimoriadnych opatrení. Problémom sú škodcovia (králiky), podľa reprezentanta je nevyhnutné, aby si to uvedomili aj ochrancovia zvierat. Čo sa týka budúcej sezóny, poľnohospodári sa zatiaľ nerozhodli vzhľadom na neznalosť budúcich pravidiel (budúcich ekoschém) a&nbsp;vývoja cien. ES vláda sa rozhodla podporiť pestovanie bielkovinových plodín prostredníctvom VCS platieb, tento zámer Komisia zatiaľ neschválila.</p>
+
+<h2 class="doc-subheading">Bielkovinový plán EÚ</h2>
+
+<p>V&nbsp;rámci tohto bodu sekretariát referoval o&nbsp;stanovisku z&nbsp;vlastnej iniciatívy EHSV k&nbsp;udržateľnej stratégii EÚ pre rastlinné bielkoviny a&nbsp;oleje, EHSV bude stanovisko prejednávať 5. 10. 2022, konferencia na túto tému sa bude konať 22. – 23. 11. 2022.</p>
+
+<p>Dňa 28. 6. 2022 prijala Rada pre životné prostredie&nbsp; všeobecný prístup k&nbsp;návrhu nariadenia pre boj proti odlesňovaniu. C-C víta zmeny navrhnuté Radou oproti pôvodnému zneniu Komisie, najmä čo sa týka niektorých definícií. Okrem toho víta odstránenie článku o&nbsp;právomoci Komisie prijímať v&nbsp;budúcnosti delegované akty. V&nbsp;Parlamente je vedúcim výborom ENVI, ktorý o&nbsp;správe hlasuje 11. –&nbsp; 12. 9. 2022.</p>
+
+<p>Zástupkyňa COCERAL upozornila, že súčasný návrh Komisie odlesňovanie nebude riešiť,&nbsp; iba vyvolávať ilúziu, že ho Európa rieši, pretože napr. Brazília a&nbsp;iné štáty budú vo svojich súčasných praktikách pokračovať. Vyzvala preto do diskusie s&nbsp;neziskovými organizáciami na prejednanie spoločných iniciatív, ktoré by odlesňovanie skutočne riešili.</p>
+
+<h2 class="doc-subheading">Biopalivá na rastlinnej báze (smernica RED II, koordinácia lobistických aktivít)</h2>
+
+<p>Európsky parlament bude o&nbsp;stanovisku hlasovať&nbsp; v&nbsp;týždni od 12. 9. 2022, potom budú zahájené trialógy.&nbsp; V&nbsp;revidovanom návrhu Komisie je zachovaný 7 %-ný strop podielu biopalív z&nbsp;potravinárskych a&nbsp;kŕmnych plodín v&nbsp;doprave, pozmeňovací návrh výboru ENVI navrhuje zníženie limitu na polovicu, čo C-C odmieta. Stanovisko výboru ENVI ďalej vypúšťa definíciu biopalív s&nbsp;nízkym rizikom ILUC, navrhuje postupné ukončenie používania biopalív s&nbsp;vysokým rizikom ILUC k&nbsp;1. 7. 2023 a&nbsp;navrhuje zmenu porovnávacieho ukazovateľa pre elektrinu z&nbsp;obnoviteľných zdrojov z&nbsp;ECF(e) na EF(t). Pozmeňovacie návrhy navrhujú aj definíciu dreva z&nbsp;primárnych lesov, tú však C-C odmieta najmä kvôli potenciálnemu zákazu používania drevnej biomasy z&nbsp;primárnych lesov.</p>
+
+<p>Stratégia EÚ v&nbsp;oblasti biodiverzity</p>
+
+<p>Európska komisia dňa 22. 6. 2022 predložila právne záväzné návrhy na obnovu poškodených prírodných oblastí v&nbsp;Európe do roku 2050. Ciele tohto právneho rámca vychádzajú z&nbsp;už existujúcich legislatív, najmä smernice o&nbsp;biotopoch. Jeho vykonávanie by malo byť zahájené v&nbsp;roku 2026, s&nbsp;revíziou každých 10 rokov. Komisia v&nbsp;budúcnosti bude môcť prijať delegované akty, ktorými pozmení prílohy nariadenia týkajúce sa zoznamu biotopov, morských druhov, a&nbsp;i. Hlavné ciele návrhu sa majú týkať obnovy poľnohospodársky využívaných rašelinísk a&nbsp;ich postupného opätovného zavlažovania, celkového nárastu biologickej rozmanitosti v&nbsp;poľnohospodárskych a&nbsp;lesných ekosystémoch. Komisia vykonala posúdenie dopadov svojho návrhu, z&nbsp;ktorého plynú ročné náklady na navrátenie a&nbsp;zachovanie priaznivého stavu prírody, pričom ide o&nbsp;nákladné opatrenia (pre CZ 41 mil. € a&nbsp;pre SK 97,5 mil. € ročne). V&nbsp;rámci súčasného VFR na obdobie 2021-2027 bude na výdaje na biologickú rozmanitosť k&nbsp;dispozícii približne 100 miliárd €. Podľa sekretariátu C-C je potreba, aby bol zriadený fond obnovy a&nbsp;neboli používané napr. prostriedky SPP. Za riziko sekretariát považuje možnosť budúcej zmeny cieľov prostredníctvom delegovaných aktov Komisie.</p>
+
+<h2 class="doc-subheading">Zdravie pôdy: ochrana, udržateľné hospodárenie a&nbsp;obnova pôdy EÚ</h2>
+
+<p>Európska komisia predstavila novú stratégiu v&nbsp;oblasti pôdy v&nbsp;novembri 2021, jej financovanie má byť zaistené iba z&nbsp;národných zdrojov. V&nbsp;rámci tejto stratégie Komisia zverejní zákon o&nbsp;zdraví pôdy, ktorý má zaistiť rovnaké podmienky a&nbsp;vysokú úroveň ochrany životného prostredia. Podľa sekretariátu bude treba definovať „zdravie pôdy“ a „udržateľné pôdne opatrenia“ na minimalizáciu erózie pôdy. Komisia vytvorila expertnú skupinu na vykonávanie stratégie v oblasti pôdy, Copa aj Cogeca v&nbsp;nej budú mať svojich zástupcov. Aktuálne prebieha verejná konzultácia (do 24. 10. 2022) k&nbsp;možnej podobe zákona EÚ o&nbsp;zdraví pôdy.</p>
+
+<p>Prostriedky na ochranu rastlín (PPPs): nariadenie o&nbsp;udržateľnom používaní prípravkov na ochranu rastlín (SUR) a&nbsp;oznámenie WTO o&nbsp;MRL týkajúce sa 2 neonikotínoidov</p>
+
+<p>Európska komisia na konci júla predložila legislatívny návrh revízie smernice o&nbsp;udržateľnom používaní pesticídov a&nbsp;zahájila verejnú konzultáciu&nbsp; (do 19. 9. 2022).</p>
+
+<p>Dňa 6. 7. 2022 oznámila EÚ WTO svoj zámer o stanovení maximálnych limitov rezíduí (MRL) pre klotianidín a&nbsp;tiametoxám.</p>
+
+<p>Sekretariát referoval o&nbsp;sledovaní možnosti použitia deltametrínu na skladovanie obilnín, prípadné informácie môžu členské organizácie zaslať sekretariátu.</p>
+
+
+
+<p>Pracovná skupina pre obilniny:</p>
+
+<p>Predsedal Jean-François Isambert (FR).</p>
+
+
+
+<h2 class="doc-subheading">Situácia na trhu s&nbsp;obilninami</h2>
+
+<p>Tento bod prezentoval Nicolas Ferenczi (FR, AGPB). Európsky trh s&nbsp;hnojivami je chránený dvojitým systémom zdanenia dovozu – štandardným dovozným clom na chemické hnojivá obsahujúce dusík, fosfor a&nbsp;draslík a&nbsp;antidumpingovým clom na 2 z&nbsp;3 hlavných dusíkatých hnojív: dusičnan amónny z&nbsp;Ruska a&nbsp;roztok močoviny dusičnanu amónneho (UAN) z&nbsp;Ruska a&nbsp;USA. V&nbsp;dôsledku toho je na jednotnom domácom trhu EÚ s&nbsp;hnojivami nízka konkurencia a&nbsp;preto sú tieto hnojivá v&nbsp;EÚ drahšie než na svetových trhoch. Trh EÚ s dusíkom je oligopolný, čo znamená, že mu dominuje malý počet dodávateľov, ktorí majú silnú vyjednávaciu silu. EÚ poľnohospodári platia&nbsp; zvláštnu cenu odhadovanú na 1,6 mld. € ročne a&nbsp;musia dodržiavať prísne výrobné štandardy, čo vedie k&nbsp;stále rastúcim&nbsp;dodatočným výrobným nákladom v&nbsp;porovnaní s&nbsp;konkurenciou. Preto je nevyhnutné, aby sa zladili podmienky pre dovozy poľnohospodárskych produktov do EÚ. Takisto ceny hnojív by mali byť v&nbsp;súlade so zvyškom sveta, preto by mali byť zrušené clá na dovoz hnojív a odvetvie hnojív by nemalo byť predmetom CBAM, pokiaľ je z&nbsp;neho vylúčené poľnohospodárstvo. FR reprezentant ďalej prezentoval vývoj cien dusíkatých hnojív od začiatku roka 2021 s&nbsp;tým, že ceny zásadne rástli už pred začatím vojny na UA a&nbsp;od júla 2022 sa raketovo zvýšili ceny zemného plynu v&nbsp;Európe, dokonca omnoho viac ako vo zvyšku sveta, čo viedlo priemysel k&nbsp;zastaveniu väčšiny výroby čpavku v&nbsp;EÚ.</p>
+
+<p>V&nbsp;období 2022-2023 preto existuje reálne riziko nedostatku hnojív pre poľnohospodárov v&nbsp;EÚ, pričom nedostatok dusíkatých hnojív bude mať negatívny dopad na kvantitu (nižšie výnosy) a&nbsp;kvalitu plodín (nižší obsah bielkovín). Z&nbsp;možných riešení FR zástupca vymenoval napr. maximálne možné uľahčenie dovozov a&nbsp;garantovanie flexibility vo vykonávaní príslušných legislatív. Z&nbsp;dlhodobého hľadiska treba zvýšiť efektivitu minerálnych a&nbsp;organických dusíkatých hnojív, uľahčiť čiastočnú substitúciu minerálnych dusíkatých hnojív organickými hnojivami, podporiť európsku produkčnú kapacitu hnojív a&nbsp;zaistiť transparentnosť trhu s&nbsp;hnojivami.</p>
+
+<p>(Celá prezentácia je priložená v&nbsp;samostatnej prílohe k&nbsp;zápisu v&nbsp;českom jazyku.)</p>
+
+<p>Sekretariát upozornil na malý počet producentov hnojív v&nbsp;EÚ.</p>
+
+<p>Zástupca COCERAL upozornil, že pokiaľ na budúci rok nastane problém s&nbsp;nedostatkom dusíka v&nbsp;EÚ, môže to mať zásadný dopad v&nbsp;podobe zníženia obsahu bielkovín v&nbsp;obilninách.</p>
+
+<p>SK reprezentant informoval o&nbsp;aktuálnom päťnásobku cien hnojív na SK, pričom jeden podnik vyrábajúci hnojivá spotrebováva 12 % celkovej spotreby zemného plynu na SK. Informoval sa, či sa v&nbsp;krátkodobom horizonte dá tento zdroj energie nahradiť zelenou energiou, na čo FR reprezentant odpovedal, že taká náhrada nie je možná a&nbsp;za jediný spôsob označil dovoz energie.</p>
+
+<p>IE reprezentant chcel vedieť, ako Komisia plánuje riešiť zásadný problém na trhu s&nbsp;hnojivami. Upozornil, že poľnohospodári sa už teraz rozhodujú nevysiať ozimnú pšenicu a&nbsp;že si Komisia neuvedomuje, že EÚ nemôže byť závislá od dovozov z&nbsp;tretích krajín.</p>
+
+<p>Predsedajúci na záver zdôraznil nevyhnutnosť apelovať na Komisiu počas rokovaní CDG, že európski poľnohospodári musia mať možnosť pokračovať vo svojej produkcii a na to potrebujú nové, odolnejšie odrody, adaptované na meniace sa prostredie, vhodné nástroje a&nbsp;finančné prostriedky.</p>
+
+
+
+<h2 class="doc-subheading">Globálna situácia na trhu a&nbsp;výhľad</h2>
+
+<p>Tento bod prezentoval Heinz-Jürgen Zens (DE, DRV). Na úvod predstavil mapu o&nbsp;postihnutí Európy suchom, ktorú zverejnila nedávno Komisia. Medzi najviac zasiahnuté štáty patria ES, FR, južná časť Európy a&nbsp;časť DE.</p>
+
+<p>Svetové trhy s&nbsp;obilninami: V&nbsp;roku 2021 boli dopyt a&nbsp;ponuka na svetových trhoch v&nbsp;rovnováhe, tento rok sa očakáva dopyt vyšší než produkcia,&nbsp; môže vzniknúť deficit obilnín a&nbsp;preto pravdepodobne dôjde k&nbsp;poklesu svetových zásob. Vývozy z&nbsp;UA sa darí navyšovať, aktuálne dosahujú 2 mil. ton mesačne, cieľom je vyviezť 3-4 mil. ton mesačne. Očakáva sa aj výborná úroda obilnín v&nbsp;Rusku, pozitívne postupuje aj žatva na UA. Otázkou bude terajší jesenný výsev a&nbsp;kapacita dopravného koridoru cez čiernomorské prístavy.</p>
+
+<p>Situácia na trhu EÚ: Celkovo bola úroda pozitívna, ovšem s&nbsp;veľkými regionálnymi rozdielmi a&nbsp;značnými stratami kvôli suchu v&nbsp;IT, ES a&nbsp;FR. Zvýši sa exportný dopyt, najmä po pšenici, čo vyvoláva ďalšie cenové impulzy. Krmivá z&nbsp;obilnín by sa mohli stať nedostupnými a&nbsp;drahými. Najväčšie výzvy pre odvetvie predstavuje klimatická zmena, nedostatky v&nbsp;logistike, narastajúce produkčné náklady, a&nbsp;i.</p>
+
+<p>(Celá prezentácia je priložená v&nbsp;samostatnej prílohe k&nbsp;zápisu v&nbsp;českom jazyku.)</p>
+
+
+
+<h2 class="doc-subheading">Okrúhly stôl o&nbsp;odhadoch úrody v&nbsp;roku 2022</h2>
+
+<p>RO reprezentantka referovala o&nbsp;suchu a&nbsp;rastúcej cene poľnohospodárskych vstupov, situáciu označila za veľmi zložitú. Pšenica dosiahla celkovú produkciu 8,9 mil. t/ha, ceny sú vysoké, no vykazujú klesajúci trend. Problémy spôsobuje lacné obilie z&nbsp;UA. Najväčší prepad výnosov je u&nbsp;kukurice (vlani 5,7 t/ha, teraz len 3,6 mil. t/ha). Čo sa týka SPP, RO sa rozhodlo na budúci rok uplatňovať výnimku pri štandardoch DPEP 7 a&nbsp;8, zatiaľ nebola prijatá konkrétna legislatíva.</p>
+
+<p>DK uviedlo, že rok 2022 je relatívne pozitívny, celková produkcia aj výnosy sú nad úrovňou minulého roku. Kvalita obilnín je tiež veľmi dobrá.</p>
+
+<p>Vo FR je produkcia celkovo priemerná, sucho spôsobilo najväčšie straty u&nbsp;kukurice.</p>
+
+<p>ES reprezentant za najväčší problém označil sucho a&nbsp;nedostatok PPPs a&nbsp;hnojív. Ministerstvo na budúci rok prijalo výnimku z&nbsp;vykonávania štandardu ohľadom striedania plodín.</p>
+
+<p>IE reprezentant referoval o&nbsp;pozitívnom roku, došlo k&nbsp;nárastu produkcie z&nbsp;2,3 mil. t na&nbsp; 2,5 mil. t. Poľnohospodári však majú veľké obavy z&nbsp;výsevu na ďalšiu sezónu, najmä kvôli nezaistenému prístupu k&nbsp;hnojivám, na ktorých je IE pritom závislé. Aj na budúci rok budú uplatňovať výnimku pre striedanie plodín.</p>
+
+<p>FI reprezentant uviedol, že po vlaňajšej katastrofickej situácii očakávajú návrat do normálu aj napriek suchšiemu počasiu. Tiež spomenul problematický prístup k&nbsp;hnojivám. FI bude budúci rok uplatňovať výnimku pri DPEP 7 a&nbsp;8.</p>
+
+<p>SE reprezentant referoval o&nbsp;veľmi dobrom roku, čo sa týka cien a&nbsp;podmienok počas žatvy, obavy sú o&nbsp;budúci rok.</p>
+
+<p>BE reprezentant referoval o&nbsp;požiadavke možnosti použitia organických hnojív v&nbsp;rámci podpory z&nbsp;greeningu. Komisia zatiaľ túto žiadosť neschválila. Aktuálne je výsev problematický kvôli suchu.</p>
+
+<p>PL reprezentant informoval, že situáciu u&nbsp;kukurice veľmi negatívne ovplyvnilo počasie. Nízka produkcia negatívne ovplyvní aj odvetvie živočíšnej výroby (najmä dobytka) – poľnohospodári si kukuricu pestovali na krmivá. Kvalita obilnín je dobrá, problémom sú drahé a&nbsp;neúčinné hnojivá. Firma v&nbsp;PL, ktorá ich vyrábala, ukončila kvôli cene zemného plynu produkciu. Výsev ozimín sa začne v&nbsp;druhej polovici septembra.</p>
+
+<p>SK reprezentant referoval o&nbsp;extrémnom suchu a&nbsp;vysokých teplotách, čo spôsobilo problémy najmä v&nbsp;produkcii kukurice. Celková produkcia je polovičná oproti&nbsp;roku 2021, výnos je rekordne nízky (o 45 % nižší než v&nbsp;2021). Problémom sú aj vysoké náklady, lacné bezcolné dovozy z&nbsp;UA situáciu na SK ešte zhoršujú. Upozornil, že by dovozy obilnín z&nbsp;UA mali pokračovať ďalej do tretích krajín a&nbsp;opustiť trh EÚ. Trh na SK je malý a&nbsp;senzitívny, poľnohospodári budú mať problém, keď nebudú môcť predať svoju produkciu za férové ceny.</p>
+
+<p>DE reprezentant referoval o&nbsp;priemernom výsledku produkcie obilnín, pri kukurici došlo však k&nbsp;15 %-nej strate produkcie. V&nbsp;DE majú podobné problémy – nedostatok hnojív a&nbsp;ich vysoké ceny, nízky stav prietoku v&nbsp;riekach, ceny energií, logistické prekážky, a&nbsp;pod.</p>
+
+<p>PT reprezentant referoval o&nbsp;veľmi nízkych výnosoch pri zimných plodinách, kukuricu ešte nezačali žať, výnosy však očakávajú nízke kvôli suchu. Na pestovanie obilnín bude na budúci rok VCS podpora, ktorá by poľnohospodárov mohla viac motivovať, ale aj tak očakávajú vysoké výrobné náklady.</p>
+
+<p>IT reprezentant referoval o&nbsp;dopadoch sucha, kvôli ktorému tohtoročná produkcia poklesla o&nbsp;15-20 %. Ale napr. tvrdá pšenica obsahuje tento rok vysoký obsah bielkovín. Problémy spôsobujú divé zvieratá, najmä diviaky, ktoré ničia polia.</p>
+
+<p>Sekretariát na záver informoval o&nbsp;pôvodne plánovanom rokovaní so zástupcami DG TRADE, ktoré však bolo zrušené.</p>
+
+
+
+<h2 class="doc-subheading">Prínos aktivity pre poľnohospodárov v&nbsp;SR:</h2>
+
+<p>Prenos informácií pre členov SPPK k&nbsp;danej problematike.</p>
+
+<h2 class="doc-subheading">Vyplývajúce úlohy pre SPPK:</h2>
+
+<p>Pre SPPK nevyplývajú zo zasadania žiadne úlohy.</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

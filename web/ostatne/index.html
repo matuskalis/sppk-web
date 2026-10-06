@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ostatne — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../index.html">Úvod</a><span>/</span>ostatne</nav>
+
+  <h1 class="page-title">Ostatne</h1>
+  <p class="page-lead">286 podstránok v tejto sekcii.</p>
+
+  <section aria-label="Podstránky">
+    <div class="section-grid">
+      <a class="section-card" href="1.%20Zasadanie%20kr%C3%ADzov%C3%A9ho%20%C5%A1t%C3%A1bu%20na%20MPRV%20SR/index.html">1. Zasadanie krízového štábu na MPRV SR</a>
+      <a class="section-card" href="30%20rokov%20SPPK%20na%20valnom%20zhroma%C5%BEden%C3%AD/index.html">30 rokov SPPK na valnom zhromaždení</a>
+      <a class="section-card" href="30.%20Valn%C3%A9%20zhroma%C5%BEdenie%20SPPK%20-%20aktualizovan%C3%A9/index.html">30. Valné zhromaždenie SPPK - aktualizované</a>
+      <a class="section-card" href="33.%20Valn%C3%A9%20zhroma%C5%BEdenie%20SPPK/index.html">33. Valné zhromaždenie SPPK</a>
+      <a class="section-card" href="39.%20valn%C3%A9%20zhroma%C5%BEdenie%20SPPK%20-%20FOTO%20report%C3%A1%C5%BE/index.html">39. valné zhromaždenie SPPK - FOTO reportáž</a>
+      <a class="section-card" href="5%20d%C3%B4vodov,%20pre%C4%8Do%20si%20kupova%C5%A5%20slovensk%C3%BA%20zeleninu.%20Pozn%C3%A1te%20v%C5%A1etky-/index.html">5 dôvodov, prečo si kupovať slovenskú zeleninu. Poznáte všetky-</a>
+      <a class="section-card" href="Agrivoltika.%20Boli%20sme%20sa%20pozrie%C5%A5%20v%20Rak%C3%BAsku,%20kde%20funguje/index.html">Agrivoltika. Boli sme sa pozrieť v Rakúsku, kde funguje</a>
+      <a class="section-card" href="Agropodcast%20k%20ekosch%C3%A9mam/index.html">Agropodcast k ekoschémam</a>
+      <a class="section-card" href="Ako%20po%20celoplo%C5%A1nom%20testovan%C3%AD-/index.html">Ako po celoplošnom testovaní-</a>
+      <a class="section-card" href="Ako%20prebiehaj%C3%BA%20pracovn%C3%A9%20skupiny%20k%20interven%C4%8Dnej%20strat%C3%A9gii-/index.html">Ako prebiehajú pracovné skupiny k intervenčnej stratégii-</a>
+      <a class="section-card" href="Aktualizovan%C3%A1%20n%C3%A1rodn%C3%A1%20strat%C3%A9gia%20ochrany%20biodiverzity%20do%20roku%202020/index.html">Aktualizovaná národná stratégia ochrany biodiverzity do roku 2020</a>
+      <a class="section-card" href="Aktualizovan%C3%A9%20k%2021.4.:%20Inform%C3%A1cie%20o%20opatreniach%20pre%20podnikate%C4%BEov%20na%20zmiernenie%20dopadov%20pand%C3%A9mie%20COVID%E2%80%9319/index.html">Aktualizované k 21.4.: Informácie o opatreniach pre podnikateľov na zmiernenie dopadov pandémie COVID–19</a>
+      <a class="section-card" href="Aktualizovan%C3%A9%20k%2022.4.:%20Inform%C3%A1cie%20t%C3%BDkaj%C3%BAce%20sa%20cestnej%20prepravy%20%C5%BEiv%C3%BDch%20zvierat%20v%20r%C3%A1mci%20E%C3%9A/index.html">Aktualizované k 22.4.: Informácie týkajúce sa cestnej prepravy živých zvierat v rámci EÚ</a>
+      <a class="section-card" href="Aktualizovan%C3%A9%20k%2024.3.:%20Odpor%C3%BA%C4%8Dania%20%C5%A0VPS%20SR%20na%20zabr%C3%A1nenie%20%C5%A1%C3%ADrenia%20nov%C3%A9ho%20koronav%C3%ADrusu%20pri%20predaji%20potrav%C3%ADn/index.html">Aktualizované k 24.3.: Odporúčania ŠVPS SR na zabránenie šírenia nového koronavírusu pri predaji potravín</a>
+      <a class="section-card" href="Aktualizovan%C3%A9%20k%2025.3.:%20Ozna%C4%8Dovanie%20vozidiel%20pri%20preprave%20potrav%C3%ADn,%20zvierat%20a%20technol%C3%B3gi%C3%AD%20pre%20v%C3%BDrobu%20a%20spracovanie%20surov%C3%AD/index.html">Aktualizované k 25.3.: Označovanie vozidiel pri preprave potravín, zvierat a technológií pre výrobu a spracovanie suroví</a>
+      <a class="section-card" href="Aktualizovan%C3%A9:%20Pred%C4%BA%C5%BEenie%20obnovenia%20kontroly%20na%20hraniciach/index.html">Aktualizované: Predĺženie obnovenia kontroly na hraniciach</a>
+      <a class="section-card" href="Aktualizovan%C3%A9:%20Usmernenie%20na%20zabr%C3%A1nenie%20%C5%A1%C3%ADrenia%20koronav%C3%ADrusu%20v%20chovoch%20hospod%C3%A1rskych%20zvierat/index.html">Aktualizované: Usmernenie na zabránenie šírenia koronavírusu v chovoch hospodárskych zvierat</a>
+      <a class="section-card" href="Aktualizovan%C3%A9!%20D%C3%B4le%C5%BEit%C3%A9%20inform%C3%A1cie%20t%C3%BDkaj%C3%BAce%20sa%20Covid19%20k%2030.10.2020/index.html">Aktualizované! Dôležité informácie týkajúce sa Covid19 k 30.10.2020</a>
+      <a class="section-card" href="Aktu%C3%A1lna%20situ%C3%A1cia%20na%20hrani%C4%8Dn%C3%BDch%20priechodoch/index.html">Aktuálna situácia na hraničných priechodoch</a>
+      <a class="section-card" href="Aktu%C3%A1lne%20inform%C3%A1cie%20oh%C4%BEadom%20pand%C3%A9mie/index.html">Aktuálne informácie ohľadom pandémie</a>
+      <a class="section-card" href="Aktu%C3%A1lne%20inform%C3%A1cie%20z%20AZZZ%20SR/index.html">Aktuálne informácie z AZZZ SR</a>
+      <a class="section-card" href="Aktu%C3%A1lne%20v%C3%BDstupy%20AZZZ%20SR%20k%20t%C3%A9me%20koronav%C3%ADrusu/index.html">Aktuálne výstupy AZZZ SR k téme koronavírusu</a>
+      <a class="section-card" href="Bez%20politikov%20to%20nep%C3%B4jde/index.html">Bez politikov to nepôjde</a>
+      <a class="section-card" href="Bryndza%20pr%C3%A1ve%20teraz/index.html">Bryndza práve teraz</a>
+      <a class="section-card" href="Certifik%C3%A1cia%20vin%C3%A1rskych%20produktov%20po%C4%8Das%20n%C3%BAdzov%C3%A9ho%20stavu/index.html">Certifikácia vinárskych produktov počas núdzového stavu</a>
+      <a class="section-card" href="Cestovanie%20do%20SR%20%E2%80%93%20eHranica/index.html">Cestovanie do SR – eHranica</a>
+      <a class="section-card" href="Cestovn%C3%A9%20kancel%C3%A1rie%20a%20prepl%C3%A1canie%20n%C3%A1jmov%20s%C3%BA%20pre%20ministerstvo%20hospod%C3%A1rstva%20prioritou/index.html">Cestovné kancelárie a preplácanie nájmov sú pre ministerstvo hospodárstva prioritou</a>
+      <a class="section-card" href="Cezhrani%C4%8Dn%C3%BD%20pohyb%20po%C4%8Das%20mimoriadnej%20situ%C3%A1cie/index.html">Cezhraničný pohyb počas mimoriadnej situácie</a>
+      <a class="section-card" href="Cezhrani%C4%8Dn%C3%BD%20pohyb%20po%C4%8Das%20mimoriadnej%20situ%C3%A1cie%20vyhl%C3%A1senej%20z%20d%C3%B4vodu%20pand%C3%A9mie/index.html">Cezhraničný pohyb počas mimoriadnej situácie vyhlásenej z dôvodu pandémie</a>
+      <a class="section-card" href="COVID%20-%20aktu%C3%A1lne%20hygienick%C3%A9%20predpisy%20k%2016.11/index.html">COVID - aktuálne hygienické predpisy k 16.11</a>
+      <a class="section-card" href="COVID%20-%20Vraciate%20sa%20na%20Slovensko-/index.html">COVID - Vraciate sa na Slovensko-</a>
+      <a class="section-card" href="COVID%20-%20V%C3%BDnimky%20pre%20po%C4%BEnohospod%C3%A1rov/index.html">COVID - Výnimky pre poľnohospodárov</a>
+      <a class="section-card" href="COVID%20automat%20-%20pravidl%C3%A1%20a%20v%C3%BDnimky%20zo%20z%C3%A1kazu%20vych%C3%A1dzania%20%C3%BA%C4%8Dinn%C3%A9%20od%2026.%20apr%C3%ADla/index.html">COVID automat - pravidlá a výnimky zo zákazu vychádzania účinné od 26. apríla</a>
+      <a class="section-card" href="COVID%20automat%20a%20spr%C3%ADsnen%C3%A9%20kontroly%20na%20hraniciach/index.html">COVID automat a sprísnené kontroly na hraniciach</a>
+      <a class="section-card" href="COVID-19%20a%20vstup%20do%20Ma%C4%8Farska/index.html">COVID-19 a vstup do Maďarska</a>
+      <a class="section-card" href="COVID:%20Najd%C3%B4le%C5%BEitej%C5%A1ie%20zmeny%20platn%C3%A9%20od%2020.%20marca%202021/index.html">COVID: Najdôležitejšie zmeny platné od 20. marca 2021</a>
+      <a class="section-card" href="%C4%8Cesk%C3%A1%20republika%20-%20podmienky%20vstupu%20a%20opatrenia%20proti%20%C5%A1%C3%ADreniu/index.html">Česká republika - podmienky vstupu a opatrenia proti šíreniu</a>
+      <a class="section-card" href="%C4%8Cesk%C3%A1%20republika%20-%20podmienky%20vstupu%20a%20opatrenia%20proti%20%C5%A1%C3%ADreniu%20COVID-19/index.html">Česká republika - podmienky vstupu a opatrenia proti šíreniu COVID-19</a>
+      <a class="section-card" href="%C4%8Cesk%C3%A1%20republika%20-%20podmienky%20vstupu%20od%2019.%20j%C3%BAla/index.html">Česká republika - podmienky vstupu od 19. júla</a>
+      <a class="section-card" href="%C4%8Cesko%20pribudne%20na%20zoznam%20takzvan%C3%BDch%20%C4%8Derven%C3%BDch%20kraj%C3%ADn/index.html">Česko pribudne na zoznam takzvaných červených krajín</a>
+      <a class="section-card" href="%C4%8Co%20je%20Eur%C3%B3pska%20%C3%BAnia-/index.html">Čo je Európska únia-</a>
+      <a class="section-card" href="%C4%8Co%20m%C3%A1m%20robi%C5%A5,%20ak%20som%20COVID%2019%20pozit%C3%ADvny-%20Ako%20zabr%C3%A1ni%C5%A5%20%C4%8Fal%C5%A1iemu%20%C5%A1%C3%ADreniu%20COVID-19-/index.html">Čo mám robiť, ak som COVID 19 pozitívny- Ako zabrániť ďalšiemu šíreniu COVID-19-</a>
+      <a class="section-card" href="%C4%8Co%20s%C3%BA%20to%20Ekosch%C3%A9my%20a%20na%20%C4%8Do%20sl%C3%BA%C5%BEia-/index.html">Čo sú to Ekoschémy a na čo slúžia-</a>
+      <a class="section-card" href="%C4%8CR:%20od%2010.%205.%20SR%20nepatr%C3%AD%20medzi%20krajiny%20s%20vysok%C3%BDm%20rizikom/index.html">ČR: od 10. 5. SR nepatrí medzi krajiny s vysokým rizikom</a>
+      <a class="section-card" href="%C4%8Eal%C5%A1ie%20zmeny%20v%20z%C3%A1kone%20o%20soci%C3%A1lnom%20poisten%C3%AD/index.html">Ďalšie zmeny v zákone o sociálnom poistení</a>
+      <a class="section-card" href="D%C3%A1%C5%BE%C4%8F%20v%20krajine%20je%20viac%20ne%C5%BE%20nutn%C3%BD/index.html">Dážď v krajine je viac než nutný</a>
+      <a class="section-card" href="Dohoda%20o%20bud%C3%BAcej%20SPP%20je%20aj%20v%C4%8Faka%20SPPK%20dobr%C3%A1/index.html">Dohoda o budúcej SPP je aj vďaka SPPK dobrá</a>
+      <a class="section-card" href="Dot%C3%A1cia%20na%20n%C3%A1jomn%C3%A9/index.html">Dotácia na nájomné</a>
+      <a class="section-card" href="Druh%C3%A1%20pomoc%20ob%C4%8Danom,%20firm%C3%A1m%20a%20SZ%C4%8CO/index.html">Druhá pomoc občanom, firmám a SZČO</a>
+      <a class="section-card" href="Ekonomick%C3%A9%20opatrenia%20od%20ministerstva%20hospod%C3%A1rstva/index.html">Ekonomické opatrenia od ministerstva hospodárstva</a>
+      <a class="section-card" href="Ekonomick%C3%A9%20opatrenia%20pod%20jednou%20strechou/index.html">Ekonomické opatrenia pod jednou strechou</a>
+      <a class="section-card" href="EMIL%20MACHO%20%E2%80%93%20nov%C3%BD%20predseda%20SPPK/index.html">EMIL MACHO – nový predseda SPPK</a>
+      <a class="section-card" href="Finan%C4%8Dn%C3%A9%20n%C3%A1stroje%20v%20oblasti%20rozvoja%20vidieka/index.html">Finančné nástroje v oblasti rozvoja vidieka</a>
+      <a class="section-card" href="Formul%C3%A1r%20na%20pod%C3%A1vanie%20%C5%BEiadost%C3%AD%20o%20v%C3%BDnimku%20z%20opatren%C3%AD%20%C3%9AVZ%20SR/index.html">Formulár na podávanie žiadostí o výnimku z opatrení ÚVZ SR</a>
+      <a class="section-card" href="Fotogal%C3%A9ria%20Valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK%202025/index.html">Fotogaléria Valného zhromaždenia SPPK 2025</a>
+      <a class="section-card" href="H%C4%BEad%C3%A1te%20pr%C3%A1cu%20v%20agropotravin%C3%A1rskom%20sektore-/index.html">Hľadáte prácu v agropotravinárskom sektore-</a>
+      <a class="section-card" href="Horizont%202020/index.html">Horizont 2020</a>
+      <a class="section-card" href="Hos%C5%A5%20R%C3%A1dia%20Regina/index.html">Hosť Rádia Regina</a>
+      <a class="section-card" href="Hygienick%C3%A9%20nariadenia%20-%20aktu%C3%A1lne%20k%208.3.%202021/index.html">Hygienické nariadenia - aktuálne k 8.3. 2021</a>
+      <a class="section-card" href="Chovatelia%20doj%C4%8Diacich%20kr%C3%A1v,%20oviec%20a%20k%C3%B4z%20m%C3%B4%C5%BEu%20pod%C3%A1va%C5%A5%20%C5%BEiadosti%20na%20dobyt%C4%8Die%20jednotky/index.html">Chovatelia dojčiacich kráv, oviec a kôz môžu podávať žiadosti na dobytčie jednotky</a>
+      <a class="section-card" href="Igor%20%C5%A0arm%C3%ADr%20z%20SPPK%20bol%20hos%C5%A5om%20rel%C3%A1cie%20RTVS%20Z%20prvej%20ruky/index.html">Igor Šarmír z SPPK bol hosťom relácie RTVS Z prvej ruky</a>
+      <a class="section-card" href="Iniciovali%20sme%20tret%C3%AD%20%C3%BAspe%C5%A1n%C3%BD%20v%C3%BDjazd%20do%20ter%C3%A9nu/index.html">Iniciovali sme tretí úspešný výjazd do terénu</a>
+      <a class="section-card" href="Investi%C4%8Dn%C3%A9%20stimuly%20bud%C3%BA%20smerova%C5%A5%20do%20najmenej%20rozvinut%C3%BDch%20okresov/index.html">Investičné stimuly budú smerovať do najmenej rozvinutých okresov</a>
+      <a class="section-card" href="Jarn%C3%A9%20mrazy%20op%C3%A4%C5%A5%20potr%C3%A1pili%20na%C5%A1ich%20pestovate%C4%BEov/index.html">Jarné mrazy opäť potrápili našich pestovateľov</a>
+      <a class="section-card" href="Karant%C3%A9na,%20v%C3%BDnimky%20a%20podmienky%20n%C3%A1vratu%20do%20SR/index.html">Karanténa, výnimky a podmienky návratu do SR</a>
+      <a class="section-card" href="Karant%C3%A9na,%20v%C3%BDnimky%20a%20podmienky%20n%C3%A1vratu%20do%20SR%20(2021)/index.html">Karanténa, výnimky a podmienky návratu do SR (2021)</a>
+      <a class="section-card" href="Karant%C3%A9na,%20v%C3%BDnimky%20a%20podmienky%20n%C3%A1vratu%20do%20SR%20(3900)/index.html">Karanténa, výnimky a podmienky návratu do SR (3900)</a>
+      <a class="section-card" href="Karant%C3%A9na,%20v%C3%BDnimky%20a%20podmienky%20n%C3%A1vratu%20do%20SR,%20obmedzenia%20na%20hraniciach/index.html">Karanténa, výnimky a podmienky návratu do SR, obmedzenia na hraniciach</a>
+      <a class="section-card" href="Karant%C3%A9na,%20v%C3%BDnimky%20a%20registr%C3%A1cia%20pre%20cestuj%C3%BAcich%20na%20%C3%BAzemie%20SR/index.html">Karanténa, výnimky a registrácia pre cestujúcich na územie SR</a>
+      <a class="section-card" href="Kontrola%20uv%C3%A1dzania%20krajiny%20p%C3%B4vodu%20alebo%20miesta%20p%C3%B4vodu%20z%C3%A1kladnej%20zlo%C5%BEky/index.html">Kontrola uvádzania krajiny pôvodu alebo miesta pôvodu základnej zložky</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJE,%2021.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJE, 21. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%201.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 1. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2014.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 14. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2015.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 15. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2016.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 16. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2016.%20marca/index.html">KORONAVÍRUS: INFORMUJEME, 16. marca</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2017.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 17. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2017.%20marca/index.html">KORONAVÍRUS: INFORMUJEME, 17. marca</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2018.%20marca/index.html">KORONAVÍRUS: INFORMUJEME, 18. marca</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2019.%20marca/index.html">KORONAVÍRUS: INFORMUJEME, 19. marca</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%202.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 2. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2020.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 20. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2020.%20marca/index.html">KORONAVÍRUS: INFORMUJEME, 20. marca</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2022.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 22. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2023.%20marca/index.html">KORONAVÍRUS: INFORMUJEME, 23. marca</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2024.%20marca/index.html">KORONAVÍRUS: INFORMUJEME, 24. marca</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2025.%20marca/index.html">KORONAVÍRUS: INFORMUJEME, 25. marca</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2026.%20marca/index.html">KORONAVÍRUS: INFORMUJEME, 26. marca</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2027.%20marca/index.html">KORONAVÍRUS: INFORMUJEME, 27. marca</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2028.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 28. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2029.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 29. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%203.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 3. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2030.%20marca/index.html">KORONAVÍRUS: INFORMUJEME, 30. marca</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%2031.%20marca/index.html">KORONAVÍRUS: INFORMUJEME, 31. marca</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%206.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 6. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%207.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 7. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%208.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 8. apríla</a>
+      <a class="section-card" href="KORONAV%C3%8DRUS:%20INFORMUJEME,%209.%20apr%C3%ADla/index.html">KORONAVÍRUS: INFORMUJEME, 9. apríla</a>
+      <a class="section-card" href="Koronav%C3%ADrus:%20V%C3%BDnimka%20na%20servis%20strojov/index.html">Koronavírus: Výnimka na servis strojov</a>
+      <a class="section-card" href="KPPS,%20s.r.o/index.html">KPPS, s.r.o</a>
+      <a class="section-card" href="Kvalitnej%20hydiny%20je%20na%20pultoch%20st%C3%A1le%20menej.%20%C4%8Co%20vlastne%20kupuj%C3%BA%20Slov%C3%A1ci-/index.html">Kvalitnej hydiny je na pultoch stále menej. Čo vlastne kupujú Slováci-</a>
+      <a class="section-card" href="Legislat%C3%ADvny%20z%C3%A1mer%20z%C3%A1kona%20o%20odpadoch/index.html">Legislatívny zámer zákona o odpadoch</a>
+      <a class="section-card" href="Ma%C4%8Farsko%20-%20cestovanie%20a%20opatrenia%20proti%20%C5%A1%C3%ADreniu%20COVID-19%20-%20AKTUALIZOVAN%C3%89/index.html">Maďarsko - cestovanie a opatrenia proti šíreniu COVID-19 - AKTUALIZOVANÉ</a>
+      <a class="section-card" href="Ma%C4%8Farsko%20-%20podmienky%20vstupu%20a%20aktu%C3%A1lne%20opatrenia%20proti%20%C5%A1%C3%ADreniu%20COVID-19/index.html">Maďarsko - podmienky vstupu a aktuálne opatrenia proti šíreniu COVID-19</a>
+      <a class="section-card" href="Ma%C4%8Farsko%20spoma%C4%BEuje%20a%C5%BE%20zastavuje%20priechod%20kami%C3%B3nov%20na%20svoje%20%C3%BAzemie/index.html">Maďarsko spomaľuje až zastavuje priechod kamiónov na svoje územie</a>
+      <a class="section-card" href="Manu%C3%A1l%20pre%20zamestn%C3%A1vate%C4%BEov%20na%20vykonanie%20testovania/index.html">Manuál pre zamestnávateľov na vykonanie testovania</a>
+      <a class="section-card" href="Mapa%20pomoci%20s%20fotogal%C3%A9riou%20Zasejme%20dobro%202025/index.html">Mapa pomoci s fotogalériou Zasejme dobro 2025</a>
+      <a class="section-card" href="Medzin%C3%A1rodn%C3%A1%20konferencia%20POTRAVINY%20A%20OBCHOD%202016%20-%20Pozv%C3%A1nka%20a%20registr%C3%A1cia/index.html">Medzinárodná konferencia POTRAVINY A OBCHOD 2016 - Pozvánka a registrácia</a>
+      <a class="section-card" href="Mliekari%20k%20SLAK%20a%20transak%C4%8Dnej%20dani/index.html">Mliekari k SLAK a transakčnej dani</a>
+      <a class="section-card" href="Monitoring%20opatren%C3%AD%20%C3%9AVZ%20k%2015.10.%202020/index.html">Monitoring opatrení ÚVZ k 15.10. 2020</a>
+      <a class="section-card" href="Mo%C5%BEnosti%20udelenia%20v%C3%BDnimky%20pre%20vstup%20zahrani%C4%8Dn%C3%BDch%20ob%C4%8Danov%20na%20%C3%BAzemie%20SR/index.html">Možnosti udelenia výnimky pre vstup zahraničných občanov na územie SR</a>
+      <a class="section-card" href="MPRV%20SR%20odpovedalo%20na%20ot%C3%A1zky%20SPPK%20k%20implement%C3%A1cii%20priamych%20platieb%20(2.%20%C4%8Das%C5%A5)/index.html">MPRV SR odpovedalo na otázky SPPK k implementácii priamych platieb (2. časť)</a>
+      <a class="section-card" href="Mus%C3%ADme%20len%20vydr%C5%BEa%C5%A5.%20Spolo%C4%8Dne/index.html">Musíme len vydržať. Spoločne</a>
+      <a class="section-card" href="Nadobudlo%20%C3%BA%C4%8Dinnos%C5%A5%20nariadenie%20vl%C3%A1dy%20o%20pravidl%C3%A1ch%20poskytovania%20podpory/index.html">Nadobudlo účinnosť nariadenie vlády o pravidlách poskytovania podpory</a>
+      <a class="section-card" href="N%C3%A1kladn%C3%A9%20vozidl%C3%A1%20maj%C3%BA%20cez%20nedele%2029.%20marca%20a%205.%20apr%C3%ADla%20povolen%C3%BA%20v%C3%BDnimku%20na%20prejazd/index.html">Nákladné vozidlá majú cez nedele 29. marca a 5. apríla povolenú výnimku na prejazd</a>
+      <a class="section-card" href="N%C3%A1rodn%C3%BD%20potravinov%C3%BD%20katal%C3%B3g%20na%20R%C3%A1diu%20Regina/index.html">Národný potravinový katalóg na Rádiu Regina</a>
+      <a class="section-card" href="N%C3%A1vrh%20nariadenia%20vl%C3%A1dy%20Slovenskej%20republiky%20o%20podmienkach%20poskytovania%20podpory%20v%20r%C3%A1mci%20spolo%C4%8Dnej%20organiz%C3%A1cie%20trhu%20s%20v%C3%ADno/index.html">Návrh nariadenia vlády Slovenskej republiky o podmienkach poskytovania podpory v rámci spoločnej organizácie trhu s víno</a>
+      <a class="section-card" href="N%C3%A1vrh%20nariadenia%20vl%C3%A1dy%20SR,%20ktor%C3%BDm%20sa%20men%C3%AD%20a%20dop%C4%BA%C5%88a%20nariadenie%20vl%C3%A1dy%20SR%20%C4%8D.%20499-2008%20Z.%20z.%20o%20podmienkach%20poskytovania%20podp/index.html">Návrh nariadenia vlády SR, ktorým sa mení a dopĺňa nariadenie vlády SR č. 499-2008 Z. z. o podmienkach poskytovania podp</a>
+      <a class="section-card" href="N%C3%A1vrh%20novely%20z%C3%A1kona%20o%20nadob%C3%BAdan%C3%AD%20vlastn%C3%ADctva%20po%C4%BEnohospod%C3%A1rskeho%20pozemku/index.html">Návrh novely zákona o nadobúdaní vlastníctva poľnohospodárskeho pozemku</a>
+      <a class="section-card" href="N%C3%A1vrh%20opatren%C3%AD%20zameran%C3%BDch%20na%20pomoc%20ekonomike%20v%20s%C3%BAvislosti%20so%20%C5%A1%C3%ADren%C3%ADm%20v%C3%ADrusu%20COVID-19/index.html">Návrh opatrení zameraných na pomoc ekonomike v súvislosti so šírením vírusu COVID-19</a>
+      <a class="section-card" href="N%C3%A1vrh%20z%C3%A1kona%20o%20dia%C4%BEni%C4%8Dnej%20zn%C3%A1mke%20a%20o%20zmene%20niektor%C3%BDch%20z%C3%A1konov/index.html">Návrh zákona o diaľničnej známke a o zmene niektorých zákonov</a>
+      <a class="section-card" href="N%C3%A1vrh%20z%C3%A1kona%20o%20nadob%C3%BAdan%C3%AD%20vlastn%C3%ADctva%20po%C4%BEnohospod%C3%A1rskej%20p%C3%B4dy/index.html">Návrh zákona o nadobúdaní vlastníctva poľnohospodárskej pôdy</a>
+      <a class="section-card" href="N%C3%A1vrh%20z%C3%A1kona%20o%20nadob%C3%BAdan%C3%AD%20vlastn%C3%ADctva%20po%C4%BEnohospod%C3%A1rskej%20p%C3%B4dy%20(2014)/index.html">Návrh zákona o nadobúdaní vlastníctva poľnohospodárskej pôdy (2014)</a>
+      <a class="section-card" href="N%C3%A1vrh%20z%C3%A1kona%20o%20ochrane%20spotrebite%C4%BEa%20pri%20predaji%20tovaru%20alebo%20poskytovan%C3%AD%20slu%C5%BEieb%20na%20z%C3%A1klade%20zmluvy%20uzavretej%20na%20dia%C4%BEku%20a/index.html">Návrh zákona o ochrane spotrebiteľa pri predaji tovaru alebo poskytovaní služieb na základe zmluvy uzavretej na diaľku a</a>
+      <a class="section-card" href="N%C3%A1vrh%20z%C3%A1kona,%20ktor%C3%BDm%20sa%20men%C3%AD%20a%20dop%C4%BA%C5%88a%20z%C3%A1kon%20%C4%8D.%20364-2004%20Z.%20z.%20o%20vod%C3%A1ch/index.html">Návrh zákona, ktorým sa mení a dopĺňa zákon č. 364-2004 Z. z. o vodách</a>
+      <a class="section-card" href="N%C3%A1vrh%20z%C3%A1kona,%20ktor%C3%BDm%20sa%20men%C3%AD%20a%20dop%C4%BA%C5%88a%20z%C3%A1kon%20N%C3%A1rodnej%20rady%20Slovenskej%20republiky%20%C4%8D.%20152-1995%20Z.%20z.%20o%20potravin%C3%A1ch%20v%20znen%C3%AD%20n/index.html">Návrh zákona, ktorým sa mení a dopĺňa zákon Národnej rady Slovenskej republiky č. 152-1995 Z. z. o potravinách v znení n</a>
+      <a class="section-card" href="N%C3%A1vrh%20z%C3%A1kona,%20ktor%C3%BDm%20sa%20men%C3%AD%20a%20dop%C4%BA%C5%88a%20z%C3%A1kon%20o%20pozemkov%C3%BDch%20%C3%BAprav%C3%A1ch,%20usporiadan%C3%AD%20pozemkov%C3%A9ho%20vlastn%C3%ADctva,%20pozemkov%C3%BDch%20%C3%BAra/index.html">Návrh zákona, ktorým sa mení a dopĺňa zákon o pozemkových úpravách, usporiadaní pozemkového vlastníctva, pozemkových úra</a>
+      <a class="section-card" href="Nov%C3%A1%20vyhl%C3%A1%C5%A1ka%20k%20izol%C3%A1cii%20pozit%C3%ADvnych%20os%C3%B4b%20a%20karant%C3%A9ne%20%C3%BAzkych%20kontaktov/index.html">Nová vyhláška k izolácii pozitívnych osôb a karanténe úzkych kontaktov</a>
+      <a class="section-card" href="Nov%C3%A9%20nariadenia%20k%20SLAK%20od%20veterin%C3%A1rov/index.html">Nové nariadenia k SLAK od veterinárov</a>
+      <a class="section-card" href="Nov%C3%A9%20nariadenie%20k%20SLAK:%20niektor%C3%A9%20ZOO%20sa%20otvoria/index.html">Nové nariadenie k SLAK: niektoré ZOO sa otvoria</a>
+      <a class="section-card" href="Nov%C3%A9%20opatrenia%20na%20hraniciach%20a%20inform%C3%A1cia%20pre%20%22pendlerov%22/index.html">Nové opatrenia na hraniciach a informácia pre &quot;pendlerov&quot;</a>
+      <a class="section-card" href="Nov%C3%A9%20podmienky%20Spolo%C4%8Dnej%20po%C4%BEnohospod%C3%A1rskej%20politiky%20priame%20platby%20v%20praxi/index.html">Nové podmienky Spoločnej poľnohospodárskej politiky priame platby v praxi</a>
+      <a class="section-card" href="Nov%C3%A9%20pravidl%C3%A1%20pohybu%20n%C3%A1kladn%C3%BDch%20motorov%C3%BDch%20vozidiel%20na%20cest%C3%A1ch/index.html">Nové pravidlá pohybu nákladných motorových vozidiel na cestách</a>
+      <a class="section-card" href="Obhliadnutie%20za%2039.%20VZ%20SPPK:%20pr%C3%ADspevky%20host%C3%AD/index.html">Obhliadnutie za 39. VZ SPPK: príspevky hostí</a>
+      <a class="section-card" href="Obhliadnutie%20za%20Valn%C3%BDm%20zhroma%C5%BEden%C3%ADm%20SPPK/index.html">Obhliadnutie za Valným zhromaždením SPPK</a>
+      <a class="section-card" href="Obhliadnutie%20za%20Valn%C3%BDm%20zhroma%C5%BEden%C3%ADm%20SPPK%20II/index.html">Obhliadnutie za Valným zhromaždením SPPK II</a>
+      <a class="section-card" href="Obmedzenia%20na%20hraniciach/index.html">Obmedzenia na hraniciach</a>
+      <a class="section-card" href="Obmedzenia%20na%20hraniciach%20%E2%80%93%20aktualiz%C3%A1cia%2012.4.%202021/index.html">Obmedzenia na hraniciach – aktualizácia 12.4. 2021</a>
+      <a class="section-card" href="Obmedzenia%20na%20hraniciach%20(2020)/index.html">Obmedzenia na hraniciach (2020)</a>
+      <a class="section-card" href="Obmedzenia%20pre%20hromadn%C3%A9%20podujatia/index.html">Obmedzenia pre hromadné podujatia</a>
+      <a class="section-card" href="Obmedzenia%20pri%20cestovan%C3%AD%20do%20zahrani%C4%8Dia%20platn%C3%A9%20od%2020.%20marca/index.html">Obmedzenia pri cestovaní do zahraničia platné od 20. marca</a>
+      <a class="section-card" href="Od%2019.%20janu%C3%A1ra%20platia%20nov%C3%A9%20hygienick%C3%A9%20pravidl%C3%A1/index.html">Od 19. januára platia nové hygienické pravidlá</a>
+      <a class="section-card" href="Odpovede%20MPRV%20SR%20na%20ot%C3%A1zky%20SPPK%20k%20implement%C3%A1cii%20priamych%20platieb%20(1.%20%C4%8Das%C5%A5)/index.html">Odpovede MPRV SR na otázky SPPK k implementácii priamych platieb (1. časť)</a>
+      <a class="section-card" href="Odpovede%20na%20ot%C3%A1zky%20k%20EKOSCH%C3%89MAM%20a%20GAEC/index.html">Odpovede na otázky k EKOSCHÉMAM a GAEC</a>
+      <a class="section-card" href="Ome%C5%A1kanie%20platieb%20za%20energie%20nebude%20pre%20koronakr%C3%ADzu%20do%C4%8Dasne%20penalizovan%C3%A9/index.html">Omeškanie platieb za energie nebude pre koronakrízu dočasne penalizované</a>
+      <a class="section-card" href="Opatrenia%20PPA%20na%20zabr%C3%A1nenie%20%C5%A1%C3%ADrenia%20v%C3%ADrusu%20Covid%20-%2019/index.html">Opatrenia PPA na zabránenie šírenia vírusu Covid - 19</a>
+      <a class="section-card" href="Opatrenia%20%C3%9AKS%C3%9AP%20na%20zabr%C3%A1nenie%20%C5%A1%C3%ADrenia%20ochorenia%20COVID%20-%2019/index.html">Opatrenia ÚKSÚP na zabránenie šírenia ochorenia COVID - 19</a>
+      <a class="section-card" href="Opatrenia%20za%20agropotravin%C3%A1rsky%20sektor%20-%20podklad%20na%20rokovanie%20s%20ministrom-na%20kr%C3%ADzov%C3%BD%20%C5%A1t%C3%A1b/index.html">Opatrenia za agropotravinársky sektor - podklad na rokovanie s ministrom-na krízový štáb</a>
+      <a class="section-card" href="Opatrenie%20Ministerstva%20financi%C3%AD%20Slovenskej%20republiky,%20ktor%C3%BDm%20sa%20ustanovuje%20vzor%20kontroln%C3%A9ho%20v%C3%BDkazu%20k%20dani%20z%20pridanej%20hod/index.html">Opatrenie Ministerstva financií Slovenskej republiky, ktorým sa ustanovuje vzor kontrolného výkazu k dani z pridanej hod</a>
+      <a class="section-card" href="Opatrenie%20UVZ%20SR,%20ktor%C3%A9%20rie%C5%A1i%20cezhrani%C4%8Dn%C3%BD%20pohyb%20os%C3%B4b/index.html">Opatrenie UVZ SR, ktoré rieši cezhraničný pohyb osôb</a>
+      <a class="section-card" href="Otvoren%C3%A9%20hrani%C4%8Dn%C3%A9%20priechody%20po%C4%8Das%20mimoriadnej%20situ%C3%A1cie/index.html">Otvorené hraničné priechody počas mimoriadnej situácie</a>
+      <a class="section-card" href="Ozna%C4%8Dovanie%20vozidiel%20pri%20preprave%20krm%C3%ADv%20a%20hygienick%C3%BDch%20pom%C3%B4cok%20v%20s%C3%BAvislosti%20s%20Covid-19/index.html">Označovanie vozidiel pri preprave krmív a hygienických pomôcok v súvislosti s Covid-19</a>
+      <a class="section-card" href="Ozn%C3%A1menie%20komisie%20o%20uplat%C5%88ovan%C3%AD%20zelen%C3%BDch%20jazdn%C3%BDch%20pruhov/index.html">Oznámenie komisie o uplatňovaní zelených jazdných pruhov</a>
+      <a class="section-card" href="Ozn%C3%A1menie%20MPRV%20SR%20o%20v%C3%BD%C5%A1ke%20platieb%20na%20opatrenia%20v%20PRV%202014-2020/index.html">Oznámenie MPRV SR o výške platieb na opatrenia v PRV 2014-2020</a>
+      <a class="section-card" href="Pendleri,%20toto%20tla%C4%8Divo%20noste%20st%C3%A1le%20so%20sebou!/index.html">Pendleri, toto tlačivo noste stále so sebou!</a>
+      <a class="section-card" href="Ples%20po%C4%BEnohospod%C3%A1rov/index.html">Ples poľnohospodárov</a>
+      <a class="section-card" href="Po%20Ve%C4%BEkej%20noci%20sa%20pravdepodobne%20otvoria%20%C4%8Fal%C5%A1ie%20predajne/index.html">Po Veľkej noci sa pravdepodobne otvoria ďalšie predajne</a>
+      <a class="section-card" href="Pod%20pet%C3%ADciu%20proti%20TTIP%20sa%20nakoniec%20podp%C3%ADsalo%20viac%20ako%203,2%20mili%C3%B3na%20Eur%C3%B3panov/index.html">Pod petíciu proti TTIP sa nakoniec podpísalo viac ako 3,2 milióna Európanov</a>
+      <a class="section-card" href="Podmienky%20konania%20zasadnut%C3%AD-sch%C3%B4dz%C3%AD%20org%C3%A1nov%20pr%C3%A1vnick%C3%BDch%20os%C3%B4b/index.html">Podmienky konania zasadnutí-schôdzí orgánov právnických osôb</a>
+      <a class="section-card" href="Podmienky%20pre%20cezhrani%C4%8Dn%C3%BDch%20pracovn%C3%ADkov%20pracuj%C3%BAcich%20v%20%C4%8CR%20od%2014.%20apr%C3%ADla%202020/index.html">Podmienky pre cezhraničných pracovníkov pracujúcich v ČR od 14. apríla 2020</a>
+      <a class="section-card" href="Podmienky%20vstupu%20do%20Rak%C3%BAska%20od%2014.4.2020/index.html">Podmienky vstupu do Rakúska od 14.4.2020</a>
+      <a class="section-card" href="Podmienky%20vstupu%20do%20SR%20od%2019.%20j%C3%BAla/index.html">Podmienky vstupu do SR od 19. júla</a>
+      <a class="section-card" href="Podmienky%20vstupu%20od%2026.%20apr%C3%ADla%202021/index.html">Podmienky vstupu od 26. apríla 2021</a>
+      <a class="section-card" href="Podmienky%20vstupu%20pracovn%C3%ADkov%20kritickej%20infra%C5%A1trukt%C3%BAry%20na-z%20%C3%BAzemia%20%C4%8CR/index.html">Podmienky vstupu pracovníkov kritickej infraštruktúry na-z územia ČR</a>
+      <a class="section-card" href="Pokuty%20za%20zme%C5%A1kan%C3%BA%20technick%C3%BA%20a%20emisn%C3%BA%20kontrolu%20v%20%C4%8Dase%20mimoriadnej%20situ%C3%A1cie%20bud%C3%BA%20odpusten%C3%A9/index.html">Pokuty za zmeškanú technickú a emisnú kontrolu v čase mimoriadnej situácie budú odpustené</a>
+      <a class="section-card" href="Pol%C3%ADcia%20povolila%20v%C3%BDnimku%20n%C3%A1kladn%C3%BDm%20vozidl%C3%A1m%20na%20najbli%C5%BE%C5%A1ie%20dve%20nedele/index.html">Polícia povolila výnimku nákladným vozidlám na najbližšie dve nedele</a>
+      <a class="section-card" href="Po%C4%BEnohospod%C3%A1ri%20sa%20zap%C3%A1jaj%C3%BA%20do%20du%C3%A1lneho%20syst%C3%A9mu%20vzdel%C3%A1vania/index.html">Poľnohospodári sa zapájajú do duálneho systému vzdelávania</a>
+      <a class="section-card" href="Po%C4%BEsk%C3%A1%20republika%20-%20aktu%C3%A1lne%20obmedzenia%20v%20r%C3%A1mci%20N%C3%A1rodnej%20karant%C3%A9ny%20(lockdownu)/index.html">Poľská republika - aktuálne obmedzenia v rámci Národnej karantény (lockdownu)</a>
+      <a class="section-card" href="Po%C4%BEsko%20-%20podmienky%20vstupu%20a%20opatrenia%20proti%20%C5%A1%C3%ADreniu%20COVID-19%20od%2030.%20marca/index.html">Poľsko - podmienky vstupu a opatrenia proti šíreniu COVID-19 od 30. marca</a>
+      <a class="section-card" href="Postup%20a%20povinnosti%20pri%20pr%C3%ADchode%20do%20SR/index.html">Postup a povinnosti pri príchode do SR</a>
+      <a class="section-card" href="POTRAVINY%20A%20OBCHOD%202016%20-%20FOOD%20-%20TRADE%202016/index.html">POTRAVINY A OBCHOD 2016 - FOOD - TRADE 2016</a>
+      <a class="section-card" href="Povinnosti%20da%C5%88ovn%C3%ADkov%20po%C4%8Das%20mimoriadnej%20situ%C3%A1cie%20v%20s%C3%BAvislosti%20s%20COVID-19/index.html">Povinnosti daňovníkov počas mimoriadnej situácie v súvislosti s COVID-19</a>
+      <a class="section-card" href="Povinnosti%20pre%20zamestn%C3%A1vate%C4%BEov%20v%20s%C3%BAvislosti%20s%20nov%C3%BDmi%20nariadeniami/index.html">Povinnosti pre zamestnávateľov v súvislosti s novými nariadeniami</a>
+      <a class="section-card" href="PPA%20pl%C3%A1nuje%20v%20kr%C3%A1tkom%20%C4%8Dase%20op%C3%A4tovne%20spusti%C5%A5%20kontroly%20na%20mieste/index.html">PPA plánuje v krátkom čase opätovne spustiť kontroly na mieste</a>
+      <a class="section-card" href="Pravidl%C3%A1%20COVID%20automatu%20platn%C3%A9%20od%2031.%20m%C3%A1ja/index.html">Pravidlá COVID automatu platné od 31. mája</a>
+      <a class="section-card" href="Pred%C4%BA%C5%BEenie%20term%C3%ADnu%20pod%C3%A1vania%20%C5%BEiadosti%20za%20obdobie%202.vlny%20pand%C3%A9mie/index.html">Predĺženie termínu podávania žiadosti za obdobie 2.vlny pandémie</a>
+      <a class="section-card" href="Predseda%20Eur%C3%B3pskeho%20parlamentu%20Martin%20Schulz%20akceptoval%20podpisy%20ob%C4%8Dianskej%20iniciat%C3%ADvy%20Stop%20TTIP!/index.html">Predseda Európskeho parlamentu Martin Schulz akceptoval podpisy občianskej iniciatívy Stop TTIP!</a>
+      <a class="section-card" href="Predviano%C4%8Dn%C3%A9%20stretnutie%20predstavite%C4%BEov%20agrosektora/index.html">Predvianočné stretnutie predstaviteľov agrosektora</a>
+      <a class="section-card" href="Priame%20platby%20v%20po%C4%BEnohospod%C3%A1rstve/index.html">Priame platby v poľnohospodárstve</a>
+      <a class="section-card" href="Program%20predch%C3%A1dzania%20vzniku%20odpadu%20Slovenskej%20republiky%20na%20roky%202014%20-%202018/index.html">Program predchádzania vzniku odpadu Slovenskej republiky na roky 2014 - 2018</a>
+      <a class="section-card" href="Program%20rozvoja%20vidieka%20SR%20na%20programov%C3%A9%20obdobie%202014-2020/index.html">Program rozvoja vidieka SR na programové obdobie 2014-2020</a>
+      <a class="section-card" href="Projektom%20Zasejme%20dobro%20sme%20podporili%20viac%20ako%201200%20seniorov/index.html">Projektom Zasejme dobro sme podporili viac ako 1200 seniorov</a>
+      <a class="section-card" href="Prv%C3%A9%20opatrenia%20na%20pomoc%20ekonomike%20v%20%C4%8Dase%20pand%C3%A9mie/index.html">Prvé opatrenia na pomoc ekonomike v čase pandémie</a>
+      <a class="section-card" href="Rak%C3%BAsko%20-%20od%2019.%20m%C3%A1ja%20je%20Slovensko%20zaraden%C3%A9%20do%20menej%20rizikov%C3%BDch%20kraj%C3%ADn/index.html">Rakúsko - od 19. mája je Slovensko zaradené do menej rizikových krajín</a>
+      <a class="section-card" href="Rak%C3%BAsko%20-%20podmienky%20prechodu%20hran%C3%ADc,%20cestovania%20a%20karant%C3%A9ny%20pri%20n%C3%A1vrate%20na%20Slovensko/index.html">Rakúsko - podmienky prechodu hraníc, cestovania a karantény pri návrate na Slovensko</a>
+      <a class="section-card" href="Rak%C3%BAsko%20-%20podmienky%20vstupu%20a%20opatrenia%20proti%20%C5%A1%C3%ADreniu%20COVID-19%20-%20AKTUALIZOVAN%C3%89/index.html">Rakúsko - podmienky vstupu a opatrenia proti šíreniu COVID-19 - AKTUALIZOVANÉ</a>
+      <a class="section-card" href="Redistribut%C3%ADvna%20platba%20-%20rozumn%C3%BD%20kompromis/index.html">Redistributívna platba - rozumný kompromis</a>
+      <a class="section-card" href="Rok%202012/index.html">Rok 2012</a>
+      <a class="section-card" href="Rok%202013/index.html">Rok 2013</a>
+      <a class="section-card" href="Rok%202013%20(2014)/index.html">Rok 2013 (2014)</a>
+      <a class="section-card" href="Schv%C3%A1len%C3%A9%20zmeny%20v%20Z%C3%A1konn%C3%ADku%20pr%C3%A1ce/index.html">Schválené zmeny v Zákonníku práce</a>
+      <a class="section-card" href="Skon%C4%8Dili%20obmedzenia%20na%20hraniciach%20s%20Rak%C3%BAskom%20a%20Ma%C4%8Farskom/index.html">Skončili obmedzenia na hraniciach s Rakúskom a Maďarskom</a>
+      <a class="section-card" href="SLAK%20-%20Aktualiz%C3%A1cia%20opatren%C3%AD%20k%2012.%20m%C3%A1ju/index.html">SLAK - Aktualizácia opatrení k 12. máju</a>
+      <a class="section-card" href="Slovak%20Agriculture%20and%20Food%20Chamber%20(SPPK)/index.html">Slovak Agriculture and Food Chamber (SPPK)</a>
+      <a class="section-card" href="Slovensk%C3%A9%20v%C3%ADno%20prehr%C3%A1va%20s%20koronou.%20V%C3%BDsledkom%20m%C3%B4%C5%BEe%20by%C5%A5%20debakel/index.html">Slovenské víno prehráva s koronou. Výsledkom môže byť debakel</a>
+      <a class="section-card" href="Slowakei%20Landwirtschaft%20und%20Lebensmittelkammer%20(SPPK)/index.html">Slowakei Landwirtschaft und Lebensmittelkammer (SPPK)</a>
+      <a class="section-card" href="Spolo%C4%8Dn%C3%A1%20organiz%C3%A1cia%20po%C4%BEnohospod%C3%A1rskych%20trhov/index.html">Spoločná organizácia poľnohospodárskych trhov</a>
+      <a class="section-card" href="SPPK%20Podcast%20-%20Valn%C3%A9%20zhroma%C5%BEdenie%20%C3%9Anie%20potravin%C3%A1rov%20Slovenska/index.html">SPPK Podcast - Valné zhromaždenie Únie potravinárov Slovenska</a>
+      <a class="section-card" href="SPPK%20Podcast%20k%20af%C3%A9re%20s%20hov%C3%A4dz%C3%ADm%20m%C3%A4som/index.html">SPPK Podcast k afére s hovädzím mäsom</a>
+      <a class="section-card" href="SPPK%20Podcast%20k%20zamestnanosti%20v%20agrosektore/index.html">SPPK Podcast k zamestnanosti v agrosektore</a>
+      <a class="section-card" href="Spr%C3%A1va%20o%20implement%C3%A1cii%20a%20%C4%8Derpan%C3%AD%20Eur%C3%B3pskeho%20po%C4%BEnohospod%C3%A1rskeho%20z%C3%A1ru%C4%8Dn%C3%A9ho%20fondu,%20Programu%20rozvoja%20vidieka%20SR%202007%20%E2%80%932013%20a/index.html">Správa o implementácii a čerpaní Európskeho poľnohospodárskeho záručného fondu, Programu rozvoja vidieka SR 2007 –2013 a</a>
+      <a class="section-card" href="Spr%C3%A1va%20predstavenstva%20o%20%C4%8Dinnosti%20SPPK%20od%2030.%20Valn%C3%A9ho%20zhroma%C5%BEdenia/index.html">Správa predstavenstva o činnosti SPPK od 30. Valného zhromaždenia</a>
+      <a class="section-card" href="Spr%C3%A1va%20predstavenstva%20o%20%C4%8Dinnosti%20SPPK%20od%20XXVII.%20valn%C3%A9ho%20zhroma%C5%BEdenia/index.html">Správa predstavenstva o činnosti SPPK od XXVII. valného zhromaždenia</a>
+      <a class="section-card" href="Spr%C3%A1va%20predstavenstva%20o%20%C4%8Dinnosti%20SPPK%20od%20XXXI.%20Valn%C3%A9ho%20zhroma%C5%BEdenia/index.html">Správa predstavenstva o činnosti SPPK od XXXI. Valného zhromaždenia</a>
+      <a class="section-card" href="Spr%C3%A1va%20predstavenstva%20o%20%C4%8Dinnosti%20SPPK%20od%20XXXIII.%20Valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">Správa predstavenstva o činnosti SPPK od XXXIII. Valného zhromaždenia SPPK</a>
+      <a class="section-card" href="Spr%C3%A1va%20predstavenstva%20o%20%C4%8Dinnosti%20SPPK%20od%20XXXIV.%20Valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">Správa predstavenstva o činnosti SPPK od XXXIV. Valného zhromaždenia SPPK</a>
+      <a class="section-card" href="Spr%C3%A1va%20Predstavenstva%20SPPK/index.html">Správa Predstavenstva SPPK</a>
+      <a class="section-card" href="Spr%C3%A1va%20Predstavenstva%20SPPK%20(2025)/index.html">Správa Predstavenstva SPPK (2025)</a>
+      <a class="section-card" href="Spr%C3%A1va%20Predstavenstva%20SPPK%20o%20%C4%8Dinnosti%20SPPK%20od%20XXXV.%20valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">Správa Predstavenstva SPPK o činnosti SPPK od XXXV. valného zhromaždenia SPPK</a>
+      <a class="section-card" href="Spr%C3%A1va%20Predstavenstva%20SPPK%20pre%20deleg%C3%A1tov%20XXXVII.%20VZ%20SPPK/index.html">Správa Predstavenstva SPPK pre delegátov XXXVII. VZ SPPK</a>
+      <a class="section-card" href="Spravodaj%20pre%20deleg%C3%A1tov%20XXXV.%20Valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">Spravodaj pre delegátov XXXV. Valného zhromaždenia SPPK</a>
+      <a class="section-card" href="Spravodaj%20SPPK%202016/index.html">Spravodaj SPPK 2016</a>
+      <a class="section-card" href="Sp%C3%BA%C5%A1%C5%A5ame%20projekt%20Zasejme%20dobro/index.html">Spúšťame projekt Zasejme dobro</a>
+      <a class="section-card" href="Stanovisko%20k%20vplyvu%20celoplo%C5%A1n%C3%A9ho%20testovania%20na%20prev%C3%A1dzku%20podnikov%20v%20agropotravin%C3%A1rskom%20priemysle/index.html">Stanovisko k vplyvu celoplošného testovania na prevádzku podnikov v agropotravinárskom priemysle</a>
+      <a class="section-card" href="Stanovisko%20PF%20UK%20t%C3%BDkaj%C3%BAce%20sa%20preukazovania%20negat%C3%ADvneho%20testu%20zamestnanca%20zamestn%C3%A1vate%C4%BEovi/index.html">Stanovisko PF UK týkajúce sa preukazovania negatívneho testu zamestnanca zamestnávateľovi</a>
+      <a class="section-card" href="Stanovisko%20stavovsk%C3%BDch%20organiz%C3%A1ci%C3%AD%20k%20pripravovan%C3%A9mu%20z%C3%A1konu%20o%20odbornom%20vzdel%C3%A1van%C3%AD%20a%20pr%C3%ADprave/index.html">Stanovisko stavovských organizácií k pripravovanému zákonu o odbornom vzdelávaní a príprave</a>
+      <a class="section-card" href="S%C3%BAhrn%20opatren%C3%AD%20prijat%C3%BDch%20po%C4%8Das%20mimoriadnej%20situ%C3%A1cie%20vyhl%C3%A1senej%20pre%20pand%C3%A9miu%20ochorenia%20COVID-19/index.html">Súhrn opatrení prijatých počas mimoriadnej situácie vyhlásenej pre pandémiu ochorenia COVID-19</a>
+      <a class="section-card" href="%C5%A0kolenie%20-%20Ekosch%C3%A9my/index.html">Školenie - Ekoschémy</a>
+      <a class="section-card" href="%C5%A0kolenie%20pre%20%C4%8Dlenov%20SPPK%20k%20ekosch%C3%A9mam/index.html">Školenie pre členov SPPK k ekoschémam</a>
+      <a class="section-card" href="%C5%A0t%C3%A1t%20od%201.%20m%C3%A1ja%20men%C3%AD%20testovaciu%20strat%C3%A9giu/index.html">Štát od 1. mája mení testovaciu stratégiu</a>
+      <a class="section-card" href="%C5%A4a%C5%BEk%C3%A9%20%C4%8Dierne%20mra%C4%8Dn%C3%A1%20nad%20TTIP/index.html">Ťažké čierne mračná nad TTIP</a>
+      <a class="section-card" href="Transatlantick%C3%A1%20dohoda:%20od%20po%C4%8Diato%C4%8Dn%C3%A9ho%20entuziazmu%20k%20rozpa%C4%8Dit%C3%A9mu%20fin%C3%A1le%20s%20nejasn%C3%BDm%20koncom/index.html">Transatlantická dohoda: od počiatočného entuziazmu k rozpačitému finále s nejasným koncom</a>
+      <a class="section-card" href="Transatlantick%C3%A1%20dohoda:%20pasca%20menom%20regula%C4%8Dn%C3%A1%20spolupr%C3%A1ca/index.html">Transatlantická dohoda: pasca menom regulačná spolupráca</a>
+      <a class="section-card" href="Transatlantick%C3%A9%20partnerstvo%20a%20dogma%20o%20v%C5%A1eobecnej%20prospe%C5%A1nosti%20neust%C3%A1leho%20rastu%20medzin%C3%A1rodn%C3%BDch%20obchodn%C3%BDch%20v%C3%BDmen/index.html">Transatlantické partnerstvo a dogma o všeobecnej prospešnosti neustáleho rastu medzinárodných obchodných výmen</a>
+      <a class="section-card" href="TTIP%20%C4%8Dak%C3%A1%20e%C5%A1te%20dlh%C3%A1%20a%20komplikovan%C3%A1%20cesta/index.html">TTIP čaká ešte dlhá a komplikovaná cesta</a>
+      <a class="section-card" href="Ukrajina%20-%20podmienky%20cestovania%20a%20opatrenia%20proti%20%C5%A1%C3%ADreniu%20COVID-19/index.html">Ukrajina - podmienky cestovania a opatrenia proti šíreniu COVID-19</a>
+      <a class="section-card" href="Ukrajina%20-%20podmienky%20cestovania%20a%20opatrenia%20proti%20%C5%A1%C3%ADreniu%20COVID-19%20(2021)/index.html">Ukrajina - podmienky cestovania a opatrenia proti šíreniu COVID-19 (2021)</a>
+      <a class="section-card" href="%C3%9AKS%C3%9AP%20zav%C3%A1dza%20do%20odvolania%20nov%C3%A9%20opatrenia/index.html">ÚKSÚP zavádza do odvolania nové opatrenia</a>
+      <a class="section-card" href="Upozornenie%20na%20pravidl%C3%A1%20pri%20doru%C4%8Dovan%C3%AD%20p%C3%B4dnych%20vzoriek/index.html">Upozornenie na pravidlá pri doručovaní pôdnych vzoriek</a>
+      <a class="section-card" href="Upraven%C3%A9%20opatrenia%20platn%C3%A9%20od%2010.%20janu%C3%A1ra/index.html">Upravené opatrenia platné od 10. januára</a>
+      <a class="section-card" href="%C3%9ARSO%20informuje/index.html">ÚRSO informuje</a>
+      <a class="section-card" href="Usmernenia%20pre%20oddelen%C3%A9%20a%20viazan%C3%A9%20priame%20platby%20a%20neprojektov%C3%A9%20opatrenia%20PRV/index.html">Usmernenia pre oddelené a viazané priame platby a neprojektové opatrenia PRV</a>
+      <a class="section-card" href="Usmernenia%20pre%20opatrenia%20v%20oblasti%20riadenia%20hran%C3%ADc/index.html">Usmernenia pre opatrenia v oblasti riadenia hraníc</a>
+      <a class="section-card" href="Usmernenie%20k%20premiest%C5%88ovaniu%20zvierat/index.html">Usmernenie k premiestňovaniu zvierat</a>
+      <a class="section-card" href="Usmernenie%20k%20priamym%20platb%C3%A1m%20zverejnen%C3%A9/index.html">Usmernenie k priamym platbám zverejnené</a>
+      <a class="section-card" href="Usmernenie%20MPRV%20SR%20k%20platnosti%20alebo%20k%20z%C3%ADskaniu%20osved%C4%8Den%C3%AD%20o%20odbornej%20sp%C3%B4sobilosti/index.html">Usmernenie MPRV SR k platnosti alebo k získaniu osvedčení o odbornej spôsobilosti</a>
+      <a class="section-card" href="Uznesenie%20SPPK:%20vyz%C3%BDvame%20vl%C3%A1du%20ur%C3%BDchlene%20plni%C5%A5%20ich%20programov%C3%A9%20vyhl%C3%A1senie/index.html">Uznesenie SPPK: vyzývame vládu urýchlene plniť ich programové vyhlásenie</a>
+      <a class="section-card" href="UZNESENIE%20XXXI.%20Valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">UZNESENIE XXXI. Valného zhromaždenia SPPK</a>
+      <a class="section-card" href="UZNESENIE%20XXXII.%20Valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">UZNESENIE XXXII. Valného zhromaždenia SPPK</a>
+      <a class="section-card" href="UZNESENIE%20XXXIII.%20Valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">UZNESENIE XXXIII. Valného zhromaždenia SPPK</a>
+      <a class="section-card" href="UZNESENIE%20XXXIV.%20Valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">UZNESENIE XXXIV. Valného zhromaždenia SPPK</a>
+      <a class="section-card" href="Uznesenie%20XXXIX.%20valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">Uznesenie XXXIX. valného zhromaždenia SPPK</a>
+      <a class="section-card" href="UZNESENIE%20XXXV.%20Valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">UZNESENIE XXXV. Valného zhromaždenia SPPK</a>
+      <a class="section-card" href="UZNESENIE%20XXXVI.%20valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">UZNESENIE XXXVI. valného zhromaždenia SPPK</a>
+      <a class="section-card" href="UZNESENIE%20XXXVII.%20Valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">UZNESENIE XXXVII. Valného zhromaždenia SPPK</a>
+      <a class="section-card" href="Uznesenie%20XXXVIII.%20valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">Uznesenie XXXVIII. valného zhromaždenia SPPK</a>
+      <a class="section-card" href="Uznesenie%20z%20XXVIII.%20valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">Uznesenie z XXVIII. valného zhromaždenia SPPK</a>
+      <a class="section-card" href="V%20Zbierke%20z%C3%A1konov%20SR%20dnes%20vy%C5%A1li%20nov%C3%A9%20pr%C3%A1vne%20predpisy/index.html">V Zbierke zákonov SR dnes vyšli nové právne predpisy</a>
+      <a class="section-card" href="Valn%C3%A9%20zhroma%C5%BEdenie%20SPPK/index.html">Valné zhromaždenie SPPK</a>
+      <a class="section-card" href="Video%20z%20XXXV.%20Valn%C3%A9ho%20zhroma%C5%BEdenia%20SPPK/index.html">Video z XXXV. Valného zhromaždenia SPPK</a>
+      <a class="section-card" href="Viete,%20ako%20spr%C3%A1vne%20umy%C5%A5%20ovocie-%20%C4%8Cist%C3%A1%20voda%20sta%C4%8Di%C5%A5%20nemus%C3%AD/index.html">Viete, ako správne umyť ovocie- Čistá voda stačiť nemusí</a>
+      <a class="section-card" href="Vl%C3%A1da%20schv%C3%A1lila%20%C4%8Fal%C5%A1ie%20n%C3%A1vrhy%20na%20finan%C4%8Dn%C3%A9%20opatrenia%20a%20zmeny%20z%C3%A1kona%20o%20soci%C3%A1lnom%20poisten%C3%AD/index.html">Vláda schválila ďalšie návrhy na finančné opatrenia a zmeny zákona o sociálnom poistení</a>
+      <a class="section-card" href="Vl%C3%A1da%20schv%C3%A1lila%20nov%C3%BA%20do%C4%8Dasn%C3%BA%20ochranu%20podnikate%C4%BEov/index.html">Vláda schválila novú dočasnú ochranu podnikateľov</a>
+      <a class="section-card" href="Vstup%20cudzincov%20na%20%C3%BAzemie%20SR/index.html">Vstup cudzincov na územie SR</a>
+      <a class="section-card" href="Vycestova%C5%A5%20bude%20mo%C5%BEn%C3%A9%20na%2048%20hod%C3%ADn%20bez%20testu%20a%20karant%C3%A9ny/index.html">Vycestovať bude možné na 48 hodín bez testu a karantény</a>
+      <a class="section-card" href="Vyhl%C3%A1%C5%A1ka%20Ministerstva%20p%C3%B4dohospod%C3%A1rstva%20a%20rozvoja%20vidieka%20Slovenskej%20republiky%20o%20po%C5%BEiadavk%C3%A1ch%20na%20n%C3%A1poje/index.html">Vyhláška Ministerstva pôdohospodárstva a rozvoja vidieka Slovenskej republiky o požiadavkách na nápoje</a>
+      <a class="section-card" href="Vyhl%C3%A1%C5%A1ka%20Ministerstva%20p%C3%B4dohospod%C3%A1rstva%20a%20rozvoja%20vidieka%20Slovenskej%20republiky,%20ktorou%20sa%20upravuj%C3%BA%20podrobnosti%20o%20propag%C3%A1c/index.html">Vyhláška Ministerstva pôdohospodárstva a rozvoja vidieka Slovenskej republiky, ktorou sa upravujú podrobnosti o propagác</a>
+      <a class="section-card" href="Vyhl%C3%A1%C5%A1ka%20Ministerstva%20%C5%BEivotn%C3%A9ho%20prostredia%20Slovenskej%20republiky%20,%20ktorou%20sa%20men%C3%AD%20a%20dop%C4%BA%C5%88a%20vyhl%C3%A1%C5%A1ka%20%C4%8D.%2024-2003%20Z.%20z.,%20kto/index.html">Vyhláška Ministerstva životného prostredia Slovenskej republiky , ktorou sa mení a dopĺňa vyhláška č. 24-2003 Z. z., kto</a>
+      <a class="section-card" href="Vyhl%C3%A1%C5%A1ka%20MPRV%20SR,%20ktorou%20sa%20ustanovuje%20zoznam%20vybran%C3%BDch%20potrav%C3%ADn/index.html">Vyhláška MPRV SR, ktorou sa ustanovuje zoznam vybraných potravín</a>
+      <a class="section-card" href="Vyhl%C3%A1%C5%A1ky%20%C3%9AVZ/index.html">Vyhlášky ÚVZ</a>
+      <a class="section-card" href="Vyjadrenie%20PF%20UK%20k%20pr%C3%A1vam%20a%20povinnostiam/index.html">Vyjadrenie PF UK k právam a povinnostiam</a>
+      <a class="section-card" href="V%C3%BDklad%20%C3%9AVZ%20SR%20k%20sp%C3%B4sobu%20ur%C4%8Dovania%20mo%C5%BEnosti%20otvorenia%20prev%C3%A1dzok/index.html">Výklad ÚVZ SR k spôsobu určovania možnosti otvorenia prevádzok</a>
+      <a class="section-card" href="V%C3%BDnimky%20pre%20pendlerov%20a%20vodi%C4%8Dov%20n%C3%A1kladnej%20dopravy/index.html">Výnimky pre pendlerov a vodičov nákladnej dopravy</a>
+      <a class="section-card" href="Vyst%C3%BApenie%20host%C3%AD%20VZ%20SPPK:%20Michal%20Ki%C4%8Da,%20%C5%A1t%C3%A1tny%20tajomn%C3%ADk%20M%C5%BDP%20SR/index.html">Vystúpenie hostí VZ SPPK: Michal Kiča, štátny tajomník MŽP SR</a>
+      <a class="section-card" href="Vyst%C3%BApenie%20host%C3%AD%20VZ%20SPPK:%20Minister%20p%C3%B4dohospod%C3%A1rstva%20Samuel%20Vl%C4%8Dan/index.html">Vystúpenie hostí VZ SPPK: Minister pôdohospodárstva Samuel Vlčan</a>
+      <a class="section-card" href="Vyst%C3%BApenie%20host%C3%AD%20VZ%20SPPK:%20Predseda%20Zem%C4%9Bd%C4%9Blsk%C3%A9ho%20svazu%20%C4%8CR%20Martin%20P%C3%BDcha/index.html">Vystúpenie hostí VZ SPPK: Predseda Zemědělského svazu ČR Martin Pýcha</a>
+      <a class="section-card" href="Vyst%C3%BApenie%20host%C3%AD%20VZ%20SPPK:%20V%20p%C3%B4dohospod%C3%A1rstve%20sa%20pripravuj%C3%BA%20viacer%C3%A9%20legislat%C3%ADvne%20zmeny/index.html">Vystúpenie hostí VZ SPPK: V pôdohospodárstve sa pripravujú viaceré legislatívne zmeny</a>
+      <a class="section-card" href="XXIX.%20Valn%C3%A9%20zhroma%C5%BEdenie%20deleg%C3%A1tov%20SPPK/index.html">XXIX. Valné zhromaždenie delegátov SPPK</a>
+      <a class="section-card" href="XXXV.%20Valn%C3%A9%20zhroma%C5%BEdenie%20SPPK/index.html">XXXV. Valné zhromaždenie SPPK</a>
+      <a class="section-card" href="Z%20programu%20VZ%20SPPK:%20Min%C3%BAta%20ticha%20za%20kolegov,%20ktor%C3%AD%20odi%C5%A1li/index.html">Z programu VZ SPPK: Minúta ticha za kolegov, ktorí odišli</a>
+      <a class="section-card" href="Z%C3%A1kon%20o%20mimoriadnych%20opatreniach%20v%20oblasti%20zdravotn%C3%ADctva/index.html">Zákon o mimoriadnych opatreniach v oblasti zdravotníctva</a>
+      <a class="section-card" href="Z%C3%A1kon%20o%20niektor%C3%BDch%20mimoriadnych%20opatreniach%20v%20s%C3%BAvislosti%20so%20%C5%A1%C3%ADren%C3%ADm%20COVID-19%20a%20v%20just%C3%ADcii/index.html">Zákon o niektorých mimoriadnych opatreniach v súvislosti so šírením COVID-19 a v justícii</a>
+      <a class="section-card" href="Z%C3%A1kon%20o%20niektor%C3%BDch%20mimoriadnych%20opatreniach%20vo%20finan%C4%8Dnej%20oblasti/index.html">Zákon o niektorých mimoriadnych opatreniach vo finančnej oblasti</a>
+      <a class="section-card" href="Zamestn%C3%A1vatelia%20%C5%BEiadaj%C3%BA%20konkretiz%C3%A1ciu%20a%20r%C3%BDchlej%C5%A1iu%20implement%C3%A1ciu%20opatren%C3%AD/index.html">Zamestnávatelia žiadajú konkretizáciu a rýchlejšiu implementáciu opatrení</a>
+      <a class="section-card" href="Zauj%C3%ADmav%C3%A9%20linky/index.html">Zaujímavé linky</a>
+      <a class="section-card" href="Zmena%20administrovania%20kontrol%20met%C3%B3dou%20dia%C4%BEkov%C3%A9ho%20prieskumu%20Zeme/index.html">Zmena administrovania kontrol metódou diaľkového prieskumu Zeme</a>
+      <a class="section-card" href="Zmena%20z%C3%A1kona%20o%20niektor%C3%BDch%20mimoriadnych%20opatreniach%20vo%20finan%C4%8Dnej%20oblasti/index.html">Zmena zákona o niektorých mimoriadnych opatreniach vo finančnej oblasti</a>
+      <a class="section-card" href="Zmena%20z%C3%A1kona%20o%20soci%C3%A1lnom%20poisten%C3%AD/index.html">Zmena zákona o sociálnom poistení</a>
+      <a class="section-card" href="Zmeny%20na%20pozemnej%20hranici%20Slovenskej%20republiky%20s%20Ukrajinou%20od%2015.%20janu%C3%A1ra/index.html">Zmeny na pozemnej hranici Slovenskej republiky s Ukrajinou od 15. januára</a>
+      <a class="section-card" href="Zmeny%20v%20niektor%C3%BDch%20z%C3%A1konoch%20v%20p%C3%B4sobnosti%20Ministerstva%20dopravy%20a%20v%C3%BDstavby%20SR/index.html">Zmeny v niektorých zákonoch v pôsobnosti Ministerstva dopravy a výstavby SR</a>
+      <a class="section-card" href="Zmeny%20v%20niektor%C3%BDch%20z%C3%A1konoch%20v%20p%C3%B4sobnosti%20Ministerstva%20vn%C3%BAtra%20SR/index.html">Zmeny v niektorých zákonoch v pôsobnosti Ministerstva vnútra SR</a>
+      <a class="section-card" href="Zmeny%20v%20Z%C3%A1konn%C3%ADku%20pr%C3%A1ce/index.html">Zmeny v Zákonníku práce</a>
+      <a class="section-card" href="Zmeny%20z%C3%A1kona%20o%20soci%C3%A1lnom%20poisten%C3%AD/index.html">Zmeny zákona o sociálnom poistení</a>
+      <a class="section-card" href="Zmluvy%20o%20vo%C4%BEnom%20obchode%20%E2%80%93%20free%20trade%20verzus%20fair%20trade/index.html">Zmluvy o voľnom obchode – free trade verzus fair trade</a>
+      <a class="section-card" href="Zru%C5%A1enie%20hrani%C4%8Dn%C3%BDch%20kontrol%20v%20Rak%C3%BAsku/index.html">Zrušenie hraničných kontrol v Rakúsku</a>
+      <a class="section-card" href="%C5%BDiados%C5%A5%20na%20udelenie%20v%C3%BDnimky%20z%20karant%C3%A9ny%20na%20vstup%20na%20%C3%BAzemie%20SR/index.html">Žiadosť na udelenie výnimky z karantény na vstup na územie SR</a>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

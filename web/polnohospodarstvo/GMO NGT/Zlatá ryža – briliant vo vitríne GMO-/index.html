@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zlatá ryža – briliant vo vitríne GMO? — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">polnohospodarstvo</a><span>/</span><a href="../index.html">GMO NGT</a><span>/</span>Zlatá ryža – briliant vo vitríne GMO-</nav>
+
+  <article>
+    <h1 class="doc-title">Zlatá ryža – briliant vo vitríne GMO?</h1>
+    <p class="doc-meta"><span class="doc-meta-item">RNDr. Igor Šarmír, PhD</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">30. septembra 2015</span></p>
+
+    <div class="doc-body">
+<p><span>Jedným z veľkých "imidžových" problémov dnešných poľnohospodárskych GMO je skutočnosť, že potraviny z nich vyrobené neprinášajú spotrebiteľom žiadnu evidentnú pridanú hodnotu: nie sú ani chutnejšie, ani výživnejšie a ani lacnejšie ako potraviny na báze konvenčných agrárnych surovín. Viac ako 99% z tých čo sú na trhu, sú "pesticídové GMO", to znamená, že ich úlohou je zjednodušiť a zefektívniť používanie pesticídov, čo môže byť zaujímavé pre poľnohospodárov, ale nie pre spotrebiteľov. Obhajcovia GMO majú ale v talóne jednu výnimku, ktorá reálne existuje už viac ako 15 rokov, ale jej pestovanie zatiaľ nebolo nikde povolené</span><a href="#_ftn1" name="_ftnref1" title=""><span>[1]</span></a><span>: ide o tzv. zlatú ryžu (Golden rice). Je to zatiaľ jediná dnes existujúca geneticky modifikovaná plodina, ktorá by mala mať evidentné nutričné prednosti v porovnaní so svojim najbližším konvenčným príbuzným.</span></p>
+
+
+
+<p>História sa začala vo Švajčiarsku, kde sa dvaja biológovia, Ingo Potrykus<a href="#_ftn2" name="_ftnref2" title="">[2]</a> a Peter Beyer<a href="#_ftn3" name="_ftnref3" title="">[3]</a> zaujímali o jeden z obrovských problémov verejného zdravia: nedostatok vitamínu A vo výžive stoviek miliónov chudobných obyvateľov našej planéty, ktorý môže viesť prostredníctvom oslabovania imunitného systému k oslepnutiu či dokonca k úmrtiu. Podľa Svetovej zdravotníckej organizácie (WHO) oslepne vo svete z tohto dôvodu pol milióna osôb ročne, z toho 350 000 detí. Tento deficit okrem toho zabíja ročne 1,9 až 2,8 milióna osôb, teda asi toľko ako AIDS a malária dokopy. Vitamín A sa prirodzene nachádza v mliečnych výrobkoch a vo vajciach. Okrem toho, v organizme dochádza k jeho syntéze z beta-karoténu, ktorý je obsiahnutý v početných druhoch ovocia a zeleniny. Problém je v tom, že významná časť obyvateľstva rozvojových krajín, ktorí žijú v extrémnej chudobe, nemajú k takýmto potravinám prístup. Mnohí z nich sa ale živia ryžou.</p>
+
+
+
+<p>Švajčiarski biológovia teda vložili do DNA ryže tri gény aktivujúce produkciu beta-karoténu, čo dalo plodine zlatistú farbu. Už v roku 2000 bola prvá generácia "zlatej ryže"&nbsp; pripravená na pestovanie a testovanie. Jej problém bol ale v tom, že obsah vitamínu A nebol dostatočný: približne 30 až 35 mg na 100 gramov ryže, čo je iba malá časť dennej odporúčanej dávky (600 gramov). Z tohto dôvodu, na zabezpečenie dostatku vitamínu A by bolo treba skonzumovať dva kilogramy suchej ryže denne, čo zodpovedá 9 kg uvarenej... Bolo treba čakať do roku 2005, keď výskumní pracovníci spoločnosti Syngenta vyvinuli novú odrodu nazvanú Zlatá ryža 2, u ktorej sa odhaduje, že jej stačí skonzumovať 144 gramov denne na pokrytie dennej potreby, čo je asi jedna miska.</p>
+
+
+
+<p>Vzhľadom na možnosť riešenia humanitárnej katastrofy obrovských rozmerov ide podľa všetkého naozaj o zázračný produkt, ktorého nevyužívanie sa zdá byť ťažkým zločinom. Napriek tomu, ako to je už spomenuté, zlatá ryža zatiaľ nebola nikde uvedená na trh, pričom príčiny sú charakteru byrokratického, sanitárneho i politického. Je tiež nepopierateľné, že k tomu svojim negatívnym stanoviskom prispeli mimovládne organizácie na čele s Greenpeace.</p>
+
+
+
+<h2 class="doc-subheading"><em>Názor odporcov</em></h2>
+
+<p>Analýza problému i potenciál zlatej ryže na jeho riešenie, popísané v predchádzajúcich odsekoch, sú dlhodobo pevnou súčasťou kampaní v prospech GMO a nemožno im uprieť presvedčivosť. Na druhej strane, ani nad argumentmi odporcov sa nedá len tak mávnuť rukou a stojí za to si zrekapitulovať najvýznamnejšie z nich:</p>
+
+<ul>
+	<li>
+	<p>Indická filozofka Vandana Shiva, známa aktivistka proti GMO, poukazuje na to, že nedostatok vitamínu A je priamym dôsledkom príchodu monokultúr zavádzaných počas tzv. zelenej revolúcie, ku ktorej došlo po Druhej svetovej vojne. Podľa nej, je potrebné predovšetkým systémové riešenie, ktoré spočíva v opätovnom nastolení biodiverzity. Sústredenie sa na jeden aspekt, nedostatok vitamínu A, bráni riešeniu podstaty problému, ktorým je bieda a s ňou súvisiaca výživová nedostatočnosť;</p>
+	</li>
+	<li>
+	<p>vedecký výskum zatiaľ nepriniesol uspokojivú odpoveď na otázky súvisiace s možnými negatívnymi dopadmi konzumácie zlatej ryže na organizmus (alergie, toxicita atď.). Nedá sa teda s určitosťou povedať, či konzumácia zlatej ryže nespôsobí viac problémov ako ich vyrieši;</p>
+	</li>
+	<li>
+	<p>aké sú dlhodobé a krátkodobé dopady na životné prostredie? Tak ako v prípade možných dopadov na zdravie spotrebiteľov, všetky otázky nastolované v súvislosti s GMO vo všeobecnosti sa zároveň týkajú i zlatej ryže, ale v omnoho citlivejšom kontexte pretože sa týkajú plodiny kľúčovej pre výživu veľkej časti ľudskej populácie.</p>
+	</li>
+	<li>
+	<p>Nedostatok vitamínu A&nbsp;nie je zďaleka jediným výživovým problémom chudobných krajín. Podobnou katastrofou je i&nbsp;chronický nedostatok vitamínu B (choroba Beriberi) a&nbsp;vitamínu C (skorbut) alebo nedostatok viacerých stopových prvkov vyplývajúci tak isto zo zlej výživy. Tieto často fatálne patológie väčšinou ohrozujú tie isté chudobné vrstvy obyvateľstva ako nedostatok vitamínu A, čo znamená, že i&nbsp;keby ich „Zlatá ryža“ pred ním ochránila,&nbsp; ich zdravotný stav zďaleka nie je garantovaný.</p>
+	</li>
+	<li>
+	<p>Na riešenie nedostatku vitamínu A existujú alternatívne možnosti, s ktorými sú už pomerne bohaté skúsenosti:</p>
+	</li>
+</ul>
+
+<p>- Na Filipínach boli úspešní prostredníctvom distribúcie vitamínových prípravkov. Medzi rokmi 2003 a&nbsp;2008 dosiahli týmto spôsobom zníženie o&nbsp;40% nedostatku vitamínu A u detí od šiestich mesiacov po 5 rokov.</p>
+
+<p>- Početné krajiny pridávajú vitamín A&nbsp;do základných potravín ako je múka alebo cukor.</p>
+
+<p>- Podľa Svetovej Zdravotnícke organizácie (WHO) by sa zvýšením pestovania ovocia a zeleniny vo vidieckych oblastiach Afriky dalo úspešne čeliť nedostatku vitamínu A a iných výživových látok.</p>
+
+<p>- India a Filipíny kombinujú všetky tieto prístupy na boj proti zlej výžive.&nbsp;</p>
+
+<ul>
+	<li>
+	<p>V roku 2009 sa skupina vedeckých pracovníkov podpísala pod otvorený list, v ktorom boli tvrdo kritizované pokusy so zlatou ryžou vykonávané na deťoch (viď. nižšie). Dôvodom tohto protestu bola i skutočnosť, že žiaden podobný experiment nebol pred tým vykonaný na zvieratách, zatiaľ čo podľa rozsiahlej medicínskej literatúry retinoidy, ktoré môžu byť vedľajším produktom beta-karoténu, sú toxické a zároveň spôsobujú vrodené vady.<a href="#_ftn4" name="_ftnref4" title="">[4]</a></p>
+	</li>
+</ul>
+
+
+
+<h2 class="doc-subheading"><em>História doterajšej konfrontácie obhajcov a odporcov zlatej ryže</em></h2>
+
+<p>Vytvorenie "Zlatej ryže" bolo zo strany protagonostov biotechnológií okamžite predstavené ako vznik "užitočného GMO", ktorý bude poskytovaný ľuďom priamo ohrozených nedostatkom vitamínu A, žijúcich v krajinách kde je ryža tradične hlavnou zložkou stravy. Nový produkt sa stal predmetom masívnej reklamnej kampane a iných propagačných akcií, ktoré sa snažili poukázať na naliehavosť situácie ako i na šľachetnosť a nezištné úmysly biotechnologických firiem. Takáto prezentácia ale príkro kontrastovala so skúsenosťami s firmami ako Monsanto alebo Syngenta a zo samotnej kampane presakovala necitlivosť, agresivita a arogancia, ktorými sú tieto spoločnosti známe: bolo až príliš evidentné, že prostredníctvom "Zlatej ryže" sa snažia zabezpečiť v očiach občanov priechodnosť a prijateľnosť GMO ako takých a zdiskreditovať kritikov genetickej manipulácie v bohatých krajinách, údajne egoistických a ľahostajných k biede tohto sveta. Protagonisti biotechnológií pritom skúšali naozaj všetko, dokonca zabezpečili, aby "Zlatú ryžu" požehnali, ako humanitárny produkt, traja pápeži (Ján Pavol II, Benedikt XVI i terajší František). Nechýbali ani veľké gestá: sadivo "Zlatej ryže" malo byť rozdávané farmárom v núdzi zdarma, 32 spoločností a univerzít, držitelia 70 patentov alebo iných práv duševného vlastníctva súvisiacich s vytvorením "Zlatej ryže", sa vzdávalo svojich autorských poplatkov a postupne sa mala vytýčiť hranica medzi "humanitárnym" a "komerčným použitím" (na úrovni 10 000 $ ročne získaných vďaka sadivu). Pod touto hranicou sa nemal platiť žiaden poplatok výrobcom a farmári by mohli použiť časť úrody na novú sejbu – čo je u ostatných poľnohospodárskych GMO zakázané. Skúsenosti s takýmito prísľubmi sú ale negatívne: v záujme preniknutia Monsanta do Južnej Ameriky nemusela Argentína počas prvých rokov ani platiť autorské práva a ani nemala zakázané použiť časť dopestovaných zŕn na založenie novej úrody. Neskôr, keď už hospodárstvo Argentíny bolo plne závislé na vývozoch sóje RR, boli jej tieto privilégiá zrušené. Tak isto sú známe prípady zneužívania humanitárnej pomoci na presadenie GMO v krajinách, kde bolo ich pestovanie zakázané: stalo sa to napríklad vo viacerých krajinách južnej Afriky (Zambia, Zimbabwe...), ktoré postihol začiatkom rokov 2000 hladomor. Škandál prepukol keď sa zistilo, že zásielky z USA obsahovali GM kukuricu a najmä keď politickí predstavitelia týchto krajín odmietli takúto "humanitárnu pomoc" prijať...</p>
+
+
+
+<p>V druhej polovici rokov 2000 sa v rámci spolupráce medzi americkou univerzitou Tufts (Boston) a čínskymi vedcami uskutočnili experimenty so Zlatou ryžou na dospelých a deťoch. Jedna štúdia (dospelí) bola publikovaná v roku 2009 v American Journal of Clinical Nutrition a druhá (deti) v lete 2012 v tom istom časopise. Najmä tá druhá narobila poriadny rozruch, ale nie v súvislosti s dosiahnutými výsledkami, ktoré údajne preukázali, že zlatá ryža je naozaj zdrojom vitamínu A a, že zdravie detí nebolo poškodené, ale z dôvodu, že došlo k nelegálnym pokusom na ľuďoch, v rozpore s Norimberským etickým kódexom prijatým na konci Druhej svetovej vojny s cieľom predísť opakovaniu neľudských experimentov vykonávaných nacistickými vedcami. Vyšetrovanie čínskych i amerických orgánov naozaj potvrdilo, že k pokusom na 72 deťoch vo veku od 6 do 8 rokov došlo bez toho, aby boli ich rodičia informovaní (a bez toho, aby sa uskutočnili predchádzajúce experimenty na laboratórnych zvieratách!). Číňania okrem toho skonštatovali, že došlo k nelegálnemu dovozu ryže. Čínski výskumníci zapojení do experimentu stratili zamestnanie a potrestaní boli i príslušní americkí vedci.</p>
+
+
+
+<p>Na druhej strane, na Filipínach, ktoré sa najviac priblížili k administratívnemu povoleniu pestovania Zlatej ryže, došlo k prípadom ničenia experimentálnych polí vysadených touto plodinou. Iniciátorom bola Greenpeace a vyslúžila si za to obvinenie zo zločinu proti ľudskosti.</p>
+
+
+
+<p>Ako vidno, úsilie o presadenie "Zlatej ryže" sa nezaobišlo bez viac-menej závažných incidentov, ktoré trochu zakryli skutočnosť, že ide o perspektívny produkt, ktorý môže pomôcť k vyriešeniu nedostatku vitamínu A u miliónov ľudí. I jeho obhajcovia ale uznávajú, že jeho úlohou nie je nahradiť existujúce úsilia na vyriešenie nedostatočnej výživy, ale ich doplniť. Teoretické štúdie zamerané na potenciálne blahodarne účinky konzumácie zlatej ryže ukázali, že úplne neodstraňuje problémy spojené s oslepnutím a zvýšenou úmrtnosťou. V najlepšom prípade by mala byť využívaná spolu s inými metódami nahradzujúcimi vitamín A.</p>
+
+
+
+<h2 class="doc-subheading"><em>Záver</em></h2>
+
+
+
+<p>Ako vidno, bitka o Zlatú ryžu pokračuje, riešenie sa zdá byť v nedohľadne a milióny ľudí sa naďalej stávajú obeťami dôsledkov nedostatku vitamínu A. Vzhľadom na dramatickosť celého kontextu musia byť odporcovia GMO v toto prípade opatrnejší ako v iných prípadoch a napriek svojim argumentom nehádzať predmetný produkt do jedného vreca s ostatnými geneticky modifikovanými plodinami. Jeden zo zakladateľov Greenpeace, Kanaďan Patrick Moore<a href="#_ftn5" name="_ftnref5" title="">[5]</a>, dokonca žiada od tejto mimovládky "humanitárnu výnimku" pre Zlatú ryžu. Očakáva sa tu minimálne konštruktívnejší dialóg a to z obidvoch strán. Biotechnologické spoločnosti a ich lobistické organizácie by boli vo svojej argumentácii omnoho presvedčivejšie ak by aspoň verbálne uznali potrebu venovať sa podstate problému, t.j. biede miliónov ľudí, ktorú pokračujúca globalizácia iba prehlbuje (hlavným výsledkom globalizácie je nárast sociálnych nerovností a nadnárodné spoločnosti, medzi ktoré patria i výrobcovia GMO, tento trend svojou politikou iba urýchľujú). Zdá sa, že jedným zo závažných dôvodov doterajšieho neúspechu pokusov o presadenie zlatej ryže je to, že sa produkt propaguje iba individuálne a nie ako súčasť komplexného riešeniam vrelo odporúčaného zo strany odborníkov.</p>
+
+
+
+<p>O systémovom prístupe k podstate problému sa síce na politickej úrovni veľa hovorí, ale rozhodujúci hráči (nielen nadnárodné spoločnosti, ale i Medzinárodný menový fond, Svetová banka, WTO a vlády bohatých štátov) nekonajú v tomto smere vôbec nič. V zmysle ideológie ktorou sa riadia, všetko má vyriešiť trh, to znamená, že pre kľúčové podnikateľské rozhodnutia má byť rozhodujúca krátkodobá finančná motivácia hlavných aktérov biznisu. Za takú sa dá považovať uvedenie zlatej ryže na trh, ale nie systémové riešenia, pretože sú v rozpore s konceptom "industriálneho a proexportného poľnohospodárstva" presadeného za posledné desaťročia v tretích krajinách, z ktorého nadnárodné spoločnosti dlhodobo profitujú, ale ktoré je pre chudobné obyvateľstvo katastrofou. Kritici GMO majú pravdepodobne pravdu v tom, že ničím nepodmienená legalizácia Zlatej ryže v rozsiahlych oblastiach sveta by potvrdila ďalšiu expanziu tohto kontroverzného modelu a produkt by zároveň zohral úlohu "Trójskeho koňa" na presadenie i ostatných GMO.</p>
+
+
+
+<p>Nástojenie na zlatej ryži z&nbsp;dôvodu, že variabilná strava je nedostupná pre milióny extrémne chudobných v&nbsp;treťom svete, v&nbsp;podstate znamená, že nadnárodné spoločnosti a&nbsp;ich lobistické organizácie cynicky považujú tento stav za fatalitu a&nbsp;vôbec sa nemienia angažovať na jeho zmene! Podľa bývalého generálneho spravodajcu OSN Jeana Zieglera (ktorý sa odvoláva na FAO), by pritom na vyriešenie hladu a&nbsp;nedostatočnej výživy vo svete stačil zlomok prostriedkov, ktoré boli mobilizované počas poslednej finančnej krízy na záchranu bánk.<a href="#_ftn6" name="_ftnref6" title="">[6]</a></p>
+
+
+
+<p>Tak isto je zarážajúce že za 15 rokov neboli dostatočne preskúmané možné negatívne dopady konzumácie a&nbsp;pestovania „Zlatej ryže“, čo nepopierajú ani jej obhajcovia (podľa nich sú riziká nepomerne menšie ako prínosy). Existujú ale štúdie naznačujúce existenciu vážnych negatívnych dôsledkov spojených s&nbsp;jej konzumáciou.<a href="#_ftn7" name="_ftnref7" title="">[7]</a> Na druhej strane, veľké firmy ako Monsanto, ktoré nešetria vo výdavkoch na vývoj, ale i na reklamu a <em>public relation</em> (PR), neboli doteraz ochotné investovať nepomerne menšie prostriedky do vykonania dlhodobých štúdií na laboratórnych zvieratách, pokrývajúcich ich celý prirodzený život, tak ako to bolo v prípade medializovaného výskumu profesora Séraliniho<a href="#_ftn8" name="_ftnref8" title="">[8]</a>. Nemožno sa ubrániť podozreniu, že sa obávajú, že keď sa hľadá tak sa aj nájde...&nbsp;</p>
+
+
+
+
+<hr>
+
+<p><a href="#_ftnref1" name="_ftn1" title="">[1]</a> V roku 2014 malo byť jej pestovanie povolené na Filipínach, ale nenatrafil som na žiadnu informáciu potvrdzujúcu, že k tomu naozaj došlo.</p>
+
+
+
+<p><a href="#_ftnref2" name="_ftn2" title="">[2]</a> Federálna Polytechnická škola v Zürichu</p>
+
+
+
+<p><a href="#_ftnref3" name="_ftn3" title="">[3]</a> Univerzita vo Fribourg-en-Brisgau</p>
+
+
+
+<p><a href="#_ftnref4" name="_ftn4" title="">[4]</a> <a href="http://www.i-sis.org.uk/SPUCTGM.php" class="external" target="_blank" rel="noopener noreferrer">Scientists Protest Unethical Clinical Trials of GM Golden Rice</a></p>
+
+
+
+<p><a href="#_ftnref5" name="_ftn5" title="">[5]</a> Je ale skutočnosťou, že tento pán, ktorý z Greenpeace pred 15 rokmi odišiel, sa stal lobistom biotechnológií a okrem iného obhajuje používanie herbicídu Roundup a popiera úlohu aktivít človeka na klimatických zmenách.</p>
+
+
+
+<p><a href="#_ftnref6" name="_ftn6" title="">[6]</a> Jean Ziegler, „Destruction massive“, Editions du Seuil, Paris, 2011, str. 87 a 368</p>
+
+
+
+<p><a href="#_ftnref7" name="_ftn7" title="">[7]</a> Schubert DR. The problem with nutritionally enhanced plants. <em>J Medicinal Food</em> 2008, 11, 601-5, alebo <a href="http://www.i-sis.org.uk/GMCMHPHH.php" class="external" target="_blank" rel="noopener noreferrer">GM Crops and Microbes for Health or Public Health Hazards?</a></p>
+
+
+
+<p><a href="#_ftnref8" name="_ftn8" title="">[8]</a> <strong>Séralini Gilles-Eric , Emilie Clair, Robin Mesnage, Steeve Gress, Nicolas Defarge, Manuela Malatesta, Didier Hennequin, Joël Spiroux de Vendômois</strong>, Long term toxicity of a Roundup herbicide and a Roundup-tolerant genetically modified maize, Food and Chemical Toxicology xxx (2012)</p>
+
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

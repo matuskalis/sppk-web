@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KORONAVÍRUS: INFORMUJEME, 16. marca — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../index.html">Úvod</a><span>/</span><a href="../index.html">ostatne</a><span>/</span>KORONAVÍRUS: INFORMUJEME, 16. marca</nav>
+
+  <article>
+    <h1 class="doc-title">KORONAVÍRUS: INFORMUJEME, 16. marca</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Tlačový odbor SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">16. marca 2020</span></p>
+
+    <div class="doc-body">
+<p><span>Slovenská poľnohospodárska a potravinárska komora bude každý deň aktualizovať informácie ohľadom vývoja situácie s koronavírusom a jeho dopadom na chod štátu, jeho občanov a aj firiem. Úmerne so stúpajúcim počtom chorých ľudí a prijímaním nových ochranných opatrení zo strany vlády sa stupňuje tlak aj na chod samotných agropotravinárskych podnikov a prevádzok na Slovensku a&nbsp;na dodržiavanie prísnych hygienických opatrení.&nbsp;</span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/npZW4Mc.png"></figure><p></p>
+
+
+
+<p>Zároveň sa zvyšuje aj tlak na prípravu preventívnych krízových scenárov, ktoré by mali začať platiť v prípade rozšírenia nákazy aj do samotných prevádzok.&nbsp;</p>
+
+
+
+<h2 class="doc-subheading">Vážení členovia Slovenskej poľnohospodárskej a potravinárskej komory,&nbsp;</h2>
+
+
+
+<p>uvedomujeme si, že aktuálna situácia drží v napätí všetkých pracovníkov poľnohospodárskych podnikov, malých a mladých farmárov, malé rodinné farmy, SHR, vedenie potravinárskych prevádzok a ich zamestnancov, všetkých pracujúcich v celom výrobnom potravinovom reťazci. Snahou nás všetkých je zabezpečiť nepretržitú výrobu potravín na Slovensku, počnúc chovom zvierat, jarnými prácami na poliach, v záhradách a sadoch, spracovaním surovín a každodennou výrobou potravín, končiac&nbsp;ich rozvozom k zákazníkom.&nbsp;&nbsp;</p>
+
+
+
+<p>Úrad Slovenskej poľnohospodárskej a potravinárskej komory preto situáciu nielen monitoruje, ale vedenie SPPK rieši na dennej báze aj pribúdajúce podnety od členov SPPK. Zabezpečujeme najmä oficiálny prenos informácií medzi SPPK a vedením rezortného ministerstva, Asociáciou zamestnávateľských zväzov a združení a konkrétnymi odbornými autoritami. V najbližších dňoch sa Vám preto na webe sppk budeme snažiť prinášať aktuálne informácie, ktoré Vám pomôžu odpovedať na mnohé otázky ohľadom koronavírusu a jeho dopadov na výrobu potravín.&nbsp;</p>
+
+
+
+<p>Zároveň veríme, že mnohé informácie sa Vám podarí získať aj na základe Vašej vlastnej komunikácie v regiónoch.&nbsp;</p>
+
+
+
+<h2 class="doc-subheading">Celková situácia na Slovensku:</h2>
+
+
+
+<p><strong>18:00 - Premiér Peter Pellegrini uviedol, že počas dňa (16. marca) pribudlo 11 nových prípadov koronavírusu.&nbsp;Celkovo teda máme 72 prípadov nakazenia koronavírusom.</strong></p>
+
+
+
+<p>13:45 Premiér Peter Pellegrini potvrdil dva nové prípady ochorenia COVID-19 na Sovensku.&nbsp;</p>
+
+
+
+<p>Prezidentka SR Zuzana Čaputová uviedla, že pre koronavírus nechce odďaľovať vznik novej vlády. Ustanovujúcu schôdzu parlamentu bude v&nbsp;piatok (20.3.) Nová vláda na čele s&nbsp;premiérom Igorom Matovičom bude vymenovaná v&nbsp;sobotu (21.3.). Vláda SR bude mať následne 30 dní, aby získala dôveru parlamentu. Dosluhujúca vláda Petra Pellegriniho a&nbsp;nový premiér Igor Matovič deklarujú, že prechod moci bude plynulý a&nbsp;v&nbsp;plnej kontinuite všetkých zamestnancov jednotlivých ministerstiev.&nbsp;&nbsp;</p>
+
+
+
+<h2 class="doc-subheading">Dnešné vyjadrenia našich členov</h2>
+
+
+
+<p><strong>Prvovýrobcovia&nbsp;a spracovatelia mlieka</strong>&nbsp;<strong>žiadajú o&nbsp;pomoc. Sľubujú kontinuálnu výrobu</strong></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/MyGg5n6.jpg"></figure><p></p>
+
+
+
+<p>Slovenské mliekarne denne spracujú 2,25 milióna kilogramov mlieka. Výroba v&nbsp;súčasnosti funguje u&nbsp;všetkých spracovateľov a&nbsp;každá prevádzka má implementované prísne ochranné opatrenia ako dotazníkové zisťovanie pobytu zamestnancov v&nbsp;zahraničí, kontrolu teploty pri vstupe do zamestnania a&nbsp;ďalšie prísne hygienické opatrenia a&nbsp;kontroly. Slovenskí mliekari sú schopní zabezpečiť dostatok mliekarenských výrobkov pre obyvateľov Slovenska.</p>
+
+
+
+<p><em>„Zaistenie objemu a&nbsp;sortimentu konzumného mlieka a&nbsp;mliečnych výrobkov pre obyvateľov Slovenska je možné. Ak by bol vývoj situácie taký, že sa obmedzí alebo zastaví dovoz mlieka na územie Slovenska, spracovatelia vedia zvýšiť dodávky mliečnych výrobkov na domáci trh cez utlmenie exportných aktivít,“</em> hovorí Stanislav Voskár, prezident Slovenského mliekarenského zväzu.</p>
+
+
+
+<p>Mliekari podľa minulotýždňovej previerky okamžitých voľných výrobných kapacít vedia napríklad z&nbsp;dôvodu obmedzenia spracovania v&nbsp;niektorej mliekarni presunúť 10 až 20 percent na Slovensku vyrobeného surového kravského mlieka do iných prevádzok u&nbsp;nás.</p>
+
+
+
+<p><em>„Máme schopnosť zatiaľ zaistiť odber a&nbsp;spracovanie celej farmárskej prvovýroby mlieka,“ </em>uviedol Stanislav Voskár.</p>
+
+
+
+<p>Na aktuálnu situáciu reagujú aj samotní poľnohospodári, ktorí vyrábajú surovinu v&nbsp;podnikoch prvovýroby mlieka.</p>
+
+
+
+<p><em>„Podľa našich informácií sa podniky snažia aj napriek tejto zložitej situácii zabezpečiť starostlivosť o&nbsp;zvieratá a produkciu mlieka. Okrem všeobecných platných opatrení zavádzajú aj vnútorné opatrenia ako je meranie teploty pracovníkom pri vstupe do &nbsp;prevádzok, dodržiavanie bezpečnej vzdialenosti pri komunikácii, minimalizovanie veľkosti skupín pracovníkov a&nbsp;iné. Momentálne je však našou povinnosťou okrem výroby mlieka zabezpečiť aj bezpečnosť pracovníkov. No a&nbsp;tu narážame na problém. Na podnikoch nemajú dostatok ochranných pomôcok a zásoby dezinfekčných prostriedkov sa tiež rýchlo míňajú“ </em>hodnotí Margita Štefániková, riaditeľka Slovenského zväzu prvovýrobcov mlieka.</p>
+
+
+
+<p>Dojnice sa nedajú odstaviť ako zariadenia v&nbsp;automobilke. Na jednej strane to zabezpečuje pre spotrebiteľov istotu pravidelných dodávok mlieka a&nbsp;mliečnych výrobkov, ale na druhej strane sú zvieratá odkázané na tisícky pracovníkov, ktorí sa starajú o&nbsp;kŕmenie, dojenie, zvoz a&nbsp;spracovanie mlieka.</p>
+
+
+
+<p>Na Slovensku v&nbsp;týchto dňoch zostáva aj produkcia surového kravského mlieka, ktorú niektorí poľnohospodári ešte na začiatku marca vyvážali do zahraničia. Situácia s&nbsp;vývozom sa skomplikovala a pomocnú ruku podali zástupcovia Slovenského mliekarenského zväzu. Produkciu mlieka takýchto prvovýrobcov začali spracovávať slovenské mliekarne a&nbsp;tak zostáva na domácom trhu.</p>
+
+
+
+<p><em>„Nemôže nastať situácia, že mlieko vyrobené našimi prvovýrobcami skončí nespracované,“ </em>hovorí Stanislav Voskár.</p>
+
+
+
+<p>Mliekarne sú umiestnené najmä vo väčších mestách, kde už teraz existujú z&nbsp;dôvodu možného šírenia koronavírusu viaceré požiadavky na obyvateľov. Jednou z&nbsp;nich je napríklad vstup do mestskej hromadnej dopravy len v&nbsp;ochranných&nbsp; rúškach.</p>
+
+
+
+<p><em>„Spracovatelia urgentne potrebujú dodávky osobných ochranných pomôcok, hlavne rúšok pre svojich zamestnancov a pracovníkov logistiky pri vstupe suroviny a&nbsp;výstupe výrobkov. Ak chceme byť konkrétni, len bratislavský spracovateľ mlieka potrebuje 20-tisíc ochranných masiek mesačne,“ </em>apeluje Stanislav Voskár.</p>
+
+
+
+<p>K&nbsp;tejto požiadavke sa pridávajú aj prvovýrobcovia mlieka, ktorým okrem ochranných rúšok začínajú chýbať aj dezinfekčné prostriedky.</p>
+
+
+
+<p><em>„Obraciame sa na príslušné kompetentné orgány, aby v&nbsp;snahe o&nbsp;zabezpečenie výroby mlieka a&nbsp;mliečnych výrobkov pamätali pri rozdeľovaní ochranných pomôcok aj na podniky prvovýroby a&nbsp;spracovania mlieka a&nbsp;tiež na dopravné spoločnosti, ktoré zabezpečujú prevoz mlieka a&nbsp;mliečnych výrobkov.&nbsp;Apelujeme tiež na spoločnosti, ktoré vyrábajú rúška a respirátory a&nbsp;vedeli by ich dodať našim podnikom, aby kontaktovali naše zväzy,“</em> vyzýva Margita Štefániková.</p>
+
+
+
+<p>Prvovýrobcovia a&nbsp;spracovatelia veria, že si zodpovední uvedomujú, že popri zdravotníctve a&nbsp;energetike je dôležitá aj výroba základných potravín. Cieľom Slovenského zväzu prvovýrobcov mlieka a Slovenského mliekarenského zväzu je zaistiť bezpečnosť a&nbsp;ochranu zamestnancom, ktorí sa dennodenne podieľajú na výrobe potravín a&nbsp;tak zabezpečujú potravinovú bezpečnosť štátu.</p>
+
+
+
+<h2 class="doc-subheading">Aktuálne stanovisko AZZZ SR</h2>
+
+
+
+<p>Aktuálna situácia so šírením nového koronavírusu je bezprecedentná,&nbsp;nikto na takéto tvrdé reštrikcie nebol pripravený, podniky sa preto, pokiaľ je to možné, snažia o minimalizovanie negatívnych ekonomických dopadov.&nbsp;Vzhľadom na vážnosť situácie sa dnes konal konferenčný hovor terajšieho ako aj budúceho ministra hospodárstva SR s&nbsp;predstaviteľmi podnikateľského sektora, ktorej predmetom&nbsp;boli opatrenia na stabilizáciu podnikateľského sektora.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/XHAx59a.jpg"></figure><p></p>
+
+
+
+
+
+<p><em>„Asociácia zamestnávateľských zväzov a&nbsp;združení (AZZZ) SR zosumarizovala návrhy opatrení, ktoré považujeme v&nbsp;tejto chvíli za kľúčové prijať, aby sa eliminovali ekonomické dopady na jednotlivé firmy. Už teraz je zrejmé, že k istým ekonomickým škodám v konečnom dôsledku príde, no hovoriť o ich výške je&nbsp;v&nbsp;súčasnej, neustále sa meniacej situácii predčasné. Spoločnosti preto s&nbsp;plnou vážnosťou sledujú&nbsp;preventívne opatrenia, ktoré sa každým dňom modifikujú a sprísňujú.&nbsp;Pre firmy je teraz kľúčové na tieto zmeny flexibilne reagovať. Zároveň po sfunkčnení NR SR, považujeme za nevyhnutné, aspoň na určité obdobie revidovať tzv. sociálne balíčky (historicky najvyššia minimálna mzda a&nbsp;na ňu naviazané príplatky za nočné služby, víkendy a&nbsp;sviatky) tak, aby to nemalo pre firmy fatálne následky,“</em>&nbsp;dodal Oto Nevický, generálny sekretár AZZZ SR, ktorý sa hovoru za AZZZ SR priamo zúčastnil.</p>
+
+
+
+<p>Dopady jednotlivých firiem sú veľmi individuálne. Krátkodobý výpadok vie priemysel aj v&nbsp;neskoršom termíne dohnať. Pre služby je však aj krátkodobý výpadok problémom. Samozrejme pri dlhodobej epidémii je to problém pre všetky odvetvia a&nbsp;teda aj&nbsp;celú ekonomiku. V&nbsp;prípade, že sa jedná o nepretržitú výrobu, by dlhodobé reštrikcie znamenali značné hospodárske škody. Napríklad v&nbsp;sklárskom priemysle by v extrémnom prípade zastavenie výroby mohlo znamenať prakticky zánik odvetvia.</p>
+
+
+
+<p><em>„Z dôvodu ochrany svojich zamestnancov a zamedzeniu šíreniu vírusu, prijímajú firmy preventívne opatrenia, ktoré si vyžadujú neočakávané výdavky. Pre zabezpečenie kontinuity prevádzok, či výroby sú samozrejme nevyhnutné ochranné pomôcky ako napr. rúška, rukavice, príp. odevy.&nbsp;Každý zodpovedný&nbsp;zamestnávateľ sa snaží svojich zamestnancov chrániť, či už ochrannými pomôckami, príp. ak to charakter práce umožňuje, tak prácou z&nbsp;domu. Evidujeme však množstvo prípadov, že zamestnávatelia napriek enormnému úsiliu nevedia ochranné pomôcky zohnať, čo spôsobuje dodatočné komplikácie, kedy zamestnanci môžu mať obavy prísť do zamestnania. Uvedenú skutočnosť sme tlmočili aj na rokovaní s&nbsp;dôrazom na rýchlu nápravu,“&nbsp;</em>dodal O. Nevický.</p>
+
+
+
+<p>Asociácia zamestnávateľských zväzov a&nbsp;združení (AZZZ)&nbsp; SR je najväčšou a&nbsp;najdlhšie pôsobiacou zamestnávateľskou organizáciou na Slovensku.&nbsp; Jej členovia v&nbsp;súčasnosti zamestnávajú takmer 400.000 zamestnancov, čím sa radí medzi najreprezentatívnejšieho sociálneho partnera. Ako jediná zamestnávateľská organizácia má svoje zastúpenie vo forme podpredsedu aj v&nbsp; Hospodárskej a&nbsp;sociálnej rade SR.</p>
+
+
+
+<p>O&nbsp;dopadoch koronavírusu na ekonomiku Slovenska sa dočítate na&nbsp;https:<a href="https://www.azzz.sk/2020/03/dopad-koronavirusu-na-ekonomiku/">//www.azzz.sk/2020/03/dopad-koronavirusu-na-ekonomiku/</a></p>
+
+
+
+<h2 class="doc-subheading">Podujatia sa rušia</h2>
+
+
+
+<p>Sledujte aj termínovník, pretože viaceré podujatia boli z&nbsp;dôvodu prevencie voči koronavírusu zrušené, resp. presunuté. O&nbsp;nových termínoch sa informujte aj u&nbsp;organizátora školenia alebo iného podujatia priamo v&nbsp;regióne.</p>
+
+
+
+<p>Vzhľadom na mimoriadnu situáciu na Slovensku sa termíny školení v&nbsp;oblasti prípravkov na ochranu rastlín v&nbsp;poľnohospodárstve Modul 01, 02 a&nbsp;03 presúvajú.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/uQ5fRnf.jpg"></figure><p></p>
+
+
+
+<h2 class="doc-subheading">Aktuálne nariadenia/opatrenia:</h2>
+
+
+
+<ul>
+	<li>Od dnes (16.3.) sú zatvorené všetky maloobchody okrem predajní potravín, drogérií, lekární, výdajní zdravotníckych pomôcok či trafík.</li>
+	<li>Otvorená je&nbsp;pošta, banky, poisťovne, čerpacie stanice, pobočky telekomunikačných operátorov, obchody s krmivami pre zvieratá či veterinárne ambulancie.</li>
+	<li>Je zakázané hromadné stravovanie v jedálňach a reštauráciách – jedlo si môžete odniesť v obale so sebou.</li>
+	<li>Na základe rozhodnutia vlády SR je do odvolania pozastavená aj činnosť všetkých taxislužieb&nbsp;na území SR.</li>
+	<li>Tento týždeň by sme na Slovensku mohli mať už 30 miliónov chirurgických rúšok a ďalšíie ochranné pomôcky.&nbsp;Správa štátnych hmotných rezerv podpísala zmluvy na ich dodanie.</li>
+	<li>Už v najbližsích dňoch by mala na Slovensko prísť zásielka z Turecka, ktorá by mala obsahovať približne 400-tisíc rôznych druhov respirátorov, 170-tisíc kusov ochranných odevov, 170-tisíc návlekov na obuv a 6-tisíc okuliarov.</li>
+	<li>Prevádzkovateľom dopravy, obchodných reťazcov a obchodov s potravinami sa odporúča, aby neumožnili vstup do svojich prevádzok nikomu, kto nebude nosiť na tvári rúško, alebo inú ochrannú pomôcku.</li>
+	<li>Automobilka Volkswagen, ako najväčší zamestnávateľ na Slovensku, preruší výrobu na našom území až do odvolania. Francúzsky koncern PSA v pondelok uviedol, že do 27. marca zatvorí všetky európske závody pre šírenie nového koronavírusu. Ďalšie automobilky, ktoré majú svoje výrobne na Slovensku, zatiaľ s&nbsp;výrobou pokračujú.</li>
+</ul>
+
+
+
+<p><strong>Vláda chce presadiť 13 opatrení pre podnikateľov, ktoré im majú pomôcť s&nbsp;riešením a&nbsp;kompenzáciou negatívnych dosahov šíriaceho sa koronavírusu.</strong> Verejnosti ich predstavil minister hospodárstva Peter Žiga po telekonferencii so zástupcami podnikateľských zväzov, asociácií a&nbsp;združení.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/5ML24rx.jpg"></figure><p></p>
+
+
+
+<h2 class="doc-subheading">Opatrenia:</h2>
+
+
+
+<ol>
+	<li>Chce&nbsp;rokovať s&nbsp;bankami, aby odložili odklad splátok úverov a&nbsp;hypotekárnych úverov bez negatívneho záznamu pre dlžníka v&nbsp;registri. Chcú zaviesť možnosť zmrazenia splácania úrokov a&nbsp;istiny pre fyzické osoby, teda bežných ľudí, ale aj pre právnické osoby. Bankám by na oplátku odpustili platenie bankového odvodu.</li>
+	<li>Slovenská záručná a&nbsp;rozvojová banka bude poskytovať krátkodobé úvery pre vybrané sektory s&nbsp;jednoduchšími podmienkami a&nbsp;pravidlami. Ide napríklad o&nbsp;sektor pohostinstiev, reštaurácií, myslia sa tým aj vývarovne.</li>
+	<li>Vyčlenenie peňazí prostredníctvom Slovenského investičného holdingu a&nbsp;Európskej investičnej banky na podporu investovania v&nbsp;súkromnom sektore.</li>
+	<li>Upraví sa možnosť odpisu daňovej straty, napríklad by sa to nelimitovalo žiadnou lehotou (dnes sa odpisuje rovnomerne počas 4 po sebe nasledujúcich rokov).</li>
+	<li>Plošný odklad daňových priznaní k&nbsp;dani z&nbsp;príjmu pre všetkých daňovníkov, a&nbsp;to o&nbsp;tri mesiace do konca júna.</li>
+	<li>Úplné zrušenie platieb sociálnych a&nbsp;zdravotných odvodov SZČO dočasne na obdobie troch mesiacov za marec, apríl, máj, tieto platby by sa potom rozložili na ďalších 18 mesiacov.</li>
+	<li>Oslobodenie výplat zamestnancov od sociálnych a&nbsp;zdravotných odvodov a&nbsp;dane z&nbsp;príjmu. Tento režim by platil pre zamestnávateľov, ktorí musia mať rozhodnutím štátu zatvorené prevádzky alebo evidujú výpadky objednávok.</li>
+	<li>Výrazné zjednodušenie podmienok na poskytovanie príspevku na udržanie pracovného miesta. Upraví sa to tak, aby to pomohlo aj malým podnikateľom a&nbsp;živnostníkom.</li>
+	<li>Isté obdobie by štát financoval takzvanú TPS, aby sa znížila cena elektrickej energie.</li>
+	<li>Chcú podporiť diskusiu na európskej úrovni, aby sa umožnilo čerpanie terajších eurofondov na krytie dosahov krízy, aby boli viac flexibilné.</li>
+	<li>Zmena v&nbsp;podmienkach OČR: Napríklad, ak má dieťa dvoch rodičov, jeden zostane na špeciálnej PN, dostáva 80 % priemerného platu, od prvého dňa by platila péenku Sociálna poisťovňa. Alebo ak má dieťa jedného rodiča, alebo obaja rodičia sú zdravotníci, alebo pracujú v&nbsp;nepretržitých prevádzkach a&nbsp;nemôžu opustiť pracovné miesto, mohol by štát prideliť 600-eurový voucher, ktorý by na mesiac hradil opatrovateľku pre toto dieťa. O&nbsp;tom sa bude ešte diskutovať.</li>
+	<li>Postih pre dovozcov suroviny pre výrobu z&nbsp;tretích krajín. Dnes sa pri dovoze platí colný dlh do 10 dní, inak môže daňový úrad uložiť okamžite exekúciu na účet. Návrh je, aby sa táto lehota predĺžila na 30 alebo 40 dní.</li>
+	<li>Neukladať spoločnostiam pokuty, ak nemôžu načas splniť verejnú zákazku a&nbsp;obmedziť výkon kontrolnej činnosti podnikov a&nbsp;podnikateľov.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

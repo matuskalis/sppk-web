@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zaujímavé linky — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../index.html">Úvod</a><span>/</span><a href="../index.html">ostatne</a><span>/</span>Zaujímavé linky</nav>
+
+  <article>
+    <h1 class="doc-title">Zaujímavé linky</h1>
+    <p class="doc-meta"><span class="doc-meta-item">18. septembra 2014</span></p>
+
+    <div class="doc-body">
+<h2 class="doc-subheading">A</h2>
+
+
+
+<p><a href="http://www.banky.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">A-Z o bankách na Slovensku</a>&nbsp;- Kompletné informácie o bankách na Slovensku</p>
+
+<p><a href="http://www.agrapoistovna.sk/site_sk/index.cfm" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Agra poisťovňa</a></p>
+
+<p><a href="http://www.agrocr.cz/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Agrárna komora Českej republiky</a></p>
+
+<p><a href="http://www.apa.sk/index.php?navID=106" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Agrárne trhové informácie Slovenska -ATIS</a></p>
+
+<p><a href="http://asv-agronova.sk/agroobchod/firmy/agrionn/php/intro.php3" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">AGRION - Združenie výrobcov a predajcov pôdohospodárskej techniky v SR</a>&nbsp;- AGRION združuje tak domácich výrobcov poľnohospodárskej, potravinárskej a lesníckej techniky ako aj predajcov tejto techniky.</p>
+
+<p><a href="http://www.mistral.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Agrofinal</a>&nbsp;- Výroba pneumatických sejačiek</p>
+
+<p><a href="http://www.agrolabor.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Agrolabor s r.o.</a>&nbsp;- Rozbor pôd, objemových krmív.</p>
+
+<p><a href="http://www.agro.de/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Agroportál Nemeckej republiky</a></p>
+
+<p><a href="http://www.ama.at/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Agroportál Rakúskej republiky</a></p>
+
+<p><a href="http://www.agroportal.ru/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Agroportál Ruskej republiky</a></p>
+
+<p><a href="http://www.agroportal.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Agroportál Slovenskej republiky</a>&nbsp;- ...Váš sprievodca slovenským pôdohospodárskym internetom</p>
+
+<p><a href="http://agroregister.mpsr.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">AgroRegister Ministerstva pôdohospodárstva SR</a></p>
+
+<p><a href="http://www.agroservis.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Agroservis spol. s r.o.</a>&nbsp;- Predaj a servis poľnohospodárskych strojov.</p>
+
+<p><a href="http://www.uvtip.sk/slovak/awc/vyskums.htm" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">AgroWebClub - výskumné ústavy na Slovensku</a></p>
+
+<p><a href="http://www.allianzsp.sk/home" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Allianz – Slovenská poisťovňa, a.s.</a></p>
+
+<p><a href="http://www.asparagus.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Asparagus spol. s r.o.</a></p>
+
+<p><a href="http://www.apa.sk/index.php?navID=13" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">ATIS</a>&nbsp;- Agrárne trhové informácie</p>
+
+
+
+<h2 class="doc-subheading">B</h2>
+
+
+
+<p><a href="http://www.nbs.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Banky - Národná Banka Slovenskej republiky</a>&nbsp;- Aktuálne kurzové lístky</p>
+
+<p><a href="http://www.otpbanka.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Banky - OTP Banka Slovensko</a></p>
+
+<p><a href="http://www.slsp.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Banky - SLSP</a></p>
+
+<p><a href="http://www.tatrabanka.sk/cgi-bin/web/app/index.jsp" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Banky - TATRABANKA</a></p>
+
+<p><a href="http://www.unicreditbank.sk/index.php" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Banky - UniCredit Bank</a></p>
+
+<p><a href="http://www.vub.sk/osobne-financie/nonstop-banking/internet-banking/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Banky - VÚB</a></p>
+
+
+
+<h2 class="doc-subheading">C</h2>
+
+
+
+<p><a href="http://www.slovakrail.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Cestovanie vlakom</a></p>
+
+<p><a href="http://www.cp.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Cestovné poriadky SR</a></p>
+
+<p><a href="http://www.benzin.sk/index.php?selected_id=163&amp;article_id=-1&amp;network=-1&amp;kraj_id=-1&amp;okres_id=-1&amp;obec_" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Čerpanie pohonných hmôt v SR</a></p>
+
+<p><a href="http://www.komodity.cz/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Česko-Slovenský Komoditný Servis</a>&nbsp;- informačná centrála pre všetkých komoditných futures &amp; options obchodníkov na svetových komoditných burzách</p>
+
+
+
+<h2 class="doc-subheading">D</h2>
+
+
+
+<p><a href="http://www.hagel.at/site/index.cfm" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Die Österreichische Hagelversicherung</a></p>
+
+<p><a href="http://www.duslo.sk/info_duslo.php?lm=3&amp;sel=1&amp;item=duslo&amp;lang=sk" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Duslo, a.s.</a></p>
+
+
+
+<h2 class="doc-subheading">E</h2>
+
+<p><a href="http://www.efarmer.sk/ef5/homepage.aspx" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">eFarmer</a>&nbsp;- Projekt Európskej únie</p>
+
+<p><a href="http://www.zbierka.sk/Default.aspx?AspxAutoDetectCookieSupport=1" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Elektronická zbierka zákonov SR</a>&nbsp;- vecný register - Poľnohospodárstvo a potravinárstvo</p>
+
+<p><a href="http://www.envipak.sk/sk/ENVIPAK-System-zabezpecenia-zberu-odpadu-z-obalov.alej" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">ENVI – PAK, a.s.</a></p>
+
+<p><a href="http://eur-lex.europa.eu/sk/index.htm" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">EUR- Lex - Legislatíva Európskej únie</a>&nbsp;- EUR-Lex poskytuje priamy bezplatný prístup k právu Európskej únie. Služba umožňuje aj nahliadnuť do Úradaného vestníka Európskej únie a obsahuje okrem iného aj zmluvy, právne predpisy, precedenčné právo a návrhy legislatívy.</p>
+
+<p><a href="http://europa.eu/index_sk.htm" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Europská únia - Portál</a>&nbsp;- Portál Europskej únie poskytuje komplexné informácie o EÚ</p>
+
+
+
+<h2 class="doc-subheading">F</h2>
+
+
+
+<p><a href="http://www.farmchem.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Farmchem - Nákup agrochémie cez internet</a></p>
+
+<p><a href="http://www.flora.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Flóra</a>&nbsp;- Stránka www.flora.sk je určená všetkým tým, ktorí maju radi kvety.</p>
+
+<p><a href="http://www.furioso.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Furioso</a>&nbsp;- Zväz chovateľov a priaznivcov Furiosa North Star, držiteľa plemennej knihy.</p>
+
+
+
+<h2 class="doc-subheading">I</h2>
+
+
+
+<p><a href="http://www.uvtip.sk/iseu" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Informačné stredisko pre európsku úniu</a>&nbsp;- Aktuálne články v rubrike novinky (sídlia v budove SPPK na 3.posch.)</p>
+
+
+
+<h2 class="doc-subheading">K</h2>
+
+
+
+<p><a href="http://www.agroportal.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Kalendár akcií - @groportál</a>&nbsp;- Prehľad akcií agrorezortu</p>
+
+<p><a href="http://www.karcher.de/sk/Produkte/Prospekte/Prospekty_strojov_pre_profesionalovprofi.htm" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Kärcher – čistiaca technika pre poľnohospodárstvo</a></p>
+
+<p><a href="http://www.kbb.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Komoditná burza Bratislava</a>&nbsp;- organizátor trhu s komoditami v SR</p>
+
+<p><a href="http://www.vetchamber.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Komora veterinárnych lekárov SR</a></p>
+
+<p><a href="http://www.dogsk.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Kynologická revue</a></p>
+
+
+
+<h2 class="doc-subheading">M</h2>
+
+
+
+<p><a href="http://www.maschinenring.at/default.asp?medium=MR_INT_4" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Maschinenring Slovensko, s.r.o.</a></p>
+
+<p><a href="http://mmpress.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">MMPress</a>&nbsp;- Časopis Moderná mechanizácia v poľnohospodárstve</p>
+
+<p><a href="http://www.moa.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">MOA-Myjavská obchodná agentúra</a>&nbsp;- Výroba a predaj plastových prepraviek z HDPE a HDPP</p>
+
+<p><a href="http://www.land.gov.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">MPRV SR</a>&nbsp;- Ministerstvo pôdohospodárstva a regionálneho rozvoja Slovenskej republiky</p>
+
+<p><a href="http://www.land.gov.sk/sk/index.php?navID=47&amp;navID2=2&amp;sID=23" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">MPRV SR - sekcia legislatívy</a></p>
+
+<p><a href="http://www.land.gov.sk/sk/index.php?navID=51&amp;year=2010" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">MPRV SR - signalizačné správy</a></p>
+
+<p><a href="http://www.land.gov.sk/sk/index.php?navID=47&amp;sID=26&amp;navID2=1" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">MPRV SR - polnohospodárstvo</a></p>
+
+<p><a href="http://www.land.gov.sk/sk/index.php?navID=47&amp;sID=40&amp;navID2=1" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">MPRV SR - potravinárstvo</a></p>
+
+<p><a href="http://www.land.gov.sk/sk/index.php?navID=47&amp;sID=67&amp;navID2=1" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">MPRV SR - regionálny rozvoj</a></p>
+
+<p><a href="http://jaspi.justice.gov.sk/jaspiw1/jaspiw_maxi_fr0.htm" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">MS SR</a>&nbsp;- legislatíva SR</p>
+
+
+
+<h2 class="doc-subheading">N</h2>
+
+
+
+<p><a href="http://www.krir.pl/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Národná rada poľnohospodárskych komôr Poľska</a></p>
+
+<p><a href="http://www.zk.sk/firmy/naturalis.htm" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">NATURALIS</a>&nbsp;- Zväz inšpektorov ekologického poľnohospodárstva a výroby</p>
+
+<p><a href="http://www.fruchthandel.de/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Nemecko</a>&nbsp;- informačný portál - ovocie</p>
+
+
+
+<h2 class="doc-subheading">O</h2>
+
+
+
+<p><a href="http://www.disy.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Obchodný informačný servis DISY</a></p>
+
+<p><a href="http://www.orsr.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Obchodný register SR</a>&nbsp;- Informácie o podnikateľských subjektoch v SR</p>
+
+<p><a href="http://www.ovis.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">OVISFARMA s.r.o.</a>&nbsp;- potreby pre živočíšnu výrobu - elektrické ohradníky, napájačky, sedlá pre kone a iné</p>
+
+
+
+<h2 class="doc-subheading">P</h2>
+
+
+
+<p><a href="http://www.palmagroup.eu/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">PALMA Group, a.s.</a></p>
+
+<p><a href="http://www.mpsr.sk/apa/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Pôdohospodárska platobná agentúra</a>&nbsp;- Vstup na stránku PPA</p>
+
+<p><a href="http://www.uniag.sk/SKOLA/POLNOHOSP/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Poľnohospodár (časopis SPU)</a></p>
+
+<p><a href="http://www.minrol.gov.pl/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Poľské ministerstvo poľnohospodárstva a rozvoja vidieka</a></p>
+
+<p><a href="http://www.euprojekt.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Portál Euprojekt.sk</a>&nbsp;- Tento portál je aktuálnym sprievodcom o grantoch EÚ dostupných pre slovenských uchádzačov lokálne (Slovensko), globálne (celo-európske programy, ako aj regionálne (projekty okolitých štátov).</p>
+
+<p><a href="http://www.post.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Portál POST. SK</a></p>
+
+<p><a href="http://www.seznam.cz/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Portál SEZNAM.CZ</a></p>
+
+<p><a href="http://www.zoznam.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Portál ZOZNAM.SK</a></p>
+
+<p><a href="http://www.prillinger.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">PRILLINGER Slovensko, spol. s r.o.</a></p>
+
+
+
+<h2 class="doc-subheading">R</h2>
+
+
+
+<p><a href="http://www.radela.sk/rezort/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">RADELA, s.r.o.</a>&nbsp;- Rezortná a colná štatistika</p>
+
+<p><a href="http://www.aprox.government.gov.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Register prekladov legislatívy EÚ</a>&nbsp;- pri vyhľadávaní zadať celexové číslo v tvare 3rokRčíslo, napr. 32003R1784</p>
+
+<p><a href="http://www.renomia.cz/index.php?lang=sk" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">RENOMIA</a></p>
+
+
+
+<h2 class="doc-subheading">S</h2>
+
+
+
+<p><a href="http://www.shmu.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">SHMÚ</a>&nbsp;- aktuálne počasie, predpovede...</p>
+
+<p><a href="http://spravy.atlas.sk/news.asp?sid=19" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">SITA</a>&nbsp;- Slovenská tlačová agentúra</p>
+
+<p><a href="http://www.scpa.sk/default/index.php" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Slovenská asociacia ochrany rastlín (SCPA)</a></p>
+
+<p><a href="http://www.svssr.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Slovenská poľnohospodárska a potravinárska inšpekcia</a>&nbsp;- Potravinový dozor, certifikácia potravinárskych výrobkov...</p>
+
+<p><a href="http://www.slpk.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Slovenská poľnohospodárska knižnica pri SPU v Nitre</a>&nbsp;- Slovenská poľnohospodárska knižnica je špecializovanou vedeckou knižnicou pre oblasť poľnohospodárstva s celoslovenskou pôsobnosťou, ústrednou knižnicou pre prácu s poľnohospodárskou literatúrou a informačným pracoviskom SPU v Nitre.</p>
+
+<p><a href="http://www.sssa.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Slovenská šľachtiteľská a semenárska asociácia</a></p>
+
+<p><a href="http://www.agritourism.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Slovenské združenie podnikateľov v agroturistike</a></p>
+
+<p><a href="http://www.skonline.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Slovensko online</a>&nbsp;- ubytovanie, kúpele, sprievodca</p>
+
+<p><a href="http://www.smz.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Slovenský mliekarenský zväz</a></p>
+
+<p><a href="http://www.srzrada.sk/index.php?n=SrzRadaUvod.Index" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Slovenský rybársky zväz</a></p>
+
+<p><a href="http://www.szch.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Slovenský zväz chovateľov (ÚV)</a></p>
+
+<p><a href="https://www.szchkt.org/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Slovenský zväz pre chladiacu a klimatizačnú techniku</a></p>
+
+<p><a href="http://www.uvtip.sk/szdt" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Slovenský zväz pre dojacu techniku</a></p>
+
+<p><a href="http://www.szpm.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Slovenský zväz prvovýrobcov mlieka (SZPM)</a>&nbsp;- Verejnoprospešné a profesne zamerané združenie fyzických a právnických osôb zaoberajúcich sa prvovýrobou surového kravského mlieka a obchodnou činnosťou.</p>
+
+<p><a href="http://agroturist.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Slovenský zväz vidieckej turistiky a agroturistiky</a></p>
+
+<p><a href="http://www.soupcabajskanr.edu.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Stredná odborná škola potravinárska, Cabajská 6, Nitra</a></p>
+
+<p><a href="https://translate.google.sk/translate?hl=sk&amp;langpair=en%7Csk&amp;u=http://www.fao.org/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Svetová potravinová a poľnohospodárska organizácia OSN - FAO</a></p>
+
+<p><a href="https://translate.google.sk/translate?hl=sk&amp;langpair=en%7Csk&amp;u=http://www.fao.org/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Štatistické údaje o produkcii poľnohospodárskych výrobkov vo svete, podľa krajín.</a></p>
+
+<p><a href="http://www.statistics.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Štatistický úrad SR</a></p>
+
+<p><a href="http://www.strukturalnefondy.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Štrukturálne fondy pre Slovensko</a>&nbsp;- Informačné centrum Štrukturálne fondy pre Slovensko</p>
+
+
+
+<h2 class="doc-subheading">T</h2>
+
+
+
+<p><a href="http://www.tasr.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">TASR</a>&nbsp;- Tlačová agentúra SR</p>
+
+<p><a href="http://www.tsup.sk/?sktc=certifikacia" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Technický a skušobný ústav pôdohospodársky, štát. skušobňa SKTC 106, š.p.</a></p>
+
+
+
+<h2 class="doc-subheading">U</h2>
+
+
+
+<p><a href="http://www.agrimarket.info/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Ukrajina</a>&nbsp;- ponuka poľnohospodárských produktov</p>
+
+
+
+<h2 class="doc-subheading">V</h2>
+
+
+
+<p><a href="http://www.vipa.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Vidiecky parlament na Slovensku</a></p>
+
+<p><a href="http://vsk.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Virtuálne Slovensko</a>&nbsp;- Všetko o Slovensko v digitálnej podobe</p>
+
+<p><a href="http://www.vivio.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">VIVIO</a>&nbsp;- Náhradné diely na traktory Zetor.</p>
+
+<p><a href="http://www.coceral.com/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Výbor pre obchod s obilninami, ...</a>&nbsp;- Výbor pre obchod s obilninami, olejninami, krmovinami, olivovým olejom, olejmi a tukmi a poľnohospodárskymi výrobkami v EÚ (bilancie...)</p>
+
+<p><a href="http://www.vuepp.sk/publikacie4.html" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Výskumný ústav ekonomiky poľnohospodárstva a potravinárstva</a>&nbsp;- situačné a výhľadové správy.</p>
+
+<p><a href="http://www.vupop.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Výskumný ústav pôdoznalectva a ochrany pôdy</a></p>
+
+<p><a href="http://www.vuepp.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Výskumný ústav poľnohospodárstva a potravinárstva</a></p>
+
+<p><a href="http://www.vup.sk/index.php?start" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Výskumný ústav potravinársky</a></p>
+
+<p><a href="http://www.vutphp.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Výskumný ústav trávnych porastov Banská Bystrica</a></p>
+
+
+
+<h2 class="doc-subheading">Z</h2>
+
+
+
+<p><a href="http://www.zas.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Združenie agropodnikateľov Slovenska</a></p>
+
+<p><a href="http://zpassj.sk/sk/stanovy.aspx" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Združenie pestovateľov a spracovateľov sladovníckeho jačmeňa</a></p>
+
+<p><a href="http://www.slovmak.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Združenie Slovenský mak</a></p>
+
+<p><a href="http://www.horses.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Zväz chovateľov koní na Slovensku</a></p>
+
+<p><a href="http://www.pinzgau.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Zväz chovateľov pinzgauského dobytka na Slovensku</a></p>
+
+<p><a href="http://www.simmental.sk/simmental/index.php?id=140" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Zväz chovateľov slovenského strakatého dobytka</a></p>
+
+<p><a href="http://www.zvazpolnonakupu.sk/" target="_blank" title="Odkaz do nového okna" class="external" rel="noopener noreferrer">Zväz výrobcov krmív, skladovateľov a obchodných spoločností.</a></p>
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

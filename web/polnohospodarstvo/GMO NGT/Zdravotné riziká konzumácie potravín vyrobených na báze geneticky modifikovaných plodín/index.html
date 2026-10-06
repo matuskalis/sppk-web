@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zdravotné riziká konzumácie potravín vyrobených na báze geneticky modifikovaných plodín — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">polnohospodarstvo</a><span>/</span><a href="../index.html">GMO NGT</a><span>/</span>Zdravotné riziká konzumácie potravín vyrobených na báze geneticky modifikovaných plodín</nav>
+
+  <article>
+    <h1 class="doc-title">Zdravotné riziká konzumácie potravín vyrobených na báze geneticky modifikovaných plodín</h1>
+    <p class="doc-meta"><span class="doc-meta-item">RNDr. Igor Šarmír, PhD.</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">15. mája 2015</span></p>
+
+    <div class="doc-body">
+
+
+<p><span>Za posledných asi 20 rokov bol pre Európanov iba máloktorej téme vlastný taký emotívny náboj ako je to v prípade geneticky modifikovaných organizmov (GMO).</span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="http://i.imgur.com/tqKvTZr.jpg"></figure><p></p>
+
+
+
+<p>Na jednej strane sú obyvatelia starého kontinentu vytrvalo masírovaní lobistami biotechnologického priemyslu a&nbsp;politikmi v&nbsp;tom zmysle, že GMO je symbolom pokroku a&nbsp;šanca na vyriešenie najrôznejších problémov každodenného života bez toho, aby to predstavovalo väčšie riziko ako tradičné poľnohospodárstvo,&nbsp;potravinárstvo a&nbsp;ich produkty. Na druhej strane sú znepokojovaní informáciami o&nbsp;problémoch a&nbsp;rizikách, ktoré protagonisti GMO zvyknú bagatelizovať alebo ich nespomínajú vôbec a&nbsp;ich nepokoj zvyšujú i&nbsp;sanitárne škandály nedávnej minulosti, napríklad tzv. choroba šialených kráv, pričom k&nbsp;epidémii došlo napriek uisťovanie kompetentných vedeckých agentúr, že skrmovanie mäsovo-kostných múčok prežúvavcami nepredstavuje žiadne riziko. Treba ale povedať, že viac ako informácie o&nbsp;možných zdravotných a&nbsp;environmentálnych rizikách, spôsobili&nbsp;nevraživosť voči GMO správy z&nbsp;celého sveta o&nbsp;mimoriadne bezškrupulóznom a&nbsp;arogantnom &nbsp;správaní sa firmy Monsanto, ktorá sa stala akýmsi symbolom GMO. Významným spôsobom k&nbsp;tomu prispela dnes už kultová reportáž (vo forme knihy i&nbsp;dokumentárneho filmu) francúzskej investigatívnej novinárky Marie-Monique Robin<a href="#_ftn2" name="_ftnref2" title="">[2]</a>, ktorá okrem iného ukázala, že táto firma patrí medzi najväčších znečisťovateľov histórie<a href="#_ftn3" name="_ftnref3" title="">[3]</a> a jej dejiny sú posiate množstvom súdnych procesov s&nbsp;obeťami svojich produktov alebo naopak s&nbsp;osobami, ktoré údajne porušili jeho vlastnícke práva.</p>
+
+
+
+<p>Na problematiku GMO sa dá pozerať z&nbsp;rôzneho hľadiska, pretože má nielen zdravotný a&nbsp;environmentálny rozmer, ale i&nbsp;politický, ekonomický, právny, filozofický a&nbsp;etický. Je ale skutočnosťou, že drvivá väčšina obyvateľov EÚ, hoci majú ku GMO skôr inštinktívnu nedôveru, nie sú a&nbsp;ani nemôžu byť na túto tému odborníkmi a&nbsp;preto je ich možno dosť jednoducho manipulovať prostredníctvom tvrdení, ktoré sa väčšinou dajú ľahko vyvrátiť. Preto je dôležité začať každý príspevok podobný tomuto stručným vysvetlením základných pojmov.</p>
+
+
+
+<p><strong>Definícia</strong> <strong>GMO</strong></p>
+
+
+
+<p>Pod geneticky modifikovaným organizmom sa rozumie živý organizmus, ktorého genetické vybavenie bolo pozmenené priamou intervenciou človeka, prostredníctvom tzv. genetickej manipulácie, pričom zmeny sú takého charakteru, že by k&nbsp;nim väčšinou v&nbsp;prírode vôbec nemohlo dôjsť. Genetická manipulácie sa uskutočňuje buď dezaktiváciou niektorého už existujúceho génu (niektorých génov) v&nbsp;organizme pomocou fyzikálnych alebo chemických činidiel (tzv. mutagenéza) alebo naopak prostredníctvom vloženia do DNA príjemcu génu, ktorý bol pred tým odobraný z&nbsp;iného organizmu (tzv. "záujmový gén"). Organizmu príjemcu je takýmto spôsobom sprostredkovaná nová, žiaduca vlastnosť. Tejto technike sa hovorí transgenéza a&nbsp;často pri nej dochádza k&nbsp;prekonaniu tzv. medzidruhovej bariéry, ktorá v&nbsp;prírode zabezpečuje, že k&nbsp;výmenám genetických informácií dochádza iba medzi príbuznými toho istého druhu. Použitím transgenézy je takto možné odobrať napríklad nejaký gén z&nbsp;ryby a&nbsp;vložiť ho do jahody, k&nbsp;čomu bez zásahu človeka nemôže dôjsť. Je dôležité pripomenúť, že všetky predpisy týkajúce sa GMO sa vzťahujú iba na transgenézu a mutagenéza im uniká, hoci sa už roky vo veľkej miere používa pri získavaní nových odrôd a&nbsp;potenciálne nie je o&nbsp;nič menej riziková ako transgenéza. Produkty transgenézy sú často považované za GMO „v užšom slova zmysle“.</p>
+
+
+
+<h2 class="doc-subheading">Aplikácie</h2>
+
+
+
+<p>Techniky transgenézy sú využívané vo viacerých odboroch, pričom známe aplikácie existujú v&nbsp;zdravotníctve (výroba liečiv), potravinárskom priemysle (výroba enzýmov alebo kvasiniek) a&nbsp;v&nbsp;poľnohospodárstve (získavanie nových odrôd). Kým zdravotnícke a&nbsp;potravinárske aplikácie považujú i&nbsp;odporcovia GMO za bezpečné a&nbsp;spĺňajúce svoj účel, využívanie v&nbsp;poľnohospodárstve je predmetom tvrdých sporov na úrovni laickej, vedeckej i&nbsp;politickej. Rozdiel je najmä v tom, že pre potreby potravinárstva a farmakológie prebieha celý proces v&nbsp;laboratóriu a teda v uzatvorenom priestore, kým v poľnohospodárske GMO sú pestované na poliach, z čoho vyplýva riziko kontaminácie okolitého životného prostredia. Okrem toho, liečivá vyrobené technikou genetickej manipulácie sú predpisované lekárom a tak sa vie koľko, kto a kedy skonzumoval (v prípade komplikácií je možné vystopovať vzťah medzi príčinou a dôsledkom), čo je v prípade potravín nemožné. A najmä, v prípade liečiv sa nekonzumuje samotný geneticky modifikovaný organizmus, ale iba jeho produkt (napr. inzulín), kým v prípade poľnohospodárskych aplikácií sa konzumuje samotné GMO. V súvislosti s poľnohospodárskymi GMO je tiež dôležité povedať, že 99% z tých čo sú dnes na trhu, boli vytvorené so zámerom zjednodušenia manažovania aplikácie pesticídov (vo väčšine prípadov sú buď tolerantné na herbicíd (najčastejšie Roundup od Monsanta) a/alebo samotná rastlina produkuje insekticíd). Ide teda o priamu podporu kontroverzného modelu poľnohospodárstva industriálneho charakteru, pričom prínosy sú najmä ekonomické vo forme šetrenia na pracovnej sile. Dávno sľubované GMP novej generácie (výrazne zvyšujúce úrodu, tolerantné na sucho alebo slané prostredie) sú z obchodného hľadiska zatiaľ bezvýznamné resp. sú stále v štádiu vývoja.</p>
+
+
+
+<p>Okrem možných zdravotných a&nbsp;environmentálnych dopadov spojených s poľnohospodárskymi GMO je predmetom sporu najmä nespochybniteľné dominantné postavenie do ktorého sa dostali kľúčové biotechnologické a&nbsp;sadivárske firmy<a href="#_ftn4" name="_ftnref4" title="">[4]</a>, ktoré sú zároveň i&nbsp;najväčšími výrobcami chemických vstupov do poľnohospodárstva. Toto je umocnené patentovaním živých organizmov, čo v&nbsp;minulosti nebolo možné. Ďalšie riadky sú ale venované iba téme uvedenej v&nbsp;nadpise.</p>
+
+
+
+<h2 class="doc-subheading">História povoľovania uvádzania na trh GM plodín z&nbsp;pohľadu ľudského zdravia</h2>
+
+
+
+<p>Prvý transgénny organizmus bol vytvorený v&nbsp;polovici sedemdesiatych rokov, zo začiatku osemdesiatych rokov sú známe prvé komerčné aplikácie vo farmakológii a&nbsp;v&nbsp;druhej polovici osemdesiatych rokov boli vytvorené prvé geneticky modifikované plodiny (GMP) alebo poľnohospodárske GMO. Z&nbsp;pohľadu bezpečnosti boli nové produkty a&nbsp;najmä potraviny vyrobené z&nbsp;GMP veľkou neznámou, ale záverečná fáza ich vývoja sa uskutočnila v&nbsp;čase bezuzdnej deregulácie a&nbsp;liberalizácie, takej typickej pre vládu Ronalda Reagana a&nbsp;jeho nástupcu Georgea Busha staršieho, v&nbsp;dôsledku čoho bola prirodzená opatrnosť považovaná za zbytočnú „administratívnu záťaž“ pre dynamické podniky, v tomto prípade spoločnosť Monsanto. Svoju úlohu zohralo i&nbsp;veľmi úzke prepojenie politických a&nbsp;ekonomických elít a&nbsp;samozrejme obrovská motivácia biotechnologických firiem začať čo najskôr a&nbsp;bezproblémovo uvádzať nové produkty na trh. A&nbsp;tak sa stalo, že sa na základe čisto politických rozhodnutí dospelo k&nbsp;záveru, že na GMP sa nebude vzťahovať osobitný povoľovací režim, ale že sa k&nbsp;nim bude pristupovať ako ku konvenčným plodinám. Pre ospravedlnenie takéhoto postupu bol vymyslený tzv. "princíp látkovej ekvivalencie", podľa ktorého sú GMP látkovo totožné s&nbsp;konvenčnými<a href="#_ftn5" name="_ftnref5" title="">[5]</a>. Celkovo sa dá povedať, že v&nbsp;USA dostali geneticky modifikované plodiny v&nbsp;prvej polovici deväťdesiatych rokov zelenú bez toho, aby boli primerane posúdené z&nbsp;hľadiska možných zdravotných rizík pre spotrebiteľov. Uplatnenie princípu látkovej ekvivalencie zároveň znamená, že predmetné potraviny sa nemusia označovať, z čoho vyplýva, že ich konzumujú všetci Američania. Táto skutočnosť býva často prezentovaná ako dôkaz neškodnosti konzumácie potravín obsahujúcich poľnohospodárske GMO na ľudské zdravie a&nbsp;dokonca býva používaná i&nbsp;formulácia, že „mnoho miliónov ľudí konzumuje potraviny vyrobené z&nbsp;GM rastlín od času ich uvedenia na trh a&nbsp;dodnes sa podľa nezávislých toxických a&nbsp;výživových overovaní nikde na svete nezistil ich negatívny vplyv“<a href="#_ftn6" name="_ftnref6" title="">[6]</a>. Takéto tvrdenie, ktoré sa neodvoláva na žiadnu konkrétnu štúdiu, je ale jednoznačne nepravdivé pretože by sa musel systematicky sledovať a&nbsp;porovnávať zdravotný stav dvoch skupín Američanov, pričom osoby zaradené do prvej skupiny by každodenne konzumovali potraviny obsahujúce GM plodiny, zatiaľ čo členovia druhej skupiny by ich nemali na svojom jedálnom lístku vôbec. Obhliadnuc od etického problému spočívajúceho v&nbsp;uskutočňovaní pokusu na ľuďoch nie je takéto niečo možné ani prakticky, pretože v&nbsp;USA nie sú oddelené výrobné a&nbsp;distribučné reťazce a&nbsp;suroviny na výrobu potravín sú pomiešané. Na druhej strane sú USA krajinou, ktorá má jeden z&nbsp;najväčších výskytov chronických a&nbsp;civilizačných ochorení (rakoviny, alergie, obezita...), ktoré potraviny na báze GM plodín môžu teoreticky spôsobovať. Nie je to ale možné preukázať, pretože rizikových faktorov je v&nbsp;USA viac (napr. mimoriadne vysoký stupeň chemizácie potravín).</p>
+
+
+
+<p>V&nbsp;Európe sa ale scenár bezproblémového uvádzania na trh potravín vyrobených z&nbsp;GMP nepodarilo biotechnologickým firmám presadiť. Na pozadí závažných sanitárnych škandálov bola Európska komisia donútená ustúpiť tlaku spotrebiteľských a&nbsp;environmentalistických organizácií a&nbsp;podriadiť GMP osobitnému povoľovaciemu režimu a&nbsp;zároveň nariadiť i&nbsp;povinné označovanie potravín z&nbsp;nich vyrobených. Označovanie sa mimochodom ukázalo byť ďaleko najúčinnejšou prekážkou šírenia pestovania GMP v&nbsp;krajinách EÚ, pretože pre ne neexistuje z&nbsp;tohto dôvodu dostatočný dopyt. Toto označovanie sa ale nevzťahuje na potraviny živočíšneho pôvodu, ak príslušné zvieratá boli kŕmené GMP. Sója GMO, dovážaná vo veľkom z&nbsp;amerického kontinentu, je pritom významnou súčasťou kŕmnych zmesí používaných v&nbsp;celej Európe.</p>
+
+
+
+<h2 class="doc-subheading">Potenciálne riziká pre zdravie spotrebiteľov</h2>
+
+
+
+<p>Podľa kritikov GMO spočívajú zdravotné riziká spojené s&nbsp;konzumáciou potravín vyrobených z&nbsp;GMP najmä v nedostatočnom poznaní fyziologických mechanizmov na úrovni DNA. Molekulárna biológia je stále iba v&nbsp;zárodočnom štádiu a&nbsp;odpovede na mnohé otázky, relevantné z&nbsp;pohľadu bezpečnosti konzumácie GM potravín, zatiaľ nepozná. Rizikovou je tiež metóda „vkladania“ nového génu do DNA príjemcu, hoci býva prezentovaná ako&nbsp; chirurgicky presná. Francúzsky molekulárny biológ Christian Vélot ale hovorí, že ak by podobným spôsobom pracoval chirurg, nikdy by nikomu neodporúčal, aby sa dal operovať.</p>
+
+
+
+<p>Problém spočíva v tom, že je potrebné zabezpečiť, aby nový ("záujmový") gén prenikol do bunky príjemcu, čo je zložité pretože rastlinná bunka má veľmi pevné steny. Túto stenu je potrebné doslova "preraziť" a nový gén je takto do rastliny v podstate vstrelený (ako médium sa používajú mikročastice zo zlata alebo platiny na ktoré sú transgény "nalepené"). I prístroj ktorý sa na tento účel používa má priliehavý názov: kanón na gény. Bunka rastliny príjemcu je takto vlastne "znásilnená". Je zrejmé, že s takouto technológiou nemáme proces vôbec pod kontrolou, nevieme ovplyvniť ani počet "jedincov" transgénu, ktorým sa podarí preniknúť do bunky, ani miesta kde sa vložia do chromozómov, ani to, s akými inými génmi budú "susediť".</p>
+
+
+
+<p>S týmto súvisí celý rad závažných otázok. Nemôžeme sa napríklad dozvedieť, či sme popísanou procedúrou dezaktivovali, modifikovali alebo stimulovali gény, ktoré sa prirodzene vyskytujú v rastline, ktoré sú tieto gény a aké sú dôsledky na metabolizmus rastliny. Ak došlo následkom tejto operácie k&nbsp;dezaktivácii niektorých génov to znamená, že niektoré proteíny rastliny už nie sú vyrábané a&nbsp;následne niektoré metabolické procesy už neprebiehajú. Ak by došlo naopak k&nbsp;stimulácii niektorých génov, následne sú s&nbsp;nimi spojené proteíny „vyrábané“ vo väčšom množstve čo môže mať rovnako nepredvídateľné následky&nbsp; na metabolizmus. Okrem toho, proteíny kódované niektorými génmi môžu byť nevyhnutné k&nbsp;fungovaniu iných génov.<a href="#_ftn7" name="_ftnref7" title="">[7]</a> Následne, narušenie génového zloženia rastliny ku ktorému dochádza vložením transgénu alebo akoukoľvek inou genetickou modifikáciou môže spôsobiť kaskádové dôsledky, ktoré absolútne nemožno predvídať, na rastlinu samotnú ako i&nbsp;na jej interakcie so životným prostredím a&nbsp;na potravinový reťazec. To ale nie je všetko. Základný výskum už dávno vyvrátil zjednodušenú predstavu, že vložením nejakého génu sa prijímajúcej rastline sprostredkuje iba jedna želateľná vlastnosť a&nbsp;nič iné sa nestane. Dnes sa už vie, že niektoré proteíny sú kódované viacerými génmi, dochádza teda k&nbsp;synergickému efektu, iné gény sú neaktívne bez toho, aby sa vedelo prečo.<a href="#_ftn8" name="_ftnref8" title="">[8]</a> Pravdepodobne vôbec nie je jedno, v&nbsp;„susedstve“ akých génov sa ocitne „vstrelený“ transgén, čo ale súčasná technika vôbec nevie ovplyvniť! Z&nbsp;pohľadu základného výskumu existuje príliš veľa neznámych a&nbsp;bez preháňania možno povedať, že ho predbehli komerčné aplikácie, ktoré sú prezentované ako „veda“.</p>
+
+
+
+<p>To čo je povedané vyššie, nie je iba teoretické vymenovanie rizík, ktoré vyvolávajú obavy. Výskumní pracovníci, ktorí „vyrábajú“ každý týždeň GMO v&nbsp;laboratóriu v&nbsp;rámci aktivít spojených so základným výskumom, poznajú početné prípady neočakávaných vedľajších účinkov. Napríklad vložením cudzieho génu do huby v&nbsp;rámci jedného experimentu sa huba stala sterilnou, bez toho aby sa to očakávalo a&nbsp;aby sa to následne vedelo vysvetliť. Úlohou vloženého génu bolo sprostredkovanie úplne inej vlastnosti. To jasne ukazuje do akej miery nemáme proces genetickej manipulácie pod kontrolou. Takýchto príkladov existuje veľké množstvo. Transgénne zemiaky, rezistentné na jeden vírus, majú hľuzy, ktoré rastú na vzduchu. Prečo? GM melóny, ktoré praskajú pred dozretím. Prečo? Zvieratá (ovce, hovädzí dobytok, ryby) u&nbsp;ktorých bol modifikovaný gén rastového hormónu, aby naberali rýchlejšie na váhe, sú často agresívnejšie a&nbsp;majú predispozíciu na cukrovku a&nbsp;niektoré veľké lososy produkované v&nbsp;Kanade majú deformovanú hlavu.<a href="#_ftn9" name="_ftnref9" title="">[9]</a></p>
+
+
+
+<p>Iným a&nbsp;úplne reálnym rizikom je skutočnosť, že GMP majú väčší obsah rezíduí pesticídov&nbsp; ako je to v&nbsp;prípade konvenčných plodín. Skutočnosť, že dnes používané GMP sú buď tolerantné na herbicíd alebo samotné produkujú insekticíd totiž vôbec neznamená, že príslušné pesticídy neabsorbujú a neobsahujú!<a href="#_ftn10" name="_ftnref10" title="">[10]</a> Z tohto dôvodu došlo v USA i k zvýšeniu povoleného množstva rezíduí v potravinách.</p>
+
+
+
+<p>Ďalším rizikom je používanie pri genetickej manipulácii tzv. antibiotikových markerov, čo môže prispievať k&nbsp;nadobúdaní rezistencie baktérií na antibiotiká.</p>
+
+
+
+<h2 class="doc-subheading">Systém posudzovania bezpečnosti</h2>
+
+
+
+<p>Ako už bolo spomenuté, v&nbsp;EÚ sú GMP podriadené osobitnému povoľovaciemu režimu, ktorý by mal garantovať ich neškodnosť. Firma, ktorá chce začať uvádzať GMP na trh, musí predložiť dokumentáciu, ktorej súčasťou musí byť vedecká štúdia zameraná na skúmanie bezpečnosti nového produktu. Celá dokumentácia je následne posúdená vedeckým panelom EFSA pre GMO, ktorý potom vydá odporúčanie pre Európsku komisiu. Dôveryhodne to ale vyzerá iba na prvý pohľad a&nbsp;najmenšia vec, čo sa procedúre dá vyčítať, je jej totálna netransparentnosť: referenčné štúdie, predkladané výrobcami, nebývajú publikované vo vedeckých časopisoch, na brutto dáta z&nbsp;nich sa uplatňuje „obchodné tajomstvo“<a href="#_ftn11" name="_ftnref11" title="">[11]</a>, čo vylučuje vykonanie nezávislej kontraexpertízy a&nbsp;z&nbsp;rokovania vedeckého panelu sa okrem výsledku nedostanú na verejnosť žiadne informácie. Okrem toho, mnohí členovia tohto panelu boli kritizovaní&nbsp; z dôvodu konfliktov záujmov<a href="#_ftn12" name="_ftnref12" title="">[12]</a>. Z&nbsp;metodologického hľadiska kritici poukazujú najmä na dĺžku testov na laboratórnych zvieratách, ktorá v&nbsp;prípade referenčných štúdií nikdy neprekročila 90 dní (donedávna bola povinná dĺžka iba 17 dní, od februára 2013 sú 90 dňové štúdie povinné, čo sa ale nevzťahuje na žiadosti predložené do tohto termínu). Nedostatočnosť tohto postupu vyplýva zo skutočnosti, že potenciálne riziká nie sú akútneho, ale chronického charakteru, ktoré môžu byť dôsledkom iba dlhodobého stravovacieho režimu. Napokon, i&nbsp;u&nbsp;väčšiny silných fajčiarov sa rakovina pľúc nevyvinie skôr ako po 30 – 40 rokoch „konzumácie“ tabaku. 90 dňová štúdia v&nbsp;podstate znamená, ako keby sa chronický dopad nejakého stravovacieho režimu skúmal na desaťročnom dieťati, pričom konzumácia potravín na báze GMP nie je časovo ohraničená a&nbsp;má prebiehať počas celého života spotrebiteľov. Kritici preto požadujú štúdie pokrývajúce celú prirodzenú dĺžku života laboratórnych potkanov, t.j. 2 roky, ako je to v&nbsp;prípade pesticídov. Kompetentní to doteraz odmietali z&nbsp;dôvodu vysokých nákladov a&nbsp;údajnej zbytočnosti.</p>
+
+
+
+<p>Výsledkom existujúceho systému expertízy je to, že doteraz boli kladne posúdené <em>všetky</em> žiadosti a&nbsp;následne EK povolila na ľudskú spotrebu všetky GMO (takéto potraviny ale musia byť napriek tomu označované). Takýto spôsob posudzovania bezpečnosti potravín nazývajú kritici otvorene maškarádou.</p>
+
+
+
+<p>Nedôveru voči uvedenému systému hodnotiacej procedúry potvrdil prípad GM kukurice MON 863, ktorú napriek predchádzajúcemu negatívnemu posúdeniu zo strany francúzskej i&nbsp;nemeckej kompetentnej agentúry, EFSA v&nbsp;konečnom dôsledku schválila. „Obchodné tajomstvo“ bolo tento krát prelomené na základe rozhodnutia nemeckého súdu a&nbsp; opätovné štatistické vyhodnotenie brutto dát preukázalo závažné anomálie v&nbsp;neprospech laboratórnych zvierat kŕmených MON 863<a href="#_ftn13" name="_ftnref13" title="">[13]</a>. Monsanto ani EFSA síce existenciu týchto anomálií nepopierali, ale vyhlásili ich za „biologicky nevýznamné“, pretože „problémy sa neprejavili v&nbsp;rovnakej miere a&nbsp;rovnakým spôsobom u&nbsp;samíc a&nbsp;u&nbsp;samcov“ a „neboli proporcionálne k&nbsp;dávke“. Z&nbsp;pohľadu dnešnej vedy sú takéto argumenty prinajmenšom zarážajúce, pretože neberú do úvahy možné narušenia hormonálneho alebo enzýmového systému, s&nbsp;čím sa ale autori štúdie vôbec nezaoberali.</p>
+
+
+
+<h2 class="doc-subheading">Zdravotné riziká z&nbsp;pohľadu doterajších výsledkov vedeckého výskumu</h2>
+
+
+
+<p>Popri štúdiách požadovaných predpismi, o&nbsp;ktorých bola reč vyššie, boli GMO predmetom najrôznejšieho vedeckého skúmania a&nbsp;publikovaných odborných článkov. Celkove bolo tejto téme venovaných nie menej ako 50&nbsp;000 štúdií, z&nbsp;ktorých mnohé skúmali dopady na ľudské zdravie. V&nbsp;podstate skoro všetky výsledky ubezpečovali o&nbsp;neškodnosti konzumácie potravín na báze GMP. Našli sa ale i&nbsp;výnimky: v&nbsp;roku 1998 britský biochemik maďarského pôvodu Arpád Pusztai a&nbsp;v&nbsp;roku 2002 talianska biologička Manoela Malatesta, ktorí skúmali dopad konzumácie GM plodín na zdravotný stav laboratórnych zvierat, zistili veľmi znepokojujúce patologické zmeny na ich obličkách a&nbsp;pečeni. Následne sa stali terčom očierňovacej kampane zinscenovanej Monsantom (na inštitúciu v&nbsp;ktorej Pusztai pracoval bol dokonca vyvíjaný nátlak zo strany najvyšších politických predstaviteľov USA i&nbsp;Spojeného kráľovstva), svoje práce nemohli dokončiť (nikdy neboli dokončené) a&nbsp;boli prepustení zo zamestnania. Výsledky ku ktorým dospeli boli nakoniec predsa len publikované a&nbsp;sú takto súčasťou vedeckej literatúry<a href="#_ftn14" name="_ftnref14" title="">[14]</a><a href="#_ftn15" name="_ftnref15" title="">[15]</a>.</p>
+
+
+
+<p>Uspokojenie z&nbsp;výsledkov uvedeného veľkého množstva štúdií ale zatieňujú dve skutočnosti: ich významnú časť financoval priemysel<a href="#_ftn16" name="_ftnref16" title="">[16]</a> a&nbsp;najmä, tak ako je to v&nbsp;prípade spomínaných referenčných štúdií pre oficiálne hodnotenie, nepokrývali celý prirodzený život príslušných zvierat. Bolo zistené, že spomedzi nich iba pri 24 k&nbsp;došlo k&nbsp;testom presahujúcim 90 dní<a href="#_ftn17" name="_ftnref17" title="">[17]</a>, ale ani tieto sa väčšinou nevzťahovali na celú prirodzenú dĺžku života testovaných zvierat. Okrem toho, autori tohto porovnávacieho vedeckého článku zavádzali v&nbsp;jeho abstrakte tvrdením, že žiadna z&nbsp;uvedených 24 štúdií nepreukázala negatívny dopad konzumácie krmív na báze GMP, pretože minimálne v&nbsp;jednom prípade to nie je pravda: figuruje totiž medzi nimi i vyššie uvedená práca Manoely Malatesta, ktorá síce bola podrobená tvrdej kritike, ale naznačila existenciu možných závažných negatívnych dopadov!</p>
+
+
+
+<h2 class="doc-subheading"><em>Kauza Séralini</em></h2>
+
+
+
+<p>Profesor Gilles-Éric Séralini je nepochybne viac ako iba významný molekulárny biológ. Napokon, jeho vysokú vedeckú úroveň nemôžu spochybniť ani jeho početní nepriatelia, nakoľko je podoprená viac ako stovkou publikácií v&nbsp;renomovaných vedeckých časopisoch. Pretože je ale presvedčený o&nbsp;nedostatočnosti dnešného systému posudzovania bezpečnosti nových produktov vstupujúcich do potravinového reťazca, ktorý je podľa neho nezodpovedný a&nbsp;šledriánsky, považuje za svoju povinnosť systematicky na to upozorňovať kompetentných. Predmetný systém dôkladne pozná, pretože asi desať rokov bol sám členom príslušnej francúzskej agentúry a&nbsp;doteraz pracuje pre podobné úrady v&nbsp;iných krajinách (napr. v&nbsp;Indii). Úsilie o&nbsp;dosiahnutie nápravy v&nbsp;tejto oblasti sa stalo dôležitou súčasťou jeho životných priorít a&nbsp;preto býva svojimi oponentmi nazývaný „militantom“ a&nbsp;to je iba to najmiernejšie označenie, ktorému sa mu dostáva. Pre úspech v&nbsp;tejto snahe, hoci i relatívny, je však vysoká odbornosť podmienkou nevyhnutnou, ale nie dostatočnou. Rovnako dôležité sú ďalšie jeho vlastnosti ako občianska statočnosť, osobná odvaha a&nbsp;vysoký stupeň prezrievavosti a&nbsp;rozvážnosti. Ešte za čias svojho pôsobenia v&nbsp;hodnotiacej komisii pochopil, že sám nič nezmôže a&nbsp;izolovaného ho jeho mocní protivníci ľahko zlikvidujú. Z&nbsp;tohto dôvodu ešte v&nbsp;rokoch 1990 inicioval založenie národnej inštitúcie pre nezávislý vedecký výskum biotechnológií (CRIIGEN) a&nbsp;medzinárodnú sieť vedcov požadujúcich nezávislú vedu (ENSSER - European Network of Scientists for Social and Environmental Responsibility)<a href="#_ftn18" name="_ftnref18" title="">[18]</a>, ktorá združuje niekoľko stoviek významných výskumných pracovníkov. V&nbsp;rámci týchto inštitúcií má zabezpečenú nielen podporu zo strany časti vedeckej komunity, ale i nevyhnutnú právnu a&nbsp;politickú ochranu<a href="#_ftn19" name="_ftnref19" title="">[19]</a> bez ktorej by nemohol profesionálne „prežiť“ ani jeden deň. Jeho nepriatelia sú najmä nadnárodné spoločnosti vyrábajúce GMO a&nbsp;chemické vstupy do poľnohospodárstva, ich lobistické združenia ne čele z&nbsp;ILSI, ako i&nbsp;predstavitelia „oficiálnej vedy“, to znamená osoby pracujúce pre rôzne agentúry zodpovedné za hodnotenie bezpečnosti potravín.</p>
+
+
+
+<p>Jedna z&nbsp;dávnych požiadaviek prof. Séraliniho na kompetentných bola realizácia dlhodobých štúdií pokrývajúce celý prirodzený život skúmaných zvierat. Pretože sa nedočkal kladnej odpovede, rozhodol sa zrealizovať takúto výskumnú prácu so svojim tímom a&nbsp;za pomoci sponzorov sa mu podarilo zhromaždiť potrebné financie vo výške viac ako 3 milióny eúr. Podrobnosti týkajúce sa tejto štúdie, ktorej experimentálna fáza prebiehala medzi rokmi 2008 až 2010, sú hodné napínavej detektívky a&nbsp;Séralini ich popísal v&nbsp;knihe určenej pre širokú verejnosť nazvanej „Tous Cobayes!“<a href="#_ftn20" name="_ftnref20" title="">[20]</a> Čo bolo podstatou štúdie, ktorú 19. septembra 2012 publikoval prestížny <em>„Food and Chemical Toxicology Journal“</em><a href="#_ftn21" name="_ftnref21" title="">[21]</a> a&nbsp;aké boli jej hlavné výsledky?</p>
+
+
+
+<p>Tím prof. Séraliniho hodnotil dopad konzumácie GM kukurice NK 603, ktorá bola modifikovaná so zámerom zabezpečiť jej tolerantnosť na herbicíd Roundup, ako i&nbsp;dopad konzumácie tohto pesticídu. Celkový počet 200 laboratórnych potkanov bolo rozdelených do desiatich skupín, pričom v&nbsp;každej z&nbsp;nich bolo desať samcov a&nbsp;desať samíc. Jedna skupina bola tzv. referenčná, pretože zvieratá z&nbsp;ktorých sa skladala nedostávali v&nbsp;strave ani GMO a&nbsp;ani Roundup. Potkany v&nbsp;ostatných skupinách dostávali buď tri rôzne koncentrácie NK 603 (v prípade troch prvých troch skupín bola kukurica ošetrená herbicídom, v&nbsp;prípade ďalších troch skupín nebola) a&nbsp;u&nbsp;posledných troch skupín potkany nedostávali v&nbsp;strave GMO ale tri rôzne koncentrácie herbicídu. Protokol bol skoro totožný ako v&nbsp;prípade štúdie predloženej Monsantom na schválenie tejto kukurice: ten istý počet jedincov v&nbsp;skupine a&nbsp;ten istý kmeň laboratórnych potkanov (Sprague-Dawley) ale s&nbsp;tým rozdielom, že dĺžka experimentu nebola 90 dní ale 2 roky a&nbsp;okrem toho bolo vykonaných omnoho viac odberov krvi a&nbsp;moču a&nbsp;ich analýz, pričom všetky uhynuté zvieratá boli podrobené pitve.</p>
+
+
+
+<p>Výsledky ukázali výrazne horší priemerný zdravotný stav jedincov, ktoré dostávali GMO a/alebo Roundup v&nbsp;porovnaní s&nbsp;priemerom v&nbsp;referenčnej skupine: samice sa stávali skôr a&nbsp;vo väčšej miere obeťami nádorov na mliečnych žľazách a&nbsp;samci trpeli vo výrazne väčšej miere rôznymi patológiami pečene a&nbsp;obličiek. Výsledky teda&nbsp;naznačili výrazne vyššiu rizikovosť konzumácie stravy na báze NK 603 a/alebo Roundupu.</p>
+
+
+
+<p>Štúdia vyvolala obrovskú mediálnu pozornosť a profesor Séralini bol okrem iného vypočutý francúzskym i&nbsp;európskym parlamentom. Zároveň sa ale stal predmetom mimoriadne brutálnej očierňovacej kampane, okrem iného bol obvinený z&nbsp;členstva v&nbsp;nebezpečnej sekte. Sám to komentoval, že „v iných dobách by ho určite upálili na hranici“. &nbsp;Štúdia bola postupne odmietnutá všetkými agentúrami posudzujúcimi bezpečnosť potravín<a href="#_ftn22" name="_ftnref22" title="">[22]</a> a&nbsp;lobisti Monsanta vyvíjali obrovský tlak na časopis Food and Chemical Toxicology Journal, aby štúdiu „stiahol“, čo sa im po roku a&nbsp;pol podarilo.</p>
+
+
+
+<p>Snažil som sa oboznámiť sa so všetkým, čo sa v&nbsp;zahraničí o&nbsp;tejto kauze popísalo a&nbsp;videl som i&nbsp;viaceré videá s konfrontáciami medzi Séralinim a&nbsp;jeho odporcami. Dospel som k&nbsp;záveru, že argumenty odporcov prezentované verejnosti neobstoja. Hlavný argument bol zle zvolený kmeň laboratórnych potkanov (Sprague-Dawley&nbsp;je náchylný na nádory) a&nbsp;malý počet jedincov v&nbsp;jednej skupine. Ako sme ale videli, tie isté laboratórne zvieratá a&nbsp;ten istý počet jedincov v&nbsp;skupine rutinne používa i&nbsp;Monsanto vo svojich štúdiách, ktoré slúžia na povoľovanie nových produktov. Pri stiahnutí štúdie<a href="#_ftn23" name="_ftnref23" title="">[23]</a> časopis nerešpektoval svoje vlastné kritériá (odborníkom posudzujúcich brutto dáta sa napriek veľkej snahe nepodarilo preukázať, že šlo o plagiát, podvod alebo manipuláciu s&nbsp;dátami) a&nbsp;nakoniec bolo oficiálnou zámienkou to, že „výsledky štúdie neumožňujú dospieť k&nbsp;záverom“. Takáto výčitka nielenže nefiguruje medzi kritériami na stiahnutie, ale ostáva nejasná a&nbsp;možno ju adresovať na veľké množstvo publikovaných vedeckých prác, ktoré nikdy neboli „stiahnuté“. Séraliniho štúdiu nakoniec publikoval tento rok iný časopis (Environmental Science Europe) a&nbsp;tak nebola vymazaná z&nbsp;vedeckej literatúry ako si to jeho nepriatelia priali.</p>
+
+
+
+<h2 class="doc-subheading">Záver</h2>
+
+
+
+<p>Kauza Séralini jasne ukazuje, do akej miery majú nadnárodné korporácie produkujúce GMO všetko pod kontrolou. Podľa bývalej europoslankyne Corinne Lepage, ak by sa podobná náročnosť uplatňovala na štúdie predkladané Monsantom na EFSA, žiadne GMO by nikdy nebolo schválené. Okrem toho je až príliš podozrivé, že „stiahnuté“ bývajú iba tie publikované články, ktorých výsledky sú voči GMO kritické (sú i&nbsp;ďalšie známe prípady).</p>
+
+
+
+<p>Na základe uvedeného je zrejmé, že dodnes neexistuje uspokojivá odpoveď na otázku, či sú potraviny vyrobené z GMP bezpečné. Z tohto pohľadu bol doterajší postoj kompetentných škandalózny, hoci z pohľadu práva nie sú napadnuteľní. Odborníci EFSA a iných agentúr vydávajú iba odporúčania a nie sú zodpovední za "riadenie rizika". Kompetentní sú v tomto ohľade úradníci Európskej komisie, ale tí a priori nie sú dostatočne odborne fundovaní a preto sa schovávajú za odporúčania agentúr. Je to zdanlivo veľmi jednoduché, ale tento začarovaný kruh dostatočne zabezpečuje kompetentným beztrestnosť i v prípade eventuálneho potravinového škandálu.<a href="#_ftn24" name="_ftnref24" title="">[24]</a> Séraliniho štúdia ich ale predsa len do istej miery postavila priamo pred ich vlastnú zodpovednosť, pretože jej výsledky sa dajú potvrdiť alebo vyvrátiť iba ďalšími štúdiami pokrývajúcimi celý prirodzený život laboratórnych zvierat. V&nbsp;decembri 2012 Európska komisia informovala, že pripravuje realizáciu dvojročnej štúdie, pričom testovaná GMP bude opäť kukurica NK 603 a inú štúdiu sa rozhodla financovať francúzska vláda. Uvidíme čo z&nbsp;toho nakoniec bude pretože lobisti biotechnologických firiem robia všetko preto, aby tieto zámery sabotovali. Majú totiž obavu, že keď sa hľadá tak sa aj nájde. Medzi tým, v&nbsp;roku 2013 ďalšie štúdie<a href="#_ftn25" name="_ftnref25" title="">[25]</a> preukázali negatívne zdravotné dopady konzumácie stravy na báze poľnohospodárskych GMO.</p>
+
+
+
+<p>RNDr. Igor Šarmír, PhD.</p>
+
+<p><em>(tento článok bol pôvodne publikovaný v šiestom &nbsp;čísle medicínskeho časopisu inVitro)</em></p>
+
+
+
+
+
+
+
+<p><strong>Literatúra</strong>:</p>
+
+
+
+<p><strong>Apoteker, Arnaud, Testart, Jacques</strong>, „De l'utopie scientifique au péril sanitaire“, Le Monde diplomatique, Avril 2006</p>
+
+
+
+<p><strong>Carman1 Judy A., Howard R. Vlieger, Larry J. Ver Steeg4, Verlyn E. Sneller, Garth W. Robinson, Catherine A. Clinch-Jones1, Julie I.Haynes6, John W. Edwards</strong> <em>“A long-term toxicology study on pigs fed a combined genetically modified&nbsp; (GM) soy and (GM) maize diet”,</em> Journal of Organic Systems, 8(1), 2013</p>
+
+
+
+<p><strong>Chelsea Snell, Aude Bernheim, Jean-Baptiste Bergé, Marcel Kuntz, Gérard Pascal, Alain Paris, Agnčs E. Ricroch</strong>, Assessment of the health impact of GM plant diets in long-term and multigenerational animal feeding trials: A literature review, Food and Chemical Toxicology 50 (2012) 1134–1148</p>
+
+
+
+<p><strong>Ewen, Stanley WB, Pusztai Arpad, PhD,</strong> “Effect of diets containing genetically modified potatoes expressing Galanthus nivalis lectin on rat small intestine”, The Lancet, Volume 354, No 9187, p 1353-1354, 16 October 1999</p>
+
+
+
+<p><strong>Ferenčík Igor a&nbsp;kol</strong>., „Národný rámec používania geneticky modifikovaných organizmov a&nbsp;výrobkov z nich na Slovensku“, Veda, vydavateľstvo SAV, Bratislava 2009</p>
+
+
+
+<p><strong>Lepage, Corinne</strong>, "La vérité sur les OGM, c'est notre affaire!", Editions Charles Léopold Mayer, Paris 2012</p>
+
+
+
+<p><strong>Malatesta M., Caporaloni C, Rocchi S.,&nbsp; Gazzanelli G</strong>. 2002, „Ultrastructural morphometrical and immunocytochemical analysis of hepatocyte nuclei from mice fed on genetically modified soybean“, Cell Struct. Funct. 27,&nbsp; 173–180.</p>
+
+
+
+<p><strong>Malatesta Manuela,&nbsp;Chiara Caporaloni,&nbsp;Luigia Rossi&nbsp;Serafina Battistelli,&nbsp;Marco BL Rocchi, Francesco Tonucci,&nbsp;and&nbsp;Giancarlo Gazzanelli</strong> , „Ultrastructural analysis of pancreatic acinar cells from mice fed on genetically modified soybean“, Journal of Anatomy, Nov 2002; 201(5): 409–415.</p>
+
+
+
+<p><strong>Robin, Marie-Monique</strong>, «&nbsp;Le monde selon Monsanto&nbsp;», Editions La Découverte, Paris 2008, 2009</p>
+
+
+
+<p><strong>Robinson Claire and Latham Jonathan, PhD,</strong> “<em>The Goodman affair: Monsanto targets the heart of science</em>”, Independent Science News, 20 May 2013</p>
+
+
+
+<p><strong>Séralini Gilles-Eric , Emilie Clair, Robin Mesnage, Steeve Gress, Nicolas Defarge, Manuela Malatesta, Didier Hennequin, Joël Spiroux de Vendômois</strong>, Long term toxicity of a Roundup herbicide and a Roundup-tolerant genetically modified maize, Food and Chemical Toxicology xxx (2012)</p>
+
+
+
+<p><strong>Séralini Gilles-Eric, Mesnage Robin, Defarge Nicolas, Gress Steeve, Hennequin Didier, Clair Emilie, Malatesta Manuela, Spiroux de Vendômois Joël</strong>, <em>„Answers to critics: Why there is a long term toxicity due to a Roundup tolerant genetically modified maize and to a Roundup herbicide“</em>, Food and Chemical Toxicology, 9 November 2012</p>
+
+
+
+<p><strong>Séralini, Gilles-Eric</strong>, «&nbsp;Tous cobayes&nbsp;», Flammarion, 2012</p>
+
+
+
+<p><strong>Vélot, Christian</strong>,&nbsp; «&nbsp;OGM un choix de la société&nbsp;», Éditions de l'Aube et l'Abbaye de Jouïr, 2011</p>
+
+
+
+
+<hr>
+
+<p><a href="#_ftnref1" name="_ftn1" title="">[1]</a> Slovenská poľnohospodárska a potravinárska komora, Európsky hospodársky a sociálny výbor</p>
+
+
+
+<p><a href="#_ftnref2" name="_ftn2" title="">[2]</a> <strong>Marie-Monique Robin</strong>, “Le Monde selon Monsanto&nbsp;» („Svet podľa spoločnosti Monsanto“)</p>
+
+
+
+<p><a href="#_ftnref3" name="_ftn3" title="">[3]</a> Do polovice osemdesiatych rokov minulého storočia to bola čisto chemická firma</p>
+
+
+
+<p><a href="#_ftnref4" name="_ftn4" title="">[4]</a> Kým ešte pred desiatimi rokmi pôsobilo na svetovom trhu so sadivami stovky firiem, dnes 90% trhu kontroluje iba 10 spoločností, z&nbsp;toho 3 (medzi nimi Monsanto), ovládajú 53%</p>
+
+
+
+<p><a href="#_ftnref5" name="_ftn5" title="">[5]</a> James Mariansky, na začiatku rokov 1990 hlavný koordinátor biotechnológií na FDA (americký úrad kompetentný pre posudzovanie bezpečnosti potravín a liečiv), priznal neskôr na kameru, že prijatie princípu látkovej ekvivalencie bolo iba politické rozhodnutie bez akéhokoľvek vedeckého opodstatnenia.</p>
+
+
+
+<p><a href="#_ftnref6" name="_ftn6" title="">[6]</a> <strong>Ing. Igor Ferenčík</strong>, „Národný rámec používania geneticky modifikovaných organizmov a&nbsp;výrobkov z nich na Slovensku“, Veda, vydavateľstvo SAV, Bratislava 2009, str.14.</p>
+
+
+
+<p><a href="#_ftnref7" name="_ftn7" title="">[7]</a> Tieto skutočnosti jasne ukazujú, prečo je "princíp látkovej ekvivalencie" konvenčnej a GM plodiny nezmyslom.</p>
+
+
+
+<p><a href="#_ftnref8" name="_ftn8" title="">[8]</a> <strong>Arnaud Apoteker et Jacques Testart</strong>, «&nbsp;De l'utopie scientifique au péril sanitaire&nbsp;», Le Monde diplomatique, Avril 2006</p>
+
+
+
+<p><a href="#_ftnref9" name="_ftn9" title="">[9]</a> <strong>Christian Vélot</strong>, “OGM un choix de société”, Éditions de l'Aube et Abbaye du jour, 2011,&nbsp; str. 69-77</p>
+
+
+
+<p><a href="#_ftnref10" name="_ftn10" title="">[10]</a> V USA došlo doslova k&nbsp;explózii množstva používaných herbicídov, ktoré sa iba na kukuričných poliach zvýšilo z&nbsp;1,8 milióna ton v&nbsp;roku 2000 na 30 miliónov ton v&nbsp;roku 2011.</p>
+
+
+
+<p><a href="#_ftnref11" name="_ftn11" title="">[11]</a> Je to v&nbsp;rozpore s&nbsp;platnými predpismi. Článok 25 Smernice 2001/18&nbsp; zakazuje odvolávať sa na obchodné tajomstvo, ak ide o štúdie týkajúce sa zdravia alebo životného prostredia.</p>
+
+
+
+<p><a href="#_ftnref12" name="_ftn12" title="">[12]</a> Napríklad Harry Kuiper, šéf vedeckému panelu EFSA pre GMO medzi rokmi 2002 až 2012, riadil v&nbsp;tom istom čase organizáciu, ktorej úlohou bola propagácia GMO v Európe</p>
+
+
+
+<p><a href="#_ftnref13" name="_ftn13" title="">[13]</a> <strong>De Vendômois, J.S.</strong>, <strong>Roullier, F; Cellier, D; Séralini, G.E.</strong> “A Comparison of the Effects of Three GN Corn Varieties on Mammalian Health”, International Journal of Biological Science, 2009, 5</p>
+
+
+
+<p><a href="#_ftnref14" name="_ftn14" title="">[14]</a> <strong><a href="http://www.ncbi.nlm.nih.gov/pubmed/?term=Malatesta%20M%5Bauth%5D" class="external" target="_blank" rel="noopener noreferrer">Malatesta</a> M.,&nbsp;<a href="http://www.ncbi.nlm.nih.gov/pubmed/?term=Caporaloni%20C%5Bauth%5D" class="external" target="_blank" rel="noopener noreferrer">Caporaloni</a> C,&nbsp;<a href="http://www.ncbi.nlm.nih.gov/pubmed/?term=Rossi%20L%5Bauth%5D" class="external" target="_blank" rel="noopener noreferrer">Rocchi S.,</a>&nbsp; <a href="http://www.ncbi.nlm.nih.gov/pubmed/?term=Gazzanelli%20G%5Bauth%5D" class="external" target="_blank" rel="noopener noreferrer">Gazzanelli</a> G</strong>. 2002, „Ultrastructural morphometrical and immunocytochemical analysis of hepatocyte nuclei from mice fed on genetically modified soybean“<strong>, </strong>Cell Struct. Funct. 27,&nbsp; 173–180..</p>
+
+
+
+<p><a href="#_ftnref15" name="_ftn15" title="">[15]</a> <strong>Ewen, Stanley WB, Pusztai Arpad, PhD,</strong> “Effect of diets containing genetically modified potatoes expressing Galanthus nivalis lectin on rat small intestine”, The Lancet, Volume 354, No 9187, p 1353-1354, 16 October 1999</p>
+
+
+
+<p>[16] Zdroj financovanie má často rozhodujúci vplyv na dosiahnutých výsledkoch, čo sa ukázalo napr. v&nbsp;prípadoch syntetického sladidla aspartam alebo plastického obalového materiálu bisfenol A</p>
+
+
+
+<p><a href="#_ftnref17" name="_ftn17" title="">[17]</a> <strong>Chelsea Snell, Aude Bernheim, Jean-Baptiste Bergé, Marcel Kuntz, Gérard Pascal, Alain Paris, Agnčs E. Ricroch</strong>, Assessment of the health impact of GM plant diets in long-term and multigenerational animal feeding trials: A literature review, Food and Chemical Toxicology 50 (2012) 1134–1148</p>
+
+
+
+<p><a href="#_ftnref18" name="_ftn18" title="">[18]</a> Od samého začiatku prebiehal výskum v&nbsp;oblasti poľnohospodárskych GMO plne v&nbsp;réžii súkromných firiem.</p>
+
+
+
+<p><a href="#_ftnref19" name="_ftn19" title="">[19]</a> Medzi významných funkcionárov CRIIGEN patrí bývalá francúzska ministerka a&nbsp;neskôr europoslankyňa Corine Lepage.</p>
+
+
+
+<p><a href="#_ftnref20" name="_ftn20" title="">[20]</a> Všetci sme pokusné zvieratá!</p>
+
+
+
+<p><a href="#_ftnref21" name="_ftn21" title="">[21]</a><strong>Séralini Gilles-Eric , Emilie Clair, Robin Mesnage, Steeve Gress, Nicolas Defarge, Manuela Malatesta, Didier Hennequin, Joël Spiroux de Vendômois</strong>, Long term toxicity of a Roundup herbicide and a Roundup-tolerant genetically modified maize, Food and Chemical Toxicology xxx (2012)</p>
+
+
+
+<p><a href="#_ftnref22" name="_ftn22" title="">[22]</a> Tieto ale boli v pozícii “sudcu a zároveň zainteresovanej strany”, pretože v&nbsp;minulosti dali tejto kukurici zelenú a&nbsp;prípadným kladným posúdením štúdie by spochybnili samé seba...</p>
+
+
+
+<p><a href="#_ftnref23" name="_ftn23" title="">[23]</a> Pri stiahnutí štúdie zohral pravdepodobne rozhodujúcu úlohu Richard Goodman, bývalý káder Monsanta, ktorého krátko predtým rekrutoval Food and Chemical Toxicology Journal. Viď.: <strong>Robinson Claire and Latham Jonathan, PhD,</strong> “<em>The Goodman affair: Monsanto targets the heart of science</em>”, Independent Science News, 20 May 2013</p>
+
+
+
+<p><a href="#_ftnref24" name="_ftn24" title="">[24]</a> <strong>Lepage, Corinne</strong>, "La vérité sur les OGM, c'est notre affaire!", Editions Charles Léopold Mayer, Paris 2012</p>
+
+
+
+<p><a href="#_ftnref25" name="_ftn25" title="">[25]</a> napr. <strong>Robinson, Catherine A. Clinch-Jones1, Julie I.Haynes6, John W. Edwards</strong> <em>“A long-term toxicology study on pigs fed a combined genetically modified&nbsp; (GM) soy and (GM) maize diet”,</em> Journal of Organic Systems, 8(1), 2013</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

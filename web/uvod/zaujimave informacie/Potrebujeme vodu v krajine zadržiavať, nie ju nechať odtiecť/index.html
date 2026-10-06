@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Potrebujeme vodu v krajine zadržiavať, nie ju nechať odtiecť — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Potrebujeme vodu v krajine zadržiavať, nie ju nechať odtiecť</nav>
+
+  <article>
+    <h1 class="doc-title">Potrebujeme vodu v krajine zadržiavať, nie ju nechať odtiecť</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Jana Holéciová, hovorkyňa SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">25. mája 2023</span></p>
+
+    <div class="doc-body">
+<p><span>Slovensko sa potrebuje viac adaptovať na klimatické zmeny a&nbsp;dôsledky s&nbsp;nimi spojené. Náhle zmeny počasia - extrémne suchá, prívalové dažde - by poľnohospodári, ale aj spoločnosť ako taká, vedeli lepšie zvládať, keby štát viac investoval do závlahových sústav a aj sfunkčnil nádrže na zadržiavanie vody. V&nbsp;čase pokojných rokov by ich využívali rybári, zlepšovali by mikroklímu v&nbsp;regiónoch, v&nbsp;čase sucha by zo zadržanej vody mali úžitok poľnohospodári.</span></p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/f1QrnMY.jpg"></figure><p></p>
+
+<h2 class="doc-subheading">Úloha vodných nádrží</h2>
+
+<p>Vodné nádrže určené na zachytávanie vody a&nbsp;zavlažovanie v&nbsp;krajine dnes svoju úlohu na 100% neplnia. V&nbsp;minulosti boli budované za účelom zachytávať spadnuté zrážky či vodu z&nbsp;topiaceho sa snehu a ľadu. Zo zachytenej vody v&nbsp;krajine mali úžitok poľnohospodári, ktorí vodou zavlažovali. Rybári v&nbsp;nádržiach chovali ryby, pridanú hodnotu tieto stavby vytvárali aj pre okolitý región v&nbsp;rámci zlepšovania mikroklímy a&nbsp;krajinotvorby. V&nbsp;niektorých prípadoch mali opodstatnenie aj pre milovníkov vodných športov.</p>
+
+<p>Malých vodných nádrží prioritne určených na zavlažovanie sa na Slovensku za ostatných 43 rokov vybudovalo 195. Ich celkový objem vody je 65,66 mil. m3 a&nbsp;rozkladajú sa na ploche 2&nbsp;103 ha. Mnohé z nich dnes pôvodný účel plnia s&nbsp;ťažkosťami. Ich význam pritom rapídne narastá práve v&nbsp;období klimatických zmien a&nbsp;nepriaznivých prejavov na krajinu a&nbsp;poľnohospodárstvo. Problémom sú nánosy, ktoré teba z&nbsp;nádrží odstrániť.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/5RtyuRM.jpg"></figure><p></p>
+
+<p><em>„Tieto vodné stavby budované na zavlažovanie sú dnes zanesené sedimentami z&nbsp;pôdy alebo lístia. Množstvo kalov sa roky hromadí na dne vodných nádrží a&nbsp;znižuje funkčnosť stavieb a&nbsp;využitie v&nbsp;poľnohospodárstve“,</em> hovorí tajomník Slovenského rybárskeho zväzu Bohuš Cintula /zväz je členom Slovenskej poľnohospodárskej a&nbsp;potravinárskej komory - SPPK/.</p>
+
+<p>Približne 1/3 produkcie rýb od slovenských rybárov pochádza z vodných stavieb, ako sú vodné nádrže a rybníky. Ako najväčší problém súvisiaci s klimatickými zmenami a chovom rýb v rybníkoch a vodných nádržiach považuje Združenie chovateľov rýb na Slovensku /člen SPPK/ znížený zásobný objem a tak aj retenčnú schopnosť týchto vodných plôch, nakoľko sú takmer všetky&nbsp; tieto vodné stavby značne zanesené sedimentami. Dnes nám chýba najmä prevencia proti zanášaniu týchto nádrží a stále sa nám nedarí vo väčšej miere tieto nádrže čistiť - uvádza združenie vo svojom stanovisku.</p>
+
+<p><em>„Keby boli nádrže vyčistené, mohli by prijať oveľa viac vody. Mrhanie vodou, ktorá sa v&nbsp;posledných rokoch aj u&nbsp;nás stáva strategickou surovinou, je preto obrovskou chybou s&nbsp;vážnymi následkami v&nbsp;poľnohospodárstve. Netreba pritom vymýšľať nič prevratné, žiadne piate koleso na voze, ale využívať to, čo sme si v&nbsp;minulosti vybudovali“, </em>myslí si predseda Zemiakárskeho a&nbsp;zeleninárskeho zväzu SR Jozef Šumichrast /zväz je členom SPPK/.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/EiMB1gm.jpg"></figure><p></p>
+
+<p>Mať vyčistené a&nbsp;opravené vodné nádrže a&nbsp;k&nbsp;tomu moderné závlahy na podstatne väčšej ploche než v&nbsp;súčasnosti je jedným z riešení, ako čeliť klimatickým zmenám a&nbsp;rozumne využívať vodu v&nbsp;poľnohospodárstve. Poľnohospodári, rybári a&nbsp;aj Slovenský vodohospodársky podnik volajú preto po systémových riešeniach, ako vodné nádrže vyčistiť a&nbsp;prinavrátiť im ich pôvodnú funkciu a&nbsp;význam. Riešenia vidia v&nbsp;dvoch rovinách:</p>
+
+<h2 class="doc-subheading">Úprava legislatívy</h2>
+
+<p>Na Slovensku chýba jasný predpis na nakladanie s&nbsp;kalom z&nbsp;vodných nádrží, ktorý nie je nebezpečný. &nbsp;V praxi to znamená, že dnes takmer nikto nádrže nečistí, prípadne sediment len uloží na breh. Tento druh sedimentu pritom obsahuje dôležité látky a pre pôdu cenné živiny ako napríklad dusík, fosfor, či draslík. V&nbsp;rámci SR ide pritom o&nbsp;celkový objem nevyužitého kalu v&nbsp;radoch niekoľko státisícoch m3/rok.&nbsp; Pri súčasnej cene hnojív a&nbsp;nedostatku maštaľného hnoja ako zdroja uhlíka v pôde (v&nbsp;dôsledku znižujúceho sa počtu živočíšnych chovov) je priam absurdné, že sa vo veci nepripravuje žiadna legislatívna úprava.</p>
+
+<p>Ak by Slovensko dopracovalo legislatívu, krajina by z&nbsp;toho mohla mať viacnásobný úžitok: vyššia schopnosť vodných nádrží zadržiavať vodu v&nbsp;krajine, efektívne zavlažovanie, efektívny chov rýb, úrodnejšia pôda a&nbsp;mikroklíma. Jednoduchým riešením by sme navyše prispeli k&nbsp;cirkulárnej ekonomike v&nbsp;pôdohospodárstve.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/9OZHkgr.jpg"></figure><p></p>
+
+<p>Navyše, pred rokom schválila vlády SR Koncepciu vodnej politiky do roku 2030 s výhľadom do roku 2050, ktorá chce zvyšovať kapacity na zadržiavanie vody v&nbsp;krajine aj pri tých stavbách, v&nbsp;ktorých sú nánosy dnových sedimentov a&nbsp;kalov. V&nbsp;praxi však tomu zatiaľ bráni práve chýbajúca legislatíva.</p>
+
+<h2 class="doc-subheading">Finančné zdroje</h2>
+
+<p>Samozrejmou súčasťou vodozádržných opatrení v&nbsp;krajine, ich vyčistenia a&nbsp;zefektívnenia závlahových sústav je aj požiadavka pestovateľov na nové finančné zdroje. Príkladom by nám v&nbsp;tom mohli byť naši českí susedia.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/839JjkS.jpg"></figure><p></p>
+
+<p>České ministerstvo životného prostredia totiž začiatkom mája informovalo, že na čiastkové opravy malých vodných nádrží je&nbsp;<a href="https://dotace.nature.cz/-/vyzva-npo-popfk-c-2-pro-rok-2023" class="external" target="_blank" rel="noopener noreferrer">zo špeciálnej výzvy</a>&nbsp;z Plánu obnovy a odolnosti vyčlenených viac ako 30 miliónov korún (cca. 1,3 mil. eur). Peniaze môže majiteľ alebo nájomca vodnej nádrže využiť na opravu hrádzí, vyťaženie sedimentu či vysadenie kríkov a&nbsp;stromov.</p>
+
+<p><span><span><b>Vyjadrenie Združenia chovateľov rýb na Slovensku </b></span></span></p>
+
+<p>Združenie chovateľov rýb na Slovensku&nbsp;/člen Slovenskej poľnohospodárskej a&nbsp;potravinárskej komory/ podporuje myšlienku, s ktorou prichádza SPPK, ktorej cieľom je hľadať spôsob a finančné zdroje na využitie projektovanej kapacity existujúcich vodných nádrží na Slovensku - pre ich viacúčelové využitie napr. na závlahy a tiež pre plnohodnotnú produkciu rýb na Slovensku prípadne aj iné účely.</p>
+
+<p>Rybárstvo&nbsp;na Slovensku&nbsp;okrem vodných nádrží využíva pre chov rýb aj náš rybničný fond a špeciálne rybochovné&nbsp;zariadenia, v ktorých produkujú naši členovia lososovité a nížinné druhy rýb. Dominantným druhom v týchto vodných plochách je kapor rybničný a pstruh dúhový. Približne jedna tretina produkcie slovenských rybárov pochádza z vodných stavieb, ako sú vodné nádrže a rybníky.</p>
+
+<p>Ako najväčší problém súvisiaci s klimatickými zmenami a chovom rýb v rybníkoch a vodných nádržiach aktuálne vnímame znížený zásobný objem a tak aj retenčnú schopnosť týchto vodných plôch, nakoľko sú takmer všetky&nbsp; tieto vodné stavby značne zanesené dnovými sedimentami. Dnes nám chýba najmä prevencia proti zanášaniu týchto nádrží a stále sa nám nedarí vo väčšej miere tieto nádrže čistiť.</p>
+
+<p>Preto potrebujeme hľadať spoločne s poľnohospodárskym využívaním krajiny také spôsoby, ktoré nebudú zdrojom erózie a splachov z polí, ktoré tento stav ešte zhoršujú! Zároveň je potrebné realizovať dlhodobo plánované odbahnenie vodných nádrží, čo si vyžaduje nielen finančné krytie, ale aj chuť riešiť niektoré problémy - najmä nakladanie s odťažením sedimentov z dna našich vodných nádrží.</p>
+
+<p>Prípadné čerpanie vody z vodných nádrží s chovom rýb pre účel zavlažovania bez vykonania &nbsp;hydromelioračných zásahov (odbahnenia)&nbsp;by v&nbsp;nich výrazne obmedzilo&nbsp;možnosť&nbsp; chovu rýb. Preto vítame túto snahu SPPK začať širokú diskusiu a hľadať zdroje na odbahnenie&nbsp;vodných&nbsp;nádrží a pripraviť kvalitné podklady pre reálne projekty. Podporujeme túto iniciatívu a máme eminentný záujem byť prítomní pri tejto diskusii.</p>
+
+<p>Netreba však zabúdať ani na ostatných partnerov, bez ktorých nebudeme&nbsp;v tejto snahe úspešní. Je potrebné sa stretnúť so správcom vodných nádrží (SVP, š.p. Bratislava) a tiež si uvedomiť, že počas realizácie&nbsp;odbahnenia budú chovatelia rýb prichádzať krátkodobo o svoju produkciu rýb&nbsp;a teda aj o zdroj príjmov. Preto navrhujeme, aby sme spoločne vytvorili&nbsp; zoznam prioritných vodných stavieb, na ktorých sa nájde spoločný konsenzus. Potrebujeme projekčne podchytiť tieto plánované investície, aby sme vedeli, o aké objemy sedimentov ide a koľko to bude celé stáť.</p>
+
+<p>Po realizácii prác na odbahnení bude tiež potrebné pristúpiť k zmenám manipulačných poriadkov a tiež k úpravám prevádzkových poriadkov a napríklad tiež k úprave minimálnych zostatkových prietokov. Prehĺbenie nádrží prinesie v konečnom dôsledku aj ochladenie vody, čo bude mať veľký význam pri chove rýb najmä v letných mesiacoch. Tam, kde nejde o významné biotopy pod vodnými nádržami, nie je predsa žiaduce, aby sme vypúšťali&nbsp; "jalovo" tak žiadanú surovinu, akou je voda, ktorá nám bude následne v nádrži chýbať. V súvislosti s klimatickými zmenami je potrebné začať hľadať spôsob a&nbsp;možnosti, ako nastaviť optimálne využívanie existujúcich vodných stavieb tak, aby z nich mal úžitok čo najširší okruh užívateľov a aby vodné nádrže aj v ďalších rokoch plnili účel, za ktorým boli vybudované.</p>
+
+<p>Chovatelia&nbsp;rýb na Slovensku sú pripravení hľadať spôsob ako spoločne vyriešiť tento problém.</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

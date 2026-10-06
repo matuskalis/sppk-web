@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nová nádej na uživenie sveta? — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">medzinarodne aktivity</a><span>/</span><a href="../index.html">SPRAVY Z BRUSELU</a><span>/</span>Nová nádej na uživenie sveta-</nav>
+
+  <article>
+    <h1 class="doc-title">Nová nádej na uživenie sveta?</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Igor Šarmír, odbor potravinárstva a obchodu, SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">19. apríla 2016</span></p>
+
+    <div class="doc-body">
+<p>Dnes dominantný model industriálneho poľnohospodárstva, zavedený povojnovou zelenou revolúciou, je na konci s&nbsp;dychom. Ako sme poukázali v&nbsp;<a href="https://www.sppk.sk/clanok/1198">článku o tejto téme</a>, nie je možné očakávať, aby sme pri predpoklade nevyčerpateľnosti zdrojov a&nbsp;nerešpektovaní prírody mohli v&nbsp;priebehu nasledujúcich desaťročí vyhovieť požiadavkám na výrobu stále väčšieho množstva kvalitných potravín.</p>
+
+
+
+<p>Na jednej strane sú prírodné zdroje našej planéty, najmä úrodnej pôdy a&nbsp;sladkej vody, objektívne obmedzené, na druhej strane je tento potenciál systematicky znižovaný práve environmentálne neudržateľnými poľnohospodárskymi praktikami, ktorých účinnosť okrem toho klesá. Globálni stratégovia sú preto nútení riešiť komplikovanú rovnicu, ako stále viac vyrábať pri ubúdajúcich zdrojoch vstupov. Jednou zo sľubných&nbsp;možných je koncept ekologicky intenzívneho poľnohospodárstva.<a href="#_ftn1" name="_ftnref1" title="">[1]</a></p>
+
+
+
+<h2 class="doc-subheading">Ekologicky intenzívnejšie = inteligentnejšie</h2>
+
+
+
+<p>Tento koncept sa už roky rozvíja a&nbsp;je predmetom systematického vedeckého výskumu bez toho, aby o&nbsp;tom bola širšia verejnosť primerane informovaná. Ekologická intenzifikácia je definovaná ako „koncipovanie produkčnejších a&nbsp;udržateľnejších výrobných systémov, šetrných v&nbsp;oblasti vstupov a&nbsp;menej škodlivých na životné prostredie“. Znamená tiež vytvorenie odrôd lepšie prispôsobených k&nbsp;svojmu prostrediu, vynájdenie nových techník na boj proti chorobám a&nbsp;škodcom, lepšie pochopenie fungovania prírody v&nbsp;záujme využívania zdrojov bez ich zničenia, vyrábanie viac a&nbsp;skoncovanie s&nbsp;praktikami založenými na prehnanom a&nbsp;masívnom používaní pesticídov, syntetických hnojív, vody a&nbsp;fosílnej energie.</p>
+
+
+
+<p>Jedným slovom, ide o „inteligentnejšie“ poľnohospodárstvo, ktoré sa skôr prírodou inšpiruje než by ju malo popierať. Dôležité je uvedomiť si hneď na začiatku, že v&nbsp;nijakom prípade nejde o&nbsp;univerzálne aplikovateľný technologický korpus, ale o&nbsp;citlivo zvážené a&nbsp;meniace sa postupy v&nbsp;závislosti od mikroregiónu, jeho prírodných podmienok a&nbsp;konkrétnych produkčných zámerov. Predpokladom je teda poľnohospodárstvo na podstatne vyššej vedeckej báze, s&nbsp;ktorým už existujú pomerne bohaté, hoci nie príliš známe skúsenosti vo vyspelých i&nbsp;rozvojových krajinách.</p>
+
+
+
+<p>Aké sú základné a&nbsp;veľmi konkrétne princípy ekologicky intenzívneho poľnohospodárstva?</p>
+
+
+
+<h2 class="doc-subheading"><em>Zanechanie orania a&nbsp;zjednodušené pestovateľské techniky</em></h2>
+
+
+
+<p>Hlavným zámerom orania je odstrániť burinu a&nbsp;zakopať organickú hmotu na urýchlenie jej rozkladu. Napriek tomu, že ide o&nbsp;stovky rokov starú agrárnu praktiku, ktorá je v&nbsp;povedomí populácie akýmsi symbolom poľnohospodárstva, má celý rad nevýhod. V&nbsp;prvom rade je energeticky náročná bez ohľadu na to, či sa využívajú ťažné zvieratá alebo traktory: vo Francúzsku ešte v&nbsp;rokoch 1950 bola jedna tretina poľnohospodárskych plôch určená iba na zabezpečenie krmiva pre ťažné kone alebo voly. Na preoranie jedného hektára je dnes treba 15 až 40 litrov pohonných hmôt (v závislosti od charakteru pôdy). To ale zďaleka nie je všetko: v&nbsp;protiklade s&nbsp;tým, čo si myslí väčšina laikov, namiesto toho aby sa stala kyprejšou je pôda stále viac stlačená.</p>
+
+
+
+<p>Má to za následok vytvorenie&nbsp; tzv. oracej podošvy“, pretože ničí všetky živé siete, ktoré boli v&nbsp;pôde minulosti. Okrem toho, v dôsledku stále hlbšieho orania sa na povrch často dostáva skelet, ktorý prekáža rastu plodín; na oraných poliach sú vystavené jesenným vetrom zvyšky hnojiva z&nbsp;predchádzajúceho roku, čím sa transformujú na skleníkový plyn; v&nbsp;pahorkatinnom a&nbsp;kopcovitom reliéfe, jesenné a&nbsp;zimné dažde padajúce na holý povrch spôsobujú obrovské erózie; sú ničené zemské červy a&nbsp;to buď priamo alebo nepriamo (sú ponúknuté ako pokrm vtákom); rovnako sú ničené enormné siete vytvorené podzemnými hubami; a&nbsp;napokon, v&nbsp;dôsledku tejto techniky ostáva zemský povrch holý a&nbsp;krajina šedá alebo hnedá 6 mesiacov do roka, bez toho aby sa primerane využíval potenciál slnečných lúčov na jeseň a&nbsp;v&nbsp;zime, pretože absencia rastlín neumožňuje zachytávať uhlík&nbsp; a&nbsp;dusík. Je rozumné využívať našu pôdu iba jeden polčas, keď cieľom môžu byť 2 úrody za rok?</p>
+
+
+
+<p>Všetky tieto nevýhody vedú stále viac poľnohospodárov k&nbsp;skoncovaniu s&nbsp;oraním. V&nbsp;súčasnosti sa oranie realizuje iba na polovici pôd v&nbsp;Brazílii a&nbsp;začiatkom rokov 2010 sa odhadovalo, že vo svete nie je predmetom orania asi 100 miliónov hektárov.</p>
+
+
+
+<p>Zanechaním orania sa poľnohospodári nepriamo stávajú „chovateľmi zemských červov“ a&nbsp;zhromažďovateľmi doplňujúcich rastlín, čím výrazne prispievajú k&nbsp;úrodnosti pôdy. Ak sa do práce pustí niekoľko stoviek červov na meter kubický, teda niekoľko miliónov na hektár, pričom každý z&nbsp;nich strávi za deň množstvo zeme, ktoré je 1,5 násobkom jeho váhy, úrodnosť a&nbsp;absorbčná kapacita polí sa výrazne vylepšia a&nbsp;korene rastlín preniknú ľahšie do pôdy využijúc už „vyrazené“ chodbičky.</p>
+
+
+
+<p>Je ale potrebné počítať s&nbsp;určitým prechodným obdobím (3-5 rokov), kým sa úroveň biodiverzity v&nbsp;pôde vráti do svojho pôvodného stavu a&nbsp;začne prinášať benefity.</p>
+
+
+
+<h2 class="doc-subheading"><em>Asociácie rastlín, ktoré pomáhajú rásť</em></h2>
+
+
+
+<p>Na rozdiel od skutočných prírodných priestorov, ktoré sú vždy zložené zo zmesi desiatok druhov a&nbsp;doplňujúcich odrôd, je pole vysadené jedinou odrodou toho istého rastlinného druhu veľmi zraniteľné voči útokom vírusov a&nbsp;škodcov. Dá sa dokonca povedať, že veľké plochy vysadené monokultúrami priťahujú škodcov ako majáky. Okrem toho sa už niekoľko storočí vie, že ak sa niekoľko rokov po sebe vysadí tá istá obilnina na to isté pole, pôda sa rýchlo vyčerpáva a&nbsp;úrody začínajú klesať. Preto bola vynájdená rotácia kultúr, keď dochádza k&nbsp;striedaniu doplňujúcich kultúr odoberajúcich z&nbsp;pôdy odlišné prvky a&nbsp;ktoré ponechávajú v&nbsp;zemi zásoby živín pre nasledujúce kultúry. Ale vzhľadom obrovský dopyt po obilninách, namiesto rotácií kultúr sa vo veľkom začali využívať syntetické hnojivá a&nbsp;narastajúce problémy so škodcami sa riešili zvýšeným používaním pesticídov, čo ale vytvára celý rad nevýhod. Riešenie ponúkané ekologicky intenzívnym poľnohospodárstvom spočíva v&nbsp;nájdení najlepších kombinácií druhov a&nbsp;odrôd, tak aby sa na jednej strane dalo vyprodukovať veľa (osobitne obilnín), pri výraznom znížení, či dokonca zrušení chemických vstupov.</p>
+
+
+
+<p>Napríklad sa môžu sadiť plodiny s&nbsp;vertikálnymi a&nbsp;hlbokými koreňmi spolu s&nbsp;inými, ktorých korene sú horizontálne (povrchové); plodiny zachytávajúce dusík z&nbsp;ovzdušia (strukoviny) spolu s&nbsp;inými, ktoré potrebujú absorbovať dusík koreňmi (obilniny); plodín, ktoré rastú do väčšej výšky spolu s&nbsp;inými, ktoré „pokrývajú povrch“: kukurica s&nbsp;hráškom alebo s&nbsp;arašidmi. Možností je viac. Inou myšlienkou je odpudzovať škodcov dvojitým mechanizmom: vysadiť to isté pole doplňujúcou kultúrou, ktorá ich odpudzuje (efekt „push“) a&nbsp;vysadením tretieho druhu na okraji, ktorý ich priťahuje (efekt „pull“) &nbsp;V&nbsp;tejto oblasti sme iba na začiatku experimentov a&nbsp;jediným obmedzením je predstavivosť ľudí.</p>
+
+
+
+<p>Tieto rozličné plodiny môžu byť pomiešané, ale za predpokladu, že môžu byť vysadené v&nbsp;tom istom čase, pri raste sa vzájomne doplňovať bez toho aby si príliš konkurovali, že môžu byť spolu zozbierané a&nbsp;ľahko separované (musia mať zrná rozličného priemeru). Môžu byť tiež vysadené v&nbsp;striedajúcich sa pásoch, viac alebo menej širokých, čo umožní vyriešiť niektoré praktické problémy.</p>
+
+
+
+<p>Tieto metódy výrazne doplňujú techniky „bez orania“. Zabezpečiť pokrytie polí 365 dní do roka vďaka po sebe idúcim zmesiam vzájomne sa doplňujúcich rastlín je veľmi komplexnou operáciou, v&nbsp;ktorej sa zatiaľ veľa tápe, ale na druhej strane je veľmi sľubná.</p>
+
+
+
+<h2 class="doc-subheading"><em>Agrolesníctvo v&nbsp;záujme využívania pôdy do väčšej hĺbky</em></h2>
+
+
+
+<p>Akonáhle sa tam, kde to podnebie umožňuje, podarí pokryť zem počas celého roku zmesou vzájomne sa doplňujúcich rastlín, existuje ešte ďalší spôsob ako získavať živiny z&nbsp;pôdy prenikaním ďalej do hĺbky. Korene obilnín intenzívne využívajú iba povrchovú vrstvu polí (hoci ako sme videli, siete zemských červov a&nbsp;húb zabezpečujú cirkuláciu obmedzeného množstva výživných prvkov). Iba niekoľko desiatok centimetrov pre čerpanie vody, nitrátov, fosfátov,&nbsp;draselných látok a&nbsp;iných výživových materiálov, stačí to? Korene stromov ale prenikajú niekoľko metrov do hĺbky, čo umožňuje využívať živiny z&nbsp;väčšej hĺbky vo forme uhynutých plodov a&nbsp;listov týchto stromov. Z&nbsp;toho vznikla myšlienka agrolesníctva: kombinovať stromy a&nbsp;ročné kultúry, ktoré sa doplňujú a&nbsp;vzájomne si pomáhajú rásť. Táto technika okrem toho umožňuje zachovávať biodiverzitu, pretože stromy poskytujú úkryt pre „pomocníkov kultúr“: lastovičky, sýkorky, sovy, netopiere ...</p>
+
+
+
+<p>Pre predstavu ohľadom rozsahu, rady stromov musia byť vysadené približne každých 25-30 metrov (okolo 50 stromov na hektár). Ide o&nbsp;to, aby sa po čase obilniny alebo zelenina „posadili“ na súvislý podklad koreňov stromov, so zámerom maximálne využiť všetky disponibilné zdroje. V&nbsp;teplých oblastiach strom okrem toho zabezpečuje trochu tieňa a&nbsp;sviežosti, ktoré sú tu vítané a&nbsp;kompenzujú zníženie svetlosti. Vo veterných zónach chránia rady stromov krehkejšie rastliny.</p>
+
+
+
+<h2 class="doc-subheading"><em>Oprieť sa o&nbsp;pomocníkov kultúr a&nbsp;inšpirovať sa prírodou</em></h2>
+
+
+
+<p>Každý poľnohospodár zaoberajúci sa ekologicky intenzívnym poľnohospodárstvom musí „pestovať“ pomocníkov kultúr. Tento aspekt bol po desaťročia zanedbávaný, pričom sa dávala prednosť chemickej ochrane. Vie sa napríklad, že lienky skonzumujú denne od 80 do 150 vošiek, zatiaľ čo včely navštívia a&nbsp;opelia 250 kvetov za hodinu. Existuje ale celý rad ďalších užitočných živočíchov žijúcich pod zemou i&nbsp;nad zemou. Nemožno zabúdať ani na vtáky. Sýkorka požerie medzi 6000 až 9000 húseníc, teda približne 30 kg ročne. Jeden francúzsky pestovateľ jabĺk umiestnil vo svojom sade 700 hniezd sýkoriek, ktoré sa živia larvami jedného motýľa, parazita na jablkách, čím skoncoval s&nbsp;používaním insekticídov. Tak isto jedna sova zhltne ročne 2000 kusov koristi (hraboš poľný a&nbsp;pod.); netopier až 300 kusov hmyzu denne; lastovička nalieta denne 300 km pri hľadaní mušiek, komárov a&nbsp;iného lietajúceho hmyzu.</p>
+
+
+
+<p><strong><em>A&nbsp;ak by hlavnou zložkou výživy kráv bola tráva...</em></strong></p>
+
+
+
+<p>V&nbsp;súčasnosti je hlavnou zložkou výživy hovädzieho dobytka (80% mliečnych chovov) silážna kukurica. Pretože je veľmi energetická, ale chudobná na proteíny, chovateľ musí nakupovať veľké množstvá sójových prípravkov ako výživný doplnok. Toto riešenie mu umožňuje vyprodukovať veľa mlieka na jednu kravu, ale so slabou obchodnou maržou na liter. Citeľný pokles mlieka v&nbsp;roku 2015 potvrdil extrémnu hospodársku krehkosť tohto krmivového systému. K&nbsp;tomu treba dodať, že rozširovanie plôch určených v&nbsp;Južnej Amerike na pestovanie sóje, na vyhovenie dopytu z&nbsp;Európy a&nbsp;Ázie, vedie k&nbsp;dramatickému odlesňovania (2&nbsp;400 000 ha ročne!) , čo iba urýchľuje globálne otepľovanie.</p>
+
+
+
+<p>Výskumné práce i&nbsp;praktické skúsenosti ale ukazujú, že najlepšie hospodárske výsledky sa dosahujú na farmách, kde chovatelia dokážu optimalizovať krmovinovú autonómiu výsadbou najvhodnejších zmesí tráv a&nbsp;strukovín. Na dočasných lúkach môžu byť tieto zmesi zložené z&nbsp;viacerých odrôd ďateliny s&nbsp;trochou lucerny, k&nbsp;čomu sa pridajú tri alebo 4 druhy tráv. Tento krmovinový model tiež predpokladá, že zvieratá budú vo zvýšenej miere chodiť na pašu na okolité lúky.</p>
+
+
+
+<p>Na druhej strane, v&nbsp;dnes dominantnom industriálnom modely chovu zvieratá prakticky nepoznajú lúku, čo výrazne zhoršuje karbónovú bilanciu každého vyprodukovaného litra mlieka. Pri nedostatku tráv, zvieratá konzumujú stále viac zrna, ktorého hektárové výnosy sú výrazne nižšie ako v&nbsp;prípade tráv a&nbsp;zeleninových rastlín.</p>
+
+
+
+<h2 class="doc-subheading"><em>Potreba výrazne obmedziť “cestovanie“ agrárnych produktov</em></h2>
+
+
+
+<p>Ide o&nbsp;skoncovanie s&nbsp;masívnymi dovozmi ovocia a&nbsp;zeleniny, ktoré boli dopestované tisíce kilometrov od miesta ich spotreby. V&nbsp;dôsledku dohody o&nbsp;voľnom obchode medzi EÚ a&nbsp;Marokom sú členské krajiny zaplavované melónmi, paradajkami a&nbsp;tekvicami z&nbsp;tejto krajiny s&nbsp;katastrofálnou uhlíkovou bilanciou, pričom na druhej strane zavlažovanie týchto kultúr náročných na vodu a určených na vývoz spôsobí veľké problémy budúcim generáciám Maročanov, ktorý musia dovážať naše obilniny za vysokú cenu.</p>
+
+
+
+<p>V&nbsp;prospech ekologicky intenzívneho poľnohospodárstva teda hovorí veľa argumentov, ktoré sú ekonomického a&nbsp;zároveň i&nbsp;ekologického charakteru a&nbsp;prechod na tento model sa zdá byť nevyhnutný. Napriek tomu, kompetentní politici, na národnej i&nbsp;na európskej úrovni, o&nbsp;posune poľnohospodárskych politík v&nbsp;tomto smere ani nehovoria. Netreba sa ani pýtať prečo: nielenže ekologické poľnohospodárstvo má mocného nepriateľa, ktorým sú agrochemické lobby, ale uznanie oprávnenosti tohto konceptu by zároveň spochybnilo oprávnenosť presadzovania voľného obchodu ako dominantnej priority.</p>
+
+
+
+
+<hr>
+
+<p><a href="#_ftnref1" name="_ftn1" title="">[1]</a> Zdroje: Bruno Parmentier, „Faim zéro“, La Découverte 2014 a Le Monde diplomatique február 2011 a december 2015</p>
+
+
+
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

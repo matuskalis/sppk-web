@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cestovanie do SR – eHranica — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../index.html">Úvod</a><span>/</span><a href="../index.html">ostatne</a><span>/</span>Cestovanie do SR – eHranica</nav>
+
+  <article>
+    <h1 class="doc-title">Cestovanie do SR – eHranica</h1>
+    <p class="doc-meta"><span class="doc-meta-item">ÚVZ SR</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">14. marca 2022</span></p>
+
+    <div class="doc-body">
+<p><span><span><span><span><b><span><span>Platnosť nariadenia od:</span></span></b><span><span>&nbsp;<b>14. marca 2022</b></span></span></span></span></span></span></p>
+
+<p><span><span><span><span><b><span><span>Platnosť nariadenia do: odvolania</span></span></b></span></span></span></span></p>
+
+<p><span><span><span><span><b><span><span>Zdroj obsahu:</span></span></b><span><a href="https://korona.gov.sk/wp-content/uploads/2022/03/vyhlaska_28.pdf" class="external" target="_blank" rel="noopener noreferrer"><span><span>Vyhláška ÚVZ SR č. 28/2022 (PDF, 935 kB)</span></span></a></span></span></span></span></span></p>
+
+<p><span><span><span><span><b><span><span>eHranica</span></span></b></span></span></span></span></p>
+
+<p><span><span><span><span><b><span><span>Upozornenie</span></span></b></span></span></span></span></p>
+
+<p><span><span><span><span><b><span><span>Každá osoba&nbsp;nad 12 rokov a dvoch mesiacov veku&nbsp;vstupujúca na územie Slovenskej republiky, je v zmysle zákona povinná najneskôr bezprostredne pri vstupe na územie Slovenskej republiky sa registrovať prostredníctvom formulára&nbsp;<a href="http://korona.gov.sk/ehranica" target="_blank" class="external" rel="noopener noreferrer"><span>eHranica</span></a>&nbsp;a zároveň je povinná pri vstupe na územie Slovenskej republiky a počas svojho pobytu na území Slovenskej republiky sa na požiadanie preukázať príslušníkovi Policajného zboru alebo zamestnancovi regionálneho úradu verejného zdravotníctva dokladom preukazujúcim splnenie tejto podmienky.</span></span></b></span></span></span></span></p>
+
+<p><span><span><span><span><span><span>Povinnosť registrácie prostredníctvom formulára eHranica platí pre&nbsp;<b>každý vstup osoby na územie Slovenskej republiky</b>&nbsp;s týmito výnimkami:</span></span></span></span></span></span></p>
+
+<p><span><span><span><u><span>Platnosť registrácie v trvaní 6 mesiacov</span></u></span></span></span></p>
+
+<p><span><span><span><span>Registrácia prostredníctvom formuláru eHranica platí 6 mesiacov od momentu prvej registrácie pre:</span></span></span></span></p>
+
+<ul>
+	<li><span><span><span><span><span>osoby kompletne očkované,</span></span></span></span></span></li>
+	<li><span><span><span><span><span>osoby, ktoré ochorenie COVID-19 prekonali pred nie viac ako 180 dňami.</span></span></span></span></span></li>
+</ul>
+
+<p><span><span><span><u><span>Platnosť registrácie v trvaní 1 mesiac</span></u></span></span></span></p>
+
+<p><span><span><span><span>Registrácia prostredníctvom formuláru eHranica platí 1 mesiac od momentu prvej registrácie pre osoby, ktoré vstupujú na územie Slovenskej republiky&nbsp;a počas predchádzajúcich 14 dní navštívili len územie štátov Európskej únie, Island, Nórske kráľovstvo, Lichtenštajnské kniežatstvo, Švajčiarsku konfederáciu alebo Ukrajinu, a zároveň</span></span></span></span></p>
+
+<ul>
+	<li><span><span><span><span><span>majú trvalý pobyt alebo prechodný pobyt v Slovenskej republike, a ak súčasne spĺňajú tieto podmienky:</span></span></span></span></span>
+
+	<ul>
+		<li><span><span><span><span><span>majú uzatvorený pracovnoprávny vzťah, obdobný pracovný vzťah alebo miesto výkonu práce na území iných štátov Európskej únie, Islandu, Nórskeho kráľovstva, Lichtenštajnského kniežatstva, Švajčiarskej konfederácie alebo Ukrajiny a</span></span></span></span></span></li>
+		<li><span><span><span><span><span>sú držiteľmi potvrdenia od zamestnávateľa o takomto výkone práce alebo potvrdenia o takomto výkone práce,</span></span></span></span></span></li>
+		<li><span><span><span><span><span>vstupujú na a opúšťajú územie susedných štátov výhradne za účelom potreby výkonu práce,</span></span></span></span></span></li>
+	</ul>
+	</li>
+	<li><span><span><span><span><span>majú trvalý pobyt alebo prechodný pobyt v iných štátoch Európskej únie, Islandu, Nórskeho kráľovstva, Lichtenštajnského kniežatstva, Švajčiarskej konfederácie alebo v prihraničných oblastiach Ukrajiny do 100 km od otvoreného hraničného priechodu na územie Slovenskej republiky, a ak súčasne spĺňajú tietopodmienky:</span></span></span></span></span>
+	<ul>
+		<li><span><span><span><span><span>majú uzatvorený pracovnoprávny vzťah, obdobný pracovný vzťah alebo miesto výkonu práce na území&nbsp;Slovenskej republiky a</span></span></span></span></span></li>
+		<li><span><span><span><span><span>sú držiteľmi potvrdenia od zamestnávateľa o takomto výkone práce alebo o potvrdení o takomto výkone&nbsp;práce,</span></span></span></span></span></li>
+	</ul>
+	</li>
+	<li><span><span><span><span><span>sú občanmi Slovenskej republiky a majú trvalý pobyt alebo prechodný pobyt v prihraničných oblastiach&nbsp;susedného štátu do 100 km od otvoreného hraničného priechodu na územie Slovenskej republiky.</span></span></span></span></span></li>
+</ul>
+
+<p><span><span><span><span>Registrácia prostredníctvom formuláru eHranica platí 1 mesiac od momentu prvej registrácie ďalej pre osoby, ktoré:</span></span></span></span></p>
+
+<ul>
+	<li><span><span><span><span><span>majú trvalý pobyt alebo prechodný pobyt v Slovenskej republike a súčasne spĺňajú tieto podmienky:</span></span></span></span></span>
+
+	<ul>
+		<li><span><span><span><span><span>v dobe prekročenia hranice Slovenskej republiky aktívne navštevujú, študujú alebo sa uchádzajú o navštevovanie alebo štúdium na materskej, základnej, strednej škole alebo vysokej škole v Českej republike, Poľskej republike, Maďarsku, Ukrajine alebo Rakúskej republike a</span></span></span></span></span></li>
+		<li><span><span><span><span><span>sú schopné preukázať sa pri vstupe na územie Slovenskej republiky potvrdením o skutočnosti uvedenej v prvom bode a že prebiehajú uvedené skutočnosti prezenčnou formou (potvrdenie vydané školou),</span></span></span></span></span></li>
+	</ul>
+	</li>
+	<li><span><span><span><span><span>majú trvalý pobyt alebo prechodný pobyt v Českej republike, Poľskej republike, Maďarsku, Ukrajine alebo Rakúskej republike a súčasne spĺňajú tieto podmienky:</span></span></span></span></span>
+	<ul>
+		<li><span><span><span><span><span>v dobe prekročenia hranice Slovenskej republiky na území Slovenskej republiky aktívne navštevujú,&nbsp;študujú alebo sa uchádzajú o navštevovanie alebo štúdium na materskej, základnej, strednej škole alebo&nbsp;vysokej škole a</span></span></span></span></span></li>
+		<li><span><span><span><span><span>sú schopné preukázať sa pri vstupe na územie Slovenskej republiky potvrdením o takejto skutočnosti&nbsp;a že prebiehajú uvedené skutočnosti prezenčnou formou (potvrdenie vydané školou),</span></span></span></span></span></li>
+	</ul>
+	</li>
+	<li><span><span><span><span><span>majú trvalý pobyt alebo prechodný pobyt v Slovenskej republike a súčasne spĺňajú tieto podmienky:</span></span></span></span></span>
+	<ul>
+		<li><span><span><span><span><span>majú štatút žiaka základnej školy alebo strednej školy alebo štatút študenta dennej formy vysokoškolského štúdia,</span></span></span></span></span></li>
+		<li><span><span><span><span><span>zúčastňujú sa tréningového procesu, ako riadni členovia športového klubu v Českej republike, Poľskej republike, Maďarsku alebo Rakúskej republike,</span></span></span></span></span></li>
+		<li><span><span><span><span><span>nedovŕšili 26 rokov veku a</span></span></span></span></span></li>
+		<li><span><span><span><span><span>sú schopné preukázať sa pri vstupe na územie Slovenskej republiky potvrdením o uvedených skutočnostiach&nbsp;a že prebiehajú uvedené skutočnosti prezenčnou formou<br>
+		(potvrdenie vydané príslušnou inštitúciou).</span></span></span></span></span></li>
+	</ul>
+	</li>
+</ul>
+
+<p><span><span><span><u><span>Platnosť registrácie v trvaní 1 týždeň</span></u></span></span></span></p>
+
+<p><span><span><span><span>Registrácia prostredníctvom formuláru eHranica platí 1 týždeň od momentu prvej registrácie pre:</span></span></span></span></p>
+
+<ul>
+	<li><span><span><span><span><span>osoby po odsúhlasení Ministerstvom zdravotníctva Slovenskej republiky, ktoré vstupujú alebo opúšťajú územie Slovenskej republiky za účelom zabezpečenia akútnej a neodkladnej diagnostiky a liečby, protokolárnej prevencie a liečby, a pokračujúcej liečby zdravotných stavov svojich, alebo osôb im blízkym. Osoby, ktoré za týmto účelom vstupujú alebo opúšťajú územie Slovenskej republiky na obdobie kratšie než 12 hodín môže prejsť štátnu hranicu aj bez potvrdenia vystaveného Ministerstvom zdravotníctva Slovenskej republiky, ak sa preukážu v ten deň vystaveným lekárskym pozvaním na ošetrenie alebo pri návrate potvrdením o ošetrení. V prípade potreby pobytu presahujúceho 12 hodín je potrebné požiadať o posúdenie žiadosti prostredníctvom webovej stránky&nbsp;</span><a href="https://cestujem.standardnepostupy.sk/" class="external" target="_blank" rel="noopener noreferrer"><span><span>Ministerstva zdravotníctva SR</span></span></a><span>,</span></span></span></span></span></li>
+	<li><span><span><span><span><span>osoby po odsúhlasení Ministerstvom vnútra Slovenskej republiky vykonávajúce prevoz špeciálnej výjazdovej hasičskej a záchranárskej techniky nevyhnutne potrebnej pre zabezpečenie zásahovej činnosti hasičských jednotiek na vykonanie servisných úkonov a odborných prehliadok,</span></span></span></span></span></li>
+	<li><span><span><span><span><span>osoby, ktoré majú trvalý pobyt alebo prechodný pobyt na území Slovenskej republiky a súčasne spĺňajú tieto podmienky:</span></span></span></span></span>
+	<ul>
+		<li><span><span><span><span><span>prekračujú hranicu Slovenskej republiky z dôvodu návštevy zastupiteľského úradu cudzej krajiny&nbsp;akreditovaného pre Slovenskú republiku, ktorý sa nachádza na území Českej republiky, Maďarska alebo&nbsp;Rakúskej republiky, na dobu kratšiu než 12 hodín,</span></span></span></span></span></li>
+		<li><span><span><span><span><span>sú schopné preukázať sa pri vstupe na územie Slovenskej republiky potvrdením o takýchto skutočnostiach.</span></span></span></span></span></li>
+	</ul>
+	</li>
+</ul>
+
+<p><span><span><span><b><span><span>Upozornenie</span></span></b></span></span></span></p>
+
+<p><span><span><span><b><span><span>Osoby vstupujúce na územie Slovenskej republiky leteckou dopravou sú podľa zákona najneskôr pri vstupe povinné vyplniť elektronický formulár na vyhľadanie cestujúceho v súvislosti s ochranou verejného zdravia zverejnený na webovej stránke&nbsp;</span></span></b><a href="https://www.mindop.sk/covid/" target="_blank" class="external" rel="noopener noreferrer"><b><span><span>Ministerstva dopravy SR</span></span></b></a><b><span><span>.</span></span></b></span></span></span></p>
+
+<p><span><span><span><b><span><span>Definície osôb a ich povinnosti</span></span></b></span></span></span></p>
+
+<p><span><span><span><b><span><span>Definícia plne očkovanej osoby</span></span></b></span></span></span></p>
+
+<p><span><span><span><span><span>Za kompletne očkovanú osobu sa považuje:</span></span></span></span></span></p>
+
+<ul>
+	<li><span><span><span><span><span><span>osoba najmenej 14 dní po aplikácii druhej dávky očkovacej látky proti ochoreniu COVID-19 s dvojdávkovou schémou, avšak nie viac ako 9 mesiacov po aplikácii druhej alebo posilňovacej (booster) dávky,</span></span></span></span></span></span></li>
+	<li><span><span><span><span><span><span>osoba najmenej 21 dní po aplikácii prvej dávky očkovacej látky proti ochoreniu COVID-19 s jednodávkovou schémou, avšak nie viac ako 9 mesiacov po aplikácii prvej alebo posilňovacej (booster) dávky, alebo</span></span></span></span></span></span></li>
+	<li><span><span><span><span><span><span>osoba najmenej 14 dní po aplikácii prvej dávky očkovacej látky proti ochoreniu COVID-19, ak bola prvá dávka očkovania proti ochoreniu COVID-19 podaná v intervale do 180 dní od prekonania ochorenia COVID-19, avšak nie viac ako 9 mesiacov po aplikácii tejto alebo posilňovacej (booster) dávky.</span></span></span></span></span></span></li>
+</ul>
+
+<p><span><span><span><b><span><span>Definícia osoby, ktorá ochorenie COVID-19 prekonala</span></span></b></span></span></span></p>
+
+<p><span><span><span><span><span>Za osobu, ktorá prekonala ochorenie COVID-19, sa považuje osoba, ktorá prekonala ochorenie COVID-19 pred nie viac ako 180 dňami.</span></span></span></span></span></p>
+
+<p><span><span><span><b><span><span>Povinnosť osôb preukázať skutočnosti o očkovaní/prekonaní</span></span></b></span></span></span></p>
+
+<p><span><span><span><span><span>Osoby vstupujúce na územie Slovenskej republiky uplatňujúce si status kompletne zaočkovanej osoby alebo osoby, ktorá prekonala ochorenie COVID-19,&nbsp;sú povinné pri vstupe na územie Slovenskej republiky a počas svojho pobytu na území Slovenskej republiky sa na požiadanie preukázať príslušníkovi Policajného zboru alebo zamestnancovi regionálneho úradu verejného zdravotníctva:</span></span></span></span></span></p>
+
+<ul>
+	<li><span><span><span><span><span><span>COVID preukazom EÚ,</span></span></span></span></span></span></li>
+	<li><span><span><span><span><span><span>iným hodnoverným úradným dokladom o zaočkovaní alebo prekonaní ochorenia COVID-19, pokiaľ ide o doklady vydané v členských štátov EÚ, pričom tento doklad musí byť vyhotovený v anglickom jazyku,</span></span></span></span></span></span></li>
+	<li><span><span><span><span><span><span>obdobným dokladom vydaným v tretích krajinách.</span></span></span></span></span></span>
+	<ul>
+		<li><span><span><span><span><span><span>V prípade dokladov vydaných v tretích krajinách musí národný certifikát obsahovať údaje o mene a priezvisku, dátume narodenia, v prípade osoby kompletne zaočkovanej aj o názve vakcíny a jej výrobcov, poradí očkovania a celkovom počte očkovaní danou látkou a dátum posledného očkovania. Národný certifikát musí byť opatrený pečiatkou k tomu poverenému orgánu danej krajiny alebo elektronicky overiteľný a musí byť vyhotovený aj v anglickom jazyku.</span></span></span></span></span></span></li>
+	</ul>
+	</li>
+</ul>
+
+<p><span><span><span><b><span><span>Upozornenie</span></span></b></span></span></span></p>
+
+<p><span><span><span><b><span><span>Osoba, ktorá nie je schopná takto sa preukázať, sa nepovažuje za kompletne zaočkovanú osobu alebo osobu, ktorá prekonala ochorenie COVID-19.</span></span></b></span></span></span></p>
+
+<p><span><span><span><b><span><span>Ak je stanovená povinnosť preukázať sa potvrdením o očkovaní proti ochoreniu COVID-19, potvrdením o prekonaní ochorenia COVID-19 alebo potvrdením o negatívnom výsledku testu na ochorenie COVID -19, je uvedené potvrdenie možné nahradiť digitálnym COVID preukazom EÚ, ak je vydaný.</span></span></b></span></span></span></p>
+
+<p><span><span><span><b><span><span>Karanténne opatrenia osôb vstupujúcich na územie Slovenskej republiky</span></span></b></span></span></span></p>
+
+<p><span><span><span><b><span><span>Upozornenie</span></span></b></span></span></span></p>
+
+<p><span><span><span><b><span><span>Pre všetky osoby, ktoré od 14. marca 2022 vstúpia na územie Slovenskej republiky, sa nariaďuje karanténa v domácom prostredí, ktorá sa skončí pri bezpríznakovom priebehu karantény dovŕšením jej 5. dňa alebo obdržaním negatívneho výsledku RT-PCR testu na ochorenie COVID-19, pričom laboratórnu diagnostiku na ochorenie COVID-19 je možné vykonať najskôr po vstupe na územie Slovenskej republiky.</span></span></b></span></span></span></p>
+
+<p><span><span><span><span><span>U detí do dvanástich rokov a dvoch mesiacov veku sa pri bezpríznakovom priebehu karantény, táto ukončuje ukončením povinnosti domácej karantény pre osoby žijúce s nimi v spoločnej domácnosti.</span></span></span></span></span></p>
+
+<p><span><span><span><span><span>Všetkým osobám žijúcim&nbsp;<b>v spoločnej domácnosti</b>&nbsp;s&nbsp;osobami, ktoré sú povinné dodržiavať karanténu,&nbsp;<b>nariaďuje sa karanténa&nbsp;v&nbsp;domácom prostredí</b>, ktorá sa skončí dňom&nbsp;<b>ukončenia karantény&nbsp;v&nbsp;domácom prostredí všetkých osôb, s ktorými táto osoba žije v spoločnej domácnosti.</b></span></span></span></span></span></p>
+
+<p><span><span><span><u><span>Všeobecná výnimka z karanténneho opatrenia</span></u></span></span></span></p>
+
+<p><span><span><span><span>Povinnosť karanténnej izolácie po návrate na územie Slovenskej republiky sa nevzťahuje na kompletne zaočkované osoby alebo osoby, ktoré prekonali ochorenie COVID-19.</span></span></span></span></p>
+
+<p><span><span><span><u><span>Ak sa vyskytnú klinické príznaky ochorenia COVID-19</span></u></span></span></span></p>
+
+<p><span><span><span><span>Všetky osoby, ktoré od 14. marca 2022 vstúpia na územie Slovenskej republiky, sú povinné v prípade vzniku klinických príznakov ochorenia COVID-19 do 14 dní od vstupu na územie Slovenskej republiky oznámiť túto skutočnosť bezodkladne telefonicky alebo elektronicky:</span></span></span></span></p>
+
+<ul>
+	<li><span><span><span><span>poskytovateľovi zdravotnej starostlivosti, ktorý poskytuje zdravotnú starostlivosť v špecializačnom odbore všeobecné lekárstvo, a s ktorým majú uzatvorenú dohodu o poskytovaní zdravotnej starostlivosti,</span></span></span></span></li>
+	<li><span><span><span><span>v prípade detí poskytovateľovi zdravotnej starostlivosti, ktorý poskytuje zdravotnú starostlivosť v špecializačnom odbore pediatria,</span></span></span></span></li>
+	<li><span><span><span><span>v prípade osôb, ktoré nemajú na území Slovenskej republiky uzatvorenú dohodu o poskytovaní zdravotnej starostlivosti, miestne príslušnému lekárovi samosprávneho kraja.</span></span></span></span></li>
+</ul>
+
+<p><span><span><span><b><span><span>Všetci poskytovatelia zdravotnej starostlivosti, ktorí poskytujú zdravotnú starostlivosť v špecializačnom odbore všeobecné lekárstvo alebo pediatria sa nariaďuje, aby všetkým osobám, ktoré sú povinné izolovať sa v karanténe, vystavili potvrdenie o dočasnej pracovnej neschopnosti na predpísanom tlačive z dôvodu karantény pre ochorenie COVID-19, ak tieto osoby o to požiadajú.</span></span></b></span></span></span></p>
+
+<p><span><span><span><b><span><span>Výnimky z karanténnych opatrení</span></span></b></span></span></span></p>
+
+<p><span><span><span><b><span><span>Upozornenie</span></span></b></span></span></span></p>
+
+<p><span><span><span><b><span><span>Karanténa v domácom prostredí po vstupe na územie Slovenskej republiky a rovnako ani povinnosť registrácie do eHranica sa nevzťahuje:</span></span></b></span></span></span></p>
+
+<ul>
+	<li><span><span><span><span><b><span><span>na osoby vstupujúce na územie Slovenskej republiky z územia susedného štátu, v ktorom boli bezprostredne pred príchodom vystavené ohrozeniu počas vnútroštátneho alebo medzinárodného ozbrojeného konfliktu,</span></span></b></span></span></span></span></li>
+	<li><span><span><span><span><b><span><span>na osoby, ktoré vstúpili na územie Slovenskej republiky z územia susedného štátu z obavy pred vnútroštátnym alebo medzinárodným ozbrojeným konfliktom a ďalej tranzitujú do krajiny v ktorej majú udelený pobyt alebo ktorej sú občanmi, pričom tieto osoby musia územie Slovenskej republiky opustiť najneskôr do sedemdesiatdva hodín od vstupu na územie Slovenskej republiky.</span></span></b></span></span></span></span></li>
+</ul>
+
+<p><span><span><span><b><span><span>Upozornenie</span></span></b></span></span></span></p>
+
+<p><span><span><span><b><span><span>Všetkým vyššie uvedeným osobám sa nariaďuje, aby sledovali svoj zdravotný stav a pri akýchkoľvek príznakoch respiračného ochorenia bezodkladne túto skutočnosť telefonicky oznámili:</span></span></b></span></span></span></p>
+
+<ul>
+	<li><span><span><span><span><b><span><span>poskytovateľovi zdravotnej starostlivosti, ktorý poskytuje zdravotnú starostlivosť tejto osobe v príslušnom&nbsp;špecializačnom odbore, a s ktorým má osoba uzatvorenú dohodu o poskytovaní zdravotnej starostlivosti,</span></span></b></span></span></span></span></li>
+	<li><span><span><span><span><b><span><span>ak osoba nemá na území Slovenskej republiky poskytovateľa zdravotnej starostlivosti, bezodkladne na číslo&nbsp;tiesňového volania 112.</span></span></b></span></span></span></span></li>
+</ul>
+
+<p><span><span><span><span><span>Zrušuje sa&nbsp;</span></span><a href="https://korona.gov.sk/wp-content/uploads/2022/01/vyhlaska_10.pdf" class="external" target="_blank" rel="noopener noreferrer"><span><span>Vyhláška Úradu verejného zdravotníctva Slovenskej republiky č.&nbsp;10/2022 V. v. SR, ktorou sa&nbsp;nariaďujú opatrenia pri ohrození verejného zdravia ku karanténnym povinnostiam osôb po vstupe na územie&nbsp;Slovenskej republiky</span></span></a><span><span>&nbsp;v znení&nbsp;</span></span><a href="https://korona.gov.sk/wp-content/uploads/2022/02/vyhlaska_21.pdf" class="external" target="_blank" rel="noopener noreferrer"><span><span>Vyhlášky Úradu verejného&nbsp;zdravotníctva Slovenskej republiky č.&nbsp;21/2022 V. v. SR.</span></span></a></span></span></span></p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

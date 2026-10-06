@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPPK – Sidebar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f0f2f0;
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Sidebar container ───────────────────────────────────────────── */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 340px;
+      margin: 0 auto;
+    }
+
+    /* ── Card shell ──────────────────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px 18px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    /* ── ① Calendar ──────────────────────────────────────────────────── */
+    .cal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .cal-title { font-size: 21px; font-weight: 700; color: #000; }
+    .cal-nav { display: flex; align-items: center; gap: 4px; }
+    .cal-nav button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #009a44;
+      font-size: 16px;
+      line-height: 1;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-family: 'Inter', sans-serif;
+    }
+    .cal-nav button:hover { background: rgba(0,154,68,0.08); }
+    .cal-month { font-size: 11.5px; font-weight: 700; color: #009a44; white-space: nowrap; letter-spacing: 0.03em; }
+
+    .cal-dow {
+      display: grid;
+      grid-template-columns: repeat(7,1fr);
+      gap: 2px;
+      margin-bottom: 4px;
+    }
+    .cal-dow span {
+      text-align: center;
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #aaa;
+      letter-spacing: 0.07em;
+      padding: 2px 0;
+    }
+    .cal-dow span.sunday { color: #009a44; }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7,1fr);
+      gap: 3px;
+    }
+    .cal-day {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      color: #222;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      margin: 0 auto;
+      border-radius: 50%;
+      cursor: default;
+    }
+    .cal-day.weekend { color: #bbb; }
+    .cal-day.event {
+      background: #009a44;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .cal-empty { width: 28px; height: 28px; }
+
+    /* ── ② Member / ③ Arbitration ────────────────────────────────────── */
+    .card-title { font-size: 21px; font-weight: 700; color: #000; margin-bottom: 6px; line-height: 1.3; }
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #009a44;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid rgba(0,154,68,0.3);
+      padding-bottom: 1px;
+    }
+    .card-link:hover { color: #007a35; border-bottom-color: #007a35; }
+
+    /* ── ④ Agrometeo ─────────────────────────────────────────────────── */
+    .weather-title { font-size: 14px; font-weight: 700; color: #000; margin-bottom: 14px; letter-spacing: 0.02em; }
+    .radar-placeholder {
+      width: 100%;
+      border-radius: 12px;
+      background: #f4f7f5;
+      border: 1px solid rgba(0,154,68,0.18);
+      overflow: hidden;
+      margin-bottom: 14px;
+      height: 130px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .radar-placeholder span { font-size: 10.5px; color: #aaa; letter-spacing: 0.04em; font-style: italic; }
+    .weather-strip {
+      display: grid;
+      grid-template-columns: repeat(5,1fr);
+      gap: 4px;
+      text-align: center;
+    }
+    .weather-day {
+      padding: 8px 4px;
+      border-radius: 8px;
+      background: rgba(0,154,68,0.06);
+    }
+    .weather-day .wi { font-size: 16px; line-height: 1.2; }
+    .weather-day .wd { font-size: 9.5px; font-weight: 600; color: #777; letter-spacing: 0.05em; margin-top: 2px; }
+    .weather-day .wt { font-size: 12px; font-weight: 700; color: #000; margin-top: 1px; }
+
+    /* ── ⑤ Campaign banners ──────────────────────────────────────────── */
+    .banners { display: flex; flex-direction: column; gap: 10px; }
+    .banner-link {
+      display: block;
+      text-decoration: none;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .banner-link.green { border: 1px solid rgba(0,154,68,0.22); background: #fafefb; }
+    .banner-link.grey  { border: 1px solid rgba(0,0,0,0.10); background: #fafafa; }
+    .banner-inner {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 16px;
+    }
+    .banner-inner span { font-size: 11px; color: #999; letter-spacing: 0.03em; font-style: italic; }
+
+    /* ── ⑥ Commodity tracker ─────────────────────────────────────────── */
+    .market-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .market-title { font-size: 21px; font-weight: 700; color: #000; }
+    .market-badge {
+      font-size: 10px;
+      font-weight: 600;
+      color: #009a44;
+      background: rgba(0,154,68,0.09);
+      padding: 3px 8px;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .commodity-row {
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .commodity-row:last-child { border-bottom: none; }
+    .commodity-name { font-size: 13px; font-weight: 700; color: #000; margin-bottom: 4px; }
+    .commodity-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .commodity-exchange { font-size: 10.5px; color: #999; font-weight: 400; }
+    .commodity-price-row { display: flex; align-items: center; gap: 5px; }
+    .commodity-price { font-size: 13px; font-weight: 700; color: #000; }
+    .market-footer {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .market-footer span { font-size: 10px; color: #bbb; }
+    .market-footer a { font-size: 10.5px; font-weight: 600; color: #009a44; text-decoration: none; letter-spacing: 0.04em; }
+    .market-footer a:hover { color: #007a35; }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+
+  <!-- ① Calendar -->
+  <div class="card">
+    <div class="cal-header">
+      <span class="cal-title">Kalendár</span>
+      <div class="cal-nav">
+        <button>‹</button>
+        <span class="cal-month">September 2026</span>
+        <button>›</button>
+      </div>
+    </div>
+    <div class="cal-dow">
+      <span>Po</span><span>Ut</span><span>St</span><span>Št</span><span>Pi</span><span>So</span><span class="sunday">Ne</span>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+
+  <!-- ② Become a member -->
+  <div class="card">
+    <div class="card-title">Staň sa členom SPPK</div>
+    <a href="#" class="card-link">Viac informácií o členstve →</a>
+  </div>
+
+  <!-- ③ Arbitration court -->
+  <div class="card">
+    <div class="card-title">Rozhodcovský súd SPPK</div>
+    <a href="#" class="card-link">Zistiť viac o rozhodcovskom súde →</a>
+  </div>
+
+  <!-- ④ Agrometeo / Weather -->
+  <div class="card">
+    <div class="weather-title">Agrometeo / Počasie</div>
+    <div class="radar-placeholder">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#009a44" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.45">
+        <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+      </svg>
+      <span>images/weather-radar-map.png</span>
+    </div>
+    <div class="weather-strip">
+      <div class="weather-day"><div class="wi">☀️</div><div class="wd">Pi</div><div class="wt">27°</div></div>
+      <div class="weather-day"><div class="wi">⛅</div><div class="wd">So</div><div class="wt">23°</div></div>
+      <div class="weather-day"><div class="wi">🌧</div><div class="wd">Ne</div><div class="wt">19°</div></div>
+      <div class="weather-day"><div class="wi">☀️</div><div class="wd">Po</div><div class="wt">26°</div></div>
+      <div class="weather-day"><div class="wi">🌤</div><div class="wd">Ut</div><div class="wt">24°</div></div>
+    </div>
+  </div>
+
+  <!-- ⑤ Campaign banners -->
+  <div class="banners">
+    <a href="#" class="banner-link green">
+      <div class="banner-inner">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#009a44" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.55">
+          <rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18"/><circle cx="8" cy="15" r="2"/><path d="M14 13h4M14 17h4"/>
+        </svg>
+        <span>images/hovorme-o-jedle.png</span>
+      </div>
+    </a>
+    <a href="#" class="banner-link grey">
+      <div class="banner-inner">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.55">
+          <rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18"/><circle cx="8" cy="15" r="2"/><path d="M14 13h4M14 17h4"/>
+        </svg>
+        <span>images/podpor-svoj-odbor.png</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- ⑥ Market commodity tracker -->
+  <div class="card">
+    <div class="market-header">
+      <span class="market-title">Trhové informácie</span>
+      <span class="market-badge">Poľnoinfo.sk</span>
+    </div>
+    <div id="commodities"></div>
+    <div class="market-footer">
+      <span>Aktualizované: 5. sep. 2026, 08:30</span>
+      <a href="#">Všetky ceny →</a>
+    </div>
+  </div>
+
+</aside>
+
+<script>
+  /* ── Calendar ── */
+  (function() {
+    const SEP_OFFSET = 1; // September 2026 starts on Tuesday (1 blank Mon cell)
+    const EVENT_DAYS = new Set([3, 10]);
+    const grid = document.getElementById("calGrid");
+    // blank offset cells
+    for (let i = 0; i < SEP_OFFSET; i++) {
+      const blank = document.createElement("div");
+      blank.className = "cal-empty";
+      grid.appendChild(blank);
+    }
+    for (let day = 1; day <= 30; day++) {
+      const col = (day + SEP_OFFSET - 1) % 7; // 0=Mon … 6=Sun
+      const isWeekend = col >= 5;
+      const isEvent = EVENT_DAYS.has(day);
+      const el = document.createElement("div");
+      el.className = "cal-day" + (isEvent ? " event" : isWeekend ? " weekend" : "");
+      el.textContent = day;
+      grid.appendChild(el);
+    }
+  })();
+
+  /* ── Commodities ── */
+  (function() {
+    const data = [
+      { name: "Pšenica potravinárska", exchange: "Burza MATIF Paríž",          price: "215,50 € / t", up: true  },
+      { name: "Kukurica kŕmna",        exchange: "Burza MATIF Paríž",          price: "183,25 € / t", up: false },
+      { name: "Repka ozimná",          exchange: "Burza MATIF Paríž",          price: "442,00 € / t", up: true  },
+      { name: "Jačmeň kŕmny",          exchange: "Komoditná burza Bratislava", price: "168,80 € / t", up: false },
+      { name: "Slnečnica",             exchange: "Komoditná burza Bratislava", price: "394,50 € / t", up: true  },
+    ];
+    const arrowUp   = `<svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,1 9,9 1,9" fill="#009a44"/></svg>`;
+    const arrowDown = `<svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,9 9,1 1,1" fill="#e03434"/></svg>`;
+    const container = document.getElementById("commodities");
+    data.forEach((c, i) => {
+      const row = document.createElement("div");
+      row.className = "commodity-row";
+      if (i === data.length - 1) row.style.borderBottom = "none";
+      row.innerHTML = `
+        <div class="commodity-name">${c.name}</div>
+        <div class="commodity-meta">
+          <span class="commodity-exchange">${c.exchange}</span>
+          <div class="commodity-price-row">
+            <span class="commodity-price">${c.price}</span>
+            ${c.up ? arrowUp : arrowDown}
+          </div>
+        </div>
+      `;
+      container.appendChild(row);
+    });
+  })();
+</script>
+
+</body>
+</html>

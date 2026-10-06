@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tlačová konferencia k zákonu o odpadoch — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Tlačová konferencia k zákonu o odpadoch</nav>
+
+  <article>
+    <h1 class="doc-title">Tlačová konferencia k zákonu o odpadoch</h1>
+    <p class="doc-meta"><span class="doc-meta-item">21. marca 2017</span></p>
+
+    <div class="doc-body">
+<p><span>Od 1. júla 2016 sa uplatňuje veľká novela zákona o&nbsp;odpadoch, ktorá zaviedla <strong>tzv. systém rozšírenej zodpovednosti výrobcov</strong>. Na základe tohto systému výrobcovia prispievajú do organizácií zodpovednosti výrobcov /OZV/ určitou sumou za všetky obaly, ktoré uvádzajú do obehu. Výška poplatku sa líši v&nbsp;závislosti od jednotlivých druhov obalov. OZV následne vyzbierané prostriedky prerozdeľujú obciam, ktoré za ne financujú systém separovaného zberu odpadov na území obcí. Celý systém slúži na plnenie limitov recyklácie odpadov z obalov vo výške limitov, ktoré predpísala Európska únia.</span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="http://i.imgur.com/tBml2Pp.jpg"></figure><p></p>
+
+
+
+<p>Problém slovenského systému je, že výrobca v&nbsp;skutočnosti nemá žiadny vplyv na výšku poplatkov, ktoré do systému platí. Náklady na prevádzku systému závisia od:</p>
+
+<ol>
+	<li>zmlúv medzi OZV a&nbsp;obcami o&nbsp;financovaní separovaného zberu,</li>
+	<li>zmlúv medzi obcami a&nbsp;zberovými spoločnosťami o&nbsp;prevádzke separovaného zberu.</li>
+</ol>
+
+<p>Tieto zmluvy sa uzatvárajú bez dohľadu výrobcov, resp. mimo systému verejného obstarávania.</p>
+
+
+
+<p>Medzi najviac postihnutých výrobcov patria potravinárske podniky. Systém rozšírenej zodpovednosti výrobcov bol zavedený bez diskusie s&nbsp;výrobcami a&nbsp;v&nbsp;rozpore so Smernicou EÚ. Potravinári považujú zavedený systém rozšírenej zodpovednosti výrobcov za:</p>
+
+
+
+<p><strong>NESPRAVODLIVÝ</strong>, pretože:</p>
+
+<ul>
+	<li>znamená 5-10-násobné zvýšenie nákladov výrobcov na odpady z&nbsp;obalov,</li>
+	<li>celý systém platia iba výrobcovia, pričom zberové spoločnosti, OZV, obce a&nbsp;občania sa iba „vezú“,</li>
+</ul>
+
+
+
+<p><strong>NETRANSPARENTNÝ</strong>, pretože:</p>
+
+<ul>
+	<li>výrobcovia systém platia, ale nevidia do reálnych nákladov na prevádzku systému a&nbsp;nemajú možnosť výšku poplatkov ovplyvniť,</li>
+	<li>zmluvy v&nbsp;systéme sa uzatvárajú bez verejného obstarávania a&nbsp;na dlhé časové obdobie (presahujúce funkčné obdobie toho-ktorého starostu alebo primátora),</li>
+</ul>
+
+
+
+<p><strong>NEEFEKTÍVNY</strong>, pretože:</p>
+
+<ul>
+	<li>občan má separovaný zber zadarmo, preto nie je motivovaný kupovať výrobky v&nbsp;opakovane použiteľných obaloch. Nedôsledné triedenie odpadu zároveň vyvoláva dodatočné náklady na dotrieďovanie, ktoré musia platiť výrobcovia,</li>
+	<li>systém ovládli záujmové skupiny, pre ktoré je nakladanie s&nbsp;odpadmi ich primárnym biznisom,</li>
+	<li>legislatívne prekážky bránia vytvoreniu konkurenčného prostredia medzi OZV. To za krátky čas viedlo k&nbsp;tomu, že dve najväčšie OZV majú zazmluvnených až 90 % obcí. <strong>Na Slovensku tak v&nbsp;oblasti odpadov z&nbsp;obalov vzniká prakticky monopolná situácia a&nbsp;prevádzka systému bude stále drahšia. </strong></li>
+</ul>
+
+
+
+<figure class="doc-figure"><img alt="" src="http://i.imgur.com/UthULJ6.jpg"></figure><p></p>
+
+
+
+<p>V&nbsp;dôsledku zle nastaveného systému rozšírenej zodpovednosti výrobcov <strong>došlo ku skokovitému zvýšeniu nákladov výrobcov na obaly v&nbsp;niektorých prípadoch až na 10-násobok</strong> (v závislosti od druhu materiálu: papier, plast – cca 4-násobok; sklo, kovové obaly, viacvrstvové kombinované materiály /VKM/ – až 10-násobok). <strong>Niektorým spoločnostiam len samotné náklady na zhodnotenie obalov stúpli až 10-násobne z&nbsp;0,2 % až na 3 % z&nbsp;obratu. </strong></p>
+
+
+
+<p><strong>Celkovo výrobcom potravín stúpli náklady na odpady z obalov medziročne zo 7 mil. € až na takmer 40 mil. €. Napriek takémuto masívnemu transferu finančných prostriedkov sa však miera recyklácie odpadov z&nbsp;obalov na Slovensku v&nbsp;zodpovedajúcej miere nezvýšila.</strong></p>
+
+
+
+<p>Potravinársky priemysel sa v&nbsp;súčasnosti nachádza v&nbsp;ťažkej situácii. Od roku 1989 k<strong>lesol počet zamestnancov o&nbsp;56 %</strong> (zo 65 tis. na 28,3 tis.). Kontinuálne sa zvyšuje <strong>záporné saldo obchodnej bilancie</strong> s&nbsp;agropotravinárskymi komoditami. V&nbsp;roku 2016 dosiahlo takmer <strong>-1,3 mld. €</strong>, pričom medziročne sa zvýšilo o&nbsp;ďalších 200 mil. €. Zároveň pokračuje trend znižovania <strong>podielu slovenských potravín</strong> na pultoch obchodných reťazcov, kde sme sa dostali <strong>na úroveň 39 %</strong>.</p>
+
+
+
+<p><strong>Z&nbsp;uvedených dôvodov výrobcovia potravín nie sú schopní systém rozšírenej zodpovednosti výrobcov v&nbsp;terajšom nastavení financovať.</strong></p>
+
+
+
+<p>V&nbsp;súčasnosti pokračuje legislatívny proces novely zákona č. 79/2015 Z. z. o&nbsp;odpadoch, ktorou sa transponuje tzv. európska igelitková smernica. Na rokovaní Výboru NR SR pre pôdohospodárstvo a&nbsp;životné prostredie bol k&nbsp;návrhu novely zákona predložený pozmeňujúci poslanecký návrh, ktorým sa navrhuje doplniť medzi povinne separované komodity aj „viacvrstvové kombinované materiály na báze lepenky“ (VKM).</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="http://i.imgur.com/I8orig0.jpg"></figure><p></p>
+
+
+
+<p>Európska legislatíva záväzne ustanovuje limity na triedený zber len pre papier, plasty, kovy a&nbsp;sklo. <strong>Triedený zber VKM je nad rámec</strong> <strong>európskej legislatívy a&nbsp;predstavuje ďalšiu zbytočnú záťaž na pleciach výrobcov, bez analýzy dopadov a&nbsp;bez konzultácie s&nbsp;dotknutým priemyslom,</strong> <strong>čo je v&nbsp;rozpore s&nbsp;Programovým vyhlásením vlády SR na roky 2016 – 2020. </strong>Ide o&nbsp;typický prípad tzv. škodlivého <strong>gold-platingu</strong> – dobrovoľného zavádzania regulačných povinností <strong>nad rámec európskej legislatívy</strong> s&nbsp;negatívnym dopadom na konkurencieschopnosť domácich výrobcov. Zavedenie triedeného zberu VKM sa pritom pripravuje formou poslaneckého návrhu, čím sa obchádza riadny legislatívny postup a&nbsp;medzirezortné pripomienkové konanie.</p>
+
+
+
+<p>SPPK a&nbsp;PKS záleží na zdravom životnom prostredí. Sme však presvedčení, že povinnosti ukladané štátom, ktoré sú nad rámec požiadaviek európskeho práva, by mali v&nbsp;prvom rade zohľadňovať možnosti podnikateľov a&nbsp;konkurencieschopnosť domácich potravín voči potravinám z&nbsp;dovozu. Ďalšie nadbytočné a&nbsp;nespravodlivo prerozdelené finančné zaťaženie bude mať za následok opätovné zníženie konkurencieschopnosti domácich potravinárov a&nbsp;zníženie podielu slovenských potravín na pultoch v&nbsp;obchode.</p>
+
+
+
+<p><strong>Potravinári nespochybňujú myšlienku separovaného zberu odpadu a&nbsp;chcú k&nbsp;jeho fungovaniu prispieť v&nbsp;miere, ktorú od nich možno spravodlivo požadovať. Chcú však mať zároveň kontrolné nástroje a&nbsp;garancie, že finančné prostriedky v&nbsp;systéme nebudú vynakladané neefektívne a&nbsp;v&nbsp;prospech niektorých záujmových skupín. Potravinári preto požadujú, aby bol systém nastavený spravodlivo, transparentne a&nbsp;efektívne.</strong></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="http://i.imgur.com/QoQeZ8q.jpg"></figure><p></p>
+
+
+
+<p>Prenášanie povinností len na niektoré priemyselné odvetvia a&nbsp; zbavovanie sa zodpovednosti cez výnimky vytvára nielen diskriminačný a nespravodlivý systém, ale tiež systém, ktorý v&nbsp;praxi nemôže fungovať. Nakladanie s&nbsp;odpadom musíme aj na Slovensku povýšiť na celospoločenskú zodpovednosť.</p>
+
+
+
+<figure class="doc-figure"><iframe frameborder="0" src="https://www.youtube.com/embed/3Ptj9mNVtCI"></iframe></figure><p></p>
+
+
+
+<p>Touto tlačovou konferenciou chcú SPPK a PKS verejne:</p>
+
+
+
+<ol>
+	<li>požiadať Ministerstvo životného prostredia SR, aby odstránilo nerovnosti zaťaženia priemyslu v&nbsp;rámci rozšírenej zodpovednosti a potravinársky priemysel zapojilo do odbornej diskusie k&nbsp;pripravovanej aplikačnej novele zákona o&nbsp;odpadoch za účelom nastavenia transparentného, spravodlivého a&nbsp;efektívneho systému recyklácie a&nbsp;zhodnocovania odpadov z&nbsp;obalov;</li>
+	<li>vyjadriť presvedčenie, že Ministerstvo pôdohospodárstva a&nbsp;rozvoja vidieka SR podporí potravinársky priemysel pri vyjednávaní v&nbsp;rámci novely zákona o&nbsp;odpadoch a&nbsp;prispeje tak nielen k&nbsp;vytvoreniu spravodlivého systému nakladania s&nbsp;prostriedkami výrobcov v&nbsp;oblasti odpadov, ale aj k&nbsp;zlepšeniu podnikateľského prostredia v&nbsp;odvetví potravinárstva na Slovensku;</li>
+	<li>požiadať predsedu vlády SR, aby bol rovnako nápomocný pri riešení tohto celospoločenského problému.</li>
+</ol>
+
+
+
+<h2 class="doc-subheading">Vedenie SPPK a PKS v NR SR</h2>
+
+
+
+<figure class="doc-figure"><img alt="" src="http://i.imgur.com/kTjFEHh.jpg"></figure><p></p>
+
+
+
+<p>Po skončení tlačovej besedy sa predseda Slovenskej poľnohospodárskej a potravinárskej komory Milan Semančík spolu s prezidentom Potravinárskej komory Slovenska Danielom Poturnayom stretli s predsedom Výboru NR SR pre pôdohospodárstvo a životné prostredie Petrom Antalom priamo na pôde Národnej rady SR. Vedenie oboch potravinárskych komôr vysvetlilo predsedovi klubu požiadavky potravinárov na zmenu legislatívy a vypustenie bodu, ktorým sa ustanovuje povinnosť separovať viacvrstvové materiály s cieľom, aby gestorský výbor odporučil tento bod na rokovaní v pléne neschváliť.&nbsp;</p>
+
+
+
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPPK – Header</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f5f5f5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Upper Header ────────────────────────────────────────────────── */
+    .upper-header {
+      background-color: #00a751;
+      width: 100%;
+    }
+    .upper-header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      min-height: 80px;
+    }
+
+    /* Left: logo + name */
+    .upper-header-logo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0;
+    }
+    .logo-link {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+    .logo-link img {
+      height: clamp(48px, 7vw, 80px);
+      width: auto;
+      max-width: 180px;
+      display: block;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+    .header-name {
+      color: #ffffff;
+      font-family: 'DM Serif Display', serif;
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      line-height: 1.25;
+      text-align: center;
+    }
+
+    /* Right: search + lang + social */
+    .upper-header-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 10px;
+      padding: 12px 0;
+    }
+    .upper-search-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 4px;
+      padding: 6px 12px;
+    }
+    .search-box input {
+      background: none;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      width: 180px;
+      letter-spacing: 0.02em;
+    }
+    .search-box input::placeholder { color: rgba(255,255,255,0.6); }
+    .lang-btns {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 11.5px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      padding: 2px 0;
+      font-family: 'Inter', sans-serif;
+      transition: opacity 0.2s ease;
+    }
+    .lang-btn:hover { opacity: 0.7; }
+    .lang-sep { color: rgba(255,255,255,0.4); font-size: 12px; }
+
+    /* Social row */
+    .upper-social-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .login-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 4px;
+      color: #ffffff;
+      cursor: pointer;
+      height: 32px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+      transition: background 0.2s ease;
+      margin-right: 12px;
+    }
+    .login-btn:hover { background: rgba(255,255,255,0.25); }
+
+    .social-icons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .social-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 4px;
+      color: #ffffff;
+      cursor: pointer;
+      height: 32px;
+      width: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+    .social-btn:hover { background: rgba(255,255,255,0.28); }
+    .social-btn svg { display: block; }
+
+    /* ── Login modal ─────────────────────────────────────────────────── */
+    .login-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 9998;
+    }
+    .login-backdrop.open { display: block; }
+    .login-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      width: min(340px, 92vw);
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.22), 0 4px 16px rgba(0,0,0,0.10);
+      border: 1px solid rgba(0,154,68,0.15);
+      padding: 24px 22px 20px;
+    }
+    .login-modal.open { display: block; }
+    .login-modal h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 4px;
+    }
+    .login-modal .subtitle {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 20px;
+    }
+    .login-modal label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+    .login-modal input[type="email"],
+    .login-modal input[type="password"] {
+      width: 100%;
+      height: 40px;
+      border: 1px solid rgba(0,0,0,0.18);
+      border-radius: 8px;
+      padding: 0 12px;
+      font-size: 13.5px;
+      color: #000;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      background: #fafafa;
+      margin-bottom: 14px;
+      transition: border-color 0.2s ease;
+    }
+    .login-modal input:focus { border-color: #009a44; }
+    .login-util-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .login-util-row label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      margin-bottom: 0;
+      font-weight: 400;
+      color: #444;
+    }
+    .login-util-row input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      accent-color: #009a44;
+      cursor: pointer;
+    }
+    .login-util-row a {
+      font-size: 12px;
+      color: #777;
+      text-decoration: none;
+    }
+    .login-util-row a:hover { color: #009a44; }
+    .login-submit {
+      width: 100%;
+      height: 42px;
+      background: #009a44;
+      border: none;
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.2s ease;
+    }
+    .login-submit:hover { background: #007a35; }
+    .login-close-row {
+      margin-top: 12px;
+      text-align: center;
+    }
+    .login-close-btn {
+      background: none;
+      border: none;
+      font-size: 11.5px;
+      color: #aaa;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Mobile ──────────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .upper-header-inner {
+        flex-direction: column;
+        align-items: center;
+        padding: 14px 16px;
+        gap: 12px;
+        min-height: unset;
+      }
+      .upper-header-logo { justify-content: center; padding: 0; }
+      .upper-header-right { align-items: center; width: 100%; gap: 8px; }
+      .upper-search-row { justify-content: center; flex-wrap: wrap; gap: 8px; }
+      .search-box input { width: 140px; }
+      .upper-social-row { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="upper-header">
+  <div class="upper-header-inner">
+
+    <!-- Logo + Name -->
+    <div class="upper-header-logo">
+      <a href="/" class="logo-link" title="SPPK – domovská stránka">
+        <img src="../src/imports/sppk_logo_2__2_.png" alt="SPPK – domovská stránka" />
+      </a>
+      <div>
+        <div class="header-name">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Slovenská poľnohospodárska</div>
+        <div class="header-name">a potravinárska komora</div>
+      </div>
+    </div>
+
+    <!-- Right: Search + Languages + Social -->
+    <div class="upper-header-right">
+
+      <!-- Search + Language row -->
+      <div class="upper-search-row">
+        <div class="search-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" placeholder="Hľadať na sppk.sk..." />
+        </div>
+        <div class="lang-btns">
+          <button class="lang-btn">EN</button>
+          <span class="lang-sep">|</span>
+          <button class="lang-btn">DE</button>
+          <span class="lang-sep">|</span>
+          <button class="lang-btn">FR</button>
+        </div>
+      </div>
+
+      <!-- Login + Social row -->
+      <div class="upper-social-row">
+        <button class="login-btn" onclick="toggleLogin()">Prihlásenie</button>
+        <div class="social-icons">
+          <!-- Facebook -->
+          <button class="social-btn" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+            </svg>
+          </button>
+          <!-- LinkedIn -->
+          <button class="social-btn" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+              <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+            </svg>
+          </button>
+          <!-- Instagram -->
+          <button class="social-btn" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- Login backdrop -->
+<div class="login-backdrop" id="loginBackdrop" onclick="closeLogin()"></div>
+
+<!-- Login modal -->
+<div class="login-modal" id="loginModal">
+  <h3>Prihlásenie</h3>
+  <p class="subtitle">Prihláste sa do svojho účtu SPPK</p>
+
+  <label>Prihlasovacie meno (E-mail):</label>
+  <input type="email" placeholder="vas@email.sk" />
+
+  <label>Heslo:</label>
+  <input type="password" placeholder="••••••••" />
+
+  <div class="login-util-row">
+    <label>
+      <input type="checkbox" />
+      <span style="font-size:12px;">Zapamätať si</span>
+    </label>
+    <a href="#">Zabudnuté heslo?</a>
+  </div>
+
+  <button class="login-submit">Prihlásiť sa</button>
+  <div class="login-close-row">
+    <button class="login-close-btn" onclick="closeLogin()">Zavrieť ✕</button>
+  </div>
+</div>
+
+<script>
+  function toggleLogin() {
+    document.getElementById("loginBackdrop").classList.toggle("open");
+    document.getElementById("loginModal").classList.toggle("open");
+  }
+  function closeLogin() {
+    document.getElementById("loginBackdrop").classList.remove("open");
+    document.getElementById("loginModal").classList.remove("open");
+  }
+</script>
+
+</body>
+</html>

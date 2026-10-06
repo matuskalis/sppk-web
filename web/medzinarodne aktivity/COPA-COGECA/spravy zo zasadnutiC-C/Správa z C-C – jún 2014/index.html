@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Správa z C-C – jún 2014 — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../../index.html">Úvod</a><span>/</span><a href="../../../index.html">medzinarodne aktivity</a><span>/</span><a href="../../index.html">COPA-COGECA</a><span>/</span><a href="../index.html">spravy zo zasadnutiC-C</a><span>/</span>Správa z C-C – jún 2014</nav>
+
+  <article>
+    <h1 class="doc-title">Správa z C-C – jún 2014</h1>
+    <p class="doc-meta"><span class="doc-meta-item">10. júla 2014</span></p>
+
+    <div class="doc-body">
+<p>Zoznam použitých skratiek:</p>
+
+<p>SPPK – Slovenská poľnohospodárska a&nbsp;potravinárska komora</p>
+
+<p>C-C – COPA- COGECA</p>
+
+<p>EP- Európsky parlament</p>
+
+<p>EK – Európska komisia</p>
+
+<p>EÚ – Európska únia</p>
+
+<p>ČŠ – Členský štát</p>
+
+<p>SPP – Spoločná poľnohospodárska politika</p>
+
+<p>EFSA – Európsky úrad pre bezpečnosť potravín</p>
+
+<p>HLG – Skupina na vysokej úrovni</p>
+
+<p>EKF – Európsky kongres farmárov</p>
+
+<p>DG Sanco – Generálne riaditeľstvo EK pre ochranu a&nbsp;zdravie spotrebiteľa</p>
+
+<p>NFU – Národná farmárska únia, Veľká Británia</p>
+
+<p>GMO – Geneticky modifikované organizmy</p>
+
+<p>DG Agri - Generálne riaditeľstvo EK pre poľnohospodárstvo a&nbsp;rozvoj vidieka</p>
+
+<p>OECD – Organizácia pre ekonomickú spoluprácu a rozvoj</p>
+
+<p>OIE- Svetová organizácia pre zdravie zvierat</p>
+
+<p>PPP – Prípravky na ochranu rastlín</p>
+
+<p>EFFAT – Európska federácia obchodných únií v&nbsp;poľnohospodárstve a potravinárstve</p>
+
+<p>GEOPA- Zamestnávateľská skupina v&nbsp;rámci C-C</p>
+
+<p>PRV – Program rozvoja vidieka</p>
+
+<p>DG Trade – Generálne riaditeľstvo EK pre obchod</p>
+
+<p>DG Enviro – Generálne riaditeľstvo EK pre životné prostredie</p>
+
+<p>EIP – Európske inovačné partnerstvo</p>
+
+<p>NGO – mimovládne organizácie</p>
+
+<p>CMO – jednotná organizácia trhu</p>
+
+<p>COMAGRI – Poľnohospodársky výbor Európskeho Parlamentu</p>
+
+<p>ILUC – Nepriama zmena využitia pôdy</p>
+
+<p>UK – Veľká Británia</p>
+
+<p>MFF – viacročný finančný rámec</p>
+
+<p>AHW – zdravie a&nbsp;dobré životné podmienky zvierat</p>
+
+<p>NZ – Nový Zéland</p>
+
+<p>ECOSOC – Európsky hospodársky a&nbsp;sociálny výbor</p>
+
+<p>DG Employ – Generálne riaditeľstvo EK pre zamestnanosť</p>
+
+<p>MSD – Ochorenia svalov a&nbsp;kĺbov</p>
+
+<p>WTO –Svetová obchodná organizácia</p>
+
+<p>LULUCF – využitie pôdy, zmena využitia pôdy a&nbsp;lesníctvo</p>
+
+<p>Mercosur – Ekonomické združenie krajín Južnej a&nbsp;Strednej Ameriky</p>
+
+<p>MOMAgri – Svetová organizácia pre poľnohospodárstvo</p>
+
+<p>BRIC – Ekonomické združenie Brazílie, Ruska, Indie a Číny</p>
+
+<p>FAO – Organizácia pre potraviny a&nbsp;poľnohospodárstvo Spojených národov</p>
+
+<p>FVE – Federácia veterinárov v&nbsp;Európe</p>
+
+<p>BSE – Bovinná spongiformná encefalopatia – ochorenie hospodárskych zvierat</p>
+
+<p>RK – rozvojové krajiny</p>
+
+<p>PPP – prípravky na ochranu rastlín</p>
+
+<p>SME – malé a&nbsp;stredné podniky</p>
+
+
+
+
+
+
+
+
+
+
+
+<p>Pracovná skupina Ovocie zelenina 3.6.</p>
+
+<p><br>
+&nbsp;&nbsp;&nbsp;&nbsp; Na programe bola predovšetkým propagácia, vývoj u dovozov problémy s tým spojené, Revízie úrovne olova v ovocí.</p>
+
+<p>Podmienky propagácie – zhrnutie: Rozpočet je teraz navýšený, ale pre sektor sa týka skôr spracovaných produktov, ako čerstvého ovocia a zeleniny. Navyše ešte nie je známe ako uvažuje Komisia o rozdelení prostriedkov. Z reakcií jednotlivých delegácií je vidieť, že niektoré krajiny (It) komerčne urobili prvý výber programov, bez konzultácií s organizáciami. Zabúda sa aj na malé organizácie. Otázkou ostáva, či sa bude propagácia týkať aj značiek.<br>
+Situácie s&nbsp;environmentálnym označovaním. &nbsp;Čo sa týka označenia „environmentálna značka“ je veľa sporných otázok, technický výbor pripravuje revíziu kritérií, ktoré sa týkajú obsahu minerálov, použitia rašeliny a minerálnej vlny, povolenia limitov pre zvyškové hodnoty a&nbsp;či je možné použiť prípravky na zlepšenie pôdy.</p>
+
+<p>Vzhľadom k revízii obsadenie poradných výborov od budúceho mesiaca by mal počet preplácnaných miest pre expertov zostať zachovaný, ale prakticky zmihznú miesta nepreplácané (tzv. pozorovatelia).</p>
+
+<p>Olovo - úroveň v ovocí. C / C zatiaľ nepripravila pozíciu. V potravinovom kódexe o sa tiež&nbsp;rokuje o zmenách obsahu olova. Vysledky rokovania sú nasledovné:</p>
+
+<p>- Zachovanie súčasnej úrovne (MLS) pre ovocie s výnimkou bobuľovín ostatného malého ovocia, pre niektorú zeleninu , pre listovú zeleninu (0,3 ppm).</p>
+
+<p>- Zníženie úrovne - uvažuje o sa u malých bobuľovín niektoré zeleniny z doterajších 0,2 na 0,1 ppm.</p>
+
+<p>- U detských pokrmov všade nahradiť doterajšie 0,2 ppm maximálne 0,1 ppm.</p>
+
+<p>- Ďalšie V práca o sa MÁ týkať sušeného ovocia a zeleniny.</p>
+
+<p>Kritika kritérií Komisie, ktoré umožňujú dovozy húb z&nbsp;Číny - &nbsp;povedú k zníženiu EÚ produkcie až o 30 až 80%. Zástupcovia chcú kvóty na dovoz húb, k podobným opatreniam by malo dôjst u dovozov cesnaku.</p>
+
+<p>Národné stratégie u implementácie SPP. Väčšina krajín má stratégie, napr. v prípade Talianska, nová národná Stratégia má len niektoré malé úpravy oproti doterajšej a platnosť ďalšie 4 roky.</p>
+
+<p>Dovoz z Číny. Trh, predovšetkým u&nbsp;cesnaku bol silne manipulovaný. Komisia doteraz odmietala zasiahnuť. Clo je nízke - 1200 € / t, čo považujú hlavné producentské krajiny za nedostatočné. Poukazujú na vysoké obsahy zvyškov PPP na to, zo Čína nepoužíva rovnaké kritériá ako EÚ. Dovozy spôsobujú navyšovanie domácich zásob, supermarkety dávajú prednosť dovozom, kde &nbsp;majú ešte väčšie marže, bez ohľadu na zdravotné riziká.<br>
+Podobné problémy má sektor vo Francúzsku, kde, dovozy spôsobili skutočnú krízu v sektore. Horizont 2020 - EIP. Diskusia sa viedla smerom, ako majú vyzerať priority pre sektor O + Z väčšina SA TU zhoduje, zo Zeme dávajú prednosť špecifickým národným programom.</p>
+
+
+
+<p>Závery:</p>
+
+<p>- dovozy z&nbsp;Číny neustále spôsobujú problémy výrobcom v&nbsp;Európe – zástupcovia C-C žiadajú EK aby prijala ochranné opatrenia</p>
+
+<p>- pretrvávajú obavy z&nbsp;rezvízie poradných výborov EK – EK stále ešte jasne nevyjadrila, ako si predstavuje ich novú podobu</p>
+
+<p>- označenie tzv. „environmentálna značka“ má stále neistú budúcnosť a&nbsp;vynárajú sa stále nové otázky týkajúce sa jej použitia</p>
+
+<p><br>
+<br>
+GM kukurica - rokovania C / C so zástupcami USA, Argentíny a Brazílie 5.6.</p>
+
+<p><br>
+Zástupcovia na rokovaní hľadali možnosti lepšej komunikácie, či rešpektovania vedeckých poznatkov. Zdá sa že použitie GM má mnohé výhody. &nbsp;Sú spojené s lepšími výnosmi, menšou spotrebou energie, vylúčením takmer všetkých PPP teda lepšia ziskovosť, nehľadiac na priemerné zvýšenie výnosov od 25 do 40%, najmä v J. Amerike.<br>
+Max Schulmann, predseda pracovnej skupiny pre obilie privítal zástupcov z Argentíny Brazílie 4 a z&nbsp;USA.</p>
+
+<p>Predstavená MAIZALL - Medzinárodná aliancia producentov kukurice, ktorá zastupuje farmárov pestujúcich kukuricu týchto 3 krajinách. Úlohy:</p>
+
+<p>- Verejná podpora obchodov s poľnohospodárskymi produktmi, bezpečnosť potravín.</p>
+
+<p>- Zvýšiť porozumenie verejnosti, &nbsp;podpora moderným poľnohospodárskym technológiám, vrátane biotechnológie.</p>
+
+<p>- Podporiť priehľadný, predvídateľný režim založený na vedeckých základoch pre schvaľovanie biotechnologii.</p>
+
+<p>- Podporiť lepšiu harmonizáciu schvaľovacích procesov.</p>
+
+<p>- Podporiť obchodné protokoly, ktoré umožnia nízku úroveň prítomnosti.</p>
+
+<p>Lepšia produkcia s menšími nákladmi a lepším vysledkami.</p>
+
+<p><br>
+Výsledky technologickej štúdie USA o lepšej hodnote / environmentálny vplyv za roky 1980-2011, ktorú predložili americkí farmári.</p>
+
+<p>- Produktivita kukurice na ha vzrástla o 64%.</p>
+
+<p>- Potreba pôdy na produkciu 1 tony kukurice sa znížila o 30%.</p>
+
+<p>- Straty pôdy na tonu produkcie sa znížili o 67%.</p>
+
+<p>- Potreba vody na 1 tonu klesla o 53%.</p>
+
+<p>- Použitie energie na 1 tonu - 44%.</p>
+
+<p>- Emisie skleníkových plynov na 1 tonu - pokles ? 36%.</p>
+
+<p><br>
+Prehľad 4. Generácie GM, zahŕňajúce zníženie použitia hnojív, kontrolu škodcov v pôde, tolerancie na Sucho, kontrola škodcov na rastlinách, riešenie nových prístupov k likvidácii škodcov, lepšie herbicídne vlastnosti.</p>
+
+<p>Brazílsky zástupca tvrdí, že prekážkami využitia GM v&nbsp;EÚ sú v obchode predovšetkým netarifné bariéry a&nbsp;malé porozumenie zo strany verejnosti. EÚ by mala zlepšiť systém schvaľovania, dať viac na poznatky a výsledky analýzy EFSA, ako aj hľadať ďalšie cesty ako sa vyhnúť konfliktom, ktoré o sa v Európe vedú predovšetkým na emocionálnej úrovni.<br>
+Za Španielsko, tu bol zástupca z Andalúzie, ktorý je sám producentom prevažne GM kukurice. Španielsko samo teraz predstavuje 90% produkcie GM kukurice v &nbsp;EÚ, ktorého plochy sú stabilné. V&nbsp;Argentíne bola pripravená nová legislatíva, teraz je v krajine 90% produkcie GM. Brazília – sa vydala týmto smerom s takmer 10 ročným oneskorením, teraz má 2 úrody za rok, v prvej je 65% GM v druhej 85%, nemajú problém so spolužitím.</p>
+
+<p>Technológie si zvolili preto, že krajiny J. Ameriky maju slabšiu pôdu, klimatické problémy, nadmerné množstvo škodcov - nie je tam zima a mráz ako v Európe, ktoré bránia masívnemu rozmnožovaniu. GM plodiny vyžadujú tiež minimum PPP a menej energie na pestovanie. Produkcia v miernom pásme nie je tak ohrozená škodcami, Brazília je na tom oveľa horšie. Pôvodne aplikovali viac ako 15 postrekov, ktoré ale nemali veľký účinok navyše boli nákladné (povinnosť používať ich len v&nbsp;noci). Teraz sa celá produkcia realizuje bez PP len na konci vegetácie používajú biologické postreky.</p>
+
+<p>Zástupkyňa UK povedala, ze u nich sú veľké spory, Anglicko je za GM, ale Škótsko a Wales proti.<br>
+Portugalsko: spoločnosť je rozdelená, ale aj farmári. &nbsp;Prakticky pol na pol. Nedávno bolo&nbsp;zriadené pokusné pole, vyvolalo to príliš veľa emócií.</p>
+
+<p>Aj za Taliansko sa našla jedna z organizácií, ktorá hľadá cestu k prijatiu GM, ostatné sú trvalo proti. Boj za presadenie je veľmi obtiažny. Názory sa menia len veľmi pomaly. Najväčším problémom je koexistencia. Chýbajú vedecké závery pre stanovenie bezpečných vzdialeností.</p>
+
+<p>Argentína tento problém nemá. Problemy existujú, ale nakoniec sa zhodli na kompromise pre bezpečnú vzdialenosť zvolili 400m. Je síce ťažké legislatívne ošetriť, sú tu rôzne vplyvy, ale prevláda vzájomný rešpekt.</p>
+
+<p>USA - JE na Diskusia Len od Washingtonu, na vidieku o sa k nerieši, pretože o sa nenašiel argumentom, ze sa škodí, dávajú prednosť lepším lokálnym informáciám + vzdelanie.<br>
+Španielsko zatiaľ za celú dobu fungovania GM nemalo jediný prípad súdneho konania.<br>
+Argentína - pôvodne odpor, ale organizácie výrobcov sa nakoniec spojili a prekonali rozdiely. Mimovládne organizácie tam nemajú veľký vplyv aj ked aj tam existuje snaha zvrátiť vývoj. Za posledné 3 roky sa zvýšili podstatne aktivity importovaných mimovládnych organizácií z Európy, domáci nemajú žiadny ohlas. Ročné kongresy Maizall sú dobrým príkladom veľmi úspešnej komunikácie s verejnosťou. Dokázalo sa presadiť, ze GM nepredstavujú žiadne riziko pre zdravie. Za 15 rokov nebol konštatovaný jediný negatívny dopad. Politicky to obhájiť je oveľa zložitejšie. Stále sa hľadajú lepšie a presnejšie hranice tolerancie - z obchodného hľadiska, ktoré sa pretvára na politický problém.</p>
+
+<p>USA – ide vždy o&nbsp;prísne testovanie technológií, musi sa priniesť niečo naviac. Farmári sú živým príkladom, žijú medzi poliami s GM plodinami. Cieľom je ďalej zvyšovať produktivitu a znížiť vplyv na prostredie. Všetci majú záujem na bezpečných potravinách.<br>
+Biotechnológia nevadí u liekov (takmer 100%).</p>
+
+<p>USA pridávajú k novým technológiám aj potrebu znižovať množstvo práce na jednotku zníženia jej náročnosti. Okrem výkyvov pocasie, tu technológia tiež pomáha, sú problémy s&nbsp;odovzdávaním fariem. Nikto nie je pripravený pracovať tvrdo ako pred 30 rokmi, Sociálna otazky sú tiež dôležité.</p>
+
+<p>Francúzska zástupkyňa povedala, ze farmári by boli naklonení, ale vláda je rezolútne proti. Pre Talianov sú problémom predovšetkým stanoviská spotrebiteľov, pričom tieto problémy prakticky neexistujú v J. Amerike a&nbsp;v&nbsp;US.</p>
+
+
+
+<p>Závery:</p>
+
+<p>- GM je stále kontroverznou témou v&nbsp;EÚ, predovšetkým kvôli postoju spotrebiteľov ku GM, čím sa GM stali politickou otázkou.</p>
+
+<p>- zástupcovia krajín, ktoré používajú GM chvália výhody využívania GM.</p>
+
+<p>- zástupcovia krajín využívajúcich GM tvrdia, že doteraz neboli preukázané negatívne dopady na zdravie ľudí (ostatných 15 rokov).</p>
+
+
+
+<p><br>
+Mesačné zasadanie politického výboru POCC-CCC 12.6.</p>
+
+<p><br>
+SPP reforma – zostávajúce otázky. Ústredný riaditeľ C-C Pekka Pesonen povedal, že stále ešte nie sú kompletne doriešené otazky aktívnych farmárov, viacero ČŠ s&nbsp;tým má aj naďalej problémy. Ťažkosti spôsobujú aj otázky ozeleňovania. Problemy medzi vlastníkmi a nájomcami. Mnohé krajiny nevyužívajú všetky možnosti (opcie), predovšetkým u alternatívy vyňatia pôdy z produkcie. Väčšina sa takisto zhoduje na tom, že dôjde k revízii spoločnej poľnohospodárskej politiky v&nbsp;roku 2017, alebo možno aj o rok skôr, ako naznačujú správy z formovania a príprav nového EP a Komisie.</p>
+
+<p>Obchod. Prehľad vývoja rokovaní s USA, Japonskom, Vietnamom. Americký Kongres si určuje nové podmienky, ktoré sa týkajú predovšetkým propagácie. Povedal, že je len veľmi malá nádej, že kongres všetko schváli do novembra, ale ani po novembrových voľbách nebude jasne, ako&nbsp; sa rokovania budú vyvíjať (očakáva sa, že republikáni budú mať väčšinu). Tak to vyzerá, že administratíva Obamu nebude môcť dokončiť rokovania do roku 2017.</p>
+
+<p>Najdôležitejšie body:</p>
+
+<p>- Netarifné otazky - USA ich zatiaľ ignoruje</p>
+
+<p>- CHZO (Chránené zemepisné označenie) CHOP (Chránené označenie pôvodu), rokovania síce pokračujú, ale prakticky žiadny posun</p>
+
+<p>- Prístup na trh - podobne ako u dohody s Kanadou</p>
+
+<p>- Vyhľad Mercosur - zatiaľ pokračujú len rokovania s Brazíliou.</p>
+
+<p>Ďalšie kolo rokovaní budev Bruseli začiatkom júla. Popri USA chce mať EÚ ešte skôr dokončenú dohodu s Japonskom a vyhodnotenie jej vplyvu (podobne žako u Kanady).<br>
+Francúzsky zástupca k tomu dodáva, zo Francúzsko nepristúpi na čistenie či dezinfekciu mäsa chlórom, nejde tu len o GMO, ale o&nbsp;bezpečnostné štandardy a hygienu. Posun je v rokovaní značne nerovný, viacero vecí sa preberá celé roky a s rôznymi vysledky (Ochrana spotrebiteľov). &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Propagácia - Štruktúra budúcej politiky propagácie. Každý rok - nové priority. Viac programov pre kombinácie faktorov. Snaha prepojiť sektory - navýšenie rozpočtu na 200 m €. Skončí národné spolufinancovanie. Prakticky všetky produkty sú voliteľné (okrem tabaku). Pre víno ??bude propagácia spojená s propagáciou zdravia – umiernenosti spotreby.<br>
+Zásadne sa nemajú podporovať konkrétne značky (generický prístup). Komisia dáva takisto prednosť viacročným programom. Výber Bude vykonávať priamo EK (bez ČŠ):</p>
+
+<p>- Založené na situácii na trhu</p>
+
+<p>- Špecifické sektory</p>
+
+<p>- Minimálne požiadavky</p>
+
+<p>Zostáva ešte dokončiť legislatívny rámec &nbsp;a potvrdiť vykonávaciu agentúru. Tou má byť Luxemburská agentúra Chafee - ktorý bude mať na starosti implementáciu, ale politické rozhodnutie zostane na Komisii (DG Agri). Agentúra má mať 25 expertov.<br>
+Ovzdušie - povinnosti pre ČŠ čo sa týka čistoty vzduchu špecificky pre živočíšnu výrobu. Stále sa rieši problém nerovného prístupu medzi ČŠ, národné limity nie sú jednotné, diskusia pokračuje predovšetkým u merania emisií určitých prvkov (amoniak). Holandsko Dánsko majú už dnes pravidlá rovnaké, ostatné uplatňujú rôzne formy.</p>
+
+
+
+<p>Závery:</p>
+
+<p>- Viaceré otázky novej reformy SPP ešte nie sú v&nbsp;ČŠ uzatvorené.</p>
+
+<p>- Zástupcovia očakávajú prehodnotenie reformy už v&nbsp;rokoch 2016-2017</p>
+
+<p>&nbsp;- Pretrvávajú problémy týkajúce sa možného ohrozenia sektora živočíšnej výroby záväzkami jednotlivých štátov na zníženie emisií amoniaku a&nbsp;metánu.</p>
+
+<p>- Riešenie problémov s&nbsp;veľkými dravcami bude diskutovať vedenie C-C s&nbsp;komisárom Potocnikom.</p>
+
+
+
+<p><br>
+Olejniny a proteínové plodiny, obilie 19.10.</p>
+
+<p><br>
+Olejniny a&nbsp;proteínové plodiny.</p>
+
+<p>UK-zlepšenie podmienok po 2 rokoch klimatických problémov, trvalý deficit zrážok na východe Zeme. Vláda schválila rozdelenie u 3 plodín v rámci SPP. U olejnín požiadali o výnimky pre použitie PP, bez prostriedkov nebude podstatná časť produkcie udržaná.</p>
+
+<p>Španielsko-skoro na seriózne odhady, plochy rovnaké, mierny pokles produkcie. U repky sa počíta s výnosmi okolo 1,2 t, podobné číslo bolo stanovené u slnečnice. Apríl a máj bez dažďov, chýba vlaha slnečnicu, majú hrdzu. Ceny sú Okolo 90 € (veľmi nízke). U proteínov sú výhľady lepšie.</p>
+
+<p>Portugalsko - lepšie podmienky, dosť dažďov začiatkom roku, príliš skoro na odhady.</p>
+
+<p>Rumunsko-olejniny - menšie plocy, dobré podmienky, pre repku&nbsp; sa predpokladá nárast o 4-7%, budúci rok majú mať o 400 000 ha viac. Veľké problémy sa zákazom PP - výhľady neisté.</p>
+
+<p>Švédsko-kultúry dobré, bude vyššía produkcia. Aj keď plochy klesajú, produkcia sa drží, ale chýbajú PP, ak o sa nenájde náhrada, dôjde k drastickému zníženiu produkcie.</p>
+
+<p>Litva - Problémy dlhé zimy, veľké straty (viac ako 40% plôch).</p>
+
+<p>Dánsko - repka dobrá, výhľad zatiaľ nemajú, ale očakáva sa dobrá úroda.<br>
+Rakúsko-rovnaké plochy - stabilita, problém veľkých výkyvov teplôt. Problémy tiež s PP.</p>
+
+<p>Belgicko - menej repky (-2%), dobrý stav plodín, úroda bude o 2-3 týždne . Je veľký tlak na ceny. Čaká sa na rozhodnutie "novej" vlády o ekologických oblastiach.<br>
+Žiadajú sekretariát, aby urobil prehľad stavu s PP, výnimky z použitia som vsetky ČŠ.</p>
+
+<p>Nemecko - dobré podmienky, rozlohy 4,5 m ha, problematický apríl pre repku a za posledné 3 mesiace registrovaný pokles cien. Farmári preto váhajú či uzavrieť kontrakty. Všetko komplikuje politika palív. V negatívnom postupe sa pre budúci rok môžu znížiť plochy o&nbsp;viac ako 500 000 ha. Rozšírila sa produkcia zeleninových odrôd, rozšírenie je zatiaľ obmedzené predovšetkým nedostatkom semien.</p>
+
+<p>Írsko- Problemy s PP. Krajine sa zatiaľ nepodarilo presadiť zelené hnojenie, ako druhú (rotačnú) plodinu.</p>
+
+<p>Maďarsko-Mierny nárast, dobrá jar, komerčne začala úroda repky. 640 000 slnečnica - dobrý stav, ale bez odhadu.</p>
+
+<p>Poľsko-850 000 ha repky, dobrý stav, kvitla po dobu viac ako 5 týždňov, úroda odhadnutá na polovicu júla, produkcia 2,5 mt. - 300 000 ha na potraviny, zvyšok palivá. Ceny 350 € (pokles oproti roku 2013). Vznesený problém Ukrajiny - neistý vývoj dopady na sektor.<br>
+V rámci ozeleňovania chcú viac repky (ďalších 500 000 ha) to 10 rokov.</p>
+
+<p>Lotyšsko-rovnaké ako Litva, ale škody menšie.</p>
+
+<p>Francúzsko-Repka-plochy o 80 000 ha väčšie, výnosy 3,4 - 3,5 t 0,5 t o&nbsp;vyššie ako vlani, dobrý stav plodín. Slnečnica - plochy o 10% menšie (pokles pod 700 000 ha). Sója - hrdza Plôch, vlani 40 000 hektárov, tento rok 55 000 ha. Proteíny - stabilné okolo 100 000 ha. Cenové problémy - pokles o&nbsp;viac ako 20%. Nedostatok PP problém náletov veľkého množstva vtákov na kultúry.</p>
+
+<p>Taliansko-olejniny rovnaké, viac repky, slnečnica rovnaká aj sója.</p>
+
+<p>Výhľady pre EÚ. Silné závislé na politike biopalív.</p>
+
+<p>Je veľký tlak na ceny. U olejnín bola vlani veľmi dobrá úroda predovšetkým v J. Amerike. Dobré podmienky &nbsp;- produkcia sóje v USA, Kanade. Produkcia vzrástla o&nbsp;15 MT a celkovej zásoby o 18MT. Celková Produkcia v J. Amerike bola 87mt, v USA 98mt.<br>
+Repka - predovšetkým okolo 23mt EÚ, svet 68mt výhľad, vlani 70mt. Zásoby sú celkovo vysoké 9mt (vlani 5MT). Slnečnica-vlani rekord 42mt, tento rok o sa očakáva 40MT, Mierny pokles aj pre EÚ-8MT, vlani 9mt. Mierny pokles od Ruska - Ukrajiny - Celkom 10mt.</p>
+
+<p>Ceny - 350 € u repky a&nbsp;o niečo nižšia u slnečnice. Oleje - Ceny okolo 950 $, len nepatrné rozdiely medzi jednotlivými druhmi. Klesá použitie palmového oleja.<br>
+Klimatické vplyvy - El Niňo veľmi ovplyvní produkciu palmového oleja v Ázii. Biopalivá budú ovplyvnené situáciou u ropy na Strednom Východe.</p>
+
+<p>ILUC. Kompromis uzavretý ale nie celkom schválený. 2 ČŠ boli proti (Be a P).<br>
+C / C tu vidí problémy u spoločného započítavania etanolu biodieslu. Nevie sa kedy a ako sa rozhodne.</p>
+
+<p>Včely - &nbsp;aj tu bola vytvorená osobitná skupina na C / C (má teraz 15 členov) v nej sú zastupcovia WP včely, olejniny, O + Z, fytosanitárne otazky. Prvá schôdza bola v marci, nasledovalo hodnotenie na Komisii v priebehu apríla. Zásadná otázku teraz JE prejednanie rozhodnutia o najlepších praktikách a komunikáciu výsledkov. Problémy vzťahov medzi včelármi a&nbsp;poľnohospodári – využívanie prípravkov na ochranu rastlín, ktoré môžu včelám škodiť. &nbsp;EFSA urobila porovnanie v 5 krajinách, ďalšie údaje majú byť pripravené v priebehu leta. V&nbsp;septembri chce C / C spolu s EFSA usporiadať seminár: včely PP.</p>
+
+<p>&nbsp;<br>
+Obilie. Predsedal Max Schulmann.</p>
+
+<p>Výhľady úrody.</p>
+
+<p>UK - Dobrá úroda po 2 rokoch problémov s počasím, pšenica dobrá, očakáva sa úroda 14,8 mt, možno až 15MT. Jačmeň trápi výskyt chorôb (veľká vlhkosť), Silné dažde v zime bránili efektívnemu použitiu PP. Ovos po poklese sa vracia k normálu.</p>
+
+<p>Španielsko-obilie -35% (na skladoch je viac ako 2MT z&nbsp;minuloročnej úrody), tvrdá pšenica - 25%, vysoká kvalita, ale nízke ceny, produkcia jačmeňa taktiež -30%. Pri kukurici má byť pokles len 4-5%.</p>
+
+<p>Veľa škodcov a chorôb - všetko ovplyvňuje obmedzený rozpočet.</p>
+
+<p>Portugalsko-dobrý výhľad, žatva začala začiatkom mesiaca, jediná plodina, kde sú problémy je jačmeň, slabá kvalita osevu. Kukurica - vlani škody, tento rok stav veľmi dobrý.<br>
+Zlepšil sa stav zásob vody, všetky nádrže sú plné.</p>
+
+<p>Rumunsko-pšenica dobrá, dosť dažďov, celkovo 7mt. Problémy u jačmeňa, teraz dažde -úroda oneskorená. Kukurica - rovnaké plochy, dobrý výhľad produkcie, ale slabé ceny. Chýba kapitál, nesplácajú pôžičky, len podpory EÚ ich držia na nohách.</p>
+
+<p>Francúzsko - Silné dažde celú zimu, chladno v apríli, veľká nerovnováha v rozdelení zrážok. Burgundsko suché, ale očakáva sa dobrá úroda, inde oveľa viac chorôb. Rozdiely sú vidieť aj na úrovni jednotlivých dedín, jedna dobre, druhá katastrofálne. Plochy obilia - cez 20 m ha, viac ozimín, ale nepravidelnosť výnosov. Lepšie než priemer u ozimín, horšie u jarných druhov. Celkovo sa očakáva Produkcia obilia 70mt, teda dobrý priemer.</p>
+
+<p>Pred pár rokmi sa začalo s kontraktmi, kde sa jednalo o zahrnutí percenta proteínov, ale tieto dohody o sa vseobecne ujali a rozšírili.</p>
+
+<p>Kukurica – sucho na východe krajiny, zastavil sa tak hrdza, neistota u pokračovania, dobrý stav na juhozápade krajiny.</p>
+
+<p>Litva-oziminy&nbsp;- veľké škody,viac ako 80% sa muselo na jar preosiať. Uz niekoľký rok problémy s oziminami, tento rok sa sústredí prakticky výhradne na jarné odrody. Jarná pšenica vyzerá dobre.</p>
+
+<p>Írsko-dobrá zima, silné dažde na jar - zvýšený počet chorôb plesnivenie v skladoch, čo robí už dnes problémy pre Guinness.</p>
+
+<p>Švédsko - výborný stav, počita sa s rekordnou úrodou (o viac nez 10%), väčšinou pšenica. Určitý problém s toxínmi.</p>
+
+<p>Dánsko-obilie-dobrý výhľad, ale viac chorôb – nutnosť aplikovať viac ochranných prostriedkov. Situácia stabilná.</p>
+
+<p>Rakúsko - Suchá, teplá zima, teraz výkyvy všetkých, najteplejší apríl v histórii. Veľa chorôb, výnosy majú byť mierne nadpriemerné. Kvalita: pokusy s novými druhmi na východe krajiny, ktoré majú vyšší obsah proteínov, na západe prevaha tradičných druhov.</p>
+
+<p>Nemecko-dobrý výhľad, 48 mt (vlani 47), nadpriemerne rýchlo sa šíri hrdza. Pšenica, nárast plôch, tiež pri jačmeni, raž ďalšie&nbsp; zníženie o 20%. Kvalita sa očakáva priemerná, veľa škodcov, silné miestne búrky.</p>
+
+<p>Fínsko-osevy tento rok už začiatkom marca, vývoj dobrý, veľké výkyvy všetkých teplôt počas mája prudké dažde. Juh má príliš veľa vody. Západ veľmi suchý - výsledok - choroby.</p>
+
+<p>Lotyšsko - veľké rozdiely v počasí medzi regiónmi, úroda priemerná, ale rozhodne počasie.</p>
+
+<p>Poľsko-dobrý vvýhľad, očakávaná úroda o 10% vyššía. Pšenica-výborná, sucho na severe krajiny, inde vlhko. Takisto problémy chorôb. Zvyšujú trvalo produkciu kukurice, ale majú zatiaľ hlavne Francúzske odrody, ako aj&nbsp; meniacu sa klímu, čo vedie k problémom.</p>
+
+<p>Maďarsko - Žatva začala, očakáva sa okolo 5MT (4,6 t / ha) v prípade pšenice, u jačmeňa 900 000 ton. Premnoženie myší na celom území. Pri kukurici rovnaká úroda ako vlani.</p>
+
+<p>Celkovo - stále viac chorôb &nbsp;- nové druhy. Ukazuje sa aké sú dôležité PP a ich výskum.<br>
+Guido Seedler (DBV) urobil prehľad potenciálu Ukrajiny a porovnal sa k potenciálu vývoja v Rusku a v Kazachstane. V úvode povedal, ze Rusi tento rok poprvykrat povolili GMO kukuricu. Väčšinu politiky určujú nadnárodné spolocnosti (Cargill – viac ako 1m ha).<br>
+Problémy sú najmä logistické, z vnútrozemia nie je ani dobrá doprava, ani dostatok skladovacích priestorov, všetko&nbsp; sa obracia k prístavom v Čiernom mori.<br>
+Nasledoval prehľad produkcie tvrdej pšenice. 80% jej pochádza z oblasti Stredozemného mora, USA, Kanady Mexika. Európska produkcia sa teraz stabilizovala po poklese z 6MT na 4MT. Vplyv nadprodukcia v 2008/09, ktory nasledoval veľký pokles cien trvalo niekoľko nechať než sa situácia stabilizovala. Ceny sú teraz len o niečo vyššie ako v roku 2004 (vtedy 190 €), teraz 270, ale v 2008/09 boli takmer dvojnásobné (490 €). Obyčajne je registrovaný pokles v období zberu, po 3 mesiacoch sa situácia urovná.<br>
+Portugalsko-Nízka intenzita - produkcia (2,5 t) oproti Francúzskej (7-9t/ha). Plochy sú tiež obmedzené (275 000 ha), Obrat viac ako 3 mld €. Tohtoročné výhľady sú dobré, mimoriadne vlhká a teplá zima. &nbsp;Nízke výnosy: Veľké výkyvy všetkých zrážok, nové choroby, posledné roky trvalý pokles rozlôh. Problémy zavlažovanie - nevyhnutné pre väčšinu oblastí.<br>
+Španielsko: plochy vzrástli, podobne žako v USA av Kanade. Španielsko melo veľmi Dobré roky na tvrdú pšenicu v 2004-6, ale teraz sú ale tieto plochy len polovicou toho, čo bolo v 90. rokoch. Výnosy tvrdej pšenice sú v&nbsp;Taliansku okolo 3 t, Španielsko 2t a Francúzsko viac ako 4 tony. Svetová produkcia sa od r. 2006 znižuje.</p>
+
+
+
+<p>Závery:</p>
+
+<p>- Situácia v&nbsp;sektore obilnín, olejnín a&nbsp;bielkovinových plodín je v&nbsp;jednotlivých ČŠ veľmi rôznorodá a&nbsp;zvyčajne závisí od vplyvov počasia</p>
+
+<p>- Viacero krajín má problémy s&nbsp;premnožením škodcov</p>
+
+<p>- Väčšina krajín predpokladá dobré úrody, ale ceny klesajú – ich stabilizácia sa predpokladá koncom žatvy</p>
+
+
+
+<p><br>
+Prezídium COGECA 26.6. Spoločné zasadnutie C / C popoludní 26/6 predsedníctvo Copa 27/6.</p>
+
+<p><br>
+Predseda COGECA, Christian Pees v úvode informoval, ze boli oznámené udaje o povodniach na území bývalej \ Juhoslávie, ktoré veľmi silne poškodili veľké plochy poľnohospodárskej pôdy. Bol za tým účelom odoslaný podporný list organizáciám v Chorvátsku, Srbsku Bosne. Následne bola schválená agenda a zápisnica, oboje bez pripomienok. Pees informoval, že sa zúčastnili na ministerskej rady v Aténach. Väčšia časť bola venovaná vyhodnoteniu Business Fora v Berlíne, ktoré sa uskutočnilo minulý mesiac.<br>
+Pekka následne hovoril o schôdzke so zástupcami Argentíny, Brazílie a Japonska, išlo o&nbsp;prebiehajúce či nastávajúce obchodné rokovania a&nbsp;dopady na poľnohospodársky obchod. &nbsp;Informoval, že všetci zástupcovia mali len veľmi obmedzenú predstavu o SPP v EÚ, väčšina znalostí bola ešte o SPP z roku 2003, ktorá odvedy prešla podstatnými zmenami. S Japonskom je situácia zložitejšie, je tu väčšia ústretovosť, veľa zhodných bodov, ale tiež veľký strach Japoncov z ďalšieho otvorenia trhu.</p>
+
+<p>Členstvo UECOOP - organizácie v COGECA - predložil generálny tajomník Crotti.<br>
+Celému predloženiu predchádzala veľmi intenzívna kampaň Coldiretti, pod ktorú táto družstevná únia patrí, v posledných 3 týždňoch. Ale ako sa ukázalo z priebehu, riešenia sa nijako neuľahčili a&nbsp;ani nemohli, vzhľadom k pravidlám pre prijatie nových členov - potreba mať jednomyseľný súhlas od všetkých organizácií.</p>
+
+<p>Hlasovanie pre prijatie organizácie z Kosova, ako pozorovateľa. Na námietku, že nepoznáme, či zastupuje len Albáncov, Srbov , alebo oboje, povedal Pekka, že na pozorovateľa ako takého sa nevzťahuje žiadne politické hľadisko, krajina nemôže byť plne zastúpená ak nebude členom EÚ. Táto organizácia, chce získavať informácie o fungovaní C / C pokračovať v spolupráci.</p>
+
+<p>Prijatie bodov "A":</p>
+
+<p>Program čistý Vzduch pre Európu</p>
+
+<p>PRÍSPEVOK C / C ku štúdií GR SANCO o označenie pôvodu</p>
+
+<p>Boli prijaté bez pripomienok.</p>
+
+<p>SPP - Pekka urobil niekoľko poznámok, týkali sa predovšetkým analýzy na národnej úrovni. Keďže viacero krajín tieto analýzy neukončili, očakáva sa úplný prehľad až koncom augusta.<br>
+situácia na národnej úrovni?</p>
+
+<p>EP – Diskutovalo sa ako postupovať ďalej po voľbách k&nbsp;novému zloženiu frakcií v&nbsp;EP. Zástupcovia prediskutovali aj pracovný materiál k&nbsp;pracovnej metodike C-C. Bol predstavený zoznam termínov konania prezídií na rok 2015.</p>
+
+<p>Organizácia z&nbsp;Kosova - len partnerstvo. Kosovo nie je plne medzinárodne uznané, ide len o odborársku organizáciu.</p>
+
+
+
+<p>Závery:</p>
+
+<p>- Zástupcovia s&nbsp;napätím očakávajú ako sa vyprofilujú inštitúcie EÚ v&nbsp;novom zložení a&nbsp;už teraz rokujú o&nbsp;stratégií pri negociáciách</p>
+
+<p>- Partneri v&nbsp;krajinách rokujúcich o&nbsp;dohodách o&nbsp;voľnom obchode nemajú jasnú predstavu o&nbsp;podobe SPP v&nbsp;EÚ</p>
+
+<p>- Bola prijatá nová talianska organizácia za člena CC, ako aj odborová organizácia z&nbsp;Kosova ako partnerská organizácia C-C</p>
+
+
+
+
+
+
+
+<p>Vypracoval: Odbor poľnohospodárstva a&nbsp;služieb SPPK, jún 2014</p>
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

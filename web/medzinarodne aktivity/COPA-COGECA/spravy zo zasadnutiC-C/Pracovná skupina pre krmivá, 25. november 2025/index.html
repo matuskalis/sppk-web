@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pracovná skupina pre krmivá, 25. november 2025 — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../../index.html">Úvod</a><span>/</span><a href="../../../index.html">medzinarodne aktivity</a><span>/</span><a href="../../index.html">COPA-COGECA</a><span>/</span><a href="../index.html">spravy zo zasadnutiC-C</a><span>/</span>Pracovná skupina pre krmivá, 25. november 2025</nav>
+
+  <article>
+    <h1 class="doc-title">Pracovná skupina pre krmivá, 25. november 2025</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Odbor poľnohospodárstva a služieb SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">29. decembra 2025</span></p>
+
+    <div class="doc-body">
+<p>Miesto stretnutia:&nbsp; COPA-COGECA, Rue de Trèves 61, 1040 Brusel</p>
+
+<p>Dátum stretnutia: 25. novembra 2025</p>
+
+<p>Účastník stretnutia: Konzorcium</p>
+
+<p>Názov aktivity: Pracovná skupina pre krmivá</p>
+
+<p>Zhrnutie a závery:</p>
+
+
+
+<p>Prezentácia sekretariátu a výmena názorov na seminári o kontaminantoch&nbsp;</p>
+
+<ul>
+	<li>Sekretariát predložil správu o workshope o kontaminantoch, ktorý sa konal v máji 2025. Cieľom bolo spolupracovať s členskými štátmi, aby sa zdôraznili hlavné otázky, ktoré je potrebné riešiť pri zaobchádzaní s kontaminantmi, a aby sa členské štáty zapojili do diskusie na túto tému. Workshop sa konal podľa pravidiel Chatham House, takže počet účastníkov bol obmedzený. Cieľom bolo viesť otvorenejšiu diskusiu a dosiahnuť aktívnejšie zapojenie členských štátov.</li>
+	<li>Workshop bol rozdelený do troch skupín: posudzovanie rizík, riadenie rizík a vynútiteľnosť. Prvá skupina sa zameriavala na prístupy založené na nebezpečnosti v porovnaní s prístupmi založenými na riziku. Kľúčovým slovom v tejto časti sa stalo stanovenie priorít, keďže v súčasnosti existuje toľko kontaminantov (viac ako 700), že nie je možné otestovať všetky, a preto sa treba zamerať na tie najnebezpečnejšie.</li>
+	<li>Druhá skupina zahŕňala pozitívne aspekty, ako napríklad zapojenie zainteresovaných strán prostredníctvom konzultácií alebo otvorenosť zohľadňovať údaje od zainteresovaných strán vo formátoch, ktoré nespĺňajú požiadavky EFSA. V tejto skupine sa kľúčovým slovom stalo zosúlaďovanie. Zdôraznila sa tiež výzva, ktorou je zložitosť vyplývajúca z prístupu „kontaminant za kontaminantom“, alebo vplyv, ktorý môžu mať opatrenia na zmiernenie účinkov jedného kontaminantu na iné kontaminanty, alebo rôzne prístupy k regulácii kontaminantov na úrovni EÚ.</li>
+	<li>Tretia skupina sa týkala zabezpečenia dôvery a dialógu medzi prevádzkovateľmi potravinových podnikov a verejnými orgánmi s cieľom vyriešiť akékoľvek problémy s vynútiteľnosťou; potreby stanovenia priorít kontaminantov a flexibility právnych predpisov EÚ.</li>
+	<li>MTK poukázalo na tlak na zníženie limitov, čo môže sťažiť detekciu. Uviedlo, že by bolo prospešné mať zoznam rôznych úrovní stanovených v jednotlivých členských štátoch. Po stanovení limitov trvalo dva roky, kým sa vyvinuli vhodné detekčné metódy, takže v počiatočnej fáze bola potrebná určitá voľnosť.</li>
+</ul>
+
+
+
+<p>Prezentácia a výmena názorov s Oanou Neagu o vývoji v oblasti EUDR</p>
+
+<ul>
+	<li>Sekretariát predložil aktualizáciu týkajúcu sa najnovšieho vývoja v súvislosti s EUDR. Komisia (ES) predložila návrh na zjednodušenie, ktorý by sa vzťahoval na všetkých. Copa-Cogeca požiadala o diskusiu o zjednodušení a minimálne ročnom odložení.</li>
+	<li>Rada zahrnula zmeny do článku 2 a došlo k určitým zlepšeniam v súvislosti s prevádzkovateľmi v nadväzujúcich fázach. Pokiaľ ide o hlasovanie v Parlamente nasledujúci deň, stanovisko CC bolo, že stanovisko Rady je minimálne, ale zlepšenia by boli vítané. Bol oznámený konečný zoznam hlasovania a boli predložené konkrétne pozmeňujúce a doplňujúce návrhy v rovnakom duchu ako Rada a niektoré ho vylepšili, ale nie je väčšina hlasov zameraná na tie isté pozmeňujúce a doplňujúce návrhy. Členovia boli vyzvaní, aby kontaktovali poslancov EP, aby odklad smeroval v rovnakom duchu ako Rada.</li>
+	<li>MTK sa opýtal, aký je predpokladaný výsledok hlasovania. Podpredseda poznamenal, že rovnaká diskusia sa vedie každý rok a ak hlasovanie neprejde, budúci september budeme mať opäť rovnakú diskusiu.</li>
+	<li>Očakávalo sa, že pozmeňujúce a doplňujúce návrhy od Renew, S&amp;D a EPP prejdú, ale tie od PfE nebudú podporené. Hlasy PfE a ESN však môžu rozhodnúť o prijatí iných pozmeňujúcich a doplňujúcich návrhov. Očakávalo sa, že aspoň stanovisko Rady bude podporené, ale zložitejšie to bude s odložením. Pokiaľ ide o pripomienku podpredsedu, pri dobrej koordinácii by nemali vzniknúť žiadne dodatočné požiadavky na podávanie správ. V súvislosti s informačným systémom boli potrebné ďalšie analýzy a diskusie. Podrobná správa o zaradení ďalších komodít bude k dispozícii až v roku 2030, niektoré spoločnosti uviedli, že sú pripravené, iné nie, a existujú aj rozdiely v príprave niektorých členských štátov.</li>
+</ul>
+
+
+
+<p>Prezentácia a výmena názorov s Francescom Mirizzim z Európskej asociácie priemyselného konope o pripravovaných zmenách a doplneniach smernice 2002/32/ES a nariadenia (ES) č. 767/2009</p>
+
+<ul>
+	<li>Rečník zdôraznil, že konope sa používali ako krmivo pre hospodárske zvieratá a semená boli výživné pre nosnice a ryby. Trh s týmito produktmi rástol, ale vyskytli sa problémy so zvyškami THC. Súčasné hladiny v členských štátoch sa pohybovali od 0,3 do 1 %. Komisia stanovila hladiny pre semená a olej zo semien, ale hoci tieto hladiny boli dosiahnuteľné, vyžadovali čistenie. Spýtal sa, či je to v prípade zvierat potrebné. Cieľom nariadenia bola ochrana ľudského zdravia, takže hladiny boli neprimerané, keďže THC sa nemôže prenášať do živočíšnych produktov.</li>
+	<li>Problémom členských štátov nie sú krmivá, ktoré sú už na trhu, ale produkty CBD predávané ako krmivo pre domáce zvieratá (krmivá) alebo zmiešané s inými produktmi, ako sú krmivá. Tieto produkty sú nelegálne. Na uvádzanie CBD na trh ako krmivá je potrebné povolenie EFSA. DG SANTE uviedla, že ide o problém členských štátov. Rečník požadoval zamietnutie nariadenia a vyzval na stanovenie mierne vyšších limitov.</li>
+	<li>Podpredseda sa opýtal, či existujú údaje, ktoré preukazujú, že to nemá žiadny vplyv na zvieratá, a aké je odôvodnenie zvýšenia MRL.</li>
+	<li>Rečník poukázal na to, že mnohé štúdie preukázali, že prenos THC zo zvierat do produktov je minimálny.</li>
+	<li>Nariadenie 767/2009 obmedzilo používanie konope iba na stonky. V oblasti výživy zohrávali dôležitú úlohu semená a listy. Návrh by stanovil limit, čím by sa krmivá stali krmivovými doplnkami. To vyvolalo obavy, pretože Komisia po prvýkrát rozlišovala medzi krmivami a doplnkami na základe obsahu látky. Hladiny neboli dosiahnuteľné a mohlo by to viesť k situácii, keď by sa konope mohli používať ako potraviny, ale nie ako krmivo. Rečník chcel, aby Komisia a členské štáty návrh stiahli.</li>
+	<li>Podpredseda poznamenal, že ďalšie kroky v rámci SCoPAFF budú dôležité. Rečník uviedol, že obmedzením sektora konope sa znížila úroda na účely výroby vlákien.</li>
+</ul>
+
+
+
+<p>Aktualizácia týkajúca sa zjednodušenia: Balík opatrení v oblasti bezpečnosti potravín a krmív</p>
+
+<ul>
+	<li>Sekretariát predložil prehľad pripravovaného súboru nariadení o bezpečnosti potravín a krmív. Zameral sa na aspekty týkajúce sa krmív, ktoré by mali zahŕňať zrušenie desaťročného obdobia obnovy platnosti pre krmivové doplnkové látky a zavedenie digitálneho označovania informácií, ktoré sa netýkajú bezpečnosti. Očakávaný výsledok bol v súlade so spätnou väzbou, ktorú Copa-Cogeca poskytla v súvislosti s krmivami.</li>
+	<li>MTK konštatovalo, že na tejto téme sa vykonalo veľa práce a zmena prístupu zo strany GR AGRI bola vítaná. Uviedlo, že je dôležité naďalej aktívne pracovať na tejto dôležitej téme.</li>
+	<li>Podpredseda poznamenal, že zrušenie obdobia obnovy bolo dobrým krokom, ale je potrebné vykonať ďalšiu prácu v oblasti nových povolení.</li>
+</ul>
+
+
+
+<p>Aktualizácia týkajúca sa zjednodušenia: Legislatíva v oblasti ekologického poľnohospodárstva</p>
+
+<ul>
+	<li>Sekretariát poskytol rozpis očakávanej revízie právnych predpisov týkajúcich sa ekologického poľnohospodárstva. Podľa súčasných právnych predpisov existuje výnimka, ktorá umožňuje, aby v celkovom krmive určitých ekologických hospodárskych zvierat bolo počas 12-mesačného obdobia až 5 % neekologického krmiva. Tradičné zdroje ekologického krmiva neposkytujú vždy celý rad živín potrebných pre zdravý rast, najmä pokiaľ ide o kvalitné aminokyseliny, ktorých ponuka v EÚ je obmedzená. V dôsledku toho musí EÚ v súčasnosti každoročne obnovovať výnimky, čo sa nepovažuje za udržateľné ani vhodné dlhodobé riešenie.</li>
+	<li>Revízia právnych predpisov sa bude týkať iba tejto 5 % výnimky, ktorá sa vzťahuje iba na mladú hydinu, mladé nosnice a prasiatka. V januári 2026 Komisia uverejní správu, v ktorej posúdi dostupnosť krmív vo všetkých členských štátoch. Na základe tohto posúdenia sa určí, či je pokračovanie výnimky odôvodnené.</li>
+	<li>Kľúčovou obavou je, že Komisia môže posudzovať dostupnosť výlučne na základe celkového objemu krmív na trhu. Hlavným problémom však nie je množstvo, ale nedostatok správneho druhu krmív, najmä zdrojov bielkovín, ktoré spĺňajú základné nutričné a aminokyselinové požiadavky pre ekologické chovateľstvo.</li>
+</ul>
+
+
+
+<p>Diskusný stôl o situácii v odvetví krmív a chovu hospodárskych zvierat v členských štátoch</p>
+
+<ul>
+	<li>Podpredseda predstavil situáciu v Taliansku. V oblasti zdravia nastala kritická situácia, najmä v súvislosti s africkým morom ošípaných. Problémom bola aj nodulárna dermatitída, ktorá sa šírila na severe krajiny. Ochrana krmív pre zvieratá fungovala dobre, ale vyskytli sa problémy s aflatoxínmi a kontaminantmi.</li>
+	<li>BAB poznamenal, že Spojené kráľovstvo malo suché leto, čo malo negatívny vplyv na rast trávy, čo bolo nevýhodné pre chovateľov hospodárskych zvierat. Očakávalo sa, že dopyt po kŕmnych zmesiach v nasledujúcich mesiacoch výrazne vzrastie. Existovali určité obavy v súvislosti s EUDR, pretože to vytváralo neistotu pre výrobcov, a v súvislosti s chorobami zvierat sa vyskytli niektoré prípady modrého jazyka.</li>
+</ul>
+
+
+
+<p>Prínos aktivity pre poľnohospodárov v&nbsp;SR:</p>
+
+<p>Prenos informácií pre členov SPPK k&nbsp;danej problematike.</p>
+
+
+
+<p>Vyplývajúce úlohy pre SPPK:</p>
+
+<p>Pre SPPK nevyplývajú zo zasadania žiadne úlohy.</p>
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

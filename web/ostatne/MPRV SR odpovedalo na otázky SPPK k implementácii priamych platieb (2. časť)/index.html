@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MPRV SR odpovedalo na otázky SPPK k implementácii priamych platieb (2. časť) — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../index.html">Úvod</a><span>/</span><a href="../index.html">ostatne</a><span>/</span>MPRV SR odpovedalo na otázky SPPK k implementácii priamych platieb (2. časť)</nav>
+
+  <article>
+    <h1 class="doc-title">MPRV SR odpovedalo na otázky SPPK k implementácii priamych platieb (2. časť)</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Ing. Ján Baršváry</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">18. marca 2015</span></p>
+    <p class="members-note">Tento text je na sppk.sk prístupný len prihláseným členom komory.</p>
+
+    <div class="doc-body">
+<ol>
+	<li>Príklad:</li>
+</ol>
+
+<p>Poľnohospodársky podnik musí mať pri svojej výmere OP min. 175 ha existujúcich OEZ. OEZ zahŕňajú okrem iných plochy s&nbsp;plodinami, ktoré viažu dusík. Po prepočte plôch koeficientom by podnik OEZ spĺňal, ale § 11 &nbsp;ods. 7 NV hovorí, že v&nbsp;rozhodujúcom období od 15. 11. do 15. 02. je podnik povinný zabezpečiť na týchto plochách pokrytie oziminou. Podnik pestuje lucernu siatu ako viacročnú krmovinu v&nbsp;priemere &nbsp;3 roky na jednom pozemku. Podobne je to pri plodine hrachu. Hrach siaty pestujeme na zrno. Po zbere hrachu na zrno, chceme na jar budúceho roku po ňom zasiať jarnú plodinu (mak, kukuricu), pričom § 11 ods. 7 hovorí len, o&nbsp;možnosti zasiatia oziminy. &nbsp;</p>
+
+
+
+<ol>
+	<li>Budú môcť byť tieto plochy považované za OEZ?</li>
+	<li>Môže lucerna ostať na danom pozemku viac rokov, alebo je potrebné ju každoročne rozorať a&nbsp;po nej&nbsp;zasiať oziminu?</li>
+	<li>Musí ísť po hrachu len ozimina, alebo pôda po&nbsp; zbere hrachu na zrno môže byť ponechaná pre jarnú plodinu?</li>
+</ol>
+
+
+
+<p><em>Na účely splnenia postupu „existencia oblasti ekologického záujmu“ podľa § 11 nariadenia vlády SR č. 342/2014 (ďalej len „nariadenie“) je možné nahlásiť aj plochy s&nbsp;viacročnými dusík viažucimi plodinami.&nbsp; </em></p>
+
+<p><em>Žiadateľ je na plochách s plodinami, ktoré viažu dusík v rozhodujúcom období od<br>
+15. novembra príslušného roka do 15. februára nasledujúceho roka povinný zabezpečiť pokrytie plôch oziminou. Uvedená podmienka sa vzťahuje v kalendárnom roku na plochy, na ktorých sa pestovali jednoročné dusík viažuce plodiny, resp. došlo k z agrotechnického hľadiska vhodnému zaoraniu viacročných dusík viažucich plodín. </em></p>
+
+<p><em>Podmienka sa nevzťahuje na prípady pokrytia plochy viacročnými dusík viažucimi plodín (t. j. lucerna) v prípade, že nedôjde k ich zaoraniu. V&nbsp;ostatných prípadoch je potrebné zabezpečiť pokrytie plôch oziminou.</em></p>
+
+
+
+<ol>
+	<li>Vlastník nám odstránil niektoré krajinné prvky alebo ich časť. Dostaneme sankcie i v prípade, že si ich (krajinné prvky) nebudeme uplatňovať v deklarácii ?</li>
+</ol>
+
+
+
+<p><em>Žiadateľ je povinný dodržiavať pravidlá krížového plnenia upravené v&nbsp;prílohe č. 2 nariadenia. V&nbsp;súlade s&nbsp;podmienkou v&nbsp;rámci normy DPEP 7 je žiadateľ povinný dodržiavať zákaz odstraňovania a&nbsp;narušovania krajinných prvkov na ornej pôde, ako sú solitér, stromoradie, skupina stromov, terasa a&nbsp;medza. Odstránenie krajinných prvkov chránených v&nbsp;rámci normy DPEP 7 a&nbsp;ktoré sú súčasťou LPIS, má v&nbsp;prípade ich odstránenia dosah na sumu priamych platieb, nakoľko tieto sa v&nbsp;príslušnom roku upravia podľa § 14 ods. 8.</em></p>
+
+
+
+<ol>
+	<li>Subjekt na jeseň zasial na 15 ha parcelu 1 plodinu, v NV 342/2014 je ale podmienka, že musí mať 2 plodiny. Ako sa bude k tomuto pristupovať, keď si bude dávať deklaráciu, keď pri jesennom oseve ešte nevedel, že budú platiť tieto pravidlá?</li>
+</ol>
+
+
+
+<p><em>Relevantným obdobím pre plnenie postupu „diverzifikácia plodín“ podľa § 9 nariadenia je obdobie od 15. mája do 15. augusta, v&nbsp;tomto období je povinný pestovať v&nbsp;závislosti od výmery svojej ornej pôdy dve alebo tri plodiny. V&nbsp;zmysle § 2 zákona č. 1/1993 Z. z. o všetkom, čo bolo v Zbierke zákonov uverejnené, platí domnienka, že dňom uverejnenia sa stalo známym každému, koho sa to týka; domnienka o znalosti vyhlásených všeobecne záväzných právnych predpisov je nevyvrátiteľná. Nariadenie vlády bolo prijaté v&nbsp;novembri 2014.&nbsp; Ministerstvo zároveň informovalo poľnohospodársku verejnosť ako aj samosprávu priebežne od roku 2011 o&nbsp;tom, že jednou z&nbsp;podmienok získania platby na ekologizačné postupy prospešné pre klímu a&nbsp;životné prostredie (greening) bude povinnosť dodržiavať v&nbsp;závislosti od výmery ornej pôdy diverzifikáciu plodín.</em></p>
+
+
+
+<ol>
+	<li>Prvovýroba si našla v&nbsp;LPIS-e na stránke podnemapy.sk krajinný prvok – mokraď v&nbsp;mernej jednotke „ha“. Podľa klasifikácie krajinných prvkov medzi krajinné prvky patrí:</li>
+</ol>
+
+<p>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; solitér, stromoradie, skupina stromov, mokraď a&nbsp;medza.</p>
+
+
+
+<p>Problémom je, že v&nbsp;prílohe č. 5 &nbsp;k nariadeniu vlády č. 342/2014 Z.z. - „Váhové faktory“, ktorým sa stanovujú pravidlá poskytovania podpory v&nbsp;poľnohospodárstve v&nbsp;súvislosti so schémami oddelených priamych platieb sa v&nbsp;tabuľke pod „Krajinnými prvkami“ nachádzajú iba 4 krajinné prvky a&nbsp;to:</p>
+
+<p>-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; samostatne stojaci strom, stromy v&nbsp;rade, skupina stromov/húštiny v&nbsp;poli a&nbsp;medza</p>
+
+
+
+<p>Má sa za to, že je aj napriek tomu mokraď uznaná ako oblasť ekologického záujmu s&nbsp;váhou 1:1?</p>
+
+
+
+<p><em>V novom systéme pravidiel krížového plnenia, ktorý sa nachádza v&nbsp;prílohe č. 2 </em><em>nariadenia, nie je mokraď zaradená medzi krajinné prvky v rámci normy DPEP 7 a&nbsp;taktiež nepatrí medzi potenciálne oblasti ekologického záujmu, t.j. nie je ju možné uznať na účely plnenia postupu „existencia oblasti ekologického záujmu“ podľa § 9 nariadenia vlády SR č. 342/2014. Mokraď ako krajinný prvok je však súčasťou kontroly zachovania biodiverzity, ktorá sa nachádza v prílohe č. 2 nariadenia v&nbsp;súvislosti s&nbsp;požiadavkami vyplývajúcimi zo zákona č. 543/2002 Z. z. o ochrane prírody a&nbsp;krajiny.</em></p>
+
+
+
+<ol>
+	<li>Ako je potrebné deklarovať plochu, ktorú plánuje v jeseni podnik na založenie sadu – OP alebo TTP?</li>
+</ol>
+
+
+
+<p><em>Žiadateľ v žiadosti uvádza aktuálnu kultúra (orná pôda, trvalý trávny porast, trvalé kultúry (vinice, chmeľnice, ovocné sady)) súvislých plôch poľnohospodárskej pôdy za každý diel pôdneho bloku. </em></p>
+
+
+
+<ol>
+	<li>Trávy na OP sú na 100 % plochy OP. Podnik tak spĺňa podmienku diverzifikácie podľa osobitného predpisu a je spôsobilý na celú sumu dotácii?</li>
+</ol>
+
+
+
+<p><em>Výnimky z&nbsp;povinnosti plniť postup „diverzifikácia plodín“ upravuje priamo európska legislatíva, konkrétne čl. 44 ods. 2 a&nbsp;3 nariadenia (EÚ) č. 1307/2013 v&nbsp;platnom znení. V&nbsp;prípade, že žiadateľ využíva viac ako 75 % plochy ornej pôdy, resp. celú plochu ornej pôdy na pestovanie tráv, iných rastlinných krmív, ako pôdu ležiacu úhorom, resp. kombináciu týchto využití, vzťahujú sa na neho predmetné výnimky. V&nbsp;prípade, že viac ako 75 % plochy ornej pôdy žiadateľ využíva na pestovanie tráv, iných rastlinných krmív, ako pôdu ležiacu úhorom, resp. kombináciu týchto využití, a&nbsp;zvyšná orná pôda, ktorá sa takto nevyužíva, nepresahuje 30 hektárov, povinnosť plniť postup „diverzifikácia plodín“ sa na žiadateľa nevzťahuje. Pre úplnosť uvádzame, že na získanie platby na ekologické postupy prospešné pre klímu a životné prostredie v plnej výške je žiadateľ okrem postupu „diverzifikácia plodín“ povinný plniť i postup „existencia oblasti ekologického záujmu“ podľa § 11 nariadenia a v prípade, že obhospodaruje aj plochy trvalých trávnych porastov, postup „zachovávanie existujúceho trvalého trávneho porastu“ podľa § 10 nariadenia, ako aj ďalšie všeobecné požiadavky na poskytnutie priamych platieb.</em></p>
+
+
+
+<ol>
+	<li>Neprodukčná pôda zaberá 100 % OP. Na neprodukčnej OP sa odstraňujú nálety a buriny. Dostane podnik celú dotáciu?</li>
+</ol>
+
+
+
+<p><em>Žiadateľ je povinný zabezpečiť obhospodarovanie pôdy vhodnej na pestovanie plodín, ale ležiacej úhorom. Vo vzťahu k spôsobu využitia úhoru môže ísť o úhor s porastom plodiny aj bez porastu, t.j. o čierny úhor, polovičný alebo zelený úhor. Vo vzťahu k osevnému postupu môže ísť&nbsp; o úhor v rotácii a mimo rotácie. Spôsobu úhorovania, ktorý žiadateľ zvolí, je potrebné prispôsobiť bežné agrotechnické postupy. Žiadateľ je však prinajmenšom povinný v roku podania žiadosti zabraňovať na pôde ležiacej úhorom rozširovaniu samonáletov drevín, odstraňovať invázne druhy rastlín a húževnaté buriny. V&nbsp;závislosti od celkovej výmery OP sa na žiadateľa môžu vzťahovať aj ďalšie pravidlá (napr. v&nbsp;súvislosti s&nbsp;platbou za ekologizáciu).</em></p>
+
+
+
+<ol>
+	<li>V prípade pestovania dusík viažucich rastlín sa §11 ods. 7 nevzťahuje na ďatelinu a&nbsp;lucernu?</li>
+</ol>
+
+
+
+<p><em>§ 11 ods. 7 nariadenia upravuje pravidlá pre využitie plôch s&nbsp;plodinami viažucimi dusík ako oblasť ekologického záujmu. Ako plodiny viažuce dusík je možné použiť plodiny uvedené v&nbsp;prílohe č. 6 k&nbsp;nariadeniu. Podmienka pokrytia plochy oziminou v&nbsp;stanovenom období sa nevzťahuje na prípady pokrytia plochy viacročnými dusík viažucimi plodín v prípade, že nedôjde k ich zaoraniu. </em></p>
+
+
+
+<ol>
+	<li>Bôbovité rastliny spomínané v&nbsp;článku 46 ods. 4a Nariadenia č. 1307/2013 sú tie isté ako rastliny viažuce dusík definované v&nbsp;prílohe č. 6 Nariadenia vlády SR 342/2014?</li>
+</ol>
+
+
+
+<p><em>Medzi bôbovité rastliny patria rody, ako napríklad hrach (Pisum), fazuľa (Phaseolus), ďatelina (Trifolium), lucerna (Medicago), či vika (Vicia), ktoré sú uvedené aj v&nbsp;prílohe č. 6.</em></p>
+
+
+
+
+
+<ol>
+	<li>K § 3 ods. 2/ : náš člen kosí pozemky&nbsp; ktoré prevádzkuje vodárenská spoločnosť. Má nárok na dotáciu ?</li>
+</ol>
+
+
+
+<p><em>Priame platby je možné poskytnúť žiadateľovi, ktorý spĺňa všeobecné požiadavky na poskytnutie priamych platieb, t.j. okrem iného obhospodaruje poľnohospodársku plochu, pričom táto mu je k&nbsp;dispozícii k&nbsp;31. máju príslušného roka. Žiadateľ je však na výzvu príslušného orgánu povinný riadne preukázať vlastnícke alebo užívacie právo k&nbsp;poľnohospodárskej ploche. Požiadavky na aktívneho poľnohospodára podľa § 3 nariadenia je povinný spĺňať tá osoba, ktorá o&nbsp;priame platby žiada. </em></p>
+
+
+
+<ol>
+	<li>K § 4 ods. 4/ : aký je výpočet ? ak mal náš člen &nbsp;roku 2014&nbsp; 1189 ha celkovej výmery&nbsp; a&nbsp;z&nbsp;toho 262 ha TTP, v&nbsp;roku 2015 bude 1169 ha celkovej výmery a 242 ha TTP</li>
+</ol>
+
+
+
+<p><em>Sledovanie pomeru TTP vo vzťahu k&nbsp;celkovej výmere poľnohospodárskej plochy sa sleduje pre potreby pravidiel krížového plnenia na úrovni Slovenskej republiky a&nbsp;nie na úrovni žiadateľa. Upozorňujem však, že pokles TTP o&nbsp;20 ha, má za následok porušenie pravidiel krížového plnenia a&nbsp;v&nbsp;prípade, že ide o&nbsp;TTP v&nbsp;územiach NATURA 2000, ak porušenie pravidiel pre platbu za ekologizáciu.</em></p>
+
+
+
+<ol>
+	<li>Akým spôsobom sa bude počítať degresivita platieb v&nbsp;rámci LFA (ANC) ?</li>
+</ol>
+
+
+
+<p><em>Degresivita platieb ANC sa bude počítať postupne (po častiach) na príslušné hraničné plošné hodnoty v zostupnej tendencii&nbsp; výšky platieb.</em></p>
+
+
+
+
+
+<p>Spracoval: Ing. Ján Baršváry, odbor poľnohospodárstva a&nbsp;služieb, SPPK</p>
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

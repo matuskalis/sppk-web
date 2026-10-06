@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Znenie Programového vyhlásenia vlády SR — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Znenie Programového vyhlásenia vlády SR</nav>
+
+  <article>
+    <h1 class="doc-title">Znenie Programového vyhlásenia vlády SR</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Tlačový odbor</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">20. apríla 2020</span></p>
+
+    <div class="doc-body">
+<p><strong>ZVÝŠENIE POTRAVINOVEJ SEBESTAČNOSTI OBYVATEĽOV S DÔRAZOM NA ZODPOVEDNÉ HOSPODÁRENIE S PÔDOU A S LESMI </strong></p>
+
+
+
+<h2 class="doc-subheading">PÔDOHOSPODÁRSTVO</h2>
+
+<p><strong>Strategickým cieľom Vlády SR je efektívne a udržateľným spôsobom využiť prírodný potenciál Slovenska na zvýšenie úrovne vlastnej potravinovej sebestačnosti a na zvýšenie podielu domácich potravín.</strong> Keďže vláda si plne uvedomuje nízku úroveň potravinovej sebestačnosti Slovenska a jej zvýšenie považuje za strategický záujem štátu a prioritu vlády, ďalším<strong>, nemenej dôležitým cieľom je dosiahnuť čo najvyššiu sebestačnosť vo výrobe potravín a domácou produkciou zabezpečiť pre našich občanov kvalitné a bezpečné potraviny. Pôdohospodárstvo musí plniť významné ekologické, ekonomické, sociálne a spoločenské funkcie na národnej úrovni.</strong> Zároveň nesmie poškodzovať ďalšie ekosystémy nielen v súčasnosti, ale ani v budúcnosti.</p>
+
+<p><strong>Vláda SR vypracuje dlhodobú koncepciu poľnohospodárstva a potravinárstva so zreteľom na strategické dokumenty Európskej únie (EÚ),</strong> od ktorej sa budú odvíjať dlhodobo predvídateľné podmienky a garancie štátnej podpory domáceho poľnohospodárstva v štruktúre podľa aktuálnej potreby – špeciálne na živočíšnu produkciu, na podporu pestovateľov špeciálnych plodín a spracovateľského priemyslu, na proces pozemkových úprav, na zvýšenie poistenia rizík, na podporu tvorby zamestnanosti, na podporu mladých poľnohospodárov a na rozvoj podpory propagácie slovenskej produkcie.</p>
+
+<p><strong>Prioritou Vlády SR bude upevnenie postavenia slovenských poľnohospodárov a potravinárov a ich záujmov v rámci Spoločnej poľnohospodárskej politiky EÚ po roku 2020, </strong>najmä však zabezpečenie spravodlivých, transparentných a nediskriminačných podmienok slovenským poľnohospodárom a potravinárom v porovnaní s ostatnými štátmi EÚ a dosiahnutie maximálnej podpory z rozpočtu SR pri zachovaní rozpočtovej zodpovednosti.</p>
+
+<p><strong>Vláda SR považuje pôdu za národné bohatstvo</strong>, ktorého šetrné a udržateľné využívanie je nielen základným predpokladom každej ekonomickej činnosti, ale je predovšetkým obmedzeným a ľahko zničiteľným zdrojom nenahraditeľného významu pre samotnú ľudskú existenciu. Vláda SR sa zaväzuje prijať legislatívu SR v oblasti poľnohospodárstva, potravinárstva a lesníctva a zosúladiť ju s legislatívou EÚ s cieľom zjednotiť podmienky spoločného trhu EÚ.</p>
+
+<p>&nbsp;Lesy sú rozhodujúcim, životodarným a krajinotvorným prvkom. Lesy nie sú bankou pre štátny rozpočet, lesy sú poisťovňou pre zdravú krajinu.</p>
+
+<p><strong>Vláda sa zaväzuje ku stabilizácii lesov</strong> a zabezpečeniu ich funkcií prostredníctvom prírode blízkeho hospodárenia a reálneho ocenenia ich ekologických funkcií.</p>
+
+<p><strong>Vláda sa zaväzuje plniť opatrenia identifikované Revíziou výdavkov na pôdohospodárstvo a rozvoj vidieka.</strong> Za hlavné opatrenia považuje predovšetkým zvýšenie podielu zdrojov na podporu pôdohospodárstva a rozvoja vidieka v II. pilieri, zefektívnenie fungovania Programu rozvoja vidieka, zastropovanie, redistributívnu platbu, zníženie priamych platieb v I. pilieri Spoločnej poľnohospodárskej politiky a zároveň na zvýšenie podpory produkcie. Pre vyššie spolufinancovanie v II. pilieri je kľúčové, aby bolo možné z PRV financovať opatrenia 100 prioritné pre Slovensko. Tými sú predovšetkým sceľovanie vlastníctva pôdy, nástroje na riadenie rizík pre poľnohospodárov, obnova hydromeliorizačných zariadení, podpora mladých poľnohospodárov, environmentálnych cieľov a ekologického hospodárstva.</p>
+
+<p><strong>Vláda SR v súlade so závermi revízie výdavkov zefektívni fungovanie podriadených organizácií a štátnych podnikov MPRV SR</strong>, najmä optimalizáciou a digitalizáciou Pôdohospodárskej platobnej agentúry a vykonaním hĺbkového auditu štátneho podniku Lesy SR. Zverejníme všetky plány starostlivosti o les v prehľadnej a dostupnej forme, čo zvýši transparentnosť a verejnú kontrolu.</p>
+
+
+
+<h2 class="doc-subheading">POĽNOHOSPODÁRSTVO A POTRAVINÁRSTVO </h2>
+
+<p><strong>Vláda SR prepracuje doterajšiu právnu úpravu vlastníckych a užívacích vzťahov k pôde v súlade s Ústavou Slovenskej republiky s cieľom vyvážiť postavenie vlastníkov pôdy voči jej užívateľom.</strong> Predloží ústavnoprávne riešenie vlastníckych vzťahov k pôde, čím zabráni predaju pôdy na špekulatívne účely.</p>
+
+<p>&nbsp;Zabezpečí tým, aby rozhodujúci vplyv na stratégiu a smerovanie hospodárenia na pôde zostal v rukách SR. Zabezpečí ukončenie reštitučných konaní, vysporiadanie pozemkov v záhradkárskych osadách, ukončenie konaní o zostavení registrov obnovenej evidencie pozemkov (ROEP) a nápravu zrejmých krívd spôsobených v týchto konaniach.</p>
+
+<p><strong>V spolupráci so samosprávou zavedie osobitné konania na identifikáciu vlastníctva k pozemkom nezistených vlastníkov s cieľom dôslednej identifikácie pôvodných vlastníkov a ich dedičov s využitím všetkých dostupných údajov (katastrálne operáty, archívy, listiny, svedkovia, pozemkové spoločenstvá a iné). </strong></p>
+
+<p><strong>Zavedie transparentný systém prenájmu pôdy v správe Slovenského pozemkového fondu</strong> aktívnym poľnohospodárom, ktorí by mali mať potenciál najvyššieho prínosu pre rast potravinovej sebestačnosti Slovenska.</p>
+
+<p><strong>Vláda SR sa zaväzuje čo najskôr vytvoriť legislatívne podmienky pre zrýchlenie a zefektívnenie konaní o vyčleňovaní pozemkov pre malých, mladých, rodinných a začínajúcich poľnohospodárov</strong> s cieľom uľahčiť im prístup k pôde.</p>
+
+<p><strong>Vláda SR sa bude detailne zaoberať a aktívne riešiť problematiku pozemkových úprav a zabráni drobeniu vlastníctva pôdy po pozemkových úpravách.</strong> Na základe analýzy pripraví návrh a následne zrealizuje vybudovanie špecializovanej pozemkovej štátnej správy v gescii rezortu.</p>
+
+<p><strong>Pripraví opatrenia proti ďalšiemu zaberaniu kvalitnej poľnohospodárskej pôdy vrátane podpory prednostnej výstavby na brownfieldoch</strong> alebo povinnosti rekultivačnej náhrady poľnohospodárskej pôdy, s výnimkou výstavby štátnych nájomných bytov a štátnej infraštruktúry.</p>
+
+<p><strong>&nbsp;Zadefinuje a zavedie do praxe kľúčové ukazovatele kvality pôdy, vody a ovzdušia, ako aj biodiverzity. Zvýši zamestnanosť v agrosektore, ako aj atraktívnosť života na vidieku. </strong>Využije všetky dostupné prostriedky 101 k pozitívnej motivácii na dobrovoľné plnenie ekosystémových služieb, ekologizáciu poľnohospodárstva, na vodozádržné projekty, protipovodňové opatrenia, biopásy, opatrenia proti zhutňovaniu pôdy a erózii pôdy, s reguláciou GMO. Vláda SR vytvorí podmienky pre väčšiu diverzifikáciu poľnohospodárskych plodín, pričom výmera honov bude limitovaná.</p>
+
+<p><strong>Prijme riešenia závlah poľnohospodárskej pôdy</strong> a podporí obnovu závlahových systémov.</p>
+
+<p><strong>V rámci sebestačnosti budeme venovať osobitnú pozornosť plodinám typickým pre naše pôdne a klimatické podmienky. </strong></p>
+
+<p><strong>Osobitnú pozornosť bude Vláda SR venovať zavedeniu účinných protikorupčných opatrení v rozhodovacích procesoch v celom rezorte</strong>. Základom rozdeľovania verejných zdrojov bude nulová tolerancia ku korupcii, objektívnosť kritérií, transparentnosť a zameranie sa na dosiahnutie skutočných a merateľných výsledkov. Všetky informácie, výška podpory, rozhodnutia, ale aj metodiky na ich schvaľovanie, budú transparentne zverejňované a prístupné verejnosti.</p>
+
+<p><strong>Vyplácanie podpôr Vláda SR podmieni preukázaním právneho titulu k pôde.</strong> <strong>Zároveň Vláda SR zavedie stropovanie priamych platieb a redistributívnu platbu tak, aby výrazne podporila malých, mladých, rodinných a začínajúcich poľnohospodárov, </strong>zároveň pokryla výdavky kľúčové pre udržateľné hospodárenie na pôde, ako aj výdavky súvisiace so zmenou klímy, životným prostredím, pôdou, životnými podmienkami zvierat a zabezpečením potravinovej sebestačnosti, ako aj rozvoja vidieka.</p>
+
+<p><strong>Vláda SR vyvinie snahu o zachovanie minimálnej doterajšej výšky finančnej obálky SPP pre SR,</strong> vrátane minimalizácie dopadov Brexitu na finančnú obálku SPP pre SR.</p>
+
+<p><strong>Vláda SR vyvinie úsilie o zabezpečenie spravodlivého fungovania jednotného trhu EÚ</strong>, čo znamená porovnateľnú úroveň dotácií naprieč všetkými krajinami EÚ pre poľnohospodárov a potravinárov, vrátane zjednotenia platieb zo štátnych rozpočtov jednotlivých krajín EÚ tak, aby nedochádzalo k nekalej obchodnej súťaži prostredníctvom národných rozpočtov medzi členskými štátmi EÚ.</p>
+
+<p><strong>Cieľom Vlády SR bude aj odstránenie diskriminácie v oblasti priamych platieb naprieč EÚ</strong> a dosiahnutie konvergencie priamych platieb do konca roka 2027.</p>
+
+<p><strong>Presunom prostriedkov z I. do II. piliera sa zabezpečí podpora pre sektory, ktoré sú potenciálnymi zdrojmi zamestnanosti a pridanej hodnoty, ako sú živočíšna výroba, špeciálna rastlinná výroba, ovocinárstvo, zeleninárstvo, vinohradníctvo, včelárstvo a iné, osobitne aj pre potravinársky priemysel a hydromeliorácie.</strong> S týmto cieľom zabezpečí, aby žiadateľom o podpory zo SPP mohol byť spracovateľský podnik s cieľom maximalizácie spracovania surovín z domácej produkcie.</p>
+
+<p><strong>Zlepší podmienky chovu hospodárskych, domácich a spoločenských zvierat a včelu medonosnú vyhlásime za chránený živočíšny druh,</strong> pričom zavedieme podpory na medonosné plochy, ktoré sú spôsobilé na dlhodobé pasenie včelstiev.</p>
+
+<p>&nbsp;<strong>Podporí finančné nástroje, ako napríklad bonifikácia úrokov, prevzatie zábezpeky alebo odpustenie časti istiny za vopred stanovených podmienok pri úveroch z komerčných bánk alebo poistného v poisťovniach. </strong>Obdobne zavedie systém mikropôžičiek pre malých, mladých, rodinných a začínajúcich poľnohospodárov.</p>
+
+<p><strong>Vypracuje nové definície v legislatíve s prihliadnutím na podporu jednoduchého zamestnávania a rodinných foriem podnikania. </strong></p>
+
+<p><strong>Podporí obnovu a zachovanie tradičných systémov hospodárenia na lazoch, kopaniciach, štáloch</strong>. Podporí rozvoj agroturistiky, rybárstva a zároveň podporí zachovanie pôvodného slovenského genofondu v poľnohospodárskej výrobe.</p>
+
+<p><strong>Zriadi systém riadenia rizík v poľnohospodárstve a rizikový fond pre ťažko poistiteľné riziká.</strong> Budú systematicky napomáhať napríklad riešiť dôsledky škôd spôsobených nepredvídateľnými prírodnými katastrofami v poľnohospodárstve, klimatickými zmenami, ako aj škody spôsobené zverou.</p>
+
+<p><strong>Podporí zakladanie produkčných, spracovateľských a odbytových združení pre poľnohospodárov a potravinárov </strong>v súlade s legislatívou EÚ.</p>
+
+<p><strong>Pri projektových podporách odstránime subjektívne kritériá hodnotenia</strong>. Naopak, jasne sa definujú jednotkové náklady pri základných typoch investícií. Vopred bude stanovený a každoročne aktualizovaný harmonogram výziev na celé programovacie obdobie.</p>
+
+<p><strong>Pomocou investícií do potravinárstva z európskych a národných zdrojov zabezpečí prednostné spracovanie na Slovensku vyprodukovaných poľnohospodárskych surovín na potraviny</strong>. Budú prijaté a notifikované schémy štátnej pomoci pre potravinárov. Podporou moderných, automatizovaných a vysoko efektívnych výrobných postupov tak zabezpečí udržanie a ďalšie zvýšenie konkurencieschopnosti domáceho potravinárskeho priemyslu. Zjednoduší a zosúladí potravinové právo SR s právom EÚ vrátane odstránenia gold-platingu, čím odstráni zbytočnú byrokraciu a zjednoduší podnikateľské prostredie podliehajúce týmto reguláciám.</p>
+
+<p><strong>Prehodnotí legislatívu týkajúcu sa odberateľsko-dodávateľských vzťahov v súlade s legislatívou Európskej únie</strong> a za predpokladu účinných opatrení na zvýšenie podielu slovenských potravín na pultoch predajní.</p>
+
+<p><strong>Zabezpečí zákonný, predvídateľný a jednotný postup pri výkonoch úradnej kontroly zjednotením úradnej kontroly potravín a zefektívnením jej riadenia.</strong> Zabezpečí, aby orgány dozoru plnili úlohu najvyššieho odborného garanta a partnera pre všetkých prevádzkovateľov potravinových podnikov tak, aby plnil funkciu poradnú a nielen kontrolnú a represívnu. Zároveň podporí účinný model ochrany života a zdravia spotrebiteľa a vnútorného trhu pri riešení potravinových káuz a podvodov.</p>
+
+<p><strong>Odstráni zbytočnú byrokraciu, zjednoduší podmienky predaja z dvora tak, aby nebola dotknutá bezpečnosť potravín, ochrana spotrebiteľa ani rovnosť príležitostí účastníkov na trhu.</strong> Zavedie systém dosledovateľnosti&nbsp; zloženia a pôvodu potravín so zvážením jeho dobrovoľnosti a tak, aby nebola dotknutá bezpečnosť potravín a ochrana spotrebiteľa. Podporí rozvoj systému krátkych vertikálnych dodávateľských reťazcov na regionálnej úrovni. Podporí dodávanie a spracovanie kvalitných čerstvých potravín lokálnych producentov pri dodržaní legislatívnych a hygienických pravidiel v školských jedálňach a iných stravovacích zariadeniach v pôsobnosti verejnej správy.</p>
+
+<p><strong>Vytvorí manažérsku skupinu na transfer vedomostí a technológií k poľnohospodárom a potravinárom a na podporu inovácií v poľnohospodárstve a potravinárstve. </strong>Zreformuje Národné poľnohospodárske a potravinárske centrum a Národné lesnícke centrum s cieľom poskytovania lepších služieb pre prax.</p>
+
+<p><strong>Zlepší financovanie výskumu v sektore a podmieni ho zefektívnením organizačnej štruktúry výskumných ústavov v gescii ministerstva</strong>, diverzifikáciou financovania a relevantnou publikačnou činnosťou.</p>
+
+<p><strong>Prepojí výsledky vedecko-výskumnej práce s oblasťami výživy obyvateľstva</strong> so zreteľom na výživovú hodnotu potravín a zdravie obyvateľstva.</p>
+
+<p><strong>Prehodnotí zameranie študijných odborov na stredných a vysokých školách</strong> so zameraním na poľnohospodárstvo a potravinárstvo s ohľadom na potreby trhu práce.</p>
+
+<p><strong>Zabezpečí reálne fungovanie poradenského systému pre poľnohospodárstvo a potravinárstvo</strong> formou úplne alebo čiastočne kompenzovaného poradenstva.</p>
+
+<p><strong>Vyčlení zdroje na vzdelávanie spotrebiteľov o potravinách a výžive so zameraním na zdravý životný štýl, rozvoj regiónov a zlepšovanie nákupného patriotizmu spotrebiteľov</strong>. Podporí zvyšovanie zručností a vedomostí detí a mládeže potrebných pre výrobu, prípravu zdravých a kvalitných jedál. Vytvorí účinný mechanizmus na podporu udržania kvalifikovaných zamestnancov v poľnohospodárstve a potravinárstve a zabezpečí funkčný spôsob ďalšieho vzdelávania zamestnancov</p>
+
+
+
+<h2 class="doc-subheading">LESNÍCTVO </h2>
+
+<p>Lesy sú rozhodujúcim krajinotvorným prvkom. Ich stav je vplyvom klimatických zmien zlý a v dôsledku nedocenenia ich významu sa naďalej zhoršuje. Odpoveďou na tento alarmujúci stav je otvorené, adaptívne lesníctvo, stavajúce na využívaní moderných vedeckých poznatkov a uplatňovaní osvedčených tradícií. Lesníctvo, ktoré uznáva význam uvedomelej lesníckej činnosti a zároveň priznáva, že nie všetko sa v minulosti v lese dialo správne a čestne. Lesníctvo, ktoré je aktívnou súčasťou transformácie na obehové hospodárstvo a nízkouhlíkovú bioekonomiku. Lesníctvo, ktoré súčasný spoločenský konflikt nevyrieši v prospech lesníkov, ochranárov či drevárov, ale jedine na prospech lesa a spoločnosti. Lesníctvo, ktoré nielenže peniaze vracia do lesa, ale do ktorého podpory vloží štát ďalšie primerané zdroje, potrebné na zmenu ich obhospodarovania a zlepšenie ich stavu. Pretože lesy nie sú bankou pre štátny rozpočet, lesy sú poisťovňou pre zdravú krajinu a do poisťovne sa platí. Suma poistného sa bude postupne znižovať, a to zásluhou rýchleho zavádzania moderného obhospodarovania.</p>
+
+<p>&nbsp;<strong>Základným nástrojom, ktorý použijeme na stabilizovanie lesov a zabezpečenie ich funkcií, je prírode blízke hospodárenie v lese (PBHL).</strong> Po stáročiach holorubov a desaťročiach využívania podrastového hospodárskeho spôsobu je dnes PBHL základnou odpoveďou na klimatické zmeny a spoločenské požiadavky. V súčasnosti sa takto hospodári na 2 % výmery slovenských lesov. Našou stratégiou je prebudovanie hospodárenia vo väčšine lesov na PBHL, v tomto volebnom období zvýšime ich podiel. Nástrojom prebudovy budú hospodárske zásahy a postupy v súlade s koncepciou Pro Silva. Výsledkom budú lesy stabilné s vyváženým ekologickým, enviromentálnym, ekonomickým a sociálnym aspektom. Prebudovanie slovenského lesníctva na PBHL bude dlhodobý proces, ktorý je však nevyhnutný a nemožno ho ďalej odkladať bez devastačného dopadu. Preto sa PBHL stáva základnou stratégiou štátu pri správe lesa.</p>
+
+<p><strong>Prebudovou na PBHL účinne podporíme ekologické funkcie lesov</strong>. Zvýšime ich adaptáciu na klimatické zmeny a podiel na sekvestrácii atmosferického uhlíka, odolnosť proti kalamitám, druhovú, vekovú a biotopickú pestrosť, upevníme ich protierózne, vodozádržné a pôdotvorné funkcie a v súlade s výsledkami epidemiologických štúdií o priaznivom vplyve lesov na posilňovanie imunity aj - dnes osobitne aktuálnu – ich zdravotno-hygienickú funkciu. V trvalo udržateľnej miere zachováme aj dôležitú drevoprodukčnú funkciu lesov, kde navýšime podiel kvalitných sortimentov.</p>
+
+<p><strong>&nbsp;Na podporu PBHL a ekologických funkcií ustanovíme štátny lesný ekofond</strong> a pripravíme rámce pre vznik pilotných trhov s vybranými ekosystémovými službami lesov. Toto umožní zvýšiť výkonnosť lesníckych činností, najmä robotníckych profesií, ktorých ponuka a kvalita je kriticky nízka. Fondom podporíme aj zavádzanie modernej techniky, ako aj budovanie lesných ciest spĺňajúcich prísne environmentálne kritériá, ktoré sú nevyhnutnou podmienkou PBHL.</p>
+
+<p><strong>Dlhodobý spor lesníkov s ochranármi vyriešime v prospech lesa</strong>. Základom bude vypracovanie jednotného zákona o lesoch a ochrane prírody, ktorý odstráni súčasné rozpory. V spolupráci s ochranárskou obcou vykonáme revíziu chránených území. V územiach s najvyšším stupňom ochrany budeme rešpektovať bezzásahový režim. Hospodárenie v národných parkoch bude prírode blízke, zamerané výhradne na podporu ich cieľov. Všetky sporné otázky sa budú posudzovať spoločným expertnými skupinami lesníkov, ochranárov, krajinárov i ekonómov. Majitelia súkromných lesov budú za majetkovú ujmu z titulu ochrany prírody vždy riadne a včas odškodnení.</p>
+
+<p><strong>Odstránime súčasnú anomáliu, keď lesomajitelia si sami platia odborných lesných hospodárov (OLH) na svojich majetkoch</strong>. Platy OLH bude uhrádzať štát, čím sa zvýši ich zodpovednosť za stav lesa. Zvýšime podiel OLH s vysokoškolským lesníckym vzdelaním.</p>
+
+<p><strong>Súčasný nevýkonný kontrolný systém v lesníctve nahradíme jednotnou apolitickou nezávislou lesnou kontrolou. </strong></p>
+
+<p>Hospodárskej úprave lesov bude prinavrátená profesionálna vážnosť a rozhodujúci význam pre správu lesov. Jej plným prechodom pod štát sa zabezpečí dôsledný zber kvalitných dát a ich využívanie pre variantné lesnícke plánovanie s využitím prístupov precízneho lesníctva a najprogresívnejších algoritmov. Prvoradou úlohou pri tvorbe plánov starostlivosti o lesy bude prispôsobenie správy lesov meniacim sa klimatickým podmienkam a akcentovanie uplatňovania princípov PBHL.</p>
+
+<p><strong>Zásadným spôsobom zmeníme užívanie poľovných revírov.</strong> Prednosť pri výkone práva poľovníctva budú mať v prípade súkromných lesov majitelia lesných pozemkov, v prípade štátnych pozemkov odborný lesný personál. Tým znížime súčasné obrovské škody zverou na lesných porastoch. Zo skutočného rozsahu týchto škôd bude odvodzovaný plán lovu. Škody, spôsobené zverou na porastoch, sa budú objektívne stanovovať a dôsledne vymáhať. Pri prenájme revírov sa zohľadní aj domovská príslušnosť poľovníka k danej lokalite.</p>
+
+<p><strong>Verejné obstarávanie lesníckych činností zameriame na priamych dodávateľov prác tak, aby peniaze za práce v lese neodčerpávali parazitujúce medzičlánky.</strong> Účastníci súťaží budú musieť preukázať reálnu schopnosť výkonu doloženú potrebnými kapacitami.</p>
+
+<p>&nbsp;<strong>V boji proti korupcii bude účinným systémovým nástrojom nový zákon o štátnych lesných podnikoch.</strong> Týmto bude zavedená osobná hmotná zodpovednosť vedenia podniku za svoje rozhodnutia, transparentné vytváranie orgánov podniku a účasť verejnosti na jeho riadení a kontrole. Morálne a odborne zdatní a vysokovýkonní ľudia, ktorí dokážu otvorene poukazovať na nedostatky v správe lesníctva a hľadať nápravu, budú tvoriť personálnu kostru rezortu. Osoby, ktoré takéto danosti v minulosti už osvedčili, budú etalónom rezortnej profesionality. Pre lesný personál zavedieme na všetkých úrovniach systém kariérneho postupu.</p>
+
+<p><strong>Vyjadrením ocenenia mimoriadneho významu drobných majiteľov lesov pri správe krajiny bude ich rovnocenné postavenie so štátnymi lesnými podnikmi</strong>. Ponúkneme im aktívnu účasť v riadiacich a kontrolných orgánoch, ich členovia budú súčasťou poradných orgánov ministra.</p>
+
+<p><strong>Podporíme domácich spracovateľov dreva</strong>, primárne tých, ktorí produkujú sofistikované výrobky s najvyššou pridanou hodnotou. Osobitný dôraz dáme na výrobu drevostavieb, čo prispeje k dosiahnutiu vyrovnanej uhlíkovej bilancie.</p>
+
+<p><strong>Posilníme zameranie lesníckej vedy a výskumu na podporu PBHL</strong> a zabezpečíme rýchly prenos poznatkov a inovácií do praxe. V školstve sa upriamime na podporu talentovaných študentov. Oživíme absentujúce učňovské lesnícke školstvo, ktoré sa musí stať zdrojom vysokokvalifikovanej robotníckej pracovnej sily.</p>
+
+<p>&nbsp;<strong>Podporíme aktívne hospodárske využívanie podhorskej a horskej krajiny s osobitným zameraním na laznícke oblast</strong>i. Podporíme agrolesníctvo - symbiózu lesnej a poľnohospodárskej produkcie. Nekvalitnú poľnohospodársku pôdu využijeme na pestovanie energetických porastov. Oživíme hradenie bystrín.</p>
+
+<p>Verejnosti budeme tvorivo pripomínať historický krajinotvorný kultúrny a spoločenský rozmer významu lesov a služby lesníkov preň.</p>
+
+
+
+<p><strong><span>V prílohe na stiahnutie nájdete celé znenie Programového vyhlásenia vlády SR na obdobie rokov 2020-2024</span></strong></p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

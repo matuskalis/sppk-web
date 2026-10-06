@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitoring jesenných prác k 5. decembru — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">polnohospodarstvo</a><span>/</span><a href="../index.html">rastlinne komodity</a><span>/</span>Monitoring jesenných prác k 5. decembru</nav>
+
+  <article>
+    <h1 class="doc-title">Monitoring jesenných prác k 5. decembru</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Odbor poľnohospodárstva a služieb</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">9. decembra 2019</span></p>
+    <p class="members-note">Tento text je na sppk.sk prístupný len prihláseným členom komory.</p>
+
+    <div class="doc-body">
+<p><span><strong>K&nbsp;záveru 48. týždňa bola kukurica na zrno pozberaná na 91 % výmery, cukrová repa na 81 % výmery. Podiel pozberaných výmer a&nbsp;priemerné úrody jednotlivých plodín, aktuálne k&nbsp;5.12.2019, uvádzame pri jednotlivých regiónoch/okresoch a&nbsp;v&nbsp;zberovej tabuľke v&nbsp;závere tejto správy.</strong></span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/pQ7HioB.jpg"></figure><p></p>
+
+
+
+<h2 class="doc-subheading">Aktuálny prehľad počasia </h2>
+
+
+
+<p>Uplynulý týždeň spadlo najviac zrážok do 25 mm na krajnom východe. Lokálne spadlo najmenej 1-2 mm. Na začiatku týždňa bolo naše územie ešte v teplom vzduchu s najvyššou teplotou 14 °C. Ku koncu týždňa sa ochladilo a v dolinách klesla teplota vzduchu v nedeľu ráno na -11 °C.</p>
+
+
+
+
+
+<h2 class="doc-subheading">Mapa sucha za 48. týždeň (zdroj: SHMÚ)</h2>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/GkJzo9T.jpg"></figure><p></p>
+
+
+
+<h2 class="doc-subheading">Informácie z&nbsp;regiónov </h2>
+
+
+
+<p>V&nbsp;okrese <strong>Komárno</strong> boli zberové práce zahájené zberom slnečnice a vyorávaním cukrovej repy. Zber sóje bol ukončený v&nbsp;39. týždni. V&nbsp;41. týždni poľnohospodári dokončili zber slnečnice na 100 % výmery s&nbsp;priemernou úrodou 3,02 t/ha, V 43. týždni bol ukončený zber zemiakov s úrodou 31,00 t/ha. V 45. týždni miestne dažde brzdili zberové a sejbové práce. <strong>V&nbsp;46. týždni boli zberové a&nbsp;osevné práce prerušené z&nbsp;dôvodu dažďa, podiel pozberanej výmery kukurice na zrno a&nbsp;cukrovej repy sa preto nezmenil oproti 45. týždňu.</strong> <strong>V 48. týždni bola dokončená vyorávka cukrovej repy na 100 %</strong>, odhad úrody je okolo 50,00 t/ha (nie sú ešte presné údaje od odberateľa). Zber kukurice na zrno je dokončený na 100 % s&nbsp;priemernou úrodou 7,50 t/ha. Pšenica ozimná je zasiata na 99 % z plánovanej výmery.</p>
+
+
+
+<p>V&nbsp;<strong>Bratislavskom</strong> kraji suché a teplé počasie v&nbsp;43. týždni neprialo sejbe ozimín. K&nbsp;záveru 44. týždňa bolo pozberaných 100 % slnečnice (jej zber bol ukončený v&nbsp;40. týždni), 62 % výmery kukurice na zrno s&nbsp;priemernou úrodou 6,82 t/ha, 31 % výmery cukrovej repy s&nbsp;priemernou úrodou 64,63 t/ha. Na Záhorí zaznamenali poľnohospodári na 85 ha 70 % poškodenie porastu kukurice na zrno diviačou a jeleňou zverou. Porasty repky ozimnej a obilnín sú vzídené rovnomerne, ošetrené herbicídne a insekticídne. <strong>V&nbsp;45. – 46. týždni boli jesenné práce prerušované vplyvom daždivého počasia.</strong> Aktuálne k&nbsp;záveru 47. týždňa bola kukurica na zrno pozberaná na 83 % výmery s&nbsp;priemernou úrodou 6,40 t/ha, cukrová repa na pozberaná na 55 % s priemernou úrodou 65,60 t/ha. <strong>Dažde priaznivo pôsobia na zasiate oziminy</strong> - pšenica ozimná je osiata na 90 %, raž ozimná na 97 %, repka a jačmeň ozimný na 100 %.</p>
+
+
+
+<p>V okrese <strong>Galanta</strong> k&nbsp;záveru 42. týždňa bola kukurica na zrno pozberaná na 24 % výmery s&nbsp;priemernou úrodou 6,65 t/ha, slnečnica na 100 % výmery s&nbsp;priemernou úrodou 2,60 t/ha, cukrová repa na 57 % výmery s&nbsp;priemernou úrodou 52,00 t/ha a&nbsp;zemiaky na 88 % výmery s&nbsp;priemernou úrodou 20,00 t/ha. V&nbsp;regióne prebiehali jesenné práce plným tepom, avšak už pôsobilo sucho. &nbsp;<strong>V&nbsp;45. – 46. týždni okres zasiahol dážď, miestami výdatný. Zabrzdili sa zberové práce.</strong> Aktuálne je pozberaných 79 % výmery cukrovej repy s&nbsp;priemernou úrodou 58 t/ha, 98 % výmery&nbsp;kukurice s&nbsp;priemernou úrodou 6,60 t/ha. <strong>Bola prerušená aj orba, ale daždivé počasie vylepšilo založené oziminy, čo priaznivo vplýva na očakávanú budúcoročnú úrodu.</strong></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/ehpGQZd.jpg"></figure><p></p>
+
+
+
+<p>V&nbsp;okrese <strong>Levice</strong> k&nbsp;záveru 39. týždňa bola kukurica na zrno pozberaná na 18 % výmery, slnečnica na 86 % výmery, cukrová repa na 29 % výmery. <strong>Vzhľadom na priaznivé počasie jesenné zberové práce prebiehali plynule v&nbsp;39. - 44. týždni.</strong> <strong>Daždivé počasie v&nbsp;44. – 45. týždni spomalilo práce na poliach</strong>. Zber slnečnice (priemerná úroda 3,34 t/ha) a kukurice (8,60 t/ha) bol k&nbsp;záveru 46. týždňa ukončený na 100 %. <strong>Aktuálne prebieha zber cukrovej repy</strong> (k záveru 48. týždňa bolo zobratých z poľa 79 % z osiatej plochy s&nbsp;priemernou úrodou 56,83 t/ha).</p>
+
+
+
+<p>Jesenné zberové práce začali v okrese <strong>Nové Zámky</strong> v 39. týždni zberom slnečnice, ktorý bol k&nbsp;záveru 39. týždňa na úrovni cca 66 %. Zber kukurice bol na úrovni 8 %. V okrese sa začalo už aj s vyorávaním cukrovej repy, ktorej presný výnos bude známy až po odvoze do cukrovaru. <strong>Zber slnečnice bol ukončený v 42. týždni</strong> s priemernou hektárovou úrodou 2,85 t/ha, zber zemiakov s&nbsp;priemernou úrodou 21,16 t/ha. <strong>K&nbsp;záveru 46. týždňa bola kukurica na zrno pozberaná na 96 % výmery. </strong>Zber cukrovej repy bol zastavený na 62 % výmery s&nbsp;orientačnou priemernou úrodou 55 t/ha. Osev ozimín je ukončený u repky ozimnej, raži, tritikale a pšenice a jačmeňa ozimného. Z celkovej plánovanej výmery hrachu ozimného je vysiatych na 92 % plochy.</p>
+
+
+
+<p>V&nbsp;<strong>Nitrianskom</strong> regióne (okresy Nitra, Topoľčany, Šaľa, Zlaté Moravce) bolo k&nbsp;záveru 39. týždňa, resp. začiatku 40. týždňa (01.10.) pozberaných 3 % výmery kukurice na zrno, 85 % výmery slnečnice, 20 % cukrovej repy, 20 % výmery zemiakov. <strong>Vďaka priaznivému počasiu jesenné práce pokračovali v&nbsp;41. - 44. týždni prakticky bez prerušenia. </strong>K&nbsp;záveru 42. týždňa bola kukurica na zrno pozberaná na 34 % výmery, k&nbsp;záveru 43. týždňa na 67 % výmery, k záveru 44. týždňa bola na 80 %. <strong>Daždivé počasie v&nbsp;45. – 46. týždni spomalilo zber kukurice.</strong> <strong>K&nbsp;záveru 48. týždňa bolo pozberaných 98 % výmery kukurice na zrno s&nbsp;priemernou úrodou 8,32 t/ha, cukrová repa na 79 % výmery s&nbsp;priemernou úrodou 58,90 t/ha.</strong></p>
+
+
+
+<p>V regióne&nbsp;<strong>Senice</strong> (okresy Senica, Skalica) v&nbsp;39. týždni prebiehal zber slnečnice a cukrovej repy, pomaly sa rozbiehal zber kukurice na zrno. Priaznivé počasie v&nbsp;42. – 43. týždni umožnilo napredovať v&nbsp;spracovávaní pôdy, v&nbsp;sejbe ozimín a&nbsp;zbere jesenných plodín. V&nbsp;45. týždni daždivé počasie spomalilo, resp. prerušilo výkon jesenných prác. K&nbsp;záveru 46. týždňa bola kukurica na zrno pozberaná na 90 % výmery s&nbsp;priemernou úrodou 8,74 t/ha, cukrová repa tiež na 90 % výmery s&nbsp;priemernou úrodou 62,27 t/ha.</p>
+
+
+
+<p>Koncom 39. týždňa boli zahájené jesenné práce v regióne <strong>Trenčín</strong> (okresy Myjava, Nové Mesto nad Váhom a&nbsp;Trenčín), a to zberom prvých hektárov cukrovej repy, kukurice na zrno, sóje a horčice. <strong>Nezvyčajne teplé a bez zrážkové počasie v 42. – 43. týždni umožnilo vykonávať všetky jesenné - zberové aj osevne práce.</strong> <strong>U plodín ako slnečnica (priemerná úroda 2,60 t/ha), cirok a horčica bol zber ukončený na 100 %. Daždivé počasie v 46. týždni ovplyvnilo tempo zberu kukurice na zrno a cukrovej repy. V&nbsp;48. týždni prebiehal pomalým tempom zber kukurice (pozberaných je 97 % výmery s&nbsp;priemernou úrodou 7,67 t/ha) na zrno aj cukrovej repy (80 % výmery, priemerná úroda 52,07 t/ha).</strong> Okrem 4 poľnohospodárskych podnikov v regióne majú všetky vyoranú cukrovú repu, cukornatosť sa pohybuje okolo 16 %. Harmonogram zvozu cukrovej repy je v sklze cca 12 dní. U kukurice na zrno je potrebné pozberať asi 70 ha, ktoré v dôsledku vysokej vlhkosti sa nedalo zrealizovať v 48. týždni.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/svVnhHb.jpg"></figure><p></p>
+
+
+
+<p>V&nbsp;okrese <strong>Prievidza</strong> boli jesenné práce zahájené v 39. týždni, pozberaných bolo 28 % výmery cukrovej repy a&nbsp;67 % výmery zemiakov. Zber kukurice sa nevykonával a&nbsp;nebude ani vyhodnocovaný, zožrala ju lesná zver. Posledná dekáda októbra a prvá dekáda novembra bola poznačená značným úhrnom zrážok od 80 do 120 mm. Dažde spomalili jesennú orbu a zber cukrovej repy v celom okrese (zber cukrovej repy by mal byť v okrese ukončený do polovici prvej dekády decembra).</p>
+
+
+
+<p>V 39. týždni sa v regióne <strong>Bánovce nad Bebravou</strong> pomaly začalo s&nbsp;jesennými zbermi, slnečnica (priemerná úroda 3,46 t/ha) a&nbsp;zemiaky (priemerná úroda 25,80 t/ha) boli pozberané na 100 % výmery, zber kukurice len začal (7 %), zber cukrovej repy začínal v&nbsp;40. týždni. V 42. – 44. týždni v regióne Bánovce nad Bebravou počasie prialo pri zbere, sejbe, diskovaní. <strong>V&nbsp;45. – 46. týždni bolo daždivé počasie, ktoré bránilo v zbere kukurice</strong>. <strong>K&nbsp;záveru 48. týždňa bol na 100 % ukončený zber kukurice na zrno s&nbsp;priemernou úrodou 9,25 t/ha a&nbsp;zber cukrovej repy s&nbsp;priemernou úrodou 46,86 t/ha.</strong> Cukrová repa ešte nie je všetka odvezená do cukrovaru. Robia sa orby, servis a údržba strojov.</p>
+
+
+
+<p>V&nbsp;regióne <strong>Považskej Bystrice</strong> (okresy Ilava, Považská Bystrica, Púchov) boli zberové práce zahájené v 40. týždni. Zber zemiakov bol ukončený na 100 % výmery v&nbsp;41. týždni s&nbsp;priemernou úrodou 19,86 t/ha. Poľnohospodári využili priaznivé počasie v&nbsp;priebehu 42. – 44. týždňa a&nbsp;k&nbsp;záveru 45. týždňa na 100 % výmery ukončili zber kukurice na zrno s&nbsp;priemernou úrodou 8,60 t/ha. Zber cukrovej repy stagnoval v&nbsp;45. 46. týždni na 24 % pozberanej výmery z&nbsp;dôvodu nastaveného harmonogramu zberu cukrovej repy. K&nbsp;záveru 48. týždňa bol na 100 % výmery ukončený aj zber cukrovej repy s&nbsp;priemernou výmerou 60,48 t/ha.</p>
+
+
+
+<p>Na <strong>Kysuciach</strong> (okresy Čadca a&nbsp;Kysucké Nové Mesto) v&nbsp;40. týždni jesenné práce prerušil dážď. Dážď výrazne pozastavil jesenné práce v&nbsp;44., aj v&nbsp;41. týždni.<strong> K&nbsp;záveru 43. týždňa boli jesenné zberové a osevné práce sú ukončené</strong>.</p>
+
+
+
+<p>V&nbsp;regióne <strong>Žilina</strong> (okresy Žilina, Bytča<strong> boli jesenné práce ukončené v&nbsp;46. týždni.</strong></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/3c22Br4.jpg"></figure><p></p>
+
+
+
+<p>Na<strong> Turci</strong> (okresy Martin, Turčianske Teplice) d<strong>ážď v&nbsp;40. – 41. týždni zastavil jesenné práce, ktoré pokročili veľmi málo.</strong> <strong>Jesenné zberové a osevné práce boli v regióne po 43. týždni ukončené.</strong></p>
+
+
+
+<p>V&nbsp;oblasti <strong>Oravy</strong> (okresy Dolný Kubín, Námestovo, Tvrdošín) v&nbsp;41. týždni prebiehal zber kukurice na siláž a&nbsp;sejba ozimín. K&nbsp;záveru 41. týždňa bol zber zemiakov ukončený na 100 % výmery s&nbsp;priemernou úrodou 14,00 t/ha. <strong>K&nbsp;záveru 42. týždňa boli j</strong><strong>esenné zberové práce na Orave ukončené. </strong>Kukurica na zrno bola pozberaná na 39 % (zvyšné hektáre kukurice na zrno boli pozberané na siláž) s&nbsp;priemernou úrodou 5,20 t/ha.</p>
+
+
+
+<p>V&nbsp;regióne <strong>Banskej Bystrice</strong> (okresy Banská Bystrica, Brezno) začali jesenné práce v&nbsp;40. týždni zberom kukurice na zrno (pozberaných bolo 68 % výmery s&nbsp;priemernou úrodou 7,32 t/ha) a&nbsp;zemiakov (pozberaných bolo 100 % výmery s&nbsp;priemernou úrodou 8,00 t/ha). Zber kukurice na zrno začal skôr ako po iné roky, nakoľko boli na kukurici zaznamenané škody od zveri. K&nbsp;záveru 44. týždňa bol zber kukurice na zrno ukončený na 100 % výmery s&nbsp;priemernou úrodou 7,66 t/ha. <strong>K&nbsp;záveru 46. týždňa bol ukončený zber jesenných plodín a&nbsp;výsev ozimín, pokračuje orba pod jariny.</strong></p>
+
+
+
+<p>V&nbsp;okrese <strong>Krupina</strong> bola slnečnica pozberaná na 100 % výmery s&nbsp;priemernou úrodou 2,22 t/ha a&nbsp;zemiaky rovnako na 100 % výmery s&nbsp;priemernou úrodou 26,30 t/ha. <strong>K&nbsp;záveru 46. týždňa bol ukončený zber jesenných plodín, ako aj výsev ozimín.</strong> V&nbsp;46. týždni napršalo v Krupinskom okrese od 45 do 60 mm zrážok, ale nebránilo to orbe pod jariny.&nbsp; Maštaľný hnoj je zaoraný a nastáva obdobie kľudu pôdy.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/Dv4OXz7.jpg"></figure><p></p>
+
+
+
+<p>V&nbsp;regióne <strong>Zvolen</strong> (okresy Detva, Zvolen, Žarnovica, Žiar nad Hronom) bolo k&nbsp;záveru 39. týždňa pozberaných 100 % výmery zemiakov s&nbsp;priemernou úrodou 10,50 t/ha. V&nbsp;40. – 42. týždni pokračovali zberové práce a&nbsp;výsev ozimín. Zber kukurice na zrno bol ukončený na 100 % výmery V&nbsp;rámci osevu bol k&nbsp;záveru 41. týždňa prakticky ukončený výsev jačmeňa ozimného, raže ozimnej a&nbsp;repky ozimnej. <strong>K&nbsp;záveru 46. týždňa bol ukončený zber jesenných plodín a&nbsp;výsev ozimín, pokračuje orba pod jariny.</strong></p>
+
+
+
+<p>V&nbsp;okrese <strong>Veľký Krtíš</strong> v 42. týždni bol ukončený zber slnečnice s&nbsp;priemernou úrodou 2,49 t/ha a zber zemiakov s úrodou 15,0 t/ha. Podľa dostupných údajov boli v 45. týždni jesenné zberové práce v okrese Veľký Krtíš ukončené až na zber cukrovej repy, ktorý sa mal uskutočniť podľa harmonogramu až v druhej polovici novembra, resp. začiatkom decembra. Priemerné hektárové úrody podľa prepočtov dosiahli: kukurica na zrno - 6,48 t/ha, slnečnica - 2,49 t/ha a zemiaky - 15,0 t/ha. Odhadovaná priemerná úroda cukrovej repy je 40,0 t/ha.</p>
+
+
+
+<p>V&nbsp;regióne <strong>Lučenec</strong> (okresy Lučenec a&nbsp;Poltár) v&nbsp;39. týždni prebiehal zber jesenných plodín predovšetkým u kukurice na zrno, aktuálne mala však vysokú vlhkosť, preto s jej zberom sa predpokladalo postúpiť v&nbsp;41. týždni. Rozbehnutý bol zber sóje a slnečnice. Prebiehala príprava pôdy a&nbsp;výsev ozimín. <strong>Pri sóji hlásili subjekty ukončený zber v&nbsp;40. týždni s priemernou úrodou 3,20 t/ha</strong>. <strong>Zber zemiakov (priemerná úroda 16,00 t/ha) a&nbsp;slnečnice (2,40 t/ha) bol ukončený na 100 % v&nbsp;43. týždni.</strong> <strong>Aktuálne k&nbsp;záveru 46. týždňa bola pôda po dažďoch v&nbsp;45. a&nbsp;46. týždni rozmočená, práce pozastavené. Okrem zberu ostáva dokončiť hlbokú orbu.</strong> Po 46. týždni je kukurica na zrno pozberaná na 92 % výmery s&nbsp;priemernou úrodou 6,51 t/ha.</p>
+
+
+
+<p>V&nbsp;regióne <strong>Rimavskej Soboty</strong> (okresy Revúca, Rimavská Sobota) jesenné práce začali úspešným ukončením osevu ozimnej repky, silážovania a senážovania. <strong>V 43. týždni bol ukončený zber slnečnice (priemerná úroda 2,31 t/ha) a vyorávka zemiakov (priemerná úroda 17,00 t/ha), postúpil aj zber kukurice na zrno (pozberaných bolo 61 % výmery s&nbsp;priemernou úrodou 7,30 t/ha).</strong> V&nbsp;44. – 46. týždni prevládalo daždivé počasie<strong>. </strong>K&nbsp;záveru 46. týždňa bola kukurica na zrno pozbieraná na 83 % výmery s&nbsp;priemernou úrodou 6,82 t/ha.</p>
+
+
+
+<p>V&nbsp;okrese <strong>Stará Ľubovňa</strong> začali poľnohospodári so zberom zemiakov v 37. týždni. Nepriaznivé počasie sťažovalo kombajnový zber, ale i napriek tomu sa už v 40. týždni podarilo zber ukončiť s úrodou 21,17 t/ha. <strong>Jesenné práce sú v&nbsp;okrese Stará Ľubovňa ukončené.</strong></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/n2pq1Wl.jpg"></figure><p></p>
+
+
+
+<p>V&nbsp;regióne <strong>Poprad</strong> (okresy Kežmarok, Poprad) aktuálne v&nbsp;39. týždni prebiehal zber zemiakov, pozberaných bolo cca 40 % výmery. V 42. týždni bola ukončená sejba ozimín. <strong>V&nbsp;43. týždni bol zber zemiakov ukončený na 100 % výmery s&nbsp;priemernou úrodou 22,00 t/ha, tým boli celkovo ukončené aj jesenné práce v&nbsp;regióne.</strong></p>
+
+
+
+<p>V&nbsp;regióne <strong>Dolného Spiša</strong> (okresy Gelnica, Levoča, Spišská Nová Ves) k&nbsp;záveru 41. týždňa boli osevy ozimín pred ukončením, rovnako zber kukurice. Zber zemiakov je ukončený na 100 % výmery. K&nbsp;záveru 42. týždňa boli práce v&nbsp;oseve ozimín ukončené. &nbsp;Porasty ozimnej repky aj vzhľadom na vývoj počasia sú v dobrom kondičnom stave. To isté platí pre oziminy, ktoré boli zasiate v agrotechnickom termíne. Zatiaľ v regióne je momentálne prebytok vlahy. Podmočené alebo zaplavené osiate plochy zatiaľ nie sú evidované. V prípade nástupu tuhších mrazov, resp. holomrazov môže dôjsť k poškodeniu z dôvodu vysokej hladiny vody v pôde. &nbsp;Problémy začínajú mať farmári s vysokou zverou, ktorá sa začína sťahovať na porasty ozimín najmä z horských oblastí, kde nie sú oziminy posiate, resp. sú v začiatočnom štádiu vývoja a nie je tam dostatok čerstvej zelenej hmoty. <strong>K&nbsp;záveru 46. týždňa sú jesenné práce v&nbsp;regióne Dolného Spiša ukončené.</strong></p>
+
+
+
+<p>V okrese <strong>Bardejov</strong> bolo k&nbsp;záveru 39. týždňa pozberaných 47 % výmery zemiakov, k&nbsp;záveru 40. týždňa 62 % výmery zemiakov s&nbsp;priemernou úrodou 23,00 t/ha. V&nbsp;42. týždni bol ukončený zber zemiakov na 100 % výmery s&nbsp;priemernou úrodou 21,00 t/ha. V&nbsp;43. týždni bol ukončený plánovaný osev obilnín na 100 %. V&nbsp;46. týždni v okrese Bardejov prebiehali orby a zaorávky maštaľného hnoja. Oziminy sú v dobrom stave, sú odnožené 2-3 odnožami, prebieha jesenné ošetrovanie herbicídmi.</p>
+
+
+
+<p>K 15.10.2019 poľnohospodári v regióne <strong>Svidník</strong> (okresy Stropkov a&nbsp;Svidník) pokročili s jesennými prácami v dôsledku priaznivého počasia. V 44. týždni bola sejba ozimín ukončená, pokračoval zber kukurice na zrno (pozberaných bolo 73 % výmery s&nbsp;priemernou úrodou 6,70 t/ha), zber slnečnice bol ukončený na 100 % výmery s&nbsp;priemernou úrodou 2,40 t/ha<strong>. K&nbsp;záveru 46. týždňa boli jesenné zberové práce ukončené</strong>, kukurica na zrno poskytla priemernú úrodu 7,80 t/ha.</p>
+
+<p>V&nbsp;<strong>Prešovskom</strong> regióne (okresy Prešov, Sabinov) k&nbsp;záveru 43. týždňa bol ukončený zber slnečnice, u ktorej boli vyše 40 % škody zverou, priemerná úroda je 1,80 t/ha. Ku koncu 46. týždňa bol ukončený zber slnečnice (priemerná úroda 1,80 t/ha), sóje a&nbsp;zemiakov (priemerná úroda 24,00 t/ha). Kukurica na zrno má ešte stále vysokú vlhkosť. Poľnohospodári čakajú na slnečné dni a nočné mrazy.</p>
+
+
+
+<p>V&nbsp;oblasti <strong>Košíc</strong> bolo k&nbsp;záveru 39. týždňa pozberaných 100 % výmery slnečnice s&nbsp;priemernou úrodou 3,05 t/ha. V&nbsp;40. týždni boli zberové práce prerušované z&nbsp;dôvodu dažďa. V 41. týždni zber úrody sprevádzalo dobré počasie, čo sa prejavilo aj pri zbere slnečnice, táto plodina bola pozberaná na 100 % výmery. V&nbsp;42. týždni bol zber kukurice na zrno spomalený z&nbsp;dôvodu vyššej vlhkosti zrna. <strong>Dažde v&nbsp;regióne pretrvávali v&nbsp;44. – 48. týždni, čím spomaľovali zber kukurice na zrno</strong> (pozberaných je 47 % výmery s&nbsp;priemernou úrodou 9,05 t/ha).</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/6lzKRj6.jpg"></figure><p></p>
+
+
+
+<p>V <strong>Michalovskom</strong> regióne (okresy Michalovce, Sobrance) boli jesenné práce v&nbsp;39. týždni v plnom prúde. Prebiehala sejba ozimnej pšenice a jačmeňa a dokončoval sa zber slnečnice. V niektorých oblastiach podľa zrelosti a vlhkosti sa začal zber kukurice na zrno. Ukončilo sa senážovanie. Babie leto trvalo aj v&nbsp;42. – 43. týždni a boli vytvorené všetky predpoklady na všetky jesenné práce. Ukončený bol zber slnečnice (priemerná úroda je 3,20 t/ha), sóje a&nbsp;zemiakov (priemerná úroda je 19,02 t/ha). Záver októbra (44. týždeň) prial poľnohospodárom. Bolo ideálne počasie na jesenné práce, ktoré prebiehali v plnom prúde. Zmena nastala v sobotu 2. novembra, odkedy stále mierne prší. V záverečnej fáze je zber kukurice (pozberaných je 71 % výmery), ostatné jesenné práce ako je orba a diskovanie priebežne pokračujú a budú pokračovať po možnosti sprístupnenia plôch. Po suchých jesenných týždňoch novembrový dážď veľmi pomôže vo vegetácii posiatych ozimín. Keďže prvé novembrové týždne boli upršané, veľa toho čo sa týka pozberových prác sa neurobilo. Naozaj veľa napršalo a terén na všetky jesenné poľnohospodárske práce bol nespôsobilý. Čiastočne zlepšenie nastalo v 47 týždni ale len sporadicky kvôli premočenej a ťažkej pôde. Situácia sa zlepšuje lebo chladnejšie počasie spôsobuje, že pôda je hlavne v doobedňajších hodinách prístupnejšia. Predpoklad je, že práce by mali byť ukončené do konca novembra. Poľnohospodári s menšími výmerami majú vo väčšine prípadov ukončené všetky jesenné práce.</p>
+
+
+
+<p>V okrese <strong>Trebišov </strong>v&nbsp;40. týždni boli zberové práce prerušené zrážkami, ktoré sa vyskytli v druhej polovici týždňa. Zber zemiakov bol ukončený na 100 % výmery v&nbsp;40. týždni s&nbsp;priemernou úrodou 17,50 t/ha, v&nbsp;42. týždni bol ukončený zber slnečnice na 100 % výmery s&nbsp;priemernou úrodou 2,80 t/ha. 45. – 46. týždeň bol v prevažnej miere upršaný, preto zber kukurice pokračoval iba veľmi pomaly (k záveru 45. týždňa bolo pozberaných 83 % výmery s&nbsp;priemernou úrodou 6,90 t/ha, k&nbsp;záveru 46. týždňa bolo pozberaných 91 % výmery).</p>
+
+
+
+
+
+<h2 class="doc-subheading">Zberová tabuľka, aktuálna k&nbsp;05.12.2019</h2>
+
+
+
+<table cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+			
+			</td>
+			<td colspan="3">
+			<h2 class="doc-subheading">Plocha</h2>
+			</td>
+			<td colspan="2">
+			<h2 class="doc-subheading">Produkcia</h2>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<h2 class="doc-subheading">Plodina</h2>
+			</td>
+			<td>
+			<h2 class="doc-subheading">Plocha osiata k 20. 05. 2019 (ha)</h2>
+			</td>
+			<td>
+			<h2 class="doc-subheading">Plocha pozberaná od začiatku zberových prác (ha)</h2>
+			</td>
+			<td>
+			<h2 class="doc-subheading">Plocha pozberaná / osiata (%)</h2>
+			</td>
+			<td>
+			<h2 class="doc-subheading">Produkcia celkom od začiatku zberu (t)</h2>
+			</td>
+			<td>
+			<h2 class="doc-subheading">Produkcia úroda (t/ha)</h2>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Kukurica na zrno</p>
+			</td>
+			<td>
+			<p>151&nbsp;195</p>
+			</td>
+			<td>
+			<p>136&nbsp;873</p>
+			</td>
+			<td>
+			<p>91</p>
+			</td>
+			<td>
+			<p>1&nbsp;053&nbsp;875</p>
+			</td>
+			<td>
+			<p>7,70</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Slnečnica</p>
+			</td>
+			<td>
+			<p>35&nbsp;654</p>
+			</td>
+			<td>
+			<p>35&nbsp;627</p>
+			</td>
+			<td>
+			<p>100</p>
+			</td>
+			<td>
+			<p>98&nbsp;680</p>
+			</td>
+			<td>
+			<p>2,77</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Cukrová repa</p>
+			</td>
+			<td>
+			<p>20&nbsp;113</p>
+			</td>
+			<td>
+			<p>16&nbsp;242</p>
+			</td>
+			<td>
+			<p>81</p>
+			</td>
+			<td>
+			<p>965&nbsp;279</p>
+			</td>
+			<td>
+			<p>59,43</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Zemiaky</p>
+			</td>
+			<td>
+			<p>6&nbsp;252</p>
+			</td>
+			<td>
+			<p>6 252</p>
+			</td>
+			<td>
+			<p>100</p>
+			</td>
+			<td>
+			<p>156 988</p>
+			</td>
+			<td>
+			<p>25,11</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+
+
+<h2 class="doc-subheading">Zdroje</h2>
+
+<p>Internetová stránka SHMÚ</p>
+
+<p>SPPK, RPPK, poľnohospodárske subjekty hospodáriace na území Slovenska.</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

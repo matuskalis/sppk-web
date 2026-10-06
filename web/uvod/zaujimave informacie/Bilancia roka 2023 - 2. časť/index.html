@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bilancia roka 2023 - 2. časť — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Bilancia roka 2023 - 2. časť</nav>
+
+  <article>
+    <h1 class="doc-title">Bilancia roka 2023 - 2. časť</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Jana Holéciová, hovorkyňa SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">3. januára 2024</span></p>
+
+    <div class="doc-body">
+<p><span>Čo priniesol sektoru prvovýroby mlieka rok 2023 a&nbsp;aké majú chovatelia dojníc očakávania od roku 2024? Prinášame druhú časť zhodnotenia uplynulej sezóny a&nbsp;predstavenie priorít z&nbsp;pohľadu Slovenského zväzu prvovýrobcov mlieka, člena Slovenskej poľnohospodárskej a&nbsp;potravinárskej komory.&nbsp;</span></p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/QF2oino.jpg"></figure><p><span></span></p>
+
+<h2 class="doc-subheading">Margita Štefániková, výkonná riaditeľka Slovenského zväzu prvovýrobcov mlieka</h2>
+
+<p><strong>Čo pozitívne priniesol sektoru prvovýroby mlieka rok 2023?</strong></p>
+
+<p>Rok 2023 je prvým rokom nového programovacieho obdobia Spoločnej poľnohospodárskej politiky a&nbsp;slovenskému sektoru prvovýroby mlieka priniesol mnohé zmeny.</p>
+
+<p>Z&nbsp;hľadiska podpornej politiky by sa dalo za pozitívum považovať napríklad navýšenie sadzby podpory welfare na ustajnenie dojníc a na pastevný systém chovu dojníc a&nbsp;jalovíc.&nbsp; Slovenských chovateľov potešilo aj udržanie sadzby viazaných priamych platieb na dojnice. Bohužiaľ, tieto pozitíva majú aj svoje „ale“ a&nbsp;tie sa týkajú hlavne časového rámca vyplácania podpôr.</p>
+
+<p>Pre chovateľov je veľkým sklamaním, že im neboli vyplatené priame platby na dojnice do konca roka – tak, ako boli doteraz zvyknutí.</p>
+
+<p>V&nbsp;istom zmysle by sa dalo považovať za pozitívum aj vyhodnotenie výzvy 52/2022, čo znamená aspoň pre úspešných uchádzačov podporu investícií do živočíšnej výroby. Iste by sa dalo v&nbsp;tejto súvislosti ale polemizovať o&nbsp;výške alokácie finančných prostriedkov a&nbsp;tiež o administratívnych a&nbsp;technických nedostatkoch, ktoré sú spojené s&nbsp;realizáciou investičných projektov.</p>
+
+<p>Pozitívne, ale s&nbsp;výhradami, by sa dala hodnotiť aj nepriama podpora cez odvodové zvýhodnenie podnikov v&nbsp;súvislosti s novelou zákona o&nbsp;sociálnom poistení. Výhrady spočívajú v&nbsp;tom, že podľa analýzy Slovenského zväzu prvovýrobcov mlieka zhruba 40% podnikov prvovýroby mlieka &nbsp;má zatriedenú hlavnú činnosť podľa metodiky SK NACE v&nbsp;skupine 01.5 – zmiešané poľnohospodárstvo. Toto zatriedenie im napriek tomu, že chovajú dojnice a&nbsp;zamestnávajú pracovníkov v&nbsp;živočíšnej výrobe, neumožňuje využiť úľavy na odvodoch v&nbsp;zmysle prijatého opatrenia. Tieto podniky, ktoré majú chov, tak&nbsp;prichádzajú o&nbsp;desaťtisíce eur, čo ich znevýhodňuje a&nbsp;tým oslabuje ich konkurencieschopnosť voči ostatným podnikom, ktorých&nbsp; sa opatrenie týka na národnej úrovni. Napriek technickej konzultácii a&nbsp;rokovaniu na Štatistickom úrade SR sa nášmu zväzu nepodarilo presvedčiť kompetentných o&nbsp;úprave systému administrácie tohto podporného opatrenia.</p>
+
+<p>Pozitívom roka 2023 by sa v&nbsp;istom zmysle dala hodnotiť aj skutočnosť, že napriek zostupnému trendu nákupnej ceny mlieka takmer počas celého roka sa podarilo jej priemer udržať mierne nad úrovňou roka 2022. Pozitívne hodnotíme aj zníženie rozdielu medzi priemernou slovenskou a&nbsp;európskou nákupnou cenou mlieka pod 1 cent za kilogram.</p>
+
+<p>Pozitívne hodnotíme aj komunikáciu nášho zväzu s&nbsp;predstaviteľmi rezortného ministerstva, ale i&nbsp;predstaviteľmi samosprávnych organizácií predovšetkým Slovenskou poľnohospodárskou a&nbsp;potravinárskou komorou a Slovenským mliekarenským zväzom.</p>
+
+<p>Tešíme sa, že môžeme hrdo konštatovať, že mlieko je jediná komodita, ktorá má už 15 rokov svoj Mliečny fond, vďaka ktorému sa realizujú informačné a&nbsp;propagačné aktivity na podporu spotreby mlieka a&nbsp;mliečnych výrobkov pôvodom zo Slovenska.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/eircRT1.jpg"></figure><p></p>
+
+<p><strong>Čo negatívne priniesol sektoru prvovýroby mlieka rok 2023?</strong></p>
+
+<p>Za najväčšie negatívum roka 2023 v&nbsp;sektore prvovýroby mlieka považujeme roztváranie cenových nožníc. Náklady na výrobu mlieka enormne narástli a&nbsp;udržujú sa na vysokej úrovni. V&nbsp;tejto súvislosti je potrebné podotknúť, že slovenskí prvovýrobcovia mlieka sú konkurencieschopní vo výške výrobných nákladov v&nbsp;porovnaní s&nbsp;ich európskymi kolegami. Ich konkurencieschopnosť oslabujú príjmy, ktoré stagnujú, dokonca sa vo viacerých&nbsp; položkách, hlavne v&nbsp;položke podpory - znižujú.</p>
+
+<p>Nie je žiadnym tajomstvom, že napríklad celková podpora dojníc v&nbsp;systéme chovu ustajnenia bola v&nbsp;roku 2023 až o&nbsp;200 eur na dojnicu nižšia, ako to bolo v&nbsp;roku 2022. A&nbsp;to ešte nehovoríme o&nbsp;tom, že väčšia časť podpory bude vyplatená až v&nbsp;roku 2024. &nbsp;&nbsp;</p>
+
+<p>Ďalším problémom, ktorý dlhodobo oslabuje konkurencieschopnosť slovenských prvovýrobcov mlieka, je obrovský investičný dlh. Analýza Slovenského zväzu prvovýrobcov mlieka ukázala, že výška investičného dlhu v&nbsp;sektore prvovýroby mlieka predstavuje vyše 500 miliónov eur. Za týmto číslom stoja staré ustajňovacie priestory, staré stroje a&nbsp;technológie. O&nbsp;rezervách v&nbsp;automatizovaných systémoch dojenia a&nbsp;kŕmenia ani nehovoriac...</p>
+
+<p>Ak k&nbsp;tomu pridáme tohtoročné straty podnikov v&nbsp;rastlinnej výrobe, dlhodobé straty v&nbsp;živočíšnej výrobe, problémy s&nbsp;pracovnou silou, vychádza nám celkový obraz slovenského sektora&nbsp; prvovýroby mlieka.</p>
+
+<p>Je to obraz, na ktorom zostalo už len 332 podnikov prvovýroby mlieka. Ich počet klesol za posledných 20 rokov o&nbsp;vyše polovicu (-55%).</p>
+
+<p>Aj na grafy s&nbsp;vývojom počtu dojníc na Slovensku je smutný pohľad. Sme nútení konštatovať, že aj napriek úsiliu, ktoré sa vynaložilo na stabilizáciu chovu dojníc, stále ešte dochádza k&nbsp;poklesu ich stavov. Máme ich už len niečo cez 110 000 kusov.&nbsp; Jediné, čo nás&nbsp;môže tešiť, je, že sa spomalilo tempo poklesu stavov dojníc, z&nbsp;čoho vyplýva, že správnym nastavením podporných mechanizmov je šanca, že stavy dojníc by sa mohli zastabilizovať na úrovni okolo 110&nbsp;000 kusov.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/6w0fn1m.jpg"></figure><p></p>
+
+<p><strong>Čo očakávajú slovenskí prvovýrobcovia od roku 2024?</strong></p>
+
+<p>Slovenskí prvovýrobcovia mlieka očakávajú od roku 2024, že dosiahnu také príjmy, ktoré zabezpečia pokrytie nákladov a&nbsp;primeraný zisk, čo by mohlo viesť k&nbsp;pozastaveniu poklesu stavov dojníc a&nbsp;k&nbsp;stabilizácii sektoru mlieka.</p>
+
+<p>Samozrejme sa počíta s&nbsp;tým, že hlavnou časťou príjmov budú aj naďalej príjmy z&nbsp;predaja mlieka. V&nbsp;tejto oblasti prvovýrobcovia mlieka veria, že postupne dôjde k&nbsp;navýšeniu nákupných cien mlieka a&nbsp;v&nbsp;priemere dosiahnu vyššiu úroveň ako v&nbsp;tomto roku.</p>
+
+<p>Druhou podstatnou časťou príjmov bude podpora.</p>
+
+<p>Je všeobecným prianím všetkých poľnohospodárov, nielen prvovýrobcov mlieka, že sa na celý rezort pôdohospodárstva bude prihliadať ako na strategický sektor a podarí sa nastaviť rámec systémovej podpory, ktorý im umožní zlepšenie ich hospodárskych výsledkov a&nbsp;odstránenie obrovského investičného dlhu. Slovenskí prvovýrobcovia mlieka by uvítali navýšenie alokácie na investície do budov, techniky a&nbsp;technológií a&nbsp;to tak, aby bol vyčlenený čo najvyšší podiel financií na grantovú schému podpory investícií na úkor finančných nástrojov. Okolité krajiny totiž vôbec neuvažujú s&nbsp;aplikáciou finančných nástrojov, čo opäť povedie k&nbsp;zníženiu konkurencieschopnosti slovenských poľnohospodárov na medzinárodnej úrovni.</p>
+
+<p>Očakáva sa, že v&nbsp;roku 2024 sa ešte prehĺbi dlhodobý problém podnikov s&nbsp;pracovnou silou. Je všeobecne známe, že o povolania súvisiace s&nbsp;prvovýrobou mlieka, ako sú ošetrovateľ, kŕmič, alebo&nbsp; dojič, nemá nikto záujem. Navyše sú z&nbsp;hľadiska spoločenského tieto povolania zaznávané. Takže sa nečudujeme, že mnohé podniky rušia chovy dojníc aj z&nbsp;dôvodu nedostatku pracovnej sily.</p>
+
+<p>Jedným z&nbsp;riešení by mohlo byť nahradenie ľudskej práce automatizovanými systémami dojenia a&nbsp;kŕmenia - robotmi. Ale tu opäť narážame na investičný dlh, s&nbsp;ktorým sa Slovensko dlhodobo borí a&nbsp;vraciame sa k&nbsp;problému, ktorý sme popísali v&nbsp;predchádzajúcej časti.</p>
+
+<p>Riešením pracovných problémov všeobecne v&nbsp;živočíšnej výrobe by mohlo byť zavedenie motivačných opatrení, ktoré by motivovali zamestnávateľov aj zamestnancov zamestnávať a&nbsp;zamestnať sa v&nbsp;živočíšnej výrobe.</p>
+
+<p>Jedným z&nbsp;takýchto motivačných opatrení by mohlo byť zavedenie opatrenia, ktoré by umožňovalo pracovníkom zamestnať sa alebo pokračovať v&nbsp;zamestnaní po odchode do&nbsp; predčasného dôchodku, čo im doterajší zákon neumožňuje. Bola by to akási „rezortná výnimka“ a vzťahovala by sa len na&nbsp;prípad, ak by sa pracovník zamestnal v&nbsp;sektore pôdohospodárstva – prednostne v&nbsp;živočíšnej, poprípade špeciálnej rastlinnej výrobe.</p>
+
+<p>Stálo by za zváženie pokračovať aj v&nbsp;aktuálne platnom opatrení zameranom na odvodové zvýhodnenie podnikov v&nbsp;zmysle zákona o&nbsp;sociálnom poistení. Ak by malo toto opatrenie pokračovať, malo by&nbsp;však nevyhnutne dôjsť k úprave systému jeho implementácie a administrácie. V&nbsp;tejto súvislosti by sa mali upraviť podmienky oprávnenosti čerpania tejto formy podpory a&nbsp;za jedno z&nbsp;najdôležitejších kritérií by sa malo považovať zamestnávanie pracovníkov v&nbsp;živočíšnej výrobe. Z&nbsp;hľadiska nastavenia doterajšieho systému v&nbsp;rámci zaraďovania hlavných činností podľa SK NACE by mali byť oprávnené využiť túto úľavu na odvodoch aj podniky so živočíšnou výrobou zaradené v&nbsp;skupine 01.5 – zmiešané poľnohospodárstvo, nielen 01.41 (chov dojníc).</p>
+
+<p>V&nbsp;oblasti národnej podpory očakávame, že bude pokračovať podporné opatrenie - takzvaná „zelená nafta“ a&nbsp;dôjde k&nbsp;navýšeniu normatívov na reálnu úroveň.</p>
+
+<p>Stojí za zváženie, aby sa v &nbsp;prípade nárastu cien energií začalo uvažovať o zavedení nového opatrenia vo forme&nbsp; tzv. „Zelenej energie“. Bolo by to opatrenie, ktoré by fungovalo podľa vzoru zelenej nafty a&nbsp;jeho cieľom by bola kompenzácia časti navýšených nákladov na elektrickú energiu, poprípade plynu na základe normatívov spotreby pri technologických procesoch chovu jednotlivých kategórií mliekového dobytka a&nbsp;procese manipulácie s&nbsp;vyprodukovaným mliekom (dojenie, chladenie, uskladnenie...). Vychádzame z&nbsp;našich analýz, ktoré napríklad kvantifikujú spotrebu elektrickej energie na mliečne hospodárstvo v&nbsp;objeme 600 kWh na jednu veľkú dobytčiu jednotku. Tento normatív sa zhoduje s&nbsp;výsledkami analýz vedeckých inštitúcií.&nbsp;</p>
+
+<p>Do budúcnosti hľadíme s&nbsp;optimizmom a&nbsp;veríme, že prijateľné nákupné ceny spolu s&nbsp;rozumne nastavenou podpornou politikou prispejú k&nbsp;tomu, že sa nám podarí stabilizovať počty dojníc a&nbsp; zachovať prvovýrobu mlieka na Slovensku.</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

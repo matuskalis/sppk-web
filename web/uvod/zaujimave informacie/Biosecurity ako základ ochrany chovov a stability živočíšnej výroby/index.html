@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biosecurity ako základ ochrany chovov a stability živočíšnej výroby — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Biosecurity ako základ ochrany chovov a stability živočíšnej výroby</nav>
+
+  <article>
+    <h1 class="doc-title">Biosecurity ako základ ochrany chovov a stability živočíšnej výroby</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Ivana Matečná, Odbor poľnohospodárstva a služieb SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">23. júla 2026</span></p>
+
+    <div class="doc-body">
+<p><span>Článok je písaný v spolupráci s Ing. Karlom Titlom, vedúcim oddelenia biosecurity s medzinárodným presahom pre Tekrocid/TEKRO, ktorý v roku 2025 získal čestnú medailu Hasičského záchranného zboru Českej republiky za spoluprácu pri zavádzaní veterinárnych opatrení proti šíreniu slintačky a krívačky, najmä pri dekontaminácii plôch a vozidiel na hraničných priechodoch so Slovenskom a Poľskom. Významnú úlohu zohral aj pri zvládaní pandémie COVID-19 a dlhodobo spolupracuje so základnými zložkami integrovaného záchranného systému Českej republiky pri riešení mimoriadnych udalostí súvisiacich s výskytom nákaz, ako je napríklad vtáčia chrípka.</span></p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/oOM8dmb.jpeg"></figure><p></p>
+
+<p>Najnovší vývoj nákazovej situácie pri africkom more ošípaných na Slovensku opätovne potvrdil, že biologická bezpečnosť (biosecurity) nemôže byť vnímaná iba ako formálna povinnosť. 5. mája 2026 bolo potvrdené prvé ohnisko afrického moru ošípaných u domácich ošípaných na Slovensku v roku 2026, a to v komerčnom chove ošípaných v katastri obce Lovča v okrese Žiar nad Hronom. V chove sa nachádzalo 805 ošípaných. Pred potvrdením nákazy bol 4. mája nahlásený úhyn jednej ošípanej, 5. mája úhyn 13 kusov a 6. mája ďalších 32 kusov. Súčasťou prijatých opatrení bolo aj vytvorenie 3 km ochranného pásma a 10 km pásma dohľadu.</p>
+
+<p>ŠVPS SR dňa 21. mája 2026 informovala, že ohnisko AMO potvrdené v obci Lovča bolo depopulované a v priestoroch sa vykonalo komplexné čistenie a dezinfekcia. Z tohto chovu však boli ešte pred vyslovením podozrenia premiestnené odstavčatá, ktoré si zakúpili chovatelia v okresoch Banská Štiavnica a Žiar nad Hronom. Išlo o 2 ošípané v okrese Banská Štiavnica a 21 ošípaných v okrese Žiar nad Hronom. Tieto zvieratá boli vzhľadom na zvýšené riziko pozorované, pričom v oboch prípadoch došlo k náhlemu úhynu. V prvom chove uhynula jedna ošípaná z dvoch, v druhom tri ošípané z 21 kusov. Po odbere vzoriek bol AMO u týchto uhynutých zvierat potvrdený. Išlo o sekundárne ohniská nadväzujúce na pôvodné ohnisko v Lovči. Eradikácia oboch sekundárnych ohnísk už&nbsp;bola&nbsp;a vykonaná bola aj priebežná dezinfekcia.</p>
+
+<p>Tento vývoj zároveň ukázal, že riziko sa môže rozšíriť aj mimo pôvodného ohniska ešte pred samotným potvrdením nákazy. ŠVPS SR v tejto súvislosti opätovne zdôraznila význam včasnej detekcie, sledovania zdravotného stavu zvierat, odberu vzoriek od uhynutých ošípaných, okamžitého nahlasovania zmien zdravotného stavu a dodržiavania zásad biologickej bezpečnosti. Zároveň pripomenula povinnosť registrácie všetkých chovov ošípaných vrátane záhumienkových, a to aj v prípade držby jednej ošípanej. Upravená infikovaná zóna AMO u domácich ošípaných sa na základe týchto skutočností vzťahuje na celé okresy Banská Štiavnica a Žiar nad Hronom s výnimkou katastra obce Hronská Dúbrava, ako aj na vybrané obce v okresoch Žarnovica, Prievidza, Turčianske Teplice, Zvolen, Levice a Krupina. Rozsah infikovanej zóny potvrdila aj Európska komisia. Podľa informácie ŠVPS SR z 21. mája 2026 neboli v tom čase na území Slovenska hlásené žiadne nové podozrenia na nákazu v chovoch ošípaných.</p>
+
+<p>Prípad AMO v Lovči a následné sekundárne ohniská sú dôležité nielen z hľadiska samotného výskytu nákazy, ale aj preto, že ukazujú, ako rýchlo sa môže nákazová situácia zmeniť. Pri ochoreniach s vysokým ekonomickým dopadom nerozhoduje iba samotná prítomnosť vírusu, ale aj pripravenosť chovu, nastavenie vnútorných pravidiel, kontrola vstupov, pohyb osôb, techniky, krmív, podstielky, vozidiel a celková úroveň prevencie.</p>
+
+<p>Africký mor ošípaných je mimoriadne nákazlivé vírusové ochorenie domácich aj voľne žijúcich ošípaných s veľmi vysokou mortalitou. Pôvodcom je Asfivirus, DNA vírus, pričom na infekciu postačuje veľmi nízka infekčná dávka. V podmienkach mierneho pásma Európy sa ochorenie šíri najmä priamym kontaktom, kadávermi, krmivom, surovými alebo nedostatočne tepelne opracovanými produktmi, kontaminovanými odpadmi, podstielkou, hnojom, dopravnými prostriedkami, obuvou alebo odevom. Najväčším rizikom šírenia na veľké vzdialenosti je pritom človek. Nie je preukázaný prenos blchami, komármi, krv sajúcimi muchami ani inými rodmi kliešťov.</p>
+
+<p>Vírus je veľmi odolný vo vonkajšom prostredí, vysoko rezistentný voči nízkym teplotám aj vysušeniu, no spoľahlivo ho ničia vysoké teploty. Infekcieschopný zostáva v krvi počas niekoľkých týždňov, na obilných klasoch alebo v pôde po odstrele, taktiež v&nbsp;mäsových výrobkoch v šunke, klobásach a salámach. V zmrazenom mäse môže prežívať roky. Dlhodobo prežíva aj v rôznych nasiakavých materiáloch a v hnoji.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/Y3TKudF.jpeg"></figure><p></p>
+
+<p>V rovnakom období rezonovala aj situácia pri vysokopatogénnej aviárnej influenze H5N1. Dňa 4. februára 2026 bol na Slovensku potvrdený pozitívny výsledok na vírus HPAI H5N1 v schválenom komerčnom chove hydiny v pôsobnosti RVPS Komárno. Podozrenie vzniklo po nahlásení úhynu viac ako 400 moriek počas jedného dňa a v chove sa pôvodne nachádzalo 36 000 kusov hydiny.</p>
+
+<p>ŠVPS SR zároveň v sezóne 2025/2026 evidovala výskyty aviárnej influenzy nielen v chovoch hydiny, ale aj u voľne žijúceho vtáctva. V prehľade aktuálnej situácie boli uvedené napríklad prípady u labutí v okresoch Liptovský Mikuláš, Senica, Levice a Skalica, prípad volavky bielej v okrese Skalica, ako aj komerčný chov v okrese Senica. Práve vtáčia chrípka ukazuje, aký význam má ochrana hydiny pred kontaktom s voľne žijúcim vtáctvom, zabezpečenie krmiva a vody pred kontamináciou a dôsledná kontrola vstupov do chovných priestorov.</p>
+
+<p>Aktuálna situácia v Európe pri vtáčej chrípke zostáva zhoršená a výskyt ochorenia na Slovensku sa môže objavovať celoročne. Rezervoárom vírusu je najmä voľne žijúce vodné vtáctvo, napríklad kačice, husi či čajky, ktoré často nemusia vykazovať klinické príznaky. Ide o vysoko patogénne ochorenie postihujúce primárne vtáctvo, pričom výnimočne môže dôjsť aj k prenosu na niektoré druhy cicavcov. Pri vírusoch influenzy A sú u vtákov najvýznamnejšie subtypy H5 a H7. Nebezpečenstvo vírusu spočíva aj v jeho schopnosti rýchlo mutovať.</p>
+
+<p>Ničený je vysokou teplotou. Je citlivý na dezinfekčné prostriedky, najmä kyslé, oxidačné a polárne látky, ale odolný voči chladu a v mraze môže prežívať ešte dlhšie.</p>
+
+<p>Prenos prebieha najmä prostredníctvom trusu infikovaných vtákov, peria, uhynutých vtákov, kontaminovanej vody, krmiva a podstielky. Rizikom je aj pasívny prenos prostredníctvom hlodavcov, pracovníkov, obuvi, odevu a vozidiel. Aj v tomto prípade preto platí, že samotná reakcia na potvrdený výskyt nestačí – základom musí byť dlhodobo udržiavaný systém biosecurity.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/v5OViwa.jpeg"></figure><p></p>
+
+<p>V roku 2025 Slovensko čelilo aj mimoriadne závažnej situácii v súvislosti so slintačkou a krívačkou. Pri ochorení, ktoré patrí medzi vysoko nákazlivé vírusové ochorenia vnímavých druhov párnokopytníkov, zohráva rozhodujúcu úlohu rýchla reakcia, kontrola presunov, dezinfekcia, ochranné a dohľadové pásma a dodržiavanie biologickej bezpečnosti.</p>
+
+<p>Slintačka a krívačka má celosvetové rozšírenie, pričom endemicky sa vyskytuje najmä v Južnej Amerike, Afrike a Ázii a v európskom priestore trvalo najmä v Turecku. Pôvodcom je Aphtovirus s veľmi nízkou infekčnou dávkou. Rezervoárom sú vnímavé druhy párnokopytníkov vrátane hovädzieho dobytka, oviec, kôz, ošípaných, ako aj niektorých voľne žijúcich zvierat, napríklad diviakov či jeleňov.</p>
+
+<p>Ochorenie sa prenáša respiračne a orálne priamym kontaktom medzi zvieratami, ale aj nepriamo – prostredníctvom obuvi, oblečenia, dopravných a kafilérnych vozidiel, zamestnancov, náradia, pastvy, psov, mačiek, vtákov a hlodavcov. Pri kontaminácii ošípaných predstavuje významné riziko aj prenos vetrom na veľké vzdialenosti. Rizikovými faktormi môžu byť aj živočíšne produkty, voda a krmivo.</p>
+
+<p>Vírus slintačky a krívačky môže za priaznivých podmienok prežívať v prostredí, v organickom materiáli, podstielke, výkaloch, moči, bahne a pri nízkych teplotách aj v živočíšnych produktoch. Citlivý je na dostatočné tepelné opracovanie, vhodné hodnoty pH a účinnú dezinfekciu. Pasterizácia mlieka alebo UHT ohrev vírus inaktivujú.</p>
+
+<p>V širšom európskom priestore je potrebné sledovať aj ďalšie nákazy, ktoré môžu mať priamy alebo nepriamy dopad na Slovensko. Príkladom je nodulárna dermatitída hovädzieho dobytka, pri ktorej boli v roku 2025 nové ohniská zaznamenané v Európskej únii najskôr v Taliansku a následne vo Francúzsku a Španielsku. Ide o ochorenie, pri ktorom zohrávajú významnú úlohu monitoring, kontrola presunov, ochrana pred vektormi a pripravenosť veterinárnych služieb.</p>
+
+<p>Pôvodcom nodulárnej dermatitídy je Capripoxvirus z čeľade Poxviridae. Hlavným hostiteľom je hovädzí dobytok, zebu a byvoly, najmä v oblastiach pozdĺž vodných tokov, v nížinách a v prostredí s vyšším výskytom krv sajúceho hmyzu - pakomáre môžu vírus prenášať až do vzdialenosti 90 km, na kratšie vzdialenosti sa uplatňujú bodalky, muchničky a&nbsp;kliešte. Menej významný je priamy kontagiózny prenos a nepriamy prenos prostredníctvom krmiva, podstielky, techniky, dopravných prostriedkov, obuvi a odevu.</p>
+
+<p>Ide o nebezpečnú vírusovú nákazu charakterizovanú vznikom 2 – 5 cm veľkých uzlov (nodulov) na koži, ako aj v tráviacej, respiračnej a reprodukčnej sústave. Po prasknutí nodulov môže dochádzať k sekundárnym infekciám. Primárne môže byť infikovaný aj plod.</p>
+
+<p>Vírus je odolný voči vonkajšiemu prostrediu, pričom najvyššia incidencia sa zaznamenáva vo vlhkom letnom období. Do tela nepreniká cez neporušenú kožu. Najvýznamnejší vektor – pakomáre – je citlivý na teploty pod -15 °C. Aj pri tejto nákaze je preto dôležitá ochrana pred vektormi, kontrola pohybu zvierat, techniky a osôb, ako aj pripravenosť na rýchle uplatnenie opatrení.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/MLmEzYI.jpeg"></figure><p></p>
+
+<p>Tieto konkrétne prípady – AMO v Lovči vrátane sekundárnych ohnísk, HPAI v okrese Komárno, výskyty vtáčej chrípky u voľne žijúceho vtáctva, predchádzajúce ohniská SLAK na Slovensku a nové európske ohniská nodulárnej dermatitídy – majú spoločného menovateľa. Pri každej z týchto nákaz je rýchlosť zavlečenia a šírenia úzko prepojená s úrovňou biosecurity. Hoci ide o rozdielne ochorenia s odlišnými cestami prenosu a rôznymi vnímavými druhmi zvierat, vo všetkých prípadoch zohráva rozhodujúcu úlohu prevencia.</p>
+
+<p>Z pohľadu Slovenskej poľnohospodárskej a potravinárskej komory je preto dôležité zdôrazňovať, že biosecurity nie je iba veterinárno-technická téma. Je to otázka ochrany živočíšnej výroby, stability chovov, obchodovania, spracovateľského sektora a potravinovej bezpečnosti. Každé ohnisko nákazy môže mať dopad nielen na konkrétny chov, ale aj na celý región, presuny zvierat, exportné možnosti, dostupnosť kompenzácií a dôveru obchodných partnerov.</p>
+
+<p>Biosecurity je na Slovensku zatiaľ pomerne úzko špecializovaná oblasť. V praxi sa jej komplexnému nastavovaniu venuje len obmedzený počet odborných subjektov, preto je dôležité podporovať odbornú diskusiu, výmenu skúseností a praktické usmernenia pre chovy hospodárskych zvierat. Zároveň je potrebné, aby sa biosecurity nevnímala iba cez nákup dezinfekčných prípravkov alebo jednotlivé technické opatrenia, ale ako súčasť odborného nastavenia celého systému prevencie.</p>
+
+<p>Biosecurity sa často zužuje iba na dezinfekciu, v skutočnosti však ide o oveľa širší systém opatrení. Zahŕňa kontrolu pohybu osôb, dopravných prostriedkov, techniky, krmív, vody, podstielky, materiálu, náradia, obalov, uhynutých zvierat, hmyzu, hlodavcov, voľne žijúcich zvierat a vtáctva. Každý z týchto prvkov môže byť za určitých okolností cestou prenosu nákazy.</p>
+
+<p>Základným princípom biologickej bezpečnosti je oddelenie zdravých zvierat od možných zdrojov infekcie. V praxi to znamená funkčné oplotenie, jasne definované vstupy, kontrolované trasy pohybu, oddelenie čistých a nečistých zón, dezinfekčné body, pravidlá pre návštevy a obmedzenie vstupu nepovolaných osôb. Opatrenia musia byť nastavené tak, aby boli reálne vykonateľné, pravidelne kontrolované a zrozumiteľné pre všetkých, ktorí sa v chove pohybujú.</p>
+
+<p>Dôležité je aj zónovanie prevádzky. Areál by mal mať jasne určené verejné, vonkajšie, prechodové a najchránenejšie chovné priestory. Medzi týmito zónami musia existovať fyzické a hygienické bariéry – prezutie, prezlečenie do určeného pracovného odevu a obuvi, umytie a dezinfekcia rúk, výmena pracovného odevu praného výlučne v&nbsp;priestoroch chovu, prípadne sprchovanie tam, kde je to vzhľadom na riziko opodstatnené, najmä v chovoch hydiny a ošípaných, ako aj v šľachtiteľských a rozmnožovacích chovoch.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/0SwErKR.jpeg"></figure><p></p>
+
+<p>Súčasťou systému majú byť aj dezinfekčné bariéry pri vstupoch do výrobných zón, hál alebo stajní. V praxi môže ísť napríklad o nášľapné vaničky s ponorom 3 – 7 cm, obsahujúcej dezinfekčný roztok s možnosťou jednoduchej vizuálnej kontroly, s obsahom zmáčadla a možnosťou použitia v rozsahu teplôt od -15 do +40 °C. Pravidlá musia byť viditeľné, praktické a kontrolovateľné, nie iba formálne uvedené v dokumentácii. Na hodnotenie úrovne opatrení môžu slúžiť aj odborné audity a nástroje, ktoré pomáhajú posúdiť reálnu úroveň biosecurity v prevádzke.</p>
+
+<p>Osobitnú pozornosť si vyžaduje doprava. Pohyb vozidiel predstavuje pri viacerých nákazách významný rizikový faktor. Vozidlá môžu prenášať kontaminovaný materiál na pneumatikách, podvozku, ložnej ploche, šasi, náradí alebo prostredníctvom obuvi vodiča. Nestačí preto spoliehať sa iba na potvrdenie o čistení vozidla. Potrebné je mať nastavené pravidlá pre vstup vozidiel, dezinfekciu kolies a podvozkov, kontrolu nakládky a vykládky a minimalizáciu vstupu vodičov do chránených priestorov.</p>
+
+<p>Dekontaminácia vozidiel by mala byť nastavená tak, aby zasiahla celé rizikové plochy vozidla vrátane kolies, podvozku, ložnej časti a šasi. Najvyššiu účinnosť možno dosiahnuť systémovým riešením, napríklad prejazdom cez dekontaminačný rám alebo penovým postrekom celého vozidla s účinnosťou&nbsp; &gt; 5 log. Dôležité je aj nastavenie pravidiel pre vodičov – používanie čistého pracovného odevu praného denne pri teplote nad 60 °C, dezinfikovanej obuvi, rukavíc a osobnej dezinfekcie rúk minimálne alkoholovú dezinfekciu. Ak vodič v prevádzke vystupuje z vozidla, mal by používať nitrilové rukavice a mal by si už v kabíne obliecť ochranný overal. Riešenia ako sorpčné koberce alebo penové matrace nemusia pri nedostatočnom nastavení poskytovať požadovanú úroveň dekontaminácie sú účinné približne ako voda, teda &lt; 0,6 log.</p>
+
+<p>Ďalším dôležitým prvkom je ochrana pred voľne žijúcimi zvieratami, vtáctvom, hlodavcami a hmyzom. Pri AMO je zásadné zamedziť kontaktu domácich ošípaných s diviačou zverou a s materiálom, ktorý môže byť kontaminovaný. Pri HPAI je kľúčové obmedziť kontakt hydiny s voľne žijúcim vtáctvom a chrániť krmivo a vodu pred kontamináciou. Pri SLAK je rozhodujúce obmedzenie presunov vnímavých zvierat, kontrola dopravných prostriedkov, dezinfekcia a rýchle uplatňovanie mimoriadnych veterinárnych opatrení.</p>
+
+<p>Sanitácia zostáva jedným z najdôležitejších nástrojov znižovania infekčného tlaku. Dezinfekcia však nemôže nahradiť mechanické čistenie. Organický materiál, prach, trus, zvyšky krmiva, podstielka, mastnota alebo biofilm znemožnujú účinnosť dezinfekčných prípravkov. Správny postup musí zahŕňať odstránenie hrubých nečistôt, umývanie, oplach, vysušenie, sanitáciu napájacích liniek, dezinfekciu, dodržanie expozičného času a opätovné oschnutie povrchov. Vhodné je používať predovšetkým také dezinfekčné prípravky, pri ktorých je dostupná mikrobiologická dokumentácia účinnosti voči konkrétnym patogénom.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/WiFZKHg.jpeg"></figure><p></p>
+
+<p>Význam biosecurity rastie s veľkosťou a zložitosťou chovu. Čím viac je vstupov, zamestnancov, návštev, dodávok, presunov zvierat, skladov, technologických častí a kontaktov s vonkajším prostredím, tým väčší význam má systémové riadenie rizika. Aj nízke riziko pri jednom kontakte sa pri častom opakovaní môže stať významným faktorom zavlečenia nákazy.</p>
+
+<p>Dôležité je zdôrazňovať, že primeraná biosecurity má význam v každom chove. Rozsah opatrení má zodpovedať druhu zvierat, technológii, veľkosti prevádzky, regionálnej nákazovej situácii a reálnym rizikám. Cieľom nemá byť neprimeraná administratívna záťaž, ale funkčné opatrenia, ktoré sa dajú v praxi dodržiavať a ktoré skutočne znižujú riziko šírenia nákaz.</p>
+
+<p>Biosecurity musí byť zároveň merateľná a kontrolovateľná. Nestačí mať všeobecný plán. Každá prevádzka potrebuje jasné pracovné postupy, kontrolné zoznamy, evidenciu vstupov, záznamy o čistení a dezinfekcii, monitoring škodcov, pravidlá pre nakladanie s uhynutými zvieratami a systém školenia zamestnancov. Pravidelné vyhodnocovanie opatrení pomáha odhaliť rozdiel medzi tým, čo je uvedené v dokumentácii, a tým, čo sa reálne vykonáva v praxi.</p>
+
+<p>Najnovšie prípady nákaz ukazujú, že biologická bezpečnosť nemôže byť opatrením prijímaným až po vzniku problému. Musí byť súčasťou každodenného riadenia chovu. Africký mor ošípaných, vtáčia chrípka, slintačka a krívačka, ako aj ďalšie nákazy sledované v európskom priestore potvrdzujú, že prevencia je základným nástrojom ochrany zdravia zvierat, ekonomickej stability chovov a fungovania celého agropotravinárskeho sektora.</p>
+
+<p>Úlohou SPPK je aj v tejto oblasti upozorňovať na význam preventívnych opatrení, sprostredkovať odborné informácie a podporovať členov v tom, aby bola biosecurity chápaná ako praktický nástroj ochrany ich práce, zvierat a celého sektora. Biosecurity nie je reakcia na krízu. Jej pravidlá slúžia na prevenciu zavlečenia nových nákaz a znižovanie prenosu patogénov medzi zvieratami v chove. Je to systém, ktorý rozhoduje o pripravenosti chovov ešte predtým, ako sa nákaza objaví.</p>
+
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

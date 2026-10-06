@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Správa z C-C  – február 2015 — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../../index.html">Úvod</a><span>/</span><a href="../../../index.html">medzinarodne aktivity</a><span>/</span><a href="../../index.html">COPA-COGECA</a><span>/</span><a href="../index.html">spravy zo zasadnutiC-C</a><span>/</span>Správa z C-C – február 2015</nav>
+
+  <article>
+    <h1 class="doc-title">Správa z C-C  – február 2015</h1>
+    <p class="doc-meta"><span class="doc-meta-item">10. marca 2015</span></p>
+
+    <div class="doc-body">
+
+
+<p><em>Zoznam použitých skratiek:</em></p>
+
+<p><em>SPPK – Slovenská poľnohospodárska a&nbsp;potravinárska komora</em></p>
+
+<p><em>C-C – COPA- COGECA</em></p>
+
+<p><em>EP- Európsky parlament</em></p>
+
+<p><em>EK – Európska komisia</em></p>
+
+<p><em>EÚ – Európska únia</em></p>
+
+<p><em>ČŠ – Členský štát</em></p>
+
+<p><em>SPP – Spoločná poľnohospodárska politika</em></p>
+
+<p><em>EFSA – Európsky úrad pre bezpečnosť potravín</em></p>
+
+<p><em>HLG – Skupina na vysokej úrovni</em></p>
+
+<p><em>EKF – Európsky kongres farmárov</em></p>
+
+<p><em>DG Sanco – Generálne riaditeľstvo EK pre ochranu a&nbsp;zdravie spotrebiteľa</em></p>
+
+<p><em>NFU – Národná farmárska únia, Veľká Británia</em></p>
+
+<p><em>GMO – Geneticky modifikované organizmy</em></p>
+
+<p><em>DG Agri - Generálne riaditeľstvo EK pre poľnohospodárstvo a&nbsp;rozvoj vidieka</em></p>
+
+<p><em>OECD – Organizácia pre ekonomickú spoluprácu a rozvoj</em></p>
+
+<p><em>OIE- Svetová organizácia pre zdravie zvierat</em></p>
+
+<p><em>PPP – Prípravky na ochranu rastlín</em></p>
+
+<p><em>EFFAT – Európska federácia obchodných únií v&nbsp;poľnohospodárstve a potravinárstve</em></p>
+
+<p><em>GEOPA- Zamestnávateľská skupina v&nbsp;rámci C-C</em></p>
+
+<p><em>PRV – Program rozvoja vidieka</em></p>
+
+<p><em>DG Trade – Generálne riaditeľstvo EK pre obchod</em></p>
+
+<p><em>DG Enviro – Generálne riaditeľstvo EK pre životné prostredie</em></p>
+
+<p><em>EIP – Európske inovačné partnerstvo</em></p>
+
+<p><em>NGO – mimovládne organizácie</em></p>
+
+<p><em>CMO – jednotná organizácia trhu</em></p>
+
+<p><em>COMAGRI – Poľnohospodársky výbor Európskeho Parlamentu</em></p>
+
+<p><em>ILUC – Nepriama zmena využitia pôdy</em></p>
+
+<p><em>UK – Veľká Británia</em></p>
+
+<p><em>MFF – viacročný finančný rámec</em></p>
+
+<p><em>AHW – zdravie a&nbsp;dobré životné podmienky zvierat</em></p>
+
+<p><em>NZ – Nový Zéland</em></p>
+
+<p><em>ECOSOC – Európsky hospodársky a&nbsp;sociálny výbor</em></p>
+
+<p><em>DG Employ – Generálne riaditeľstvo EK pre zamestnanosť</em></p>
+
+<p><em>MSD – Ochorenia svalov a&nbsp;kĺbov</em></p>
+
+<p><em>WTO –Svetová obchodná organizácia</em></p>
+
+<p><em>LULUCF – využitie pôdy, zmena využitia pôdy a&nbsp;lesníctvo</em></p>
+
+<p><em>Mercosur – Ekonomické združenie krajín Južnej a&nbsp;Strednej Ameriky</em></p>
+
+<p><em>MOMAgri – Svetová organizácia pre poľnohospodárstvo</em></p>
+
+<p><em>BRIC – Ekonomické združenie Brazílie, Ruska, Indie a Číny</em></p>
+
+<p><em>FAO – Organizácia pre potraviny a&nbsp;poľnohospodárstvo Spojených národov</em></p>
+
+<p><em>FVE – Federácia veterinárov v&nbsp;Európe</em></p>
+
+<p><em>BSE – Bovinná spongiformná encefalopatia – ochorenie hospodárskych zvierat</em></p>
+
+<p><em>RK – rozvojové krajiny</em></p>
+
+<p><em>PPP – prípravky na ochranu rastlín</em></p>
+
+<p><em>SME – malé a&nbsp;stredné podniky</em></p>
+
+<p><em>PDO- chránené označenie pôvodu</em></p>
+
+<p><em>PGI- chránené zemepisné označenie</em></p>
+
+<p><em>MMF – viacročný finančný rámec</em></p>
+
+<p><em>EUPPA – Združenie európskych spracovateľov zemiakov</em></p>
+
+<p><em>Europatat - (Európske obchodné združenie pestovateľov zemiakov)</em></p>
+
+<p><em>ESA - European Seed Association</em></p>
+
+
+
+
+
+
+
+
+
+<h2 class="doc-subheading">Prezídium Copa-Cogeca &nbsp;5.2.2015</h2>
+
+
+
+<p>Zástupcovia informovali o&nbsp;konaní konferencie EÚ/Severná Amerika, ktorá sa uskutoční 21. až 23/10 v Belfaste.</p>
+
+<p>Ďalší bod programu sa týkal iniciatívy predsedu Komisie Junckers. ohľadom investícií, vytvárania pracovných miest, ktorá bola odsúhlasená v decembri a teraz ju jednotlivé krajiny rozpracovávajú. Ako sa ukazuje, je tu prihlásených už vyše 10 000 projektov a to celkovo na sumu viac ako 3x vyššiu než akú uviedol Junckers. Väčšina zástupcov pôjde 23. februára do EP, kde bude híring a C / C tu chce predložiť požiadavky na investície do infraštruktúry a skladovanie, cezhraničnú spoluprácu, to všetko spolu s Coops Europe. Nemecký zástupca k tomu dodáva, že je potrebné žiadať o väčšie investície do agri-food sektora celkovo, pretože je významným nositeľom pridanej hodnoty v európskom exporte. Nový grécky zástupca uviedol, že jeho krajina pripravila 175 projektov, ale žiadny, ktorý sa týka agri-food, vláda ani tá nová o tom zatiaľ neviedla debatu. Existujú už teraz prehľady všetkých projektov zo všetkých členských krajín, čo by sa malo využiť v lobovanie v EP.</p>
+
+<p>Akčný plán - mlieko. Všetko uvedené do súvislosti s ruskou krízou a aký majú jednotlivé krajiny prístup k riešeniu problémov v sektore.</p>
+
+<p>K riadeniu trhu – v&nbsp;apríli - &nbsp;koniec kvót, ale nie je príliš jasné, ako sa bude ďalej pristupovať k problémom riadenia trhu a výkyvom cien.</p>
+
+<p>Litovská zástupkyňa tu uviedla, že od posledného obdobia veľkých štrajkov v sektore (2004) zostáva celá rada prípadov nedoriešená (legálne postihy) a teraz sa situácia dramaticky zhoršila. Ceny sú v mnohých prípadoch len 12 centov za liter a tretina fariem je prakticky v likvidácii.</p>
+
+<p>Zástupca za španielske družstvá sa pokúsil o rozbor podmienok pre družstvá a aké majú výhľady. V Španielsku, podobne ako v mnohých krajinách sú 3 typy produkcie:</p>
+
+<p>- Individuálna - bez prepojenia na PO's alebo Coops.</p>
+
+<p>- Družstvá bez spracovania (viac zraniteľné).</p>
+
+<p>- Veľké družstvá so spracovaním (majú alternatívy odbytu a tiež lepšie postavenie na trhu).</p>
+
+<p>Pre väčšinu krajín je koniec kvót dosť dramatickým okamihom, aj keď reakcie na to sú veľmi rozdielne. Rad krajín stavila na rast produkcie a systematicky buduje svoje ďalšie kapacity aj za cenu, že dnes platia pokuty (It. Irl, Pl, DK, Nl.). Talianske ministerstvo poľnohospodárstva zvolalo debatu - okrúhly stôl pre mlieko. Školské mlieko u nich funguje s väčším či menším úspechom už 60 rokov.</p>
+
+<p>Poľsko- 70% trhu majú Coops, ceny klesli za posledné mesiace takmer o 30%, teraz sú pod 28 centov. Najväčší problém je prekračovanie kvóty (vlani o 2%), tento rok to bude o viac než 8%, pokuta za nadprodukciu sa neruší. Tí, ktorí majú platiť za nadprodukciu žiadajú plnenie po častiach.</p>
+
+<p>Nemecko: cena je teraz okolo 30 centov, prepad sa teraz zastavuje. 70% mlieka ide cez družstvá. Problém nespôsobuje len koniec kvót, ale aj celková svetová vyššia produkcia a stagnácia trhu. Problematická je aj orientácia vývozu. Väčšina farmárov súhlasí s ukončením kvót - proti je „Milk Board“.</p>
+
+<p>Fínsko: súčasná cena je 35 centov za liter (čo je prepad o viac než 30%).<br>
+Lotyšsko: v sektore potravinárskeho priemyslu sa prepúšťa až tretina zamestnancov, krajina čelí obrovskému problému ako udržať ľudí na vidieku.</p>
+
+<p>Írsko: ceny okolo 30 centov, 95% mlieka ide cez družstvá. Družstvá sú stabilizačným prvkom pre farmára. Španielsky zástupca k tomu dodáva, že družstvá majú až 10c pozitívny podiel na cenách pre svojho farmára.</p>
+
+<h2 class="doc-subheading"><span class="text-underline"><em>Vystúpenie SPPK:</em></span></h2>
+
+<p>Z&nbsp;nášho pohľadu je potrebné sústrediť sa predovšetkým na presadenie opatrení ako:</p>
+
+<p><em>- zvýšenie intervenčnej ceny</em></p>
+
+<p><em>&nbsp;- znovuzavedenie exportných dotácií</em></p>
+
+<p><em>- podpora odbytu mlieka a ml. výrobkov na nových trhoch</em></p>
+
+<p><em>- zlepšenie transparentnosti v reťazci mlieka</em></p>
+
+<p><em>- odstránenie nekalých praktík obchodných reťazcov a zneužívanie</em></p>
+
+<p><em>dominantného postavenia obchodných reťazcov</em></p>
+
+<p><em>- termínované obchody</em></p>
+
+<p><em>- poistenie príjmov.</em></p>
+
+<p>SPP - zjednodušenie. Odvolanie na vyhlásenie komisára Hogana, ktorý vyzval ČŠ, aby pripravili a predložili návrhy, má preskúmať cez 200 smerníc a Rada má tieto návrhy preskúmať v máji tohto roka. Skupina civilného dialógu sa zíde 4/3 a v ostatných pracovných skupinách sa budú preberať špecifické otázky súvisiace so zjednodušením.</p>
+
+<p>Obchod: Stále tu dominuje otázka Ruska a embarga. Vplyvmi trpí predovšetkým poľnohospodársky sektor. Ten nesie všetky dôsledky geopolitických rozhodnutí, ale nemá na ne prakticky žiadny vplyv. Toho využíva tiež distribúcia na zvýšenie tlaku na výrobcov. Komisia by mala mať zodpovednejší prístup a kompenzovať farmárom straty.</p>
+
+<p>ILUC &nbsp;- pokračujú diskusie. Lotyšsko by túto kapitolu chcelo dokončiť.<br>
+Prípravky na ochranu rastlín. Od 2005 sú zahrnuté do krížového plnenia. Teraz sa tu diskutujú predovšetkým ochranné pásma (buffer zones). Problém je tu predovšetkým v rozdielnom postupe prakticky každej členskej krajiny. Napríklad Syngenta si prisvojuje tieto pásma, a&nbsp;chcela by pripraviť odporúčacie pravidlá pre tieto zóny. Za produkciu a pôdu zaručujú len farmári, nemožno pripustiť, aby si spoločnosti hrali na určujúceho hráča. Priemysel sa snaží stále hovoriť, že radí farmárom ako produkovať, ale to je výhradne v kompetencii farmárov.</p>
+
+<p>Medzinárodný rok pôdy (IYS). Zástupcom Cogeca (neskôr i Copa) tu bol po hlasovaní na poslednom Pocci-CCC menovaný Mateo Bartolini z talianskej GIA, ktorý je zároveň súčasným predsedom Ceja. Schválené bez pripomienok. Mateo bude hlavne slúžiť ako spojovník s FAO (ktoré sídli v Ríme).</p>
+
+<p>Smernica k&nbsp;veterinárnym liečivám a&nbsp;krmivám s&nbsp;liekmi. DG Sanco pripravilo v priebehu 2014 návrh. Sú len obavy, že sa od prevencie prejde na postupné liečenie, mala by sa nájsť správna rovnováha.</p>
+
+<p>Pracovné metódy Copa</p>
+
+<p>Švédska zástupkyňa, ktorá tu nahradila predsedníčky ad hoc skupiny Maira, povedala, že podobne ako Cogeca, tu boli od leta 4 schôdze.</p>
+
+<p>Má skupina mandát na ďalšie pokračovanie?</p>
+
+<p>Chcú, aby schôdze prezídia boli viac politické (piatkové rokovanie nemá dostatočný náboj), mali by tu byť predovšetkým strategické otázky ďalšieho vývoja a tiež pravidelné stretnutia s predsedami pracovných skupín. &nbsp;Alternácie prezídia C / C?</p>
+
+<p>Pracovné skupiny - majú zásadný význam, význam funkcie predsedov<br>
+Lobingu - lepšia koordinácia</p>
+
+<p>Pozičný dokumenty - pre prezídium len súhrn (1 stránka).</p>
+
+<p>Francúzi hovoria, že súčasná štruktúra skupín civilného dialógu nedáva dosť priestoru reprezentantom sektorov, ktorí majú veľké výhrady k terajšej forme fungovania. Úroveň CD je slabá, sektory majú výhrady ako k príprave, tak k priebehu týchto schôdzí, Komisia musí zvýšiť náročnosť.</p>
+
+<p>Kalendár tohtoročných schôdzí:</p>
+
+
+
+
+
+<p><span class="text-underline"><strong>Závery:</strong></span></p>
+
+<p>-Bol predstavený kalendár tohtoročných schôdzí</p>
+
+<p>-Viac informácií ku konferencii EU/Severná Amerika je na<br>
+<a href="http://www.naeu2015.org" class="external" target="_blank" rel="noopener noreferrer">www.naeu2015.org</a></p>
+
+<p>-&nbsp;SPP – pre väčšinu ČŠ je byrokratická záťaž jedným z hlavných problémov. Všetci zástupcovia jednoznačne presadzujú zjednodušenie SPP.</p>
+
+<p>-Pretrvávajú problémy na trhu spôsobené ruským embargom, obavy posilňuje aj zrušenie kvót na mlieko v&nbsp;tomto roku</p>
+
+<p>-SPPK navrhuje opatrenia, ktoré je potrebné presadzovať v&nbsp;sektore mlieka</p>
+
+
+
+
+
+
+
+<h2 class="doc-subheading">Pracovná skupina Víno 9.2.2015</h2>
+
+<p><br>
+9 základných bodov agendy pre budúce roky:</p>
+
+<p>- Analýza trhu vína - požiadavka na európsku ekonomickú pozorovateľňu</p>
+
+<p>- Riadenie SPP – skupiny civilného dialógu má robiť pravidelné hodnotenia a zúčastňovať sa rokovaní o zjednodušení (SPP po roku 2018?)</p>
+
+<p>- Kvalita - politika, silná tradícia u vína, skúsenosti</p>
+
+<p>- Informácie pre spotrebiteľov - označenie, nálepky</p>
+
+<p>- Propagácia</p>
+
+<p>- Medzinárodný obchod - bilaterálne dohody (bez špecifickej intervencie)</p>
+
+<p>- Inovácia a&nbsp;spoločná organizácia trhu - definícia od pracovných skupín</p>
+
+<p>- Bio- víno</p>
+
+<p>Ako dodatok tu boli pripomienky k fungovaniu skupín CD, celá rada nedostatkov, ako by mal vyzerať vývoj týchto skupín.</p>
+
+<p><span class="text-underline">Trh – víno.</span></p>
+
+<p>Kontrastné údaje z rôznych regiónov - extrémy zaznamenané hlavne v Taliansku a Španielsku, kde organizácia hlási 10-15% rozdiely medzi oficiálnymi údajmi pripravenými &nbsp;ministerstvom poľnohospodárstva a údajmi, ktoré majú organizácie k dispozícii. Pozorovateľňa trhu, ktorú spravuje DG Agri nefunguje na 100%. Producentom chýbajú predovšetkým spoľahlivé údaje zo susedných krajín.</p>
+
+<p>Španielska družstvá uvádzajú, že ich systém informácií trhu je problematický, po rade rokov teraz ministerstvo poľnohospodárstva sľúbilo nápravu a za tým účelom bude schôdzka s organizáciami budúci týždeň. Problematické je predovšetkým prepojenie všetkých 17 autonómnych oblastí - dáta nie sú zhromažďované systematicky. Tiež Taliani hlásia dosť podstatné rozdiely v údajoch, dáta organizácií sa líšia od údajov. Komisia až o 15%. Španieli k tomu dodávajú, že ich konečné čísla bývajú pravidelne o 6-8% vyššia u konečnej produkcie vína, než má Komisia. Ostatne Španieli tu dávajú upravené údaje z 2013/14 celkovo 53,503 m hl (Komisia 50,600) a pre 2014/15 41,500 (Komisia 40,8 m hl). Podobné problémy má Taliansko, iné krajiny takéto rozdiely nehlásia.</p>
+
+<p>Štúdie - konkurenčná pozícia EÚ vína. Štúdia, ktorú vykonala COGEA a Taliansko, tu bola ostro kritizovaná hlavne zo strany Francúzska.</p>
+
+<p>Predseda WP, Coste uviedol v úvode, že na trhu vína je cítiť obrovskú váhu distribúcie, a sektora v EÚ vadia rôzne colné tarify pre domácu produkciu a dovoz.<br>
+Francúzsky zástupca povedal, že COGEA urobila podobnú štúdiu v 2012, ktorá mala ale podstatne iné závery ako tá súčasná, ktorá je podľa neho zavádzajúce. To vedie k určitej manipulácii faktov a inú interpretáciu, než pôvodná štúdia, ktorá mala podľa neho solídnejšie základy a bola pravdivejšia. Popis nástrojov na riadenie trhu sa od 2012 nijako nezmenil. Ale ďalej povedal, že v štúdii 2012 bola popísaná konkurencieschopnosť fariem ďaleko realistickejšie (ukázalo sa, že mnohé z nich bola nerentabilných), v súčasnej štúdii tento faktor chýba. Predtým bola konkurenčná pozícia vína priamo prepojená na konkurencieschopnosť fariem, to tam dnes chýba. Štúdia má veľa nedostatkov a celá rada záverov je pre Francúzsko neprijateľná. Nemci toto hodnotenie podporili. Hovoria, že táto štúdia nie je dôležitá, Komisia jej dáva prehnanú hodnotu.<br>
+Francúzsky zástupca k tomu dodáva, že Komisia teraz pripravila novú komunikáciu k tejto štúdii, ale to nijako nezmení problematické hodnotenie celej práce.<br>
+Pre záujemcov je viac info na http://www.europa.eu alebo na Web COGEA: www.cogeaspa.it<br>
+Diskusia, ktorá sa okolo štúdie rozbehla, ukazuje, že celá rada faktov tu nezodpovedá potrebám a podobne ako Francúzi, sa väčšina prikláňa k tomu, že bola zbytočná a že štúdia z 2012 bola zostručnená a lepšia. Predseda WP Coste, dodáva, že táto štúdia môže mať negatívny dopad.</p>
+
+<p>Ani pre predsedníčku skupiny CD, nie je jasné čo tým Komisia monitoruje a na čo táto štúdia je dobrá. Bude predložené ako osobitný bod na CD nasledujúci deň. Potom bola diskusia, či sa má na Komisiu viac tlačiť, alebo zostať diplomatický. Prevážil tvrdší postoj. Komisia musí svoj postoj vysvetliť a zdôvodniť.</p>
+
+<p><span class="text-underline">Povolenie výsadby.</span></p>
+
+<p>Bola tu vytvorená Pracovná skupina, ktorá mala v priebehu januára rozsiahlu telefonickú výmenu názorov. V nej sa rozoberali stavy v jednotlivých ČŠ, snaha rozumieť systému, kde ale prevládala diskusia o regionalizácii (pre všetky veľké krajiny).</p>
+
+<p>Španieli tu majú pripravený plán do 2020. Talianska hlási, že debata u nich ešte neskončila, výsledky a závery by mali byť známe do polovice roka. Francúzsko má tiež regionálne rozdelenie, ale to je iné ako v ostatných krajinách - celkové rozdelenie je na regiónoch, ale štát si ponecháva konečné slovo, pôsobí ako konečný arbiter. Taliansko by chcelo poznať postupy a prístup ostatných krajín - sekretariát údaje zhromaždí.</p>
+
+<p>Zjednodušenie SPP - sem patrí podľa skupiny:</p>
+
+<p>- Označenie</p>
+
+<p>- Ochrana</p>
+
+<p>- Zjednotenie metód naplnenia úloh</p>
+
+<p>Francúzska delegácia opäť kritizuje postup Komisie, chýba sprievodný dokument o aplikáciách, predovšetkým u označenie (etikety), identifikácia bodov zjednodušenia (i balenia). C / C k tejto téme vydala už na jeseň minulého roka komentáre, ktoré sa týkali nasledujúcich bodov.</p>
+
+<p>- Registrácia viníc a povinné deklarácie. Vyhlásenie o úrode, výrobe, ošetrenie a marketingu, úroveň zásob - zlepšiť transparentnosť, zavedenie digitálneho systému hlásenia a zlepšiť prístup k informáciám. Formy: jednoduchšie obsah, dátumy podávania a postihy.<br>
+Doplňujúce dokumenty k hlásením: vrátane ich účelu na konečné použitie a obsahu. Certifikácia PDO a PGI vín vrátane roku a druhu vína.</p>
+
+<p>Registre. Administratívne pravidlá používaná pre niektoré enologické praktiky (deklarácia, dosladená, okyslenie, povolené praktiky a obmedzenia pre niektoré druhy vína). Regulácia pre PDO a PGI, tradičné názvy, označenia (labeling).<br>
+Programy pre sektor po 2018 - aké formy pomoci pre sektor. Je potrebné rozhodnúť už teraz, práca na prípravách zaberie dlhú dobu. Francúzsky zástupca tu hovoril o znalostiach Komisie pri víne. Povedal, že nový Komisár nevie absolútne nič o víne a o špecifických potrebách tohto sektora. Talianski zástupcovia chcú vedieť, ako tu bude C / C reagovať, je pripravená na prípadnú revíziu CAP v 2017 (nový Health check) a ako sa tieto prípadné úpravy dotknú CMO vína. A aké sú národné programy pomoci členských krajín.<br>
+Kvalita. Skupina tu zdôrazňuje predovšetkým ekonomickú hodnotu sektora vína EÚ. V celej EÚ má hodnotu 30,4 mld € a 70% z toho je s GI's (zemepisné označenie). Celková EÚ produkcia s označením GI - 59% sa týka práve vína. GI je ukazovateľ výkonnosti vína v EÚ.<br>
+&nbsp;</p>
+
+<h2 class="doc-subheading"><span class="text-underline">Závery:</span></h2>
+
+<p>-Organizácie požadujú zachovanie statusu quo pri definícii PDO a PGI a tiež tradičných termínov. A medzinárodnú ochranu všetkých označení.</p>
+
+<p>-Organizácie kritizovali EK za nedostatočnú aktivitu v&nbsp;oblasti vína a&nbsp;vyjadrili obavy o&nbsp;odbornosti nového komisára v&nbsp;tejto oblasti</p>
+
+<p>-Zástupcovia Francúzska spochybňujú štúdiu vypracovanú COGECA z&nbsp;dôvodu neobjektívnosti.</p>
+
+
+
+
+
+
+
+<h2 class="doc-subheading">Pracovná skupina Kvalita 11.2.2015</h2>
+
+<p><br>
+Predseda skupiny v úvode povedal, že nakoniec Komisia odsúhlasila pre tento rok 3 schôdze (namiesto pôvodných 2) a v nich bude kombinovaná ako kvalita, tak propagácia. Dnešná schôdza je venovaná výhradne kvalite. Budúca spoločná, ktorá sa má konať začiatkom júna, bude mať oba námety. Na schôdzi mal mať jeden z hlavných príspevkov predseda WP víno Coste, ale ten sa do Bruselu nedostal kvôli štrajku vo Francúzsku. Namiesto neho tu bol krátky referát o stave kvality v sektore vína (predovšetkým o prepojení PDO, PGI, označení kvality a miestnom označení).<br>
+Ďalším bodom tu bolo zjednodušenie SPP a politika kvality. Rokovania sa zaoberalo predovšetkým so zmenami, ktoré tu boli od zavedenia v 2007, prehľad urobil Javier Valle. Aké odporúčania pre ČŠ? Konzultácie začali koncom 2014 a pokračovali v priebehu januára 2015. Týkali sa predovšetkým revízie súčasných platných pravidiel:</p>
+
+<p>- Procedúry</p>
+
+<p>- Náplň povinností</p>
+
+<p>- Označenie</p>
+
+<p>- Definícia vína (zatiaľ bez dátumu dokončenia)</p>
+
+<p>- Alkohol (12 mesiacov)</p>
+
+<p>- Aromatické vína (bez dátumu)</p>
+
+<p>- Agroprodukty a potraviny - do 6 mesiacov.</p>
+
+<p>Cieľom je skrátiť procedúry a lehoty, urýchliť proces schvaľovania a rýchlejší prenos presnejších informácií. Ďalej klasifikácie zodpovednosti za vykonávanie procedúr.<br>
+Ďalšie otázky: súčasná situácia - a&nbsp;očakávania, vývoj v jednotlivých bodoch, návrhy na zmeny, čo sa malo zjednodušiť.</p>
+
+<p>Ako sa toto všetko dotkne sektora vína? Dávid Brazsil, sekretár skupiny Víno, tu rozviedol otázky pôvodu, označení vín a ich ekonomickú výkonnosť. Ale sektor by uvítal zjednodušenie, ktoré by uľahčilo prácu farmárom, nemalo by sa sústreďovať na úrady.<br>
+Taliansky zástupca tu informuje o schôdzke ich organizácie na ministerstve pôdohospodárstva, minulý týždeň, ministerstvo chce previezť ochranu PDO, PGI na osobitnú agentúru. Majú obavy, že to naruší súčasný model schvaľovania, malo by sa o tom rokovať aj v rámci C / C, pretože to môže znamenať zmenu pravidiel. Jochum za Rakúsko dodáva, že u nich to trvalo cez 10 rokov, než sa všetko podarilo vykonať a že to nie je príklad k nasledovaniu. Stále tu trvá neistota, či mať jednu EÚ autoritu, alebo národnú pre rozhodovanie. Ale väčšina je pre obe možnosti, ochrana ako na EÚ úrovni tak na národnej. Ďalšie diskusie by sa mala týkať programov pre nepoľnohospodárske výrobky, a ich špecifiká. Komisia tvrdí, že tu nemá kapacitu všetko sledovať a hodnotiť.<br>
+Informácie pre spotrebiteľa potravín.</p>
+
+<p>PDO a PGI ochraňujú územia na rozdiel od obchodných značiek, ktoré chránia produkt.<br>
+Kvalita a EÚ štandardy - tu len začala reflexie. Pre C / C je kvalita základ.<br>
+Vyslovuje sa za zachovanie PDO a PGI, sú medzinárodne uznané na rozdiel od privátnych iniciatív, možno tu merať aj ich ekonomickú výkonnosť. Pre sektor vína je toto odlíšení zásadný. Javier k tomu dodáva závery štúdie, kde sa uvádza, že len 14% spotrebiteľov hľadí na označenie, celkom tomu nerozumie, a tak je to nezaujíma.</p>
+
+<p>Označenie pre nepoľnohospodárske produkty.</p>
+
+<p>Závery z nedávnej konferencie, kde sa jednalo o rozšírenie systému o ostatné produkty, a tu bola debata predovšetkým o práve na intelektuálne vlastníctvo. Týkalo sa to sektora textilu, keramiky, skla, medi, ale celkovo sa tu ozvali len zástupcovia sektora ľan. Otázka bude podaná na schôdzi CD. Na konferencii bolo vidieť, ako rozdielne sú záujmy, pretože diskusia bola o rôznorodosti medzi GI a obchodnými značkami. Komisia dostala na tieto tému cez 130 odpovedí, väčšina sa týka potreby väčšej ochrany na trhu. Intelektuálne právo - veľmi komplikovaná otázka, aj pre spracovanie. Chýba tu dohoda, zoznam kritérií sa zatiaľ pripravuje a uvažuje sa o dvojité úrovni pre GI: suroviny a spracované produkty. Pri poľnohospodárskych produktov táto práca pokračuje len veľmi pomaly, pretože väčšina nevidí rozdiel medzi postupmi pre poľnohospodárske a nepoľnohospodárske produkty.<br>
+Regulácia 1169/2011 - začala platiť koncom 2014 - informácie pre spotrebiteľa. 3 roky trvalo zavedenie (jedno z najdlhších tranzitný obdob). Pre mäso, oleja bude toto označenie povinné od decembra 2016, nutričné ??hodnoty. Rakúsky zástupca hovorí, že je s tým príliš veľa práce, a že nemajú stále všetky požadované informácie, dokončenie v apríli, máji.<br>
+UK: sústreďujú sa teraz na nápravy chýb v označení, viacero informácií je predmetom rôznej &nbsp;interpretácie a chýb.</p>
+
+<p>FR: je dosť pružné u produktov v krátkom reťazci, tam sa nemusí uvádzať nutričná hodnota. Produkty spracované na farme majú tak výnimky. Každá krajina má určitý priestor pre interpretáciu na suroviny a spracované výrobky (syry). Sú značné rozdiely v označení alergénov, problém u otázok týkajúcich sa kontaminácie hotových jedál - informácie sa majú vždy odovzdávať písané, nie ústne.</p>
+
+<p>Pravidlá pre mäso a ryby, 26.7 dopadová štúdia, náklady, zisky:</p>
+
+<p>Správanie spotrebiteľa, ekonomický dopad - na vnútorný, vonkajší trh, spracovanie&nbsp;konkurencie obchodu a potrebných investícií. Nebola tu zhoda medzi EP a ČŠ, debata medzi inštitúciami pokračuje. Všetko je teraz legálne blokované, nie je jasné, aký bude ďalší vývoj (predovšetkým u mäsa). Najväčšie debaty sú okolo mäsa ako zložky.<br>
+Pôvod - čo to je - označiť narodenie, výkrm, zabitie, spracovanie? Pre väčšinu tu majú byť len zásadné údaje, doplnené o druh zvieraťa. C / C je aj naďalej pre dobrovoľné označenie pôvodu.<br>
+Štúdie nie sú publikované. DG Sanco hovorí, že správa je oneskorená, problém sa týka predovšetkým procedúr, má uverejniť do konca februára. Tento veľmi komplexný prístup má riešiť niekoľko čiastočných štúdií, problém tu je, že závery nie sú vždy jednotné pre všetky sektory (5 kategórií). Závery by mali byť pripravené pre ďalšiu schôdzu (v júni?).<br>
+Debata o zneužívaní značiek. Talianska sťažnosť týkajúcu sa predovšetkým syrov a sťažnosť na zneužívanie ich tradičných označení v iných krajinách, bez povolenia alebo dohody.<br>
+Aká je tu vysledovateľnosť a aké sú informácie pre spotrebiteľa.</p>
+
+<p>Ochrana značiek: ochrana duševného bohatstva národa</p>
+
+<p>EÚ ochrana</p>
+
+<p>Nariadenie a smernica (pre EÚ značky) sa snaží predložiť všetky možnosti ochrany, ale v mnohých prípadoch je to v rozpore s označením pôvodu.</p>
+
+
+
+<p><span class="text-underline"><strong>Závery:</strong></span></p>
+
+<p>- Len&nbsp; málo spotrebiteľov číta etikety na potravinárskych výrobkoch – väčšina im nerozumie</p>
+
+<p>-CC naďalej presadzuje dobrovoľné označovanie pôvodu mäsa a&nbsp;mäsových výrobkov</p>
+
+<p>-Cieľom revízie je skrátiť procedúry a lehoty, urýchliť proces schvaľovania a rýchlejší prenos presnejších informácií.</p>
+
+<p>-Sú značné rozdiely v označení alergénov, problém u otázok týkajúcich sa kontaminácie hotových jedál - informácie sa majú vždy odovzdávať písané, nie ústne.</p>
+
+
+
+
+
+<h2 class="doc-subheading">Copa- GEOP, Sociálny dialóg 12.2.2015</h2>
+
+
+
+<p>Dotazník. Išlo o rozbory direktívy týkajúce sa pracovného času, zatiaľ odpovedalo len Francúzsko a Belgicko, všetky odpovede by mali dôjsť do 15.3.<br>
+S tým súvisela ďalšia otázka, či to má GEOP vôbec rozoberať, či je to aplikované pre poľnohospodársky sektor. V otázkach, ktoré sa týkajú zamestnanosti je na prvom mieste bod zlepšenie poľnohospodárskeho vzdelania a tréningu. A aké v tomto smere má každá krajina stimuly, aby zamestnávatelia investovali do tejto časti a čo sa robí vo vašej krajine, aby bol sektor pre mladých atraktívnejší.</p>
+
+<p>- Zlepšiť prístup do sektora</p>
+
+<p>- Podpora farmám, ktoré nemajú udržateľnú úroveň produkcie k zmenám alebo opustením sektora.<br>
+Otázka tu je čo sa robí vo vašej krajine pre udržanie čo najväčšieho počtu pracovných miest poľnohospodárstva. Je tu monitorovací systém a kto tu hradí náklady? Vplyv možností vykonávať náhradnú činnosť. Starší pracovníci - má vaša krajina špecifické programy pre starších pracovníkov a ako sú v tejto otázke aktívnej sociálni partneri. Existujú v sektore špecifické plány?</p>
+
+<p>Vplyvy pružnosti kontraktov. V mnohých krajinách je legálne ochránená možnosť vykonávania celého radu čiastkových aktivít, ktoré sa môžu dopĺňať.<br>
+Môže sektor vytvoriť viac pracovných miest týmto smerom a je tu potrebné zjednodušiť pravidlá pre zamestnanosť.</p>
+
+<p>Prístup k aktuálnym informáciám ako počet zamestnávateľov, počet permanentných kontraktov, počet kontraktov na dobu určitú (sezónni pracovníci).<br>
+Bod 5 programu - Štatistiky zamestnanosti.<br>
+Chýbajú dobré prehľady z celej rady krajín. GEOP pripravila spolu s EFFAT projekt na zber dát, to je úloha pre druhú polovicu tohto roka. Má byť vykonaný v úzkej spolupráci s DG Employ. Teraz sa pracuje na zhode u použitých definícií.</p>
+
+<p>Ruské embargo a nezamestnanosť.</p>
+
+<p>Zatiaľ sa príliš neprejavilo, ale je to len otázka času, reakcie sú tu vždy oneskorené. Najväčšie problémy tu majú pobaltské krajiny a Poľsko. Belgicko má osobitný program, ktorý uľahčuje záťaž zamestnávateľov, po dobu 3 mesiacov môžu dať časť pracovníkov na technickú nezamestnanosť. Pre ostatné sa to prejavuje pozvoľna, poklesy cien až o 25-30% budú mať vplyv až v budúcich obdobiach a tiež na investície. EFFAT tu urobil prehľad vplyvu v novembri, ale podľa uvedených čísel nie je príliš dôveryhodný, jednak to bolo predovšetkým v sektore mlieka (embargo trvalo len 2 mesiace), takže čísla tu uvedené nezodpovedajú realite.</p>
+
+<p>Ďalšie v sérii dotazníkov je otázka sezónnych pracovníkov z krajín mimo EÚ. Zatiaľ len veľmi obmedzené reakcie (FR, Šv, Lit, Rak, Fin). Pôvodne bol súčasťou celkových prehľadov všetkých sektorov v členských krajinách, ale to sa ukázalo, ako príliš rozsiahle a komplikované, chýbala spolupráca medzi sektormi a nikto to koordinoval. EFFAT tu urobil zo svojej strany veľmi podrobný prehľad, ale GEOP zaujíma predovšetkým znalosť sektora poľnohospodárstva.<br>
+Projekty 2015-16 sa mali týkať najmä sociálnej inšpekcie, ale Komisia tu neposlala oficiálnej odpovede, podobne ako u ostatných typov seminárov pre budúce obdobie. Kris túto otázku zopakoval na schôdzi Sociálneho dialógu spolu s EFFAT a zástupcami DG Employ. Tí sľúbili urýchlenie schvaľovania.</p>
+
+<p>U smernice pracovného času, ktorá bola prerokovaná v 2013, dala Komisia následne možnosť vyjadrenia sociálnych partnerov k tejto otázke. Ale ako bolo konštatované na schôdzi Bureau (výkonný výbor), došlo len málo odpovedí a z nich nemožno urobiť zodpovedajúce spoločnú odpoveď GEOP.</p>
+
+<p>Ako a kto to v členských krajinách eviduje, pre viacerých problémy začínajú už u počtu použiteľných kontraktov, dodržiavanie pracovnej doby, pravidlá pre sektory u trvania. Prepočty doby trvania, 40-48 hodín týždenne, aká pružnosť, priemery sa počítajú za 4 mesiace, GEOP žiada 1 rok, dáva lepší prehľad a uhladzuje výkyvy. Ako funguje organizácia práce pre autonómne pracovníkov (vedúci) je dostatočne pružná?<br>
+Nemeckí zástupcovia sa prihovárajú za zachovanie všetkých doterajších hlavných bodov minulej direktívy, malo by sa doplniť len o pár aktuálnych bodov.<br>
+Štatistiky: rovnaký priebeh ako na Bureau, chýbajú dobré prehľady, veľmi často sú tu len odhady. Komisia by mala urobiť štúdiu a v nej by mali byť tiež všetky použité definície. Niekoľko krajín nemá rubriku sezónnych zamestnancov, rieši to pracovným kontraktom na dobu určitú a neurčitú.</p>
+
+<p>Dotazník sezónnych pracovníkov pre ľudí z krajín mimo EÚ, nedošiel k žiadnemu záveru, sociálni partneri sa stále nedohodli na jeho vyplnení.<br>
+Podobné problémy sú aj pri bode detašovaní pracovníci. Komisia tu vytvorila nový výbor expertov a GEOP / EFFAT požiadali o miesta pre svojich zástupcov. Má záujem predovšetkým v účasti v platforme o neohlásených pracovníkov.<br>
+Náklady na prácu v ČŠ.</p>
+
+<p>Jesenné správa bola podľa reakcií všetkých zástupcov príliš komplikovaná. Výsledky a závery boli odovzdané Komisii, ale stále sa čaká na jej reakciu. Ako podpora sú tu štatistické údaje dosť slabé, náklady sú monitorované rôzne, nie je zhoda, či sa má užívať minimálnej mzdy, alebo priemerné a nie sú ani dohodnuté rovnaké kritériá vo všetkých ČŠ. Význam obmedzený.<br>
+Chýbajú tu tiež doplňujúce podmienky, ako sociálne zabezpečenie, dovolenky a poistenie).<br>
+V seminári, ktorý sa pripravuje, sa má riešiť otázka doplnenia týchto kritérií o trvaní pracovného času, výnimky, pravidlá, ďalej pružnosť kontraktov. Pre dnešný seminár dáva Komisia možnosť pokračovania na 2 roky aj dlhšie - sledovať vývoj sektora.<br>
+Pri plenárnom rokovaní o ruskom embargu sa ukazuje, že zo strany zamestnávateľov a odborov sú určité rozpaky v reakciách. Konštatované, že väčšina krajín neprijala žiadne zvláštne opatrenia, chýbajú presné čísla vplyvu. Nemecký zástupca hovorí, že sú proti subvenciám, ktoré sa ešte viac destabilizujú situáciu. S tým nesúhlasia britskí zástupcovia, ktorí hovoria, že otázka pomoci silne rozdeľuje krajinu. Je jasné, že politici nemajú moc chuti niečo urobiť a poľnohospodárstva je vo väčšine krajín na politickom okraji. Dohoda, že GEOP bude hovoriť len o prípadnom vplyve na zamestnanosť, Copa má podpory na starosti sama.<br>
+Otázky zdravia.</p>
+
+<p>Referát zo schôdze z 2. 2. o bezpečnosti traktorov a ich využitie v sektore. Španielsky zástupca, ktorý na tieto schôdze za GEOP chodia, hovorí, že napriek všetkým preškolenie o zlepšenie podmienok, je u traktorov viac ako 3x väčší podiel fatálnych úrazov ako u áut. Problémy sú tu predovšetkým pre starších farmárov a príliš komplikované nové stroje. Väčšina konštruktérov posúva zodpovednosť za bezpečnosť na zamestnávateľa, nie na technické vybavenie traktorov. Aké automatické bezpečnostné systémy pre prípady zlyhania techniky - dotaz a požiadavka na DG Enterp, či plánuje vydať nariadenie o úpravách systémov traktorov, adaptácia na rôzne podmienky (polia, budovy, sklady, pivnice).<br>
+&nbsp;</p>
+
+<p><span class="text-underline"><strong>Závery:</strong></span></p>
+
+<p>-Je potrebné zjednodušiť pravidlá pre zamestnanosť</p>
+
+<p>-Dopad ruského embarga na zamestnanosť v&nbsp;agropotravinárstve nie je ešte zmapovaný</p>
+
+<p>-V&nbsp;otázkach zodpovednosti za pracovné úrazy sa rieši prenos zodpovednosti z&nbsp;konštruktérov poľnohospodárskych strojov na zamestnávateľov – poľnohospodárov.</p>
+
+
+
+
+
+<h2 class="doc-subheading">Pracovná skupina Chmeľ 18.2.2015</h2>
+
+<p><br>
+Skupina, ktorá sa schádza raz za rok, má s novým usporiadaním poradných skupín (CD) dosť problémov, pretože spoločným predsedom tejto skupiny je zástupca cukru. Tak ako u rady ďalších pracovných či poradných skupín, to predstavuje veľký problém, kedy sektora predsedá niekto z úplne iného sektora. K tomu sa vrátim neskôr. Program a zápis schválené, a vzhľadom k možnostiam zastúpenia tu boli najprv rozobraté otázky fytosanitárne a&nbsp;prípravky na ochranu rastlín, ktoré sa týkajú chmeľu. Jedným z bodov bolo rokovanie o budúcich akciách C / C v prístupe k&nbsp;prípravkom na ochranu rastlín.</p>
+
+<p>Bola tu vytvorená skupina krajín (Fr, De, NL), ktoré spolupracujú v projekte na ktorý, s 50% spolufinancovaním, dala Komisia 700 000 € ročne. Predseda skupiny Ingwiller k tomu povedal, že je škoda, že sa zatiaľ žiadna ďalšia krajina nepridala, pretože je tu riziko, že pri obmedzenej účasť, celá iniciatíva zmizne. Pôvodne mala mať skupina sekretariát v Bruseli, ale nakoniec bol umiestnený v Paríži. Komisia tu chce vyhodnotenie možností priamych platieb, ale nevie sa či to bude pokračovať aj po roku 2016. Cieľom je rozšíriť spoluprácu a zastúpenie aj o USA.</p>
+
+<p>Nemci sú v skupine veľmi aktívnymi členmi, rieši sa obmedzené možnosti ochrany, nedostatok prípravkov na ochranu rastlín v sektore a nové obmedzenia. Skupina tiež musí riešiť problémy financií na niekoľko projektov v sektore, je potrebné zohnať podpory pre cesty a samotnej schôdze. Pri schôdzke s komisárom Hogan pred 6 týždňami predložili nutnosť o zachovaní PP, ale z diskusie vyšlo najavo, že to pre Komisára nie je prioritná. Ďalším bodom tejto skupiny je hodnotenie rôznych prístupov sektorov, kde je potrebné nájsť spoločné riešenie, všetko je príliš rozdrobené. Sú si vedomí, že sa jedná väčšinou o veľké kultúry, u chmeľu je použitie PP veľmi opatrné, ale nutné. Potreba špeciálnych produktov, kvalita má prednosť.</p>
+
+<p>Sekretariát C / C v tejto osobitnej skupine pomáha s koordináciou (sú naplánované 2 stretnutia ročne). Posledný problém, ktorý skupina riešila bol rôzny spôsob prístupu k produktom v ČŠ. Je potrebné doriešiť systém zjednocovania. Chýba stále automatické uznanie produktov v ďalších krajinách. A keďže sa jedná o malý objem produktov, ani priemysel nemá často záujem na ich rozvoji a užívaní. Existuje rôzna národná interpretácia uznávania a povolenia niekde riadi ministerstvo pôdohospodárstva, inde ministerstvo prostredia a interpretácia môže byť veľmi rozdielna.</p>
+
+<p>Legislatíva zdravia rastlín - to tu bolo len ako informačný bod, kde Komisia má v úmysle znížiť celkový počet reguláciou zo súčasných 60 na 5. To bolo už prioritou talianskeho predsedníctva, ale nedokončené, súčasné lotyšské predsedníctvo chce dokončiť do júna.<br>
+Civilný Dialóg – bol urobený prehľad o&nbsp;zložení a o počte zástupcov a celkovej štruktúre nových poradných výborov. Od všetkých zástupcov boli počuť pripomienky ako k štruktúre, tak k zastúpeniu (skupina na Komisiu bude mať za C / C len 4 zástupcu). Schôdza pracovnej skupiny, ktorá bývala na jeseň, má byť naďalej organizovaná v februári či marci, tam sú všetky konečné čísla potvrdené.</p>
+
+<p>Produkcia 2014 a výhľady 2015. Vlaňajší rok bola celkovo vo všetkých krajinách dobrá úroda, plochy mierne vzrástli, pre 2015 sa očakáva ďalší mierny rast.<br>
+SR - konečný výsledok produkcie 6200 t, plochy vzrástli o 200 ha. Výnosy veľmi dobré prakticky všetko vypredané do r 2018, malé zvyšky na voľný trh.</p>
+
+<p>Poľsko: produkcia 1915 t, 58% horkej odrody, 42% aromatické. Ceny 3,36 € u aromatických, 2,33 € u horkých odrôd. Ceny mali rásť 5 resp. 6%. Pre 2015 mierny rast. V Poľsku je 634 producentov.<br>
+Nemecko: 90% obchodu cez kontrakty, ale všetko je vypredané dopredu, pre 2015 sa počíta s ďalším rastom plôch (+ 500H). Tento rok boli nižšie výnosy horkých odrôd, u aromatických sa začala s novými druhmi. Úroda vynikajúca po veľmi zlej 2013, celkovo produkcia cez 35 000 t. Ceny na hektár - najlepšie 14 000 €, staré kontrakty 10 000 €.<br>
+Rakúsko: dobrá úroda 140H, produkcia 498T, objemy sa zvýšili, všetko predané, na sklade zostalo pár ton aromatických. Ceny 6-7 € / kg aróma, tretina z produkcie sú horké druhy.<br>
+Na hektár to predstavuje 12 000 €.</p>
+
+<p>Španielsko: 2014 - 500 ha, celkom 140 producentov (priemer 3 ha), pre 2015 zvýšenie o 54 ha. Ceny stúpli o 11,2%. Rentabilita na ha je slabá 6500-7000 €. Nemecký zástupca k tomu dodáva, že u nich je produkcia rentabilné len pri cene nad 10 000 € a že USA má bežnú rentabilitu 15-16 000 €. Sektor zaznamenáva veľké výkyvy v ročnej produkcii, ale aj cez to má väčšina krajín expanznej plány do 2020 a ďalej. V USA sa zvyšuje neustále produkcia malých pivovarov sa špeciálnymi pivami.</p>
+
+<p>Hodinovej sadzby pre sezónnych pracovníkov.</p>
+
+<p>Nemci hovoria, že je stále určitý rozdiel medzi východom a západom krajiny. Narovnanie bude v roku 2018, kedy sa majú obe časti vyrovnať. Teraz je v západnej časti minimálna mzda 7,40 €, vo východnej 7 €, v 2018 to má byť pre všetkých 9,10 €. Nárast je zhruba o 0,80 € ročne.</p>
+
+<p>Francúzsko hlási minimum 12,40 € + sociálne príplatky, celkom 15,60 €.</p>
+
+<p>Rakúsko: 7,35 minimum + 30% sociálne dávky + 200 € mesačne na bývanie.</p>
+
+<p>ČR tu hlási priemer medzi 4-5 € (zber, jarné práce).</p>
+
+<p>Poľsko: nemá minimálnu mzdu, inak 2,5 - 3 € pred zdanením.</p>
+
+<p>Španielsko: doba práce 8 h + 2 h nadčasov, mzda 6 € + bývanie a sociálne dávky (10% sezónnych pracovníkov je z Maroka)</p>
+
+<p>Ostatné vstupy.</p>
+
+<p>Francúzsko: PP a ostatné - 6000 € na ha</p>
+
+<p>Nemecko 6-7000 € pre premenlivé výdavky, + fixné (poistenie, amortizácia)</p>
+
+<p>Španielsko: priemer 6000 € + amortizácia</p>
+
+<p>ČR: odhad 4500 €, rýchlo rastú predovšetkým mzdy</p>
+
+<p>PL: 4500-5000 € - odhad</p>
+
+<p>Rakúsko: 6-7000 € - podobne ako Nemecko</p>
+
+<p>CAP - otázka prepojenia platieb v&nbsp;chmeli</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zelenaní - nevzťahuje sa na chmeľ, len v rámci RV</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;konvergencie<br>
+Nemecko: nič nemá prepojené, organizácie výrobcov v 1. pilieri. využitie čl. 52, ktorý umožňuje viazané platby - 8% z národných zdrojov. Pre použitie organizácií výrobcov záleží na rozhodnutí členské krajiny najmä zo sociálnych dôvodov.<br>
+Rakúsko: nič prepojené, majú program na ochranu špeciálnej produkcie, platby pre špeciálne prípady.</p>
+
+<p>Španielsko: nemajú prepojené, ani článok, 52 v chmeli nepoužívajú, chmeľ u nich nie je považovaný za strategický. (Tým je cukor).</p>
+
+<p>Platby na ha:</p>
+
+<p>Francúzsko 300 € na ha, Rakúsko menej ako 300 €, Španielsko 350-400 €.</p>
+
+<p>Poľsko má národná obálku vrátane chmeli - 480 € navyše, inde základ (107 €)</p>
+
+<p>Francúzsko má tiež špeciálnu obálku vo výške 350 000 €, čo predstavuje 600-700 € na ha.</p>
+
+<p>Jednotná organizácia trhu - certifikácia sektora cez delegované akty.</p>
+
+<p>Pán Rosa tu zdôraznil, že certifikácia by mala zostať rovnaká, podobne sa vyjadrujú Nemci, Rakúšania a Francúzi. Súčasný systém umožňuje dobre sledovať sektor a pôvod výrobku.</p>
+
+<p>Bio produkcia - v EÚ je odhadom okolo 600 ha. Bolo predstavené, aké zmeny sa v produkcii bio budú musieť dodržiavať (ďaleko prísnejšie). Väčšine robí najväčší problém konvergencie, farmári chcú mať možnosť súbežne vykonávať konvenčnú a bio produkciu, pre prípady, že tento pokus nevyjde sa môžu vrátiť plne ku konvenčnej produkcii. To podporuje celá C / C.</p>
+
+
+
+<p><span class="text-underline"><strong>Závery:</strong></span></p>
+
+<p>-V&nbsp;sektore je nedostatok prípravkov na ochranu rastlín</p>
+
+<p>-Úrody boli nadpriemerné</p>
+
+<p>-Pokračujú rokovania k&nbsp;certifikácií cez delegované akty</p>
+
+<p>-Novým trendom v&nbsp;oblasti pestovania chmeľu je bioprodukcia</p>
+
+
+
+<h2 class="doc-subheading">Potravinový reťazec 19.2.2015</h2>
+
+<p><br>
+Informácie o HLF (fórum na vysokej úrovni) o potravinovom reťazci, kde C / C zastupoval Pekka Pesonen. Tejto skupine končil mandát a tu bolo rozhodnuté, že tento mandát bude predĺžený o ďalších 5 rokov, vzhľadom k obtiažnosť rokovaní medzi všetkými hráčmi reťazca. To presadzuje hlavne Komisár Hogan, ostatní členovia Komisie sú zdržanlivejší. A tak sa zatiaľ čaká na oficiálne potvrdenie. C / C by tu chcela silnejšie zastúpenie, nemali by tu byť zastúpené organizácie mimo EÚ a lepšie zastúpenie vedenie členských krajín, a by mala skupina silnejší účinok.</p>
+
+<p>Na DG Agri by zriadený útvar riaditeľstva rastu, ktoré má monitorovať všetky akcie dodávateľského reťazca (C / C k tomu odmietla dať súhlas). Účelom je skúmať v členských krajinách ekonomickú veľkosť podnikov a ich postoje k činnosti FC (potravinový reťazec).<br>
+Podľa informácií prichádzajúce z Komisie má Hogan silnejšiu pozíciu ako mal Ciolos a Komisia sa má teraz viac sústreďovať na reťazec vrátane nerovnováhy a rozšíriť o sektory vstupov. V prehľadoch je vidieť trvalý tlak na poľnohospodárske ceny, v to, že sa neustále zvyšuje sa zhodujú všetci.</p>
+
+<p>Zástupca predsedu pracovnej skupiny informoval o rokovaní výboru vnútorný trh a spotrebitelia. Schôdza, ktorá prebehla na jeseň zatiaľ príliš neukázala, ako sem zapadá poľnohospodársky sektor. COMAGRI pripravil pripomienky, ale podľa jeho vyjadrenia, majú dosť obmedzený rozsah. Na tomto výbore sa bude odohrávať rad dôležitých diskusií o stave a prístupe k FC. Mark Rossiers z Boerenbond, ktorý zastupoval skupinu na platforme Dodávateľský reťazec 28/1. Povedal, že tu bolo uvedené ako veľké sú rozdiely medzi trhmi, kde sú určité zákonné opatrenia a tými, kde sú len dobrovoľné, ktoré nefungujú. Všetci si uvedomujú, že reťazce majú obrovskú prevahu. Nový írsky zástupca Liam k tomu dodáva, že DG Compet berie do úvahy iné meradlá čo sa týka veľkosti koncentrácie v poľnohospodárstve a v iných sektoroch a stále sa nedarí tieto rozdiely zlikvidovať. Juan za španielska družstvá dodáva, že všetko funguje aspoň čiastočne tam, kde sú určité zákonné opatrenia, inde vôbec nie.</p>
+
+<p>Monitorovanie cien potravín.</p>
+
+<p>Obsah práce platformy: sledovať ceny a stupňa vývoja 17 reťazcov. Tu sledujú poľnohospodárske ceny, producentské, spotrebiteľské a ceny dovozu. Tieto porovnania majú rôznu kvalitu vzhľadom k obtiažnosti získania zodpovedajúcich informácií, je tu celý rad odhadov. Najlepšie prehľady sú o cenách: Chlieb a obilie, mäso, ryby. Mliečne produkty, oleje a tuky, ovocie a&nbsp;zelenina. Ostatné články FC nie sú jasné a prehľadné.<br>
+Limity štúdií: dostupnosť dát, metódy zberu a ochota zverejňovať.<br>
+Národný pozorovateľne dávajú detailné informácie, od ich založenia sa kvalita postupne zlepšuje. ČŠ nemajú povinnosť zasielať detailné informácie o cenách. To sa stále rozširuje, pre tento rok sa pripravujú prehľady rozšíriť z doterajších 17 na 35 reťazcov. Ďalej sa pre tento rok pripravujú indikátory prevodov cien a výsledky majú byť zverejnené v 2016 (prevody medzi jednotlivými stupňami - producentské x spracovatelia distribúcia x spotrebné).<br>
+ČŠ majú vykonávať mesačné hlásenia cien - je tu často oneskorenie. Znovu zaviezť porovnávanie marží - posledné správy boli v&nbsp;r. 2012. Porovnanie so svetovými cenami (US. Kanada, Aust. NZ). Produkcia a dodávky (Eurostat), tiež všetok zahraničný obchod, výhľady.<br>
+V súčasnej dobe je najväčšia diskusia u mlieka (od leta 2014), raport má byť v marci.<br>
+Johan Klaas (NL) bol za skupinu na všetkých schôdzach tohto výboru (4 za 2014), povedal, že hlavným problémom je pomalý zber dát (komisia len teraz zverejňuje dáta z novembra, to sa dá urýchliť, majú všetko hotové v LTO do 2 týždňov . Je potrebné lepšie sledovať aktuálne stavy (i v USA).</p>
+
+<p>Vedúci kabinetu komisára Hogan, Carl Buhr tu mal príspevok, ako sa chce DG Agri s otázkou FC vysporiadať. Predovšetkým lepšia výmena informácií o FC DG Agri s DG Compet (konkurencie). Je nutné ukazovať v prehľadoch, že to lepšie funguje v krajinách, ktoré majú určité legálnu ošetrenie (hoci obmedzené, alebo čiastočné) a do hry sa musí viac zapojiť EP.</p>
+
+<p>Táto otázka, ako priznal, je veľa politická a vo väčšine ČŠ chýba práve politická vôľa s tým niečo robiť a podobný postoj má Generálna sekretárka Komisia a DG Compet.<br>
+Najpodrobnejšie prehľady urobilo Dánsko a Nemecko.</p>
+
+<p>Legislatíva B2B - neférová obchodná prax v ČŠ:</p>
+
+<p>1. Nie je v DK, Estónsku, Holandsku a v Belgicku, bez odpovedí u 6 krajín.<br>
+2. Ombudsman: áno UK, DK, Slo, Hu</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hybridný systém: De, Fr, Šp, P, It, Bg, Ro</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nemajú: Švédsko, Fin, Svk</p>
+
+<p>3. anonymnú sťažnosť: áno UK, Šv. Lot, Lit, Nl, Slo</p>
+
+<p>4. dobrovoľná kód správania: áno - Fr, celý Benelux, Zlo, Hu</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nie - IRL, UK, Fín, Šv, De, Svk, It.</p>
+
+<p>5. Národné platformy: áno - De, Benelux, Fin</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ostatné krajiny nemajú, pozícia DK je nejasná.<br>
+Nemecký zástupca dodáva, že tlaky sú obrovské, 4 najväčšie distribútorské skupiny v krajine. Ktoré majú viac ako 75% podiel trhu, poľnohospodárske organizácie hlásia rad zneužívania a veľký tlak na ceny - Politicky sa to veľmi ťažko presadzuje.</p>
+
+<p>&nbsp;UK vyvíja systém už niekoľko rokov, výsledky sú väčšinou len čiastočné, v poslednom raportu uvedenom v EP, ktorý je podľa neho veľmi krátky a nie je tu prakticky žiadny pokrok oproti predchádzajúcim správam. Skupina sa musí viac sústrediť na EP, pretože na Komisiu má DG COMPET veľkú váhu. Komisia by na základe prehľadu mala reagovať predovšetkým v otázke zneužívania sily, tu uplatňuje bez zvyšku u družstiev (max. 35% podielu na trhu (nič u distribúcie).</p>
+
+<p>C / C na základe tohto prehľadu pripraví prehľadný názor, a v ňom tiež poukáže, že od roku 2007, kedy sa na probléme začalo pracovať, sa cieľ nijako nezmenil, do zoznamu problémov sa pridal v 2011 zoznam neférových praktík. C / C opakovane vyzvala Komisiu aj Radu k&nbsp;vypracovaniu nariadenia alebo smernice o neférových praktikách, ďalej požiadavku na ombudsmana EÚ - nezávislého, bojovať proti fragmentácii vnútorného trhu.<br>
+Juan tu dodáva pripomienku, že zástupcovia obchodu (Eurocommerce) vyvíjajú veľký tlak na Komisiu. Podobný tlak je na členov EP, ako mu potvrdili prakticky všetci španielski poslanci.</p>
+
+
+
+<p><span class="text-underline"><strong>Závery:</strong></span></p>
+
+<p>-C / C musí viac rozvinúť styky a informácie s poslancami, tam má väčšiu šancu na presadenie, než u Komisie.</p>
+
+<p>-Tlak na ceny stúpa a&nbsp;nerovnováha v&nbsp;reťazci sa neustále prehlbuje</p>
+
+<p>-Vo viacerých štátoch funguje inštitút ombudsmana pre vzťahy v&nbsp;rámci obchodných reťazcov</p>
+
+<p>-Je potrebné opätovne zaviesť porovnávanie marží</p>
+
+
+
+
+
+
+
+<h2 class="doc-subheading">Pracovná skupina Ovocie a zelenina 26.2.2015</h2>
+
+<p><br>
+Propagácia – prehľad.</p>
+
+<p>Publikácie oboch častí Zákon má byť v septembri tohto roku. C / C tu namieta, že kritériá sú príliš prísne pre organizácie výrobcov. Tiež pri ďalšom rozhodovaní bude problém určiť priority pre jednotlivé projekty, pretože jedna krajina ich predložila toľko, že predstavujú vyše 50% celkového rozpočtu. To Komisia v žiadnom prípade neschváli, najviac dáva teraz prednosť projektom, kde spolupracuje viac krajín. C / C tu nesúhlasí tiež s niektorými silnými obmedzeniami ako 5% objemu.</p>
+
+<p>Indikátory nie sú dostatočné - nepokrývajú celé pole pôsobnosti. Všetky pripomienky z&nbsp;pracovnej skupiny, ktoré boli doteraz boli už odoslané na Komisiu. Talianom vadí, že teraz je propagácia riadená horizontálne, predtým to robil sektor samostatne a to malo podľa nich ďaleko lepší vplyv.</p>
+
+<p>Cool projekt - Javier Valle</p>
+
+<p>Ide o&nbsp;skúmanie nových exportných trhov a stanovenie priorít.</p>
+
+<p>Indonézia, Mexiko, Kolumbia, Peru, Thajsko, Vietnam ale tiež severná Afrika, Južná Afrika, Nigéria a Ethiopie - všade sa má vyhodnotiť potenciál a stanoviť priority: vyhodnotenie importných taríf, fytosanitárne problémy, rast obyvateľstva, kúpna sila, trendy, organizácia obchodu. Komisia plánuje stretnutie so všetkými organizáciami v týchto krajinách (predovšetkým obchodné komory). Ďalej skúmanie logistických problémov týchto krajín, doprava v Čile, Brazílii. Taliansky zástupca bol na schôdzi v DG Trade, kde sa prerokúvali všetky bariéry obchodu v cieľových krajinách. Francúzsky zástupca hovorí, že pôvodný návrh Komisie bol pragmatický, ale terajší riadenie nedáva žiadne viditeľné výsledky. Obálku propagácie teraz riadi Komisia namiesto ČŠ.</p>
+
+<p>Označenie surovín - zostáva ešte celá rada problémov pred kompletným zverejnením. Pôvodne malo byť prezentované koncom 2014, ale teraz sa ukazuje, že to bude najskôr koncom marca.</p>
+
+<p>Spotrebitelia síce hovoria, že sú za informácie ochotní platiť, ale skutočnosť je úplne odlišná.<br>
+DG Agri nemá tento bod na programe schôdze CD, ale skupina trvá na jeho zaradenie.<br>
+US-EU - pre USA nemá zatiaľ prioritu, v 2016 budú primárky, takže sa počíta, že nové kolo bude až v 2017. Pred 14 dňami bolo rokovanie v Bruseli, ale tu sa ukázalo, že USA ide len o lepší prístup na trh, 5 produktov je zaradených medzi citlivé.</p>
+
+<p>Prípravky na ochranu rastlín - technické rokovania - požiadavka na rozšírenie vstupu do USA (zatiaľ len cez Philadelphia), budúci kolo rokovaní máj vo Washingtone.<br>
+Japonsko - rokovania v tomto týždni v Bruseli, snaha dokončiť do konca roka. O + Z je oveľa menej dôležité pre Japonsko ako pre USA. WTO - všetko sa bude točiť okolo prístupu na trh. Bilaterálne by sa mali riešiť otázky prípravkov na ochranu rastlín a fytosanitárne (tie sa neriešia vo WTO), musí sa ošetriť v iných dohodách. Nemci vyslovujú obavy, že zoznam citlivých produktov, kde sa požadovalo rozšírenie sa skôr zmenší.<br>
+Melo report.</p>
+
+<p>Report teraz skúma Rada, ale ukazuje sa, že NČŠ majú len veľmi malý záujem o&nbsp;organizácie výrobcov. Žiadna z nich nemá úplné plány na prepojenie PO's. Konštatované, že pozícia Melo je blízka pozícii C / C vrátane prístupu k FC (potravinovému reťazcu). Ďalšie práce budú zverejnené v priebehu marca.</p>
+
+<p>Ruské embargo - Taliansky zástupca hovorí, že 27 000 t ovocia bolo odstránených z trhu, ale len 6 delegácií aktivovalo túto možnosť. Úhrady sú oneskorené a nedostatočné. Fondy nie sú využité, sú tu neférové ??stropy. 24/2 sa zišli ministri poľnohospodárstva Francúzska, Talianska a Španielska v Paríži a spoločne pripravili návrh pre Komisiu v intervencii u O + Z.</p>
+
+<p>Poliaci reklamujú akcie u jabĺk, dostali 3. časť kvóty (150 000t), kritizujú akciu Komisie, malo to ísť do voľnej distribúcie, ale to s podmienkou realizácie cez PO'sa tie sú v Poľsku veľmi slabé. Operačné programy tu len začínajú. Tiež ďalšie spracovanie jabĺk nie je riešením, u konzerv sú veľké nepredané zásoby.</p>
+
+<p>Školské schéma ovocia. Komisia tu chcela priblížiť obe schémy mlieko a O + Z. Diskusia trvá príliš dlho, stále sa čaká na vyhodnotenie. Požaduje sa zjednodušenie systému pre O + Z, u mlieka to funguje dobre. Hodnotenie nebude konečné, u O + Z to funguje len rok, je potrebné odstrániť niektoré brzdy implementácie.</p>
+
+<p>Bezpečnosť potravín – César</p>
+
+<p>Kontroly zdravie zvierat, zdravie rastlín, prípravky na ochranu rastlín, finančná stránka. Zdravie rastlín je blízke dokončeniu, zdravie zvierat pôjde do diskusie v trialógu (K, R, EP), finančná stránka - tá bola zatiaľ jediná dokončená.<br>
+Reprodukčný materiál rastlín - návrh bol odmietnutý Radou - Komisia ho musí prepracovať.<br>
+Endokrinné disruptory- technická diskusia, veľmi podobná a komplikovaná<br>
+Sociálno-ekonomický dopad má byť pripravený tento rok - Komisia má v 2016 rozhodnúť ako pokračovať. Diskusia je okolo 6 prvkov, ktoré môžu modifikovať fyzické stavy zvierat, je pravdepodobné, že sa tu zoznam ešte rozšíri. C / C dala podnety, ako obmedziť negatívne vplyvy a robí tiež porovnanie s 3. krajinami, kde sa tieto prvky môžu používať.<br>
+U náhradných prvkov (77) - tieto prvky nebudú vylúčené z trhu, ale bude tu vykonaná štúdia vplyvu - nemalo by to ohroziť ochranu produkcie.<br>
+Obchod - nie je tu korektné interpretácie údajov o bezpečnosti (C / C).<br>
+Legislatíva - MRL - ??limity, počítalo sa s revíziou, ale najprv tu bude tiež dopadová štúdia. Problémy s dovozom určitých prvkov.</p>
+
+<p>Perchlorate - bol vylúčený z pesticídov, kvôli jednému aktívnemu prvku. C / C tu hovorí, že MRL je dosiahnuté aj keď sa ovocie umyje len vodou (je v nej chlór).<br>
+Sú to veľmi technické otázky.</p>
+
+<p>BREF - týka sa potravy, nápojov a mlieka - je to otázka predovšetkým pre priemysel, ako znížiť príčiny znečistenia v týchto sektoroch. Daniel Azevedo tu uvádza nový dokument, po ktorom nasleduje ďalší dotazník okolo zberu dát. Pre sektor O + Z je tu dôležitá otázka použitia vody a predovšetkým otázka odpadovej vody, jej čistenie, aké sú zdroje a tiež dáta u použitia energie. Špeciálny dôraz na konzervárenský priemysel.</p>
+
+
+
+<p><span class="text-underline"><strong>Závery:</strong></span></p>
+
+<p>-Kritériá pre propagáciu sú pre výrobcov príliš prísne</p>
+
+<p>-Vo viacerých krajinách majú producenti ovocia a&nbsp;zeleniny problém sa združovať v&nbsp;organizáciách výrobcov – začiatky organizácie</p>
+
+<p>-Pokračuje diskusia o&nbsp;endokrinných disruptoroch</p>
+
+<p>-Konzervárenský priemysel bude musieť podliehať novým pravidlám pre zníženie znečistenia v&nbsp;sektore</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p><em>Vypracoval: Odbor poľnohospodárstva a&nbsp;služieb SPPK, február 2015</em></p>
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

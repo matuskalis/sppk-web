@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GMO: skúsenosti Argentíny s pestovaním GM sóje — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">polnohospodarstvo</a><span>/</span><a href="../index.html">GMO NGT</a><span>/</span>GMO: skúsenosti Argentíny s pestovaním GM sóje</nav>
+
+  <article>
+    <h1 class="doc-title">GMO: skúsenosti Argentíny s pestovaním GM sóje</h1>
+    <p class="doc-meta"><span class="doc-meta-item">RNDr. Igor Šarmír, PhD, SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">5. júna 2015</span></p>
+
+    <div class="doc-body">
+<p>Geneticky modifikovaná sója sa začala vo veľkom pestovať v&nbsp;Argentíne v&nbsp;roku 1996, teda hneď od prvého roku expanzie genetický modifikovaných plodín vo svete. Tomuto závažnému kroku nepredchádzala žiadna verejná alebo parlamentná diskusia pričom vyplynul iba z&nbsp;rozhodnutia politickej exekutívy tej doby<a href="#_ftn1" name="_ftnref1" title="">[1]</a><em>.</em> Odvtedy sa pestovanie GM sóje šírilo ako lesný požiar v&nbsp;období sucha a&nbsp;v&nbsp;dnešnej dobe je tejto kultúre obetovaná viac ako polovica ornej pôdy v&nbsp;krajine (viac ako 18 miliónov hektárov). Žiadna iná krajina sveta nevyhradila tak rozsiahly podiel svojho pôdneho potenciálu jednej jedinej GM plodine. Argentína poskytuje preto vynikajúcu príležitosť na skúmanie dôsledkov intenzívneho pestovania GMP pre krajinu. Nasledujúce riadky teda budú venované bilancii uvedeného fenoménu.</p>
+
+
+
+<h2 class="doc-subheading">Politický kontext</h2>
+
+
+
+<p>Monsanto si Južnú Ameriku stanovilo ako prioritný cieľ svojej podnikateľskej expanzie ešte v&nbsp;roku 1994, keď bola v&nbsp;USA povolená sója RR<a href="#_ftn2" name="_ftnref2" title="">[2]</a> na uvádzanie na trh. Cieľom americkej firmy bola predovšetkým Brazíla, druhý najväčší producent sóje na svete v&nbsp;tej dobe. V&nbsp;Brazílii ale platili zákony, ktoré zavádzanie nových plodín výrazne komplikovali a&nbsp;preto sa pionierskou krajinou pre GM plodiny v&nbsp;Južnej Amerike stala Argentína, kde bola situácia po všetkých stránkach priaznivá. Táto krajina sa potom stala skutočným trójskym koňom prieniku GM plodín (a najmä sóje RR) na juhoamerický kontinent. Firma Monsanto nenechalo nič na náhoda: začala tu predávať herbicíd Roundup za tretinovú cenu ako v&nbsp;USA, povolila použiť časť úrody GM sóje na založenie nasledujúcej, čo je v&nbsp;USA a&nbsp;inde striktne zakázané a&nbsp;vzdala sa i&nbsp;nároku na autorské poplatky pod zámienkou, že argentínska ústava zakazuje patentovanie živých organizmov. Toto už ale dávno nie je pravda nakoľko po tom ako sa expanzia pestovania sóje RR stala nezvratnou, požaduje od roku 2005 Monsanto platenie autorských poplatkov<a href="#_ftn3" name="_ftnref3" title="">[3]</a>. Z&nbsp;Argentíny sa potom pestovanie sóje RR rozšírilo prostredníctvom pašovania sadív do Brazílie a&nbsp;Paraguaju, kde boli orgány následne postavené pred hotovú vec a&nbsp;veľké plochy ňou vysadené museli následne legalizovať.</p>
+
+
+
+<h2 class="doc-subheading">Rozmach latifundií na úkor menších poľnohospodárskych podnikov</h2>
+
+
+
+<p>Najviac postihnutí nastolením nového modelu poľnohospodárstva boli nepochybne malí farmári. Argentínska vláda prijala politiku v&nbsp;prospech veľkých poľnohospodárskych podnikov ešte pred príchodom sóje RR. Bolo rozhodnuté, že farmy menšie ako 200 ha sú „neekonomické“ a&nbsp;očakávalo sa, že najmenej 200&nbsp;000 farmárov budú musieť opustiť svoju pôdu. Odvtedy sa vládna politika nezmenila. Tisíce malých farmárov bolo násilne vysťahovaných z&nbsp;ich pozemkov, keď sa pokúsili odporovať proti postupu sóje. Členovia združení na ochranu malých roľníkov sú vystavený permanentnému zastrašovaniu a&nbsp;šikanovaniu. Rodiny, ktorým sa podarilo ostať na svojich pozemkoch boli seriózne postihnuté najmä chemickou kontamináciou, ktorá sa za posledné roky výrazne zhoršila (viď. nižšie).</p>
+
+
+
+<p>Zatiaľ čo podmienky pre väčšinu farmárov sa v&nbsp;dôsledku zavedenia nového systému výrazne zhoršili, preferencia pre monokultúru GM sóje výrazne posilnila postavenie latifundistov napojených na póly finančných investorov, ktorí dostali pod kontrolu celý sektor argentínskeho poľnohospodárstva. Finančné výnosy z&nbsp;jedného hektára sóje nie sú vysoké a&nbsp;tak v&nbsp;záujme dosiahnutia vysokých benefitov si uvedené póly prenajímajú rozsiahle pozemky od tisícov malých a&nbsp;stredných farmárov, ktorí boli ekonomicky odstavení z&nbsp;dôvodu ekonomických politík orientovaných na export. Jednou z&nbsp;výhod pestovanie GM sóje pre latifundistov je skutočnosť, že tento typ poľnohospodárstva si nevyžaduje oranie, čo znamená, že potrebujú iba málo pracovníkov. Podobne je to pri ošetrovaní pesticídmi, ku ktorému väčšinou dochádzalo prostredníctvom práškovacích lietadiel, neskôr rozprašovacích vozidiel. Odhaduje sa, že jeden poľnohospodársky robotník stačí na 500 ha sóje. Takto je možné realizovať intenzívne farmárstvo použitím gigantických strojov. Latifundisti venujú malú pozornosť dlhodobému zdravotnému stavu pôdy, osobitne ak ide o&nbsp;prenajatú pôdu, ktorú po vyčerpaní jej úrodnosti vrátia majiteľom. Pri farmárení takýmto spôsobom je možné dosiahnuť vysoké zisky: jeden z&nbsp;najväčších výrobcov sóje, spoločnosť Grupo Los Grobo, ktorá ju pestuje na 150&nbsp;000 ha mala v&nbsp;roku 2008 ročný príjem 400 miliónov dolárov, pričom očakávala jeho zdvojnásobenie v&nbsp;nasledujúcu sezónu.</p>
+
+
+
+<h2 class="doc-subheading">Pesticídy</h2>
+
+
+
+<p>Keď sa zavádzala sója RR, Monsanto sľubovalo, že dôjde k&nbsp;radikálnemu znižovaniu používania herbicídov. Keďže sója RR vznikla v&nbsp;dôsledku genetickej modifikácie zameranej na sprostredkovanie tolerancie na glyphosate , Monsanto tvrdilo, že bude možné zlikvidovať všetky buriny pri jednej jedinej aplikácii herbicídu a&nbsp;to hneď na začiatku sezóny sadenia. V&nbsp;skutočnosti sa táto výhoda nikdy neprejavila tak ako to predpovedala americká firma. Namiesto toho aby poklesla, argentínska spotreba glyphosatu sa dramaticky zvýšila: kým v&nbsp;roku 1996 bola táto spotreba v&nbsp;Argentíne 19,6 milióna litrov, v&nbsp;roku 2008 dosiahla 200 miliónov litrov. Inými slovami, zatiaľ čo produkcia sóje sa za dané obdobie späťnásobila, spotreba glyphosatu sa zvýšila 14x.</p>
+
+
+
+<p>Každoročné ošetrovanie tým istým herbicídom, glyphosatom, viedlo k&nbsp;vzniku burín, ktoré sa stali rezistentné na danú chemickú molekulu<a href="#_ftn4" name="_ftnref4" title="">[4]</a> a&nbsp;tieto robia farmárom obrovské problémy. Aby sa vysporiadali s&nbsp;týmto problémom, začali farmári zvyšovať dávku Roundupu a&nbsp;neskôr prišli s&nbsp;postrekovaním pôdy silnejšími herbicídmi ešte pred sadením. Množstvo použitého herbicídu 2,4-D<a href="#_ftn5" name="_ftnref5" title="">[5]</a> sa dnes odhaduje na 20 – 25 miliónov litrov ročne, spotreba atrazínu, ktorý je v&nbsp;EÚ zakázaný od roku 2003 z&nbsp;dôvodu kontaminácie povrchových vôd a&nbsp;vážnych zdravotných rizík, sa odhaduje na 6 miliónov litrov, rovnaké množstvo sa používa i&nbsp;endosulfanu (vysoko toxický organochlórový insekticíd). Tieto všetky vysoko toxické pesticídy sa používajú na poliach vysadených sójou RR. Okrem toho experti očakávajú, že ďalších 25 miliónov litrov ne-glyphosatových herbicídov bude nevyhnutných na vysporiadanie sa s&nbsp;Johnsonovou burinou.</p>
+
+<p>„Sójoví baróni“ venujú iba veľmi malú pozornosť na ochranu obyvateľstva a&nbsp;životného prostredia pred pesticídmi. Výsledkom je to, že používané chemikálie spôsobili vážne zdravotné problémy obyvateľstvu a&nbsp;domácim zvieratám, poškodili potravinárske plodiny a&nbsp;kontaminovali pôdu.</p>
+
+
+
+<h2 class="doc-subheading">Sanitárna katastrofa</h2>
+
+
+
+<p>Závažné zdravotné dôsledky na časti obyvateľstva sú spojené najmä s&nbsp;nekontrolovanými a&nbsp;nešetrnými aplikáciami herbicídu Roundup (o ďalších toxickejších pesticídoch ani nehovoriac). Herbicíd je Monsantom prezentovaný ako úplne neškodný, čo je pre latifundistov i&nbsp;kompetentné orgány dostatočným ospravedlnením úplnej absencie opatrnosti z&nbsp;ich strany. V&nbsp;čase posypov bol Roundup sypaný obyvateľom doslova na hlavu a&nbsp;robotníci pracujú v&nbsp;teréne bez akejkoľvek ochrany. Miestni lekári konštatujú výrazné zvýšenie anomálií súvisiacich s&nbsp;plodnosťou ako sú samovoľné potraty a narodenia mŕtvych detí, poruchy štítnej žľazy,&nbsp;respiračného ústrojenstva (napr. pľúcne edémy), obličkových alebo endokrinných funkcií, choroby pečene a&nbsp;kože a&nbsp;závažné problémy so zrakom.</p>
+
+
+
+<h2 class="doc-subheading">Strata potravinovej bezpečnosti</h2>
+
+
+
+<p>Preferencia daná pestovaniu GM sóje súvisela s&nbsp;voľbou proexportného modelu poľnohospodárstva, čo vážne ohrozilo potravinovú bezpečnosť krajiny. Argentína sa tradične vyznačovala produkciou množstva lacného mäsa, hydiny, šošovice, bôbov a&nbsp;inej zeleniny. Zmiešané poľnohospodárstvo, &nbsp;pre ktoré je typická rotácia kultúr a&nbsp;koexistenciou rastlinnej a&nbsp;živočíšnej výroby dávalo dobré úrody. Prechod na sójovú monokultúru všetko zmenil. Počet mliečnych fariem poklesol medzi rokmi 1998 a&nbsp;2003 na polovicu, z&nbsp;30&nbsp;000 na 15&nbsp;000. Výroba väčšiny potravín sa radikálne znížila. Argentína, dlhodobo považovaná za obilnicu sveta, musela začať dovážať potraviny. Časť obyvateľstva začala hladovať. Postihnuté ale neboli len potravinárske plodiny, ale napríklad i&nbsp;pestovanie bavlny, ktorej produkcia poklesla v&nbsp;jednotlivých regiónoch od 40 do 75%.</p>
+
+
+
+<h2 class="doc-subheading">Ekologická katastrofa</h2>
+
+
+
+<p>Cenu, ktorú Argentína platí za vysoké zisky niekoľkých finančných skupín je z&nbsp;dlhodobého hľadiska nesmierna. Každý rok sa z&nbsp;dôvodu šírenia pestovania vyrúbe 200&nbsp;000 ha panenských lesov a&nbsp;intenzívna monokultúra má za následok eróziu a&nbsp;degradáciu pôdy<a href="#_ftn6" name="_ftnref6" title="">[6]</a>. Bolo odhadnuté, že v&nbsp;dôsledku odlesnenia dochádza každoročne k&nbsp;odplaveniu 19-30 miliónov ton pôdy. Okrem iného, intenzívne pestovanie sóje extrahuje dusičňany a&nbsp;spotrebováva veľké množstvo vody. V&nbsp;praxi to znamená, že každý rok krajina „vyváža“ jeden milión ton dusíka a 160&nbsp;000 ton fosforu. To sú veľké straty.&nbsp;</p>
+
+
+
+<h2 class="doc-subheading">Záver</h2>
+
+
+
+<p>Argentína je extrémnym príkladom krajiny, ktorá naplno podľahla fenoménu GMO. Uvedené má ale podstatne širšie súvislosti: v&nbsp;zmysle politicko-ekonomických priorít presadzovaných za posledných 30 rokov a potvrdených postupujúcou globalizáciou, keď veľkí ekonomickí operátori môžu nerušene presadzovať svoje priority, dochádza k&nbsp;obetovaniu dlhodobejšej udržateľnej perspektívy krajiny v&nbsp;prospech okamžitých ekonomických výhod. Ale i&nbsp;z&nbsp;týchto výhod profituje iba hŕstka privilegovaných, väčšina obyvateľstva nemá z&nbsp;exportu sóje vôbec nič. V&nbsp;konečnom dôsledku to znamená i&nbsp;to, že demokracia ako politický systém už reálne neexistuje a&nbsp;bola nahradená oligarchickým systémom<a href="#_ftn7" name="_ftnref7" title="">[7]</a>.</p>
+
+
+
+<p><strong>Literatúra</strong>:</p>
+
+
+
+<p>Robin, Marie-Monique, «&nbsp;Le monde selon Monsanto&nbsp;», Editions La Découverte, Paris 2008, 2009</p>
+
+<p>«&nbsp;Twelve years of GM soja in Argentina a disaster for people and the environment”, Grain, January 2009</p>
+
+<p>Violat, Pierre-Ludovic, «&nbsp;Argentine, un cas d'école&nbsp;», Le Monde diplomatique, Avril 2006</p>
+
+
+
+
+
+
+<hr>
+
+<p><a href="#_ftnref1" name="_ftn1" title="">[1]</a> Carlos Menem, predseda argentínskej vlády v&nbsp;období 1989-1999, protagonista extrémnej deregulácie podľa vzoru Ronalda Reagana, prispel levím podielom k&nbsp;neregulovanému zavádzaniu GM sóje v&nbsp;krajine. Od roku 2007 žije v&nbsp;Čile, aby sa vyhol dvom žalobám z&nbsp;korupcie.</p>
+
+
+
+<p><a href="#_ftnref2" name="_ftn2" title="">[2]</a> Sója Roundup Ready, ktorej bola prostredníctvom genetickej manipulácie sprostredkovaná tolerancia na herbicíd Roundup, ktorého aktívnu zložku tvorí glyphosate.</p>
+
+
+
+<p><a href="#_ftnref3" name="_ftn3" title="">[3]</a> Firma požaduje buď 3 doláre za tonu sójového zrna a&nbsp;múky pri odchode z&nbsp;argentínkych prístavov alebo 15 dolárov po tom čo zásielka dorazí do európskych prístavov.</p>
+
+
+
+<p><a href="#_ftnref4" name="_ftn4" title="">[4]</a> Ide napríklad o&nbsp;nasledovné buriny: <em>Hybanthus parviflorus</em>,<em> Parietaria&nbsp; debilis</em>, <em>Viola arvensis</em>, <em>Pertunia axillaris</em>, <em>Verbena litoralis</em>, <em>Commelina erecta</em>, <em>Convolvulus arvensis</em>, <em>Ipomoea purpurea</em>, <em>Iresine difusa</em>, <em>Sorghum halepense</em>.</p>
+
+
+
+<p><a href="#_ftnref5" name="_ftn5" title="">[5]</a> Preukázateľne silne karcinogénna chemická molekula, ktorá bola súčasťou tzv. oranžového prášku, defoliantu používaného americkou armádou vo Vietname. Dnes je zakázaný v&nbsp;Európe i&nbsp;v&nbsp;USA.</p>
+
+
+
+<p><a href="#_ftnref6" name="_ftn6" title="">[6]</a> Na odlesnenej pôde je možné pestovať sóju iba jednu – dve sezóny. Jej úrodnosť je v&nbsp;podmienkach suchého alebo polosuchého podnebia totiž spojená s&nbsp;prirodzenou vegetáciou a&nbsp;po jej odstránení sa pôda veľmi rýchlo degraduje. Expanzia sójovej monokultúry tak mení časť krajiny na púšť.</p>
+
+
+
+<p><a href="#_ftnref7" name="_ftn7" title="">[7]</a> Toto žiaľ neplatí iba v&nbsp;Argentíne, kde je dnes väčšina obyvateľstva proti presadzovaniu sójovej monokultúry. I&nbsp;v&nbsp;Európe rozhodujú o&nbsp;podstatných veciach najmä anonymné „finančné trhy“, za ktorými sa schovávajú veľké finančné inštitúcie.</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

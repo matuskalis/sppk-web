@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jarné práce v 17. týždni (aktuálne k 2.5. 2023) — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">polnohospodarstvo</a><span>/</span><a href="../index.html">rastlinne komodity</a><span>/</span>Jarné práce v 17. týždni (aktuálne k 2.5. 2023)</nav>
+
+  <article>
+    <h1 class="doc-title">Jarné práce v 17. týždni (aktuálne k 2.5. 2023)</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Martin Rovaš, Odbor poľnohospodárstva a služieb</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">8. mája 2023</span></p>
+    <p class="members-note">Tento text je na sppk.sk prístupný len prihláseným členom komory.</p>
+
+    <div class="doc-body">
+<h2 class="doc-subheading">Celková situácia</h2>
+
+<p>Slovenská poľnohospodárska a&nbsp;potravinárska komora (SPPK) prostredníctvom regionálnych poľnohospodárskych a&nbsp;potravinárskych komôr (RPPK) začala s&nbsp;monitoringom poľných prác v polovici marca 2023, pričom prvotné hlásenia boli zamerané najmä na stav prezimovania porastov ozimín (zapojenosť, vývoj porastov, stav škodcov, chorôb, zásobenosť vlahou a&nbsp;pod.) a&nbsp;stav jarných prác, resp. príprava na jarné práce. Od 12. týždňa (stav od 20. do 26. marca 2023) začína SPPK spracovávať hlásenia z&nbsp;jednotlivých regiónov Slovenska.&nbsp;</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/TfRrVmF.jpg"></figure><p></p>
+
+<p>Jarné práce boli v&nbsp;roku 2023 zahájené v&nbsp;polovici marca v&nbsp;nižšie položených oblastiach. Vo väčšine týchto regiónov bol k&nbsp;záveru marca ukončený výsev obilnín a&nbsp;hrachu, zatiaľ čo vo vyššie položených oblastiach boli jarné práce prerušené z&nbsp;dôvodu nízkych teplôt a&nbsp;sneženia, resp. snehových prehánok. Slovenskí ovocinári začali aj v&nbsp;tomto roku bojovať s&nbsp;jarnými prízemnými mrazmi. Silné mrazy na konci marca meteorológovia avizovali v predstihu, a&nbsp;tak sa na ne mohli naši pestovatelia dostatočne pripraviť. V&nbsp;mnohých ovocných sadoch bolo preto počas nocí rušno. Profesionálni pestovatelia vynakladajú maximálne úsilie, aby pre spotrebiteľov zachránili čo najväčšie množstvo budúcej úrody. V&nbsp;14. – 16. týždni bolo hlavným limitujúcim faktorom pri výkone jarných prác chladné počasie, sprevádzané dažďom, v&nbsp;závislosti od regiónu. Podľa možností počasia prebiehal výsev jarín, ošetrovanie ozimín a&nbsp;zakladanie biopásov. V&nbsp;17. týždni jarné práce prebiehali nerušene najmä na západnom&nbsp; a&nbsp;juhovýchodnom Slovensku vrátane zakladania biopásov, prerušované kvôli dažďu boli práce najmä na východe Slovenska.</p>
+
+<h2 class="doc-subheading">Prehľad počasia a&nbsp;vlahová situácia (zdroj: SHMÚ)</h2>
+
+<p>V týždni od 24.4. do 30.4.2023 spadlo najviac zrážok na juhu stredného a východného Slovenska, lokálne do 40 mm. Na juhu Podunajskej nížiny boli úhrny zrážok len okolo 2 mm. Najvyššia teplota vzduchu počas týždňa bola 22 °C. Najnižšie klesla teplota na -7 °C na Horehroní. Zásobenie pôdy vlahou a relatívne nasýtenie v povrchovej vrstve (0-40 cm) je najnižšie 30-40 % na Podunajskej nížine, Záhorí a Honte. V hlbšej vrstve (40-100 cm) je najnižšie nasýtenie 30-40 % v západnej časti Podunajskej nížiny. Na Záhorí je najnižšie nasýtenie 40-50 %. V celom pôdnom profile (0-100 cm) sú najnižšie hodnoty 30-40 % v západnej časti Podunajskej nížiny. Na väčšine územia je stále nasýtenie vyššie ako 50 %.</p>
+
+<p>Miera intenzity sucha v celom pôdnom profile (porovnanie aktuálneho stavu s obvyklými podmienkami v rovnakom období v priebehu rokov 1961 – 2010) je na úrovni začínajúceho až mierneho sucha ojedinele na juhu stredného Slovenska a Považí. V povrchovej a hlbšej vrstve situácia je podobná a sucho na väčšine územia sa nevyskytuje. Začínajúce sucho zasahuje približne 2% územia.</p>
+
+<p>Pre medziročné porovnanie stavu sucha za 13. týždeň nasledovne uvádzame mapku sucha za rovnaké obdobie rokov 2021 - 2023.</p>
+
+<p><strong>Mapka sucha aktuálna k&nbsp;30.04.2023.</strong></p>
+
+<figure class="doc-figure"><img src="https://www.sppk.sk/content-image/1683643637_e_871143a.png"></figure><p></p>
+
+<p><strong>Mapka sucha aktuálna k&nbsp;01.05.2022.</strong></p>
+
+<figure class="doc-figure"><img src="https://www.sppk.sk/content-image/1683643651_e_871143a.png"></figure><p></p>
+
+<p><strong>Mapka sucha aktuálna k&nbsp;02.05.2021.</strong></p>
+
+<figure class="doc-figure"><img src="https://www.sppk.sk/content-image/1683643669_e_871143a.png"></figure><p></p>
+
+<h2 class="doc-subheading">Informácie z&nbsp;regiónov</h2>
+
+<p>V&nbsp;Bratislavskom kraji (okresy Bratislava, Malacky, Pezinok, Senec) Stav k 3.4.2023: Obilniny (pšenica jarná, jačmeň jarný, ovos) , ostatné strukoviny, hrach na zrno sú osiate na 100 %. Prebieha osev cukrovej repy, slnečnice, zemiakov. Začínajú prvé fungicídne postreky. Stav k 11.4.2023: Pokročil osev cukrovej repy, zemiakov, slnečnice, v okrese Pezinok začali s osevom kukurice na zrno. V okresoch Malacky, Pezinok hlásia výskyt hrabošov, vykonaná bola lokálna aplikácia chemického prípravku. V 16. týždni pokročili jarné práce osevom kukurice na zrno, slnečnice, ukončený je osev cukrovej repy. K&nbsp;záveru 17. týždňa bola kukurica na zrno zasiata na 65 %, kukurica na siláž na 40 %, slnečnica na 98 %, zemiaky sú vysadené na 90 % plánovanej výmery.</p>
+
+<p>V&nbsp;oblasti Trnavy (okresy Hlohovec, Piešťany, Trnava) podľa stavu k Stav k 3.4.2023: sejba cukrovej repy je vo finále, rozbehla sa sejba slnečníc a boli zasiate aj prvé hektáre kukuríc, predpoklad rýchleho napredovania po Veľkej noci. Podľa informácie z&nbsp;10.04. je ukončený výsev pšenice jarnej, jačmeňa jarného a&nbsp;ovsa, začína výsev kukuríc, slnečnica je zasiata na 59 %, ukončený je výsev cukrovej repy a&nbsp;hrachu, zemiaky sú vysadené na 29 % plánovanej výmery. V&nbsp;15. týždni boli jarné práce spomalené daždivým počasím. Sejba slnečnice je prakticky ukončená, postupovala sejba kukurice. K&nbsp;záveru 17. týždňa bola kukurica na zrno zasiata na 87 %, kukurica na siláž na 80 %, sója na 15 % výmery.</p>
+
+<p>V&nbsp;okrese Galanta bol stav jarných prác k 04.04.2023 nasledovný: Osev hustosiatych jarín je prakticky ukončený. Prebieha sejba cukrovej repy, z ktorej je zhruba 2/3 už hotová, a vzhľadom na predpoveď teplôt na 14.týžde je obava pestovateľov na mieste. Prebieha príprava pôdy pod slnečnicu a vymeriavanie, resp. vyznačenie plánovaných úhorov a&nbsp;biopásov. V 15. týždni sa spomalili jarné práce a osevy, kedy v dvoch etapách napršalo zhruba 40 až 50 mm zrážok na území okresu. Zo získaných informácii vieme, že sejba cukrovej repy je prakticky na 100% ukončená. Pokračovalo sa so sejbou slnečníc, ktorej sejba sa skončí a pokračuje sa s kukuricou. Robia sa foliárne aplikácie fungicídov a výživa rastlín, herbicídne ošetrenia hustosiatych plodín. Celkový stav porastov je dobrý. Prípady výskytu škodcov a chorôb sú nateraz pod kontrolou. Stav k 27.4.: Jarné práce pokračujú, poveternostné podmienky na území okresu boli vyhovujúce. Sejba cukrovej repy a slnečnice je ukončená. Sejú sa posledné hektáre kukurice a zakladajú sa biopásy. Celkový stav porastov je naďalej dobrý. Stav k&nbsp;02.05.: Prakticky jarné práce čo sa týka osevov sú ukončené, až na minimálne výmery u malých poľnohospodárov. Celkový stav porastov je naďalej dobrý. Prebieha ochrana porastov proti chorobám a škodcom, ako aj foliárna výživa rastlín. Z dostupných informácií, ktoré sú nám k dispozícií sú aj biopásy založené k dátumu 30.04.</p>
+
+<p>Poľnohospodári z&nbsp;okresu Komárno začali s jarnými prácami zahájené v&nbsp;prvej polovici marca. Podľa informácií z&nbsp;12.04. sejba jačmeňa jarného, cukrovej repy a výsadba zemiakov je ukončená. Vyorávky z jesenných plodín boli vykonané kvôli založeniu biopásov. V&nbsp;13. a&nbsp;14. týždni sa ovocinári snažili zachrániť novú úrodu ovocia. Teplota klesla na -5 stupňov C a niekedy trvala až do rána. Poľnohospodári lokálne hlásili poškodenie repky ozimnej mrazom. Škody zatiaľ nie sú vyčíslené. Bola zahájená aj sejba slnečnice. Na poliach pokračuje predsejbová príprava pôdy. Prebieha sejba zmesí pre opeľovače a aj sejba ďatelinovo-trávnych, trávovito-bylinných a bylinných zmesí na vytvorenie biopásov. V&nbsp;15. týždni bol zahájený výsev kukurice na zrno a&nbsp;na siláž. Agrotechnické práce v&nbsp;závere týždňa spomalilo nepriaznivé počasie. Komárno 27.04.2023 Na poliach pokračuje osev jarných plodín a zakladanie biopásov.</p>
+
+<p>Na poliach okresu Levice bol ukončený osev pšenice jarnej a jačmeňa jarného, hrachu jarného na zrno a ovsa. Prebiehal osev cukrovej repy (42 %) a&nbsp;kukurice na zrno (7 %). V&nbsp;15. týždni prebiehal predovšetkým výsev kukurice na zrno, na siláž a&nbsp;slnečnice. Po 16. týždni bol stav výsevu jarín nasledovný: kukurica na zrno 72 %, kukurica na siláž 40 %, slnečnica 73 %, sója 7 %, cukrová repa a&nbsp;zemiaky 100 %. V&nbsp;17. týždni pokročil výsev kukurice na zrno na 83 %, slnečnice na 84 %, sóje na 67 %, výsev kukurice na zrno stagnoval na 40 %.</p>
+
+<p>V&nbsp;Nitrianskom regióne (okresy Nitra, Šaľa, Topoľčany, Zlaté Moravce) bol k&nbsp;záveru 13. týždňa ukončený výsev jarných obilnín (pšenica, jačmeň, ovos) a&nbsp;hrachu, prebiehal výsev cukrovej repy (83 %) a&nbsp;výsadba zemiakov (46%). K&nbsp;záveru 14. týždňa finišoval výsev cukrovej repy (97 %). Po 16. týždni je kukurica na zrno vysiata na 69 %, kukurica na siláž na 48 %, slnečnica na 85 %, sója na 33 %, cukrová repa na 99 %, zemiaky na 46 %. Stav k&nbsp;záveru 17. týždňa: kukurica na zrno 93 %, kukurica na siláž 90 %, slnečnica 100 %, sója 91 %, cukrová repa 99 %, zemiaky 88 %.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/vHz4kn0.jpg"></figure><p></p>
+
+<p>V&nbsp;oblasti Senice (okresy Senica, Skalica) sa jarné práce naplno rozbehli v prvej polovici marca, aktuálne sú osiate hustosiate obilniny, krmoviny, zakladajú sa úhory, pokračuje sejba cukrovej repy. Súčasne prebieha prihnojovanie a chemická ochrana porastov. U repky je výskyt škodcov (krytonos), vošiek u obilnín, taktiež je hlásený lokálny výskyt hrabošov. Pripravuje sa pôda pod sejbu kukurice a slnečnice. V&nbsp;15. týždni boli jarné práce prerušované na väčšine územia okresov Senica a&nbsp;Skalica. V&nbsp;16. týždni prebiehal výsev kukurice na zrno (20 %), na siláž (16 %), slnečnice (66 %), výsev cukrovej repy je ukončený.</p>
+
+<p>V&nbsp;regióne Trenčína (okresy Myjava, Nové Mesto nad Váhom, Trenčín) bol stav jarných prác k 30.3.2023: Začiatok 13. týždňa - ochladenie, veterné a daždivé počasie narušili trend osevu jarín. Novomestskí ovocinári po dve noci bojovali s nočnými mrazmi (-5 °C st. C) a snažili sa kúrením zachrániť budúcu úrodu marhúľ a broskýň . V tomto roku jarný jačmeň bol siaty v prvej polovici marca, pokračovalo sa osevom jarnej pšenice, ovsa a ostatných jarín. Momentálne sa seje cukrová repa. Stav ozimín je uspokojivý, porasty sú v dobrej kondícii. V regióne máme hlásený lokálny, zatiaľ mierny výskyt hrabošov, a to najmä v časti od Piešťan. Stav k 3.4.2023: Naďalej pokračovalo chladné počasie, v južnej časti regiónu sa siala najmä cukrová repa. V dôsledku poškodeniu repky ozimnej vysokou zverou bolo vyoraných 32,25 ha. Stav k 10.4.2023: V&nbsp;14. týždni sa pokračovalo v predsejbovej príprave pôdy. Obdobie Veľkonočných sviatkov bolo poznamenané snehovými prehánkami. V rámci osevu sa siala cukrová repa, zahájený bol osev slnečnice a vysiatych bolo taktiež 20 hektárov pestreca mariánskeho. Stav k 24.4.2023: Od polovice 16. týždňa sa počasie ustálilo a prevládalo pomerne slnečné počasie, čo umožnilo pokračovať v sejbe jarín. Siala sa predovšetkým slnečnica, ovos a kukurica či už na zrno, alebo na siláž. Stav k 1.5.2023: V&nbsp;17. týždni sa v regióne siala najmä kukurica, sója, niektoré podniky osiali biopásy a úhory. Takmer polovica poľnohospodárskych podnikov už ukončilo sejby jarín. Čo sa týka jačmeňov jarných, sú už plne zapojené do fázy odnožovania, aj cukrová repa vytvára pravé listy.</p>
+
+<p>V&nbsp;okrese Bánovce nad Bebravou v 13. týždni poľnohospodári vykonávali úpravu pod sejbu kukuríc a&nbsp;sejbu kukurice zrnovej a&nbsp;silážnej. Veterné počasie neumožňuje aplikáciu tekutých hnojív pod ozimné repky, ani iné herbicídne postreky do obilnín. Poľnohospodári čakajú na priaznivejšie poveternostné podmienky. V 14. týždni naďalej prebiehala príprava pôdy pod sejbu kukuríc a sejba kukurice zrnovej aj silážnej, chladné a veterné počasie neumožňuje aplikáciu tekutých hnojív pod ozimné repky ani iné herbicídne postreky do obilnín. Poľnohospodári čakali na priaznivejšie poveternostné podmienky. V&nbsp;15. týždni pokračovala sejba kukurice zrnovej aj silážnej, postrek repky proti škodcom a damovanie, začína sa herbicídna ochrana ozimín. Za región Bánovce nad Bebravou v 16. týždni pokračovala sejba kukurice zrnovej aj silážnej, herbicídne ošetrenie jarných jačmeňov a kukurice po sejbe, insekticídne ošetrenie ozimnej repky a fungicídne ošetrenie ozimnej pšenice, senážovanie ozimných miešaniek. V&nbsp;17. týždni pokračovala sejba kukurice na zrno (97 %) a&nbsp;kukurice na siláž (83 %).</p>
+
+<p>Priaznivé agroklimatické podmienky poľnohospodárom v okrese Prievidza priali. Jarný osev prebieha plynule ako aj výsadba zemiakov. V porastoch ozimín sa robí pesticídna ochrana proti škodcom a hubovým chorobám. Ozimná repka sa priebežne ošetruje a vo väčšine porastov je už zakvitnutá na 35-40 %. Väčšina chovateľov pasie hospodárske zvieratá na trvalých trávnych porastoch.</p>
+
+<p>V&nbsp;regióne Považskej Bystrice (okresy Ilava, Považská Bystrica, Púchov) podľa stavu k 03.04. boli jarné práce zahájené sejbou jačmeňa jarného a lucerny. Momentálne sa seje cukrová repa. Nahlásených bolo 10,02 ha vyorávky repky ozimnej za účelom zakladania biopásu. V rámci osevu sa pokračovalo v sejbe jarnej pšenice a cukrovej repy. V&nbsp;14. týždni bol ukončený výsev pšenice jarnej a pokračovalo sa v sejbe cukrovej repy. Stav k 24.4.2023: V 16 týždni bol zahájený osev kukurice na zrno a na siláž, pokračovalo sa v sejbe cukrovej repy a zrealizovaná bola aj sadba zemiakov. Stav k 1.5.2023: V 17 týždni v regióne sa pokračovalo v sejbe kukurice a cukrovej repy.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/3y9RU1a.jpg"></figure><p></p>
+
+<p>V&nbsp;regióne Turca (okresy Martin a&nbsp;Turčianske Teplice)&nbsp;slnečné počasie v 13. sa osev jačmeňa jarného a pšenice jarnej sa blížil ku koncu. Momentálne nie sú hlásené žiadne vyorávky ozimín. Lesná zver spôsobuje veľké škody. K 17.04.2023 zostávalo dosiať ešte 121 hektárov jarných obilnín. V 16. a 17. týždni pokračovali jarné práce výsevom kukurice.</p>
+
+<p>V&nbsp;oblasti Žiliny (okresy Bytča, Žilina) V15. týždni mali poľnohospodárske podniky zasiaty jačmeň jarný. V 16. týždni postupne pripravovali pôdu na siatie kukurice na siláž.</p>
+
+<p>Na Kysuciach (okresy Čadca, Kysucké Nové Mesto) bol jarný osev obilnín v&nbsp;13. týždni ukončený. Miešanky - ovos - peluška sú osiate na 15,17 ha., ovos - vika osiate na 24,26 ha, zostáva osiať 17,6 ha.</p>
+
+<p>Na Liptove (okresy Liptovský Mikuláš, Ružomberok) poľnohospodári dolného a stredného Liptova už v 11. a 12 týždni začali siať jariny - pšenicu, jačmeň, hrach, ďatelinovinotrávy a zelené úhory. Zároveň prihnojili porasty ozimín - repky a obilnín. Ošetrujú smykovaním /bránením TTP. V 13. týždni napadol sneh a práce sa pozastavili. Východ Liptova (Východná, Važec) s prácami nezačal. Podľa informácií z 4.4.2023 jarné práce pokračovali. K&nbsp;18. 4. jarné práce pokračovali sejbou, prihnojovaním a&nbsp;ošetrovaním porastov chemickými prípravkami.</p>
+
+<p>V&nbsp;oblasti Zvolena (okresy Detva, Zvolen, Žiar nad Hronom, Žarnovica) v&nbsp;13. týždni prebiehal najmä výsev ovsa. K&nbsp;záveru 14. týždňa bol ukončený výsev pšenice jarnej a&nbsp;jačmeňa jarného. Lucerna je vysiata na výmere 157 hektárov. Jarné práce prebiehajú priebežne, bez väčších problémov, akurát že ceny vstupov sú neprimerane vysoké. Cez víkend 15. - 16. 4. 2023 v regióne pomohol aj miery dáždik s intenzitou cca 17 až 21 milimetrov zrážok, čo dúfame, že sa prejaví na lepšom schádzaní porastov, ako aj na trvalých trávnych porastoch. K&nbsp;záveru 17. týždňa bola slnečnica vysiata na 100 % plánovanej výmery.</p>
+
+<p>V&nbsp;oblasti Novohradu (okresy Lučenec a&nbsp;Poltár) podľa informácie z 17.4.2023 je takmer ukončený osev jarných obilnín, tráv a lucerny. Pripravuje sa pôda pre kukuricu na zrno - siláž, sóju a slnečnicu. Posmykované sú lúky. Prebieha ochrana ozimín .Objavujú sa škodcovia. Zároveň sa ošetrujú porasty proti poliehaniu, prebieha regulácia rastu u obilnín. Cez víkend práce zastavili výdatné dažde.</p>
+
+<p>V&nbsp;regióne Rimavskej Soboty (okresy Revúca a&nbsp;Rimavská Sobota) sa jarné práce naplno rozbehli v 2. polovici marca, prebiehalo prihnojovanie ozimín a krmovín, ukončený je osev jarín, pokračuje chemická ochrana a príprava pôdy pod osev kukurice plodín a plodín druhého sledu. Podľa informácie z 27.4.2023 prebiehala v&nbsp;16. týždni sejba kukurice na zrno a na siláž, slnečnice, sóje a príprava trávnych a ďatelinových porastov na zelenú žatvu a zároveň chemická ochrana porastov.</p>
+
+<p>V&nbsp;oblasti Dolného Spiša (okresy Gelnica, Levoča, Spišská Nová Ves) podľa informácie z 10.04.2023 prišlo v&nbsp;14. týždni vplyvom ochladenia, dažďa a&nbsp;následného sneženia s pokrývkou od 5 do 10 cm snehu počas celého týždňa boli úplne prerušené, dovtedy rozbehnuté jarné práce. Tieto vlahové osvieženie však výrazne prispeje k zvýšeniu zásoby vody v pôde a tým aj všetkým osiatym plodinám. V regióne nemáme produkčné ovocné sady, takže teploty okolo nuly nespôsobili žiadne škody na oziminách i vzchádzajúcich jarinách. Stav k 18.04.2023: daždivé počasie v uplynulom týždni prerušilo takmer všetky jarné práce na poliach. Dostatok vlahy a typické jarné počasie prispeli k veľmi dobrému vzchádzaniu osiatych jarín ako i k dobrej kondícii všetkých ozimín. Vyorávky sme nezaznamenali. Na suchších miestach pokračovali práce v ošetrovaní plôch krmovín a&nbsp;trvalých trávnych porastov. V&nbsp;17. týždni boli jarné práce prerušované vplyvom daždivého počasia.</p>
+
+<p>V&nbsp;okresoch Kežmarok a Poprad v jarné práce v 13. týždni nepokračovali pre nepriaznivé počasie, pretrvávajú nočné mrazy, cez deň sa udržiava teplota okolo nuly. 18.4.2023 V regióne Poprad v 15. týždni jarné práce pokračovali len minimálne, počasie neprialo, pršalo, snežilo. 25.4.2023 - v 16. týždni jarné práce znovu veľmi nepokročili, pôda bola rozmočená, trochu čo sa počasie vylepšilo, pôda nestihla vyschnúť a znovu zapršalo.</p>
+
+<p>Jarné práce sa v&nbsp;okrese Stará Ľubovňa značne oneskorili. Prvé osevy jarných obilnín sa začali v 13. týždni, osevom jarnej pšenice a jarného jačmeňa. Zlé poveternostné a klimatické podmienky, sneh, mrazy, dažde takmer úplne obmedzili práce na poli. K 25.04.2022 je osiatych 143,50 ha (37 %)&nbsp; jarných obilnín.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/Aghc7k0.jpg"></figure><p></p>
+
+<p>V&nbsp;okrese Bardejov sa osev jarín začal v 12. týždni, prebiehalo prihnojovanie ozimín, repky, tráv a ďatelinotráv, stav ozimín je dobrý. Z dôvodu ochladenia (mrazy, sneh, silný vietor a početnejšie zrážky) sa jarné práce v&nbsp;13. – 14. týždni zastavili. 4.4.2023 Doposiaľ je osiatych 183,48 ha pšenice jarnej, 127,46 ha jačmeňa jarného, 86,89 ha ovsa a 92,10 ha hrachu na zrno. Práce v 13. a&nbsp;14. &nbsp;naďalej brzdilo chladné a daždivé počasie, v&nbsp;14. týždni miestami s&nbsp;nádielkou snehu, vplyvom čoho bol prerušený výsev jarín. K&nbsp;záveru 15. týždňa boli jarné obilniny zasiate na 59 % výmery. 25.04.2023: poľnohospodári v&nbsp;16. týždni vplyvom celkom pekného počasia pokračovali v sejbe jarných obilnín, začali siať aj kukuricu na siláž a sóju, pokračovali prihnojovaním porastov ozimín, ktoré sú v dobrom stave. Sejú biopásy , ďatelinu a lucernu. Jarný jačmeň vzchádza, postupne ho budú prihnojovať.</p>
+
+<p>V&nbsp;oblasti Svidníka (okresy Stropkov, Svidník) boli jarné práce zahájené v 12 týždni osevom jarného jačmeňa. V 13. týždni ochladenie, sneženie a daždivé počasie narušili chod osevu jarín. K&nbsp;záveru 14. je pšenica jarná vysiata na 40 %, jačmeň jarný na 67 %, hrach na zrno na 83 % výmery. V&nbsp;15. – 17. &nbsp;týždni jarné práce spomaľovalo nepriaznivé počasie, časté dažde.</p>
+
+<p>V&nbsp;okrese Vranov nad Topľou v 13. týždni jarné práce pokračovali hlavne prípravou pôdy. Niektoré poľnohospodárske subjekty začali aj so sejbou. V&nbsp;15. týždni boli jarné práce trochu pozastavené, nakoľko bolo ochladenie a daždivé počasie. V&nbsp;prípade priaznivého počasia poľnohospodárske subjekty v 15. týždni sa zamerali hlavne na sejbu. V 16.týždni v regióne Vranov nad Topľou počasie prialo, preto poľnohospodári sa snažili čo naviac stihnúť a vykonať jarné práce.</p>
+
+<p>V&nbsp;oblasti Humenného (okresy Humenné, Medzilaborce, Snina) boli jarné práce v&nbsp;17. týždni spomaľované vplyvom daždivého počasia.</p>
+
+<p>V&nbsp;oblasti Prešova (okresy Prešov, Sabinov) jarné práce na poliach bolo možné zdarne vykonávať počas posledných štyroch dní. Podarilo sa zvládnuť prípravu pôdy a sejbu slnečnice na 60 %, sóje na 25 %, kukurice na siláž na 25 % a kukurice zrnovej na 8%-ách plánovaných plôch. Počas víkendu bol vykonaný zber a senážovanie raže na zeleno.</p>
+
+<p>V&nbsp;oblasti Košíc Reprezentatívna vzorka podnikov, ktorá pravidelne poskytuje údaje do monitoringu, všetko členovia RPPK Košice, na jeseň založili spolu zaokrúhlene: 3500 ha repky, 1700 ha ozimného, 800 ha raže na zeleno a 5800 ha pšenice ozimnej t.j. vo všeobecnosti viac ako 50% pestovateľských plôch v okrese. Počas „zimy“ príroda napravila pomery týkajúce sa zásob spodných vôd minimálne v Košickej kotline. V decembri a januári napadlo 160 mm zrážok čo je 2,6 násobok dlhodobého normálu. Vplyvom miernej zimy a nezamrznutej pôdy sa doplnili zásoby podzemných vôd. Došlo k nasýtenosti pôd, čo sa týka vodnej kapacity. Následne obdobie do 25.marca bolo bez zrážok (za február 8 mm). V posledných dňoch marca 25 a 27 napršalo 40 mm. Celá „zima“ bola teplotne nad priemer, pričom dni s mínusovými teplotami sme mali v podstate len v prvej dekáde februára. Stav a vývoj porastov ozimín je dobrý, sľubný. Skoré sejby pšeníc sú až prehustené, keď viaceré majú 11 až 12 odnoží. Väčšina porastov je vo fáze začiatku stĺpkovania. Poľnohospodári využili vhodné poveternostné podmienky od polovice februára na ich ošetrenie a regeneračné prihnojenie. Porasty repky ozimnej sú prihnojené a vo fáze začiatku predlžovacieho rastu pri výške porastov 20 – 25 cm. Približne na 60%-ách porastov repky boli prevedené postreky proti krytonosom. Evidujeme výpadky zapríčinené vymoknutím (podmáčaním). S týmto javom po zime obvykle počítame. V posledných rokoch vymoknutia sú väčšieho rozsahu a aj škody s tým súvisiace sa výrazne navyšujú z dôvodu výskytu bobrov a hrádzí, ktoré bobria populácia neustále buduje a zabraňuje tak odtekaniu prebytočnej vody z polí. Čo sa týka zakladania porastov jarín bol uskutočnený osev jarného jačmeňa, jarnej pšenice a jarné smykovanie oráčiny. Termín začatia jarných prác v našom okrese je 6.3.2023. Stav k 17.4.2023: Počasie v ostatných dňoch takisto nedovolilo vykonávanie prípravy pôdy a zakladanie porastov jarín. V ojedinelých prípadoch bol vykonaný postrek proti blyskáčikom a prihnojovanie porastov ozimín. Jarné obilniny sú kompletne vzídené vo fáze odnožovania. 24.4.2023 – Vlhkostné pomery dovolili vykonávanie jarných prác v podstate len v druhej polovici týždňa. Podarilo sa zvládnuť prípravu pôdy a sejbu slnečnice na 60%, sóje na 25%, kukurice na siláž na 25% a kukurice zrnovej na 8%-ách plánovaných plôch. Počas víkendu bol vykonaný zber a senážovanie raže na zeleno. Ku dňu 23.4. zaznamenávame začiatok kvitnutia porastov repky ozimnej.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/OJKqRC0.jpg"></figure><p></p>
+
+<p>V okresoch Michalovce, Sobrance podľa informácie z 30.3.2023 jarné práce boli zahájené v polovici marca. Podľa dostupnosti terénu boli hony určené na sejbu presmykované. Vykonávala sa sejba lucerny a&nbsp;slnečnice, ale najmä prihnojovanie ozimín - ozimnej pšenice a repky a&nbsp;trvalých trávnych porastov. Fungicídne sa ošetrili takisto oziminy a postrekom sa na niektorých miestach podporilo odnožovanie. &nbsp;Nepriaznivé počasie pred i počas Veľkonočných dní prerušili pokračovanie jarných prác. V strede 15. týždňa jarné práce sa naplno rozbehli. Prebiehala sejba slnečnice a kukurice a priebežne sa vykonávali herbicídne, fungicídne i insekticídne postreky. Zároveň sa prihnojovalo. Stále boli však ešte miesta mokré, takže práce sa mohli dokončovať až po úplnom preschnutí. Napriek tomu môžeme konštatovať celkový dobrý stav všetkých jarných prác. Pri výraznejšom oteplení sa pravdepodobne v závere mesiaca pustia poľnohospodári i do sejby sóje. V&nbsp;17. týždni sa podarilo pokročiť vo výseve jarín, vrátane zakladania biopásov.</p>
+
+<p>V&nbsp;okrese Trebišov &nbsp;podľa stavu k&nbsp;04.04. začalo sa s produkčným prihnojovaním pšeníc, stavy obilnín sú vo veľmi dobrej kondícii, chladné počasie pomáha pri potláčaní škodcov, repky boli 2 krát zasiahnuté plošnými prízemnými mrazmi, ktoré sa podpíšu v malej miere aj na úrode, z jarín sú dokončené sejby obilnín, sejú sa miešanky, sejba slnečnice, a kukurice nezačala z dôvodu očakávania mrazov a chladnej pôdy. Stav k 11.4.2023: počasie (nízke teploty) obmedzovalo aplikáciu pesticídov, okrajovo sa dali aplikovať hnojivá. Stav k 18.4.2023: Ukončilo sa produkčné hnojenie ozimín (obilniny, repka). Vzhľadom na stav počasia (striedanie vyšších a nižších teplôt ako aj časté malé zrážky) nie sú choroby v obilninách a olejninách až tak viditeľné a farmári volia miernejšiu ochranu. Vzhľadom na počasie prebieha sejba jarín podľa lokalít, na suchších sa sejba realizuje, na ostatných lokalitách sa čaká so sejbou. Sejba slnečnice a kukurice ešte nie je v plnom prúde a to vzhľadom na podmienky. Zakladajú sa biopásy a neprodukčné plochy - úhor s porastom. Stav k 25.4.2023: na jednotlivých lokalitách (prevažne v južnejšej časti okresu) farmári prihnojujú pôdu, realizujú postreky a pripravujú pôdu pred sejbou kukurice, slnečice, sóje a jačmeňa jarného. Práce komplikuje hlavne daždivé počasie, predpokladá sa, že napadne okolo 20 mm zrážok. Tam kde to počasie umožňuje sa zakladajú biopásy.</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

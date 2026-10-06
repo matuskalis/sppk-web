@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Žatva po zlepšení počasia pokračuje, poľnohospodári rátajú škody spôsobené suchom a poľovnou zverou — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">polnohospodarstvo</a><span>/</span><a href="../index.html">rastlinne komodity</a><span>/</span>Žatva po zlepšení počasia pokračuje, poľnohospodári rátajú škody spôsobené suchom a poľovnou zverou</nav>
+
+  <article>
+    <h1 class="doc-title">Žatva po zlepšení počasia pokračuje, poľnohospodári rátajú škody spôsobené suchom a poľovnou zverou</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Odbor poľnohospodárstva a služieb SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">20. júla 2017</span></p>
+    <p class="members-note">Tento text je na sppk.sk prístupný len prihláseným členom komory.</p>
+
+    <div class="doc-body">
+<p><span>V&nbsp;28. týždni pokračovala žatva s&nbsp;prestávkami spôsobenými nepriaznivým počasím. Žatva prebieha na väčšine územia, s&nbsp;výnimkou vyššie položených polôh. Južne položené regióny postupne začínajú so zberom slamy a&nbsp;prípravou pôdy pre následné plodiny. Poľnohospodári evidujú nižšie úrody a&nbsp;nižšiu kvalitu obilia, vplyvom sucha. V&nbsp;niektorých okresoch spôsobuje značné škody premnožená zver.</span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="http://i.imgur.com/ovbtp58.jpg"></figure><p></p>
+
+
+
+<h2 class="doc-subheading">Prehľad počasia </h2>
+
+
+
+<p>Začiatkom 28. týždňa prevládalo horúce počasie, v&nbsp;strede týždňa došlo k&nbsp;ochladeniu na väčšine územia. &nbsp;Najviac zrážok sa vyskytlo v&nbsp;pondelok a&nbsp;následne v&nbsp;stredu a&nbsp;v sobotu počas ochladenia. Najvyššie úhrny zrážok boli na Orave, najmenšie v okolí Senca a Topoľčian. Vplyvom zrážok došlo k&nbsp;zmierneniu sucha na západe Slovenska, ktoré bolo najviac postihnuté suchom, avšak veľmi suché podmienky aj naďalej pretrvávajú na veľkej časti Podunajskej nížiny a&nbsp;juhu Záhoria. V&nbsp;orničnom profile je väčšina územia Slovenska bez rizika sucha. V&nbsp;podorničnom profile stále pretrváva na väčšine územia značný nedostatok vlahy, okrem Oravy a&nbsp;východného Slovenska.</p>
+
+
+
+<h2 class="doc-subheading">Informácie z&nbsp;regiónov</h2>
+
+
+
+<p>V&nbsp;rámci <strong>Bratislavského </strong>regiónu (okresy Bratislava, Malacky, Pezinok, Senec) v 28. týždni bola žatva prerušovaná búrkami a dažďom. V dôsledku nedostatku vlahy počas celej vegetácie sú klasy malé, zrno drobné. Zber jarného jačmeňa pokročil na 85 % pozberanej výmery s&nbsp;priemernou úrodou 3,80 t/ha, pšenice na 80 % pozberanej výmery s&nbsp;priemernou úrodou 3,60 t/ha a&nbsp;v&nbsp;závere je zber repky (pozberaných je 90 % výmery s&nbsp;priemernou úrodou 2,56 t/ha). Zber jačmeňa bol ukončený v&nbsp;27. týždni. Poľnohospodári začali so zberom raže, ovsa a&nbsp;tritikale. Poľnohospodári z&nbsp;okresu Malacky hlásia škody spôsobené značne premnoženou poľovnou zverou (konkrétny poľnohospodár zaznamenal poškodenie viacerých druhov plodín na výmere 215 ha s&nbsp;vyčíslenými škodami vo výške viac než 163&nbsp;000 eur). Vzhľadom na škody spôsobované premnoženou poľovnou zverou je potrebné zo strany štátu, systémovo riešiť tento dlhodobo nepriaznivý stav.</p>
+
+
+
+<p>V&nbsp;regióne <strong>Senica</strong> (okresy Senica, Skalica) bol v 28. týždni ukončený zber ozimného jačmeňa, pokračoval zber repky, jarného jačmeňa a&nbsp;pšenice. Žatevné práce boli v&nbsp;priebehu týždňa prerušované daždivým počasím.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="http://i.imgur.com/eOC198y.jpg"></figure><p></p>
+
+
+
+<p>V&nbsp;<strong>Galantskom</strong> okrese v&nbsp;28. týždni pokračoval zber jarného jačmeňa (pozberaných je 67 % výmery s&nbsp;priemernou úrodou 3,70 t/ha), pšenice (pozberaných je 70 % výmery s&nbsp;priemernou úrodou 3,60 t/ha), tritikale (pozberaných je 56 % výmery s&nbsp;priemernou úrodou 3,70 t/ha). Zber jačmeňa ozimného bol ukončený v&nbsp;27. týždni s&nbsp;priemernou úrodou 5,35 t/ha, zber repky bol ukončený v&nbsp;28. týždni s&nbsp;priemernou úrodou 2,35 t/ha. V&nbsp;okrese Galanta sú naďalej pozorované nezvyčajne nízke úrody. Na pokles úrody oproti predchádzajúcim dvom rokom malo vplyv enormné sucho bez vlahy. Začiatkom 28. týždňa prišli osviežujúce dažde s&nbsp;veľmi rozdielnym množstvom v&nbsp;rámci okresu, ktoré prerušili zberové práce. Od utorka 28. týždňa sa zberové práce znovu zintenzívnili, čo dokazuje aj podiel pozberanej výmery. Úroda a&nbsp;kvalita zrna je veľmi rozdielna v&nbsp;závislosti od pôdnoklimatických podmienok, od lokálnych zrážok ako i&nbsp;od pestovaných odrôd. Vychádzajúc z&nbsp;doterajších slabých výsledkov poľnohospodári okresu Galanta nevyhnutne potrebujú riešenie odškodnenia dotknutých subjektov z&nbsp;dôvodu sucha. Na podobné odškodnenie bol v&nbsp;predchádzajúcom období vypracovaný systém na odškodnenie &nbsp;subjektov s&nbsp;výpadkom produkcie nad 30%, v&nbsp;zmysle zákona č. 267/2010 z&nbsp;10. júna 2010 o&nbsp;poskytovaní dotácie na kompenzáciu strát spôsobených nepriaznivou poveternostnou udalosťou, ktorú možno prirovnať k&nbsp;prírodnej katastrofe, prírodnou katastrofou alebo mimoriadnou udalosťou.</p>
+
+
+
+<p>V&nbsp;<strong>Nitrianskom</strong> regióne (v okresoch Nitra, Zlaté Moravce, Topoľčany, Šaľa) v&nbsp;28. týždni finišoval zber ozimného jačmeňa (pozberaných je 98 % výmery s&nbsp;priemernou úrodou 6,70 t/ha), pokračoval zber jarného jačmeňa (pozberaných je 77 % plochy s&nbsp;priemernou úrodou 4,71 t/ha),&nbsp;pšenice (pozberaných je 55 % plochy s&nbsp;priemernou úrodou 5,04 t/ha), raže (pozberaných je 22 % výmery s&nbsp;priemernou úrodou 5,30 t/ha) a&nbsp;repky (pozberaných je 91 % výmery s&nbsp;priemernou úrodou 3,40 t/ha).</p>
+
+
+
+<p>V&nbsp;okrese <strong>Komárno </strong>lokálne búrky a dažde v priebehu 28. týždňa pribrzdili žatevné práce, ktoré sa opäť plne rozbehli koncom týždňa. Viacero podnikov s&nbsp;menšími výmerami už žatevné práce ukončilo. Zber repky a jačmeňa ozimného je v okrese ukončený, repka s&nbsp;priemernou úrodou 3,10 t/ha čo je menej o 0,68 t/ha ako v predchádzajúcom roku. Jačmeň ozimný vykazuje priemernú úrodu 5,05 t/ha. Ukončenie žatvy v&nbsp;okrese Komárno sa predpokladá v&nbsp;priebehu 29. týždňa.</p>
+
+
+
+<p>V&nbsp;okrese <strong>Nové Zámky</strong> pokračovala žatva v&nbsp;28. týždni zberom jačmeňa jarného (pozberaných je 86 % výmery s&nbsp;priemernou úrodou 4,65 t/ha), pšenice (pozberaných je 75 % výmery s&nbsp;priemernou úrodou 5,19 t/ha), tritikale (pozberaných 54 % výmery s&nbsp;priemernou úrodou 5,08 t/ha) a&nbsp;ovsa (pozberaných je 85 % výmery s&nbsp;priemernou úrodou 1,50t/ha). Ukončený je zber ozimného jačmeňa s&nbsp;priemernou úrodou 5,95 t/ha, repky s&nbsp;priemernou úrodou 3,61 t/ha a&nbsp;hrachu s&nbsp;priemernou úrodou 2,97 t/ha).</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="http://i.imgur.com/zK3PUr6.jpg"></figure><p></p>
+
+
+
+<p>V regióne <strong>Trenčín</strong> (okresy Myjava, Nové Mesto nad Váhom a&nbsp;Trenčín) &nbsp;sa v&nbsp;28. týždni mierne ochladilo, vyskytli sa atmosferické zrážky v&nbsp;rozsahu do 30 mm. Napriek tomu sa naplno rozbehli žatevné práce v&nbsp;novomestskej a&nbsp;trenčianskej časti regiónu (myjavskí poľnohospodári ešte nezačali so zberom), pozberala sa repka a&nbsp;jačmene takmer z&nbsp;50 % a&nbsp;pšenica z&nbsp;15 % osiatej plochy. Úrody sa zatiaľ pohybujú u&nbsp;repky v&nbsp;intervale od 2,5 do 3,87 t/ha, u jačmeňa ozimného od &nbsp;4,8 do 5,7 t/ha, u jačmeňa jarného od &nbsp;3,5 do 6,12 t/ha.</p>
+
+
+
+<p>V&nbsp;okrese <strong>Bánovce nad Bebravou</strong> prebiehala žatva v&nbsp;28. týždni bez väčších prekážok, atmosferické zrážky boli minimálne. Zber jačmeňa ozimného a&nbsp;repky je ukončený, s&nbsp;priemernou úrodou 6,52 t/ha pri jačmeni ozimnom a&nbsp;3,87 t/ha pri repke. Zber jačmeňa jarného pokročil na 60 % pozberanej výmery s&nbsp;priemernou úrodou 5,48 t/ha, podiel pozberanej výmery pšenice je na úrovni 11 % (priemerná úroda 6,75 t/ha). Poľnohospodári po pozberaných plodinách vykonávajú zber slamy a&nbsp;podmietku. Ukončenie žatvy sa predpokladá v&nbsp;30. týždni. Poľnohospodári sledujú aj pri žatevných prácach čriedy napr. diviačej zveri (v konkrétnom prípade v&nbsp;poraste repky) v&nbsp;počtoch aj nad 100 kusov, ktoré ohryzom a&nbsp;pováľaním porastov spôsobujú poľnohospodárom veľké ekonomické škody.</p>
+
+
+
+<p>V&nbsp;rámci regiónu <strong>Považská Bystrica</strong> (okresy Ilava, Považská Bystrica, Púchov) začali poľnohospodári so zberom repky v okrese Ilava.</p>
+
+
+
+<p>V&nbsp;okrese <strong>Prievidza</strong> &nbsp;boli zberové práce v&nbsp;28. týždni lokálne prerušované atmosferickými zrážkami v&nbsp;intervale 10 - 15 mm, čo poľnohospodári využili na podmietky, rozmetanie maštaľného hnoja a&nbsp;orby pod ozimné repky pod budúcoročnú úrodu. Zber obilnín sa z&nbsp;ozimného jačmeňa plynulo presunul do zberu repky a&nbsp;pšeníc. Tieto zberové plochy boli poznačené suchom. Repka sa zberala pri vlhkosti 11 – 15 %. Popri obilninách pestovatelia na Hornej Nitre pristúpili aj k zberu tráv na osivo, kde zber komplikuje vysoká vzdušná vlhkosť. Plynule prebieha aj lisovanie a&nbsp;zber slamy. Jačmeň ozimný zatiaľ vykazuje priemernú úrodu 5,80 t/ha, pšenica 4,75 t/ha, repka 3,79 t/ha.</p>
+
+
+
+<p>V&nbsp;okrese <strong>Levice </strong>v&nbsp;28. týždni pokračoval zber pšenice (pozberaných je 47 % výmery s&nbsp;priemernou úrodou 4,86 t/ha), jarného jačmeňa (pozberaných je 76 % výmery s&nbsp;priemernou úrodou 4,17 t/ha), finišuje zber repky (pozberaných je 94 % výmery s&nbsp;priemernou úrodou 3,26 t/ha) ozimnej, skončený je zber hrachu na zrno a ozimného jačmeňa. V&nbsp;28. týždni po zrážkovom období sa rozbehli žatevné práce naplno a&nbsp;je predpoklad teplého počasia aj v&nbsp;30. týždni, kedy by mala väčšina podnikov ukončiť zber. V&nbsp;28. týždni ukončili zber prvé podniky. Po zbere plodín vykonávajú poľnohospodári zber slamy a&nbsp;podmietku. Pozberané úrody sú nižšie o&nbsp;25 % oproti minulému roku pri pšenici a&nbsp;jarnom jačmeni, ozimný jačmeň menej o&nbsp;7 %, pri repke o 5 % menej, hrach je na úrovni minulého roka. Pretrváva problém najmä s kvalitou pšeníc a sladovníckeho jačmeňa.</p>
+
+
+
+<p>V&nbsp;okrese <strong>Krupina</strong> poľnohospodári ukončili zber ozimného jačmeňa do 28. týždňa s&nbsp;priemernou úrodou 2,47 t/ha, finišujú so zberom repky s&nbsp;priemernou úrodou 1,65 t/ha, pokračujú zberom jačmeňa a&nbsp;pšenice (pšenica je pozberaná na 34 % výmery s&nbsp;priemernou úrodou 3,11 t/ha).</p>
+
+
+
+<p>V&nbsp;regióne <strong>Rimavská Sobota</strong> (okresy Revúca a&nbsp;Rimavská Sobota) prebiehali žatevné práce v&nbsp;28. týždni vysokým tempom, pozberaných je 33 % výmery jačmeňa ozimného s&nbsp;priemernou úrodou 5,80 t/ha, 29 % výmery jačmeňa jarného s&nbsp;priemernou úrodou 5,00 t/ha, 22 % výmery repky s&nbsp;priemernou úrodou 2,97 t/ha a&nbsp;začal zber pšenice (pozberaných je 4 % výmery s&nbsp;priemernou úrodou 5,50 t/ha). Kvalita úrody sa zatiaľ zdá byť vyhovujúca.</p>
+
+
+
+<p>V&nbsp;regióne <strong>Lučenec</strong> (okresy Poltár a&nbsp;Lučenec) počasie v&nbsp;28. týždni bolo priaznivé pre zberové práce, ustálené, bez zrážok. Preto sa žatva rozbehla naplno, finišuje zber ozimného jačmeňa (pozberaných je 97 % výmery s&nbsp;priemernou úrodou 4,90 t/ha), na 76 % pozberanej výmery pokročil zber repky (priemerná úroda 2,41 t/ha), pokračuje zber jarného jačmeňa (pozberaných je 32 % výmery s&nbsp;priemernou úrodou 3,40 t/ha) a&nbsp;pšenice (pozberaných je 29 % výmery s&nbsp;priemernou úrodou 4,39 t/ha). Zber raže, ovsa a&nbsp;tritikale zatiaľ nezačal.</p>
+
+
+
+<p>V&nbsp;okrese <strong>Veľký Krtíš</strong> občasné lokálne zrážky mierne komplikovali zberové práce v&nbsp;28. týždni. Pozberaných je 88 % výmery jačmeňa ozimného s&nbsp;priemernou úrodou 4,60 t/ha, 49 % výmery repky s&nbsp;priemernou úrodou 3,06 t/ha, 35 % výmery pšenice s&nbsp;priemernou úrodou 4,91 t/ha a&nbsp;24 % výmery tritikale s&nbsp;priemernou úrodou 6,00 t/ha. Podľa dostupných údajov by niektoré podniky na juhu okresu mohli ukončiť žatevné práce v priebehu&nbsp;29. týždňa.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="http://i.imgur.com/oyjP00r.jpg"></figure><p></p>
+
+
+
+<p>V&nbsp;regióne <strong>Dolný Kubín </strong>(okresy Dolný Kubín, Námestovo, Tvrdošín) žatva v&nbsp;28. týždni ešte nezačala. Začiatok žatvy sa očakáva na prelome júla a&nbsp;augusta. Poľnohospodári vykonávajú zber a&nbsp;konzervovanie krmovín.</p>
+
+
+
+<p>V&nbsp;regióne <strong>Liptovský Mikuláš</strong> (okresy Liptovský Mikuláš, Ružomberok) žatva v&nbsp;priebehu 28. týždňa ešte nezačala.</p>
+
+
+
+<p>V&nbsp;<strong>Zvolenskom</strong> regióne (okresy Banská Štiavnica, Detva, Zvolen, Žarnovica, Žiar nad Hronom) poľnohospodári v&nbsp;28. týždni finišovali so zberom ozimného jačmeňa (pozberaných je 95 % výmery s&nbsp;priemernou úrodou 4,84 t/ha) a&nbsp;začali zber repky (pozberaných je 14 % výmery s&nbsp;priemernou úrodou 3,60 t/ha).</p>
+
+
+
+<p>V&nbsp;oblasti <strong>Turca </strong>(okresy Martin a&nbsp;Turčianske Teplice) pokračoval v&nbsp;28. týždni zber ozimného jačmeňa (pozberaných je 22 % výmery s&nbsp;priemernou úrodou 7,17 t/ha) a&nbsp;začal zber repky. Premnožená zver spôsobuje veľké ekonomické škody.</p>
+
+
+
+<p>V oblasti<strong>&nbsp;Kysúc</strong> (okresy Čadca a&nbsp;Kysucké Nové Mesto<strong>) </strong>žatva v&nbsp;priebehu 28. týždňa nezačala.</p>
+
+
+
+<p>V&nbsp;<strong>Žilinskom regióne </strong>(okresy Bytča a&nbsp;Žilina) sa začiatok žatvy predpokladá najskôr v&nbsp;29. týždni, v&nbsp;závislosti od počasia.</p>
+
+
+
+<p>V&nbsp;okrese <strong>Stará Ľubovňa</strong> žatva ešte nezačala, začiatok žatvy sa predpokladá začiatkom augusta.</p>
+
+
+
+<p>V&nbsp;regióne <strong>Svidník</strong> (okresy Stropkov a&nbsp;Svidník) žatevné práce v&nbsp;28. týždni ešte nezačali, poľnohospodári vykonávajú zber a&nbsp;konzervovanie krmovín.</p>
+
+
+
+<p>V&nbsp;okrese <strong>Vranov nad Topľou</strong> sa žatevné práce v&nbsp;28. týždni začali zberom ozimného jačmeňa a repky.</p>
+
+
+
+<p>V&nbsp;regióne <strong>Humenné</strong> (okresy Humenné, Medzilaborce a&nbsp;Snina) nebolo možné v&nbsp;28. týždni vykonávať žatevné práce, vzhľadom k&nbsp;dažďom a&nbsp;búrkam. Časť očakávanej úrody zničili ľadovce.</p>
+
+
+
+<p>V&nbsp;okrese <strong>Bardejov</strong> žatva v&nbsp;28. týždni ešte nezačala.</p>
+
+
+
+<p>V&nbsp;regióne<strong> Poprad</strong> (okres Kežmarok a&nbsp;Poprad) žatva v&nbsp;28. týždni ešte nezačala, obilie ešte nie nie je zrelé, navyše pretrváva daždivé počasie, začiatok žatvy sa predpokladá na prelome júla a&nbsp;augusta.</p>
+
+
+
+<p>V&nbsp;regióne <strong>Dolného Spiša</strong> (okresy Gelnica, Levoča, Spišská Nová Ves) žatva v&nbsp;28. týždni ešte nezačala, začiatok žatvy poľnohospodári predpokladajú v&nbsp;29. týždni, v&nbsp;závislosti od počasia.</p>
+
+
+
+<p>V&nbsp;regióne <strong>Prešov</strong> (okres Prešov a&nbsp;Sabinov) žatva v&nbsp;28. týždni ešte nezačala, začiatok žatvy poľnohospodári predpokladajú v&nbsp;29. týždni, v&nbsp;závislosti od počasia.</p>
+
+
+
+<p>V&nbsp;okrese <strong>Košice</strong> prebiehali žatevné práce v&nbsp;28. týždni plynule, bez výraznejších prerušení. Jačmeň ozimný je pozberaný na 89 % výmery s&nbsp;priemernou úrodou 3,50 t/ha, jačmeň jarný na 23 % výmery s&nbsp;priemernou úrodou 4,10 t/ha. Pšenica je pozberaná na 18 % výmery s&nbsp;priemernou úrodou 5,00 t/ha. Finišuje zber repky (pozberaných je 95 % výmery s&nbsp;priemernou úrodou 3,20 t/ha).</p>
+
+
+
+<p>V&nbsp;regióne <strong>Michalovce</strong> (okresy Michalovce a&nbsp;Sobrance) pokračovala žatva v&nbsp;28. týždni po predchádzajúcom daždivom počasí. Je ukončený zber jačmeňa, pokračuje zber pšenice a&nbsp;repky. Úrody sa zatiaľ javia nerovnakej výšky, v&nbsp;závislosti od lokality okresu.</p>
+
+
+
+<p>V&nbsp;okrese <strong>Trebišov</strong> bol ukončený zber ozimného jačmeňa, v&nbsp;28. týždni pokračoval zber jarného jačmeňa, pšenice a&nbsp;repky. Po zbere hlavných plodín poľnohospodári postupne pristupujú k&nbsp;podmietkam a&nbsp;príprave pôdy pre sejbu ozimín.</p>
+
+
+
+<p>Zdroje: Internetová stránka SHMÚ, SPPK, RPPK a poľnohospodárske subjekty hospodáriace na území Slovenska&nbsp;</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

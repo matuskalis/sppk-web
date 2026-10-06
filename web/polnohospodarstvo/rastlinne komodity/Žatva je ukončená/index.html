@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Žatva je ukončená — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">polnohospodarstvo</a><span>/</span><a href="../index.html">rastlinne komodity</a><span>/</span>Žatva je ukončená</nav>
+
+  <article>
+    <h1 class="doc-title">Žatva je ukončená</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Martin Rovaš, Odbor poľnohospodárstva a služieb SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">2. septembra 2024</span></p>
+    <p class="members-note">Tento text je na sppk.sk prístupný len prihláseným členom komory.</p>
+
+    <div class="doc-body">
+<h2 class="doc-subheading">Žatva roku 2024 k&nbsp;35. týždňu (aktuálne k&nbsp;30.08.2024)</h2>
+
+
+
+<p>Žatva v&nbsp;roku 2024 bola zahájená v&nbsp;25. týždni na juhozápadnom Slovensku. K&nbsp;záveru 30. týždňa bola žatva ukončená vo väčšine regiónov s&nbsp;výnimkou najvyššie položených regiónov a&nbsp;s&nbsp;výnimkou plôch, na ktorých poškodenie porastov vplyvom počasia a&nbsp;škodcov bolo tak intenzívne, že na týchto plochách ani nebude dokončený zber obilia. Po 32. týždni boli jačmeň, pšenica a&nbsp;repka pozberané na 96 %, raž, tritikale a&nbsp;ovos približne na 83 % výmery. K&nbsp;30.08.2024 je žatva ukončená vo všetkých regiónoch Slovenska. Bližšie informácie uvádzame pri jednotlivých regiónoch a&nbsp;v&nbsp;závere tejto správy.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/Sti87W8.jpeg"></figure><p></p>
+
+<h2 class="doc-subheading">Stav počasia, aktuálny stav pôdneho sucha (zdroj: SHMÚ)</h2>
+
+<p>V týždni od 19.8. do 25.8.2024 spadlo najviac zrážok 50-60 mm na Ponitrí, v okolí Levíc a Popradu. Zrážky boli v prevažnej miere vo forme lokálnych prehánok a búrok. Bez zrážok bolo ojedinele na Záhorí a Juhoslovenskej kotline. Týždeň bol veľmi teplý s najvyššou teplotou 36 °C v nedeľu 25.8. Najnižšie klesla teplota na 4 °C v piatok ráno na Orave.&nbsp;Miera intenzity pôdneho sucha v celom profile je na úrovni výrazného až extrémneho sucha ojedinele vo východnej polovici územia a na severe stredného Slovenska. Extrémne sucho je lokálne na Spiši, vo Volovských vrchoch, na Orave, na Hornom Zemplíne, v pohorí Čergov, v Slanských vrchoch a lokálne aj na krajnom juhozápade. Celkovo je extrémnym suchom zasiahnutých 4,3 % územia. Dávame do pozornosti zmenu vlhkostných pomerov&nbsp;medzi 28. a&nbsp;34. týždňom tohto roku. Medziročný rozdiel pôdneho sucha uvádzame na ďalšej strane za 34. týždeň tohto a predchádzajúcich rokov.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/DWiiJ1X.png"></figure><p><span><span><span><span new="" roman="" times=""><span><span><b><u></u></b></span></span></span></span></span></span></p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/hDYgHct.png"></figure><p><span><span><span><span new="" roman="" times=""><span><span><b><u></u></b></span></span></span></span></span></span></p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/CBkpecW.png"></figure><p></p>
+
+<h2 class="doc-subheading">Situácia v regiónoch</h2>
+
+<p>V&nbsp;Bratislavskom kraji (okresy Bratislava, Malacky, Pezinok, Senec) podľa informácie z&nbsp;24.6.2024 žatevné práce začali v 25. týždni zberom jačmeňa ozimného a repky ozimnej, ktorej úroda je podpriemerná. V 26. týždni v Bratislavskom kraji neboli zaznamenané škody prívalovým dažďom. Poľnohospodári z okresu Malacky hlásia škody poľovnou zverou. Stav k 15.7.2024: V 28. týždni v Bratislavskom kraji plynule pokračovali žatevné práce zberom pšenice ozimnej, jarnej, jačmeňa jarného, raže, ovsa. Úroda obilia je odhadom o 10 % nižšia spôsobená predčasne dozrievaním obilia najmä ozimín vysiatych po 15.11.2023, zahorením obilia.</p>
+
+<p>V&nbsp;okrese Galanta sa žatva začala v regióne 24.06.2024. Kosí sa repka a jačmene. Pri repke však zatiaľ nemilé prekvapenie aj pri relatívne dobre vyzerajúcom poraste s nízkymi výnosmi (od 1,2 do 2,5 t/ha). Porasty sú poškodené tak poveternostnými javmi ( už pri zbere je strnisko pokryté výdrvom ), ako aj škodcami (krytonosmi). Stav k 01.07.: Pokračuje žatva v plnom prúde cca od 28.06 po niekoľkodňovej prestávke keď medzi 25 až 27. 06 napršalo od 15 do 25 mm zrážok. Kosí sa repka aj jačmene. Žiaľ pri žiadnej z týchto plodín nie je dôvod na veľkú spokojnosť. Úrody sú zatiaľ podpriemerné kvalitou aj kvantitou. Rozbehol sa zber pšeníc, tam sa úrody ukazujú okolo dlhoročného priemeru. S kvalitou však po výdatných dažďoch sú problémy. Porasty hustosiatych plodín sú poľahnuté cca na 20 % plôch. Predpokladá sa tento týždeň pri bezdažďovom počasí 100 % nasadenie techniky a ľudí. Stav k 16.07. za 28. týždeň: Po ojedinelých búrkach sa v okrese pokosilo zhruba 95- 98 % zasiatej plochy. Žatva sa prakticky končí 18.-19.07 vrátane malých farmárov. Repky: s priemernou úrodou 2,16 t/ha sklamali väčšinu pestovateľov. Zber hrachu ukončený s 2,12 t priem., mak 0,8 t/ha, jačmene s&nbsp;priemerom 5,6 t/ha a pšenice tesne pod 6 t/ha. Žiaľ popri nižších úrodách oproti priemeru hlavne pri repke, kde zaznamenávame 15-20% zníženie výnosov. S kvalitatívnymi ukazovateľmi tiež sú problémy - hlavne dôsledok prudkých dažďov a búrok tesne pred žatvou. Poškodenia porastov hrabošmi sú evidentné aj u pestovateľov na území okresu Galanta.</p>
+
+<p>V&nbsp;Trnavskom regióne podľa informácie z&nbsp;24.06. ako prvé boli zberané ozimné jačmene, prípadne jačmene jarné zasiate na jeseň. Úrody sa pohybujú od 1,7 po 7,1 t/ha. Najnižšie úrody sú v lokalitách, kde bolo vysoké poškodenie porastov hrabošmi - žiaľ aj na miestach, kde boli vykonané zásahy rodenticídmi na jeseň aj na jar, prípadne vo vtáčích územiach, kde nebolo možné zasiahnuť. V nasledujúcom týždni predpokladáme rozbeh zberu repky, hrachu a aj pšeníc. Stav k 1.7.2024: zrážky v minulom týždni prerušili zberové práce. Tam kde to bolo možné, pokračovali v zbere ozimného jačmeňa a čiastočne aj jačmeňa jarného zasiateho na jeseň. Väčšina hrachov je pozberaná, úrody sa pohybujú len na úrovni priemeru. Cez víkend sa rozbehol aj zber pšenice tvrdej ozimnej. Úrody atakujú priemer. Rozbehol sa čiastočne aj zber repky, kde máme zatiaľ reportované skôr podpriemerné úrody. Predpokladáme hlavný rozbeh zberových prác v tomto týždni, pokiaľ to počasie dovolí. Dažde z 26.06. nespôsobili vážnejšie škody, okrem mierneho poľahnutia porastov v okrese Hlohovec. Stav k 15.7.2024: ukončenie zberových prác. Úrody ozimín len priemerné, zaostávajú za výsledkami minulého roka. Najväčší prepad úrod sme zaznamenali u repky, kde sme vo finále zberali až o 0,8 t/ha menej ako v roku predchádzajúcom. K nižším úrodám prispeli aj škody hrabošmi, kde aj napriek snahe bojovať s nimi na niektorých lokalitách ukrátili pestovateľov o značnú časť úrody. Celkové škody hrabošmi budú vyššie ako v roku 2023.</p>
+
+<p>V okrese Komárno v&nbsp;25. týždni sa začali rozbiehať žatevné práce a to kosenie jačmeňa ozimného. Koncom 25. a začiatkom 26 týždňa sa začína zber repky ozimnej. O kvalite a množstve je predčasné niečo hovoriť. Stav k 1.07.2024 Začiatkom týždňa pokračovali žatevné práce v okrese. Zber jačmeňa ozimného prvé hlásené výnosy od 3,5t do 6,2t . Začalo aj zber skorších odrôd pšenice ozimnej ,jačmeňa jarného a repky ozimnej. Výnosy u repky ozimnej budú pod päťročným priemerom, nízke výnosy zapríčinilo rozšírenie hubových patogénov a ďalšie škody boli spôsobené krupobitím dňa 9.06. koncom týždňa žatevné práce prerušili nadmerné zrážky, v niektorých lokalitách za krátky čas napadlo až 168 mm zrážok. Momentálne v poškodených oblastiach poľnohospodári vyčísľujú škody spôsobené nadmerným množstvom zrážok. Zrážky spôsobili škody aj v pšenici tvrdej, ktorá bola pred zberom, sklovitosť je vymytá a z toho dôvodu nie je vhodné ani na kŕmenie, hrach siaty pravý cukrový bol tiež pred zberom, po dažďoch je prezretý a&nbsp;vhodný na predaj už len na kŕmenie. Podmáčané sú obilniny pred zberom, repky ozimné pred zberom, kukurica. V niektorých lokalitách je 30 cm vo vode. Problémov je stále viacej v&nbsp;lokalitách, kde nadmerné zrážky zničili úrody a teraz z priľahlých kanáloch voda zaplavuje pozemky. Situácia je vážna a podľa sľubov riaditeľa SVP š.p Komárno, dnes by mali vyhlásiť druhý povodňový stupeň na problematických kanáloch. Podľa informácie z&nbsp;14. 07 bol zber pšenice ozimnej vykonaný na 94 %, jačmeňa ozimného na 100 %, raže na 65 %, repky na 98 % výmery. Aktualizované 31.07.2024 Žatevné práce sú ukončené. Údaje o osiatej ploche k 20.05.2024 boli aktualizované podľa súpisu plôch zverejneného na ŠÚ SR dňa 30.07.2024. Z dôvodu pretrvávajúcich extrémne vysokých teplôt sa vlhkosť v pôdnom profile výrazne zhoršila. Sucho je výrazné, hlavne z dôvodu vysokých teplôt. Teploty sú vysoké až do 36 stupňov. Na ľahších pôdach porasty zasychajú. Ovplyvnené sú porasty slnečnice, kukurice a sóje.</p>
+
+<p>Žatva v okrese Levice začala v 25. týždni zberom jačmeňa jarného siateho na jeseň, jačmeňa ozimného a pokračovala zberom hrachu ozimného. Z jačmeňa ozimného je pozberaných takmer 61%. Aktuálne prebieha zber aj repky ozimnej. 01.07.2024.: Zber jačmeňa ozimného je na úrovni 90%, repky ozimnej 40% a jačmeňa jarného 24%. Zber ozimného hrachu na zrno je ukončený a hrach na zrno jarný je na úrovni 82%. V okrese Levice sa začal sa i zber pšenice ozimnej. Kvalitatívne parametre dosahujú nižšie hodnoty. Členovia hlásia vysoké škody spôsobené hrabošom. Stav za členskú základňu RPPK Levice - 15.07.2024.: Pri Jačmeni ozimnom sme dosiahli priemernú úrodu 5,23t/ha pri objemovej hmotnosti od 570 - 670, obsah N látok evidujeme od 9 – 11,2%. Úroda je o 17% nižšia v porovnaní s 5 ročným priemerom a v porovnaní s 3 ročným priemerom o 16% nižšia. V porovnaní s minulým rokom je to o 12% menej. Pozberaných je 100%. Pri jarnom jačmeni môžeme poznamenať, že dosiahol v porovnaní s ozimným jačmeňom menšiu priemernú úrodu, čo v porovnaní s minulým rokom bolo práve naopak. Čo sa týka jarného jačmeňa priemerná úroda v okrese je 4,09 t/ha čo je o 30% menej v porovnaní s minulým rokom. V porovnaní s 5 ročným priemerom je to o 30% menej a v porovnaní s 3 ročným priemerom je to taktiež o 30% menej. Obsah N látok evidujeme v rozmedzí od 8,5-10,3, objemová hmotnosť 652-675, podiely nad sitom sú v norme. Z ozimnej repky je pozberaných viac ako 98% pri priemernej úrode 2,91 t/ha. V porovnaní s minulým rokom je tohtoročná priemerná úroda o 21% nižšia, v porovnaní s 5 ročným priemerom o takmer 15% menej a v porovnaní s 3 ročným priemerom o 19% nižšia. Olejnatosť sa pohybuje nad 42%. Zber pšenice ozimnej je aktuálne na úrovni 98%, pri priemernej úrode 5,50t/ha. Oproti minulému roku je tohtoročná priemerná úroda nižšia o 21%. Pri porovnaní s 5 ročným priemerom je to o 13% menej a pri porovnaní 3 ročného priemeru je to o 14% menej. Obsah N látok sú od 9-14,3, objemová hmotnosť od 738-830. Pšenice tvrdá je pozberaná na úrovni 100% s priemernou úrodou 5,17t/ha čo je v porovnaní s minulým rokom o 20% menej. Pri porovnaní s 5 ročným priemerom je to o 8% menej a pri porovnaní s 3 ročným priemerom je to o 14% menej . Obsah N látok 12,8-14,6, objemová hmotnosť v priemere 800 g/l. Hrach na zrno ozimný je pozberaný na 100%, s priemernou úrodou 2,47t/ha, čo je v porovnaní s minulým rokom o viac ako 60% viac. V porovnaní s 5 ročným priemerom je to o 18% menej a v porovnaní s 3 ročným priemerom je to o 43% menej. Hrach na zrno jarný je pozberaný na úrovni viac ako 91% s priemernou úrodou 1,63t/ha čo je v porovnaní s minulým rokom o 33% menej. V porovnaní s 5 ročným priemerom je to o 46% menej a v porovnaní s 3 ročným priemerom je to o 43% menej. Žatva je viacmenej u konca. Stav za členskú základňu RPPK Levice - 23.07.2024.: Zber pšenice ozimnej je u konca s priemernou úrodou 5,46 t/ha, v porovnaní s 5 ročným priemerom je to 13 % menej, v porovnaní s 3 ročným priemerom o 15% menej. Zber ovsa je na úrovni 100 % s priemernou úrodou 2,93 t/ha, v porovnaní s 5 ročným priemerom je to o 9% menej. Pri porovnaní 3 rokov je to približne na podobnej úrovni, no pri porovnaní s minulým rokom je to o 11% menej. Zber repky je u konca s priemernou úrodou 2,91 t/ha, čo je v porovnaní s minulým rokom o 11% menej. 15%-ný pokles predstavuje pri porovnaní 5-ročného priemeru a 19%-ný pokles pri porovnaní 3-ročného priemeru. Niektoré plochy nebolo možné kosiť z dôvodu škôd spôsobených hrabošom (predovšetkým v juhozápadnej časti okresu - oblasť Želiezovce). Žatva je ukončená.</p>
+
+<p>V&nbsp;regióne Nitra (okresy Nitra, Topoľčany, Šaľa, Zlaté Moravce) podľa informácie z&nbsp;24.06.2024 bolo k&nbsp;záveru 25. týždňa pozberaných 75 % výmery jačmeňa jarného, pokusne začal zber pšenice ozimnej jačmeňa jarného. Informácie k 1.7.2024: prívalové dažde, v okresoch Šaľa, Nitra a časti okresu Topoľčany, prerušili zberové práce na niekoľko dní. Zrážky s úhrnom cca 75 mm za 24 hodín v kombinácii so silným vetrom, miestami ľadovcom, spôsobili škody poľahnutím, ako aj lokálne poškodením porastov pšeníc, repky, slnečníc. Ľad poškodil úrodu na ovocných sadoch a spôsobil škody na vinohradoch, ktoré sa následne vykryštalizujú. Čo sa týka dosiahnutých priemerných úrod, sklamali úrody repky ozimnej, u ktorej sa podľa stavu porastov predpokladala podstatne vyššia úroda. rovnako sú čiastočným sklamaním aj úrody ozimných obilnín z dôvodu nepriaznivej jesene, podmáčaných a zaplavených plôch, do čoho sa pridal nadmerný výskyt hraboša poľného. Zrážky v uplynulý týždeň v rámci regiónu Nitra sa pohybovali od niekoľko mm (sever Topoľčianskeho okresu a okres Zlaté Moravce) až po 99 mm v Nitre. Následne ďalší deň boli zaznamenané ďalšie zrážky v priemere 30-45 mm na už postihnutých lokalitách. Informácie k 15.7.2024: Pšenica ozimná je pozberaná na 91 %, jačmeň ozimný na 100 %, jačmeň jarný na 86 %, raž na 40 %, ovos na 28 %, repka na 95 % výmery. Podľa informácie z&nbsp;29.07. je žatva za rok 2024 ukončená.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/C2tG6q9.jpeg"></figure><p></p>
+
+<p>Situácia v&nbsp;okrese Nové Zámky k 01.07.: Stav na pozemkoch v okrese Nové Zámky po dažďoch z 26.06 je nasledovný: Bešeňov, Dolný Ohaj: slnečnica, kukurica - polámané, rozbité porasty, v iných lokalitách zatopené obilniny, zlá kvalita, vytopené sklady, zapadnutá technika na poliach. V niektorých lokalitách padlo aj 150 mm.....Zatiaľ sa len ukončuje kosba repky ozimnej, úroda v t na ha nevykazuje uspokojivé požiadavky poľnohospodárov, pohybuje sa od 0,8 t/ha až po 2,5-3 t/ha oproti vlaňajším rokom je to biednejšie. Úrody pšenice ozimnej sa pohybujú od 6 do 7 t/ha, u pestovateľov pšenice tvrdej je kvalita veľmi rozskákaná...niekto má mimoriadne dobré hodnoty- sklovitosť a parametre, niekto absolútne zlé, ale to je u tvrdej pšenice známe, keďže je oveľa náročnejšia na pestovanie do dosiahnutia top kvality. Z hlásení poľnohospodárov pšenica ozimná mäkká zatiaľ vyhovuje na potravinárske účely, u jačmeňa jarného na sladovnícke účely sú zatiaľ tiež hodnoty dusíka v norme. Toto mierne ochladenie tento týždeň zatiaľ praje porastom kukuríc, keďže práve nahodili kvety-metliny a mimoriadne teplá by im mohli poškodiť....</p>
+
+<p>V&nbsp;oblasti Senice (okresy Senica, Skalica) vzhľadom na priaznivé počasie sa začali žatevné práce na poliach v priebehu 25. týždňa zberom jačmeňa ozimného. Podľa informácie z&nbsp;16.07. je po 28. týždni pšenica ozimná pozberaná na 66 %, jačmeň ozimný na 100 %, jačmeň jarný na 74 %, raž na 90 %, tritikale na 35 %, ovos na 60 %, repka na 100 % výmery. Stav k 30.07.2024, Žatevné práce v regióne Senica a Skalica ukončené na 100%. V porovnaní s predchádzajúcim rokom sme zaznamenali výrazný pokles produkcie predovšetkým u repky ozimnej a raže ozimnej o viac ako 35% . U repky a raže ozimnej sme v tomto roku dosiahli najnižšie hektárové výnosy za posledných 10 rokov. Pod nižšie úrody sa podpísalo viacero faktorov, nepriaznivé počasie v mesiaci apríl, výskyt škodcov a hrabošov, ale aj škody na porastoch, ktorá spôsobuje premnožená raticová zver. Dosiahnuté úrody v tomto roku u obilnín sú približne na úrovni 5-ročného priemeru. Vývoj realizačných cien komodít v tomto roku nie je pre poľnohospodárov tiež veľmi priaznivý, v porovnaní s predchádzajúcim rokom sme zaznamenali pokles cien o 10-15%. Aktuálne sa cena u repky pohybuje na úrovni 450 €/t, u pšenice potravinárskej je aktuálna cena 180 €/t , u pšenice tvrdej sa cena za tonu pohybuje na úrovni 280 € a realizačná cena sladovníckeho jačmeňa je cca 185 €/t. Výpadok produkcie, nižšia kvalita a nepriaznivý vývoj cien u jednotlivých komodít, neprinesie poľnohospodárom v tomto roku ekonomický profit a pozitívny hospodársky výsledok.</p>
+
+<p>V&nbsp;Trenčianskom regióne (okresy Myjava, Nové mesto nad Váhom, Trenčín) bol stav k Stav k 24.6.2024 nasledovný: žatva v regióne bola zahájená 20.6.2024 pozberaním prvých 67 ha jačmeňa ozimného. Stav k 1.7.2024: Začína sa so zberom repky olejnej, kde sa úroda ukazuje ako jedna z tých horších za posledných 5 rokov. Vplyvom poveternostných podmienok sú značne poľahnuté porasty jarného jačmeňa. Straty na úrode alebo kvalite zrna zatiaľ ťažko predikovať.V nasledujúcom týždni predpokladám aj začiatok zberu pšenice ozimnej. Pri pšeniciach je poľahnutie porastov menšie ako pri jačmeni. Stav k 15.7.2024: žatva v trenčianskom regióne plynule pokračovala až do 12.7.2024 kedy nám predpovedaná veľká búrka sprevádzaná s veternou smršťou ukončila ,,žatevnú a hudobnú pohodu". Po vyčasení sa pokračovalo v žatve, čaká nás zožať ešte približne 30 % repky a hustosiate obilniny 55 %. Úrody sa pohybujú tak ako sa ukazovalo na začiatku žatvy. Stav k 23.7.2024 : žatva sa nám prehupla do druhej polovice. Repky ozimné sú viacmenej pokosené na 75 % s priemerným výsledkom 2,5 t/ha, len tri podniky majú zatiaľ výsledok nad 3 t/ha. Jačmeň ozimný je pozberaný na 85% s priemerným výsledkom 4,1 t/ha a jačmeň jarný na 70% s lepším priemerným výsledkom 4,9 t/ha. Pšenica ozimná je pozberaná na 60 % s priemerným výsledkom 5,7 t/ha. Počasie sa nám po minulo týždňovom vyčíňaní búrok upokojilo a tak sa mohli popri žatve naplno rozbehnúť lisovanie a zber slamy na kŕmne účely pre HD ale aj na podstielku pre ŽV. Stav k 30.7.2024: žatva pokračuje plynulo ďalej vďaka priaznivému počasiu - veľmi teplému mesiacu Júl.&nbsp; Niekde je už badať lokality sucha, najmä v cukrovej repe a kukurici, ktorá ak je ešte na štrkových pôdach,, trpí" výrazným nedostatkom vlahy, sucho sa prejavuje aj veľkými prasklinami v zemi. Stav k 6.8.2024: žatva sa nám pomaly blíži ku koncu, výsledky sa nejako nemenia a ostávajú na približne rovnakých hodnotách ako z hlásení z pred troch týždňov. Vďaka veľmi teplému mesiacu júl sú miesta kde vôbec nepršalo a nedajú sa robiť podmietky strnísk po žatve, nakoľko pôda je tak tvrdá, že disky alebo radličky sa nezarývajú do zeme. Stav k 13.8.2024: žatva je na konci s nasledovnými výsledkami: Obilniny: pšenica ozimná 5,56 t/ha, pšenica jarná 2,79 t/ha, jačmeň ozimný- 3,96 t/ha, jačmeň jarný- 4,93 t/ha, raž ozimná sa pestovala hlavne na zeleno ako objemové krmivo pre HD, raž jarná 3,02 t/ha,ovos- 2,43 t/ha a tritikale- 2,06 t/ha. Olejniny: repka ozimná 2,43 t/ha.</p>
+
+<p>Okres Prievidza: Žatevné práce začali skôr o takmer 14 dní. Extrémne dažde a krúpy sa nášmu okresu doposiaľ vyhli. Úroda sa ukazuje ako mierne nadpriemerná. Škody na porastoch obilnín boli len z dôvodu spasenia lesnou zverou. K&nbsp;15.08. sú zberové práce obilnín ukončené na 99%. Ostali len plochy vo vyšších polohách, ktoré budú v krátkom čase pozberané. Suché a horúce počasie sa podpísalo pod nižšiu úrodu obilnín. Kvalita je priemerná, niektoré pšenice zahoreli. Žatvu 2024 môžeme hodnotiť ako mierne podpriemernú. Ozimné repky sklamali.</p>
+
+<p>V&nbsp;oblasti Považskej Bystrice (okresy Ilava, Považská Bystrica, Púchov) bol stav k 1.07. nasledovný: V sobotu niektorí začali kosenie ozimnej repky (iní začínajú tento víkend) práce včera večer prerušili dažde , lokálne aj intenzívne s krúpami, ale škody na porastoch subjekty zatiaľ nesignalizujú. Bol ukončený zber jačmeňa. Vyhliadky počasia na tento týždeň sú nepriaznivé a pravdepodobne dôjde k spomaleniu alebo prerušeniu žatevných prác. Doterajšie úrody sú skôr sklamaním a kopírujú výsledky z ostatných častí Slovenska.</p>
+
+<p>Na Kysuciach (okresy Čadca a&nbsp;Kysucké Nové Mesto) Žatevné práce k&nbsp;01.07. ešte nezačali, predpokladaný začiatok je o 3 - 4 týždne. Úroda sa zatiaľ javí ako priemerná.</p>
+
+<p>Žatva v okresoch Žilina a&nbsp;Bytča k&nbsp;15.07. ešte nezačala. Žatva k 22.07.2024 - žatva v okresoch Žilina a Bytča začala v 29. týždni. Žatva k 29.7.2024 - vzhľadom k priaznivému počasiu žatevné práce v 30. týždni výrazne pokročili. V okrese Bytča sú už žatevné práce ukončené. Žatva k 5.8.2024 - žatevné práce v okrese Žilina pokračovali aj v 31. týždni. Žatva k 12.8.2024 - žatevné práce nemá dokončené ešte jeden členský poľnohospodársky podnik v okrese Žilina. Predpokladaný koniec žatevných je v priebehu 33. týždňa.</p>
+
+<p>Žatva v Turci (okresy Martin, Turčianske Teplice) k&nbsp;01.07. ešte nezačala. Produkcia: zatiaľ vyzerá, že bude priemerná. Kvalita zrna klesá a pri daždivom počasí bude ešte nižšia. Predpokladaný začiatok žatvy sa nedá určiť, je závislý od počasia. Monitoring k 8.7.2024: Začala sa žatva jačmeňa ozimného. Je zožatých cca 22% osiatej plochy, s úrodou 5,23 t/ha. Monitoring k 16.7.2024: Počasie v minulom týždni umožnilo pokračovať v žatve jačmeňa ozimného. Zožatá plocha cca na 82%. Začala sa žatva repky ozimnej. Monitoring k 22.7.2024: Žatva výrazne pokročila. Jačmeň ozimný je zožatý na celej výmere, repka ozimná je pozberaná cca na 71%, pšenica ozimná na cca 58%, raž ozimná na cca 53%. Začala žatva jačmeňa jarného. Subjekty hlásia škody spôsobené zverou, z tohto dôvodu nebude zožatých 16 ha repky ozimnej. Monitoring k 30.7.2024: Žatva výrazne pokročila. Jačmeň ozimný a raž ozimná je pozberaná na celej výmere, žatva ostatných plodín pokračuje.</p>
+
+<p>Žatva na Orave (okresy Dolný Kubín, Námestovo, Tvrdošín)&nbsp;k&nbsp;01.07. ešte nezačala. Na úrad komory neboli nahlásené zatiaľ žiadne škody na budúcej úrode v súvislosti s horúcim počasím a prudkými búrkami. Stav k 22.7.2024 Žatva začala pomaly začala. Stav k 29.7.2024 Žatva pokračuje, nakoľko počasie je priaznivé začiatkom týždňa. K&nbsp;30.08.2024 bola žatva ukončená.</p>
+
+<p>Liptov (okresy Liptovský Mikuláš, Ružomberok), 8.7.2024: na Liptove začala žatva, prvé hektáre ozimného jačmeňa pokosíli PD Ludrová a PD Smrečany. 15.7.2024 - na Liptove zberáme ozimný jačmeň a ozimnú repku. Žatvu každý deň prerušia búrky. 22.7.2024 Na Liptove pokračuje žatva, presúva sa z dolného/Ružomberok na horný/Liptovský Hrádok Liptov, zberá sa repka, ozimný jačmeň a pšenica. 30.7.2024 žatva sa posúva do záverečnej čati, treba pozberať ovos, jarný jačmeň a raž. Minulý týždeň žatvu rušili letné búrky. 6.8.2024 - Na Liptove pokračuje žatva v severnej časti regiónu. Chýba zožať 5% plôch obilnín. 12.8.2024 - Žatva ešte stále pokračuje. K&nbsp;26.08.2024 bol ukončený zber obilnín, zber repky ešte pokračoval.</p>
+
+<p>V&nbsp;regióne Banská Bystrica (okresy Banská Bystrica, Brezno) sú žatevné práce k&nbsp;15.08.2024 ukončené.</p>
+
+<p>V&nbsp;oblasti Zvolena (okresy Banská Štiavnica, Detva, Žarnovica, Žiar nad Hronom) podľa informácie z&nbsp;16.07.&nbsp; žatevné práce začali skôr o takmer 14 dní. V 30. týždni bola ukončená žatva vo všetkých členských podnikoch okrem jedného s malou výmerou obilnín vzhľadom na to, že sa nachádza v nadmorskej výške nad 900 m. Čo sa týka úrod môžeme byť v celku spokojní, aj keď u niektorých plodín bola nižšia úroda, ako v roku 2023 v priemere o 13%. Opäť v tomto roku sme pocítili silu prírody a to v tom, že po 17.7. prišli zrážky v niektorých častiach okresov aj silný ľadovec, ktorý napáchal značné škody a to tak, že na jednom podniku 50 ha repky bolo totálne zničených, 130 ha bolo poškodených na 21a 45 % na ďalšom podniku bola repka poškodená na 80 až 90% na výmere cca 120 ha. Zároveň tieto dažde spôsobili aj to že dovtedy sľubná úrod potravinárskej pšenice stratila túto kvalitu, kde dusíky poklesli z 12,5% na 9,5%, objemová hmotnosť z 800 na 600 až 650 a tým pádom samozrejme aj lepok bol znehodnotený. Teda tak ako sme konštatovali v predchádzajúcich komentároch, poľnohospodár väčšinou hodnotí úrodu, keď ju má pod strechou, dovtedy nevie ovplyvniť jednotlivé úrody pestovateľských plodín. V súčasnej dobe sa podniky intenzívne venujú zberu slamy, hlavne lisovaním do veľkých hranatých a guľatých balíkov a následne prebieha podmietka na jednotlivých parcelách. Treba veriť, že poľnohospodári speňažia úrodu v dobrých cenových reláciách, aby sa im vrátili aspoň náklady pri miernom zisku a chceme veriť, že sa nebude opakovať vlaňajší rok prebytkom komodít z Ukrajiny.</p>
+
+<p>V&nbsp;okrese Veľký Krtíš je podľa informácií z&nbsp;10.07. žatva v&nbsp;plnom prúde aj v&nbsp;oblasti Veľkého Krtíša. Kombajny začali naplno kosiť pred dvomi týždňami okolo 27. júna, začiatok žatvy bol mierne rozpačitý. Ako prvý, prirodzene, začali poľnohospodári kosiť ozimný jačmeň. Celkovo jačmene v&nbsp;oblasti Veľkého Krtíša dosahujú úrodu v&nbsp;objeme od 4,5-5,8 tony na ha. Kvalita je rôzna, od vyhovujúcej po zníženú kvalitu s&nbsp;drobným zrnom. Poľnohospodárom sa už v&nbsp; tejto oblasti podarilo pozbierať celú zasiatu výmeru jačmeňov. Minulý týždeň sa začala aj žatva repky a&nbsp;pšenice. Repka je v&nbsp;oblasti Veľkého Krtíša veľkým sklamaním. Pestovatelia ju už pokosili takmer celú, okolo 90% plôch je už pokosených s&nbsp;úrodou okolo 2 tony, čo nie je potešiteľné vzhľadom na ekonomiku výroby. Mäkké potravinárske pšenice zatiaľ odhadom dávajú úrodu okolo 5 ton s&nbsp;vyhovujúcou kvalitou. Podmienky na jar boli náročné pre pestovanie obilnín, počasie nebolo ideálne, ale poľnohospodárom sa podarilo následne zvládnuť ochranu porastov pred hubovitými chorobami. Horšie zatiaľ vyzerá tvrdá pšenica, ktorá nezareagovala dobre na vývoj počasia. Úrody sú zatiaľ okolo 4 ton s&nbsp;horšou kvalitou. Zrnká sú malé, objemová hmotnosť je nízka. Pšenice sú v oblasti VK pozbierané približne z&nbsp;troch štvrtín. Aktuálne horúčavy poľnohospodári negatívne vzhľadom na priebeh žatvy nepociťujú. Žatve práveže vyhovuje stabilné teplo, ktoré nie je prerušené zrážkami. Lokálne búrky z&nbsp;predchádzajúcich dní s&nbsp;lokálnym ľadovcom veľké škody na porastoch v&nbsp;oblasti nespôsobili. Zrážky pomohli iným plodinám, napríklad sóji alebo kukurici. Regionálna poľnohospodárska a&nbsp;potravinárska komora vo Veľkom Krtíši odhaduje, že v&nbsp;závere tohto týždňa skončí žatvu väčšina miestnych podnikov.</p>
+
+<p>V&nbsp;oblasti Novohradu (okresy Lučenec, Poltár) a&nbsp;Gemera (okresy Revúca, Rimavská Sobota) začala žatva 19. júna zberom ozimných jačmeňov, postupne začína zber repky a&nbsp;skorých odrôd pšenice ozimnej.</p>
+
+<p>02.08.: Žatva bola počas júla v okresoch Lučenec a Poltár ukončená. Priebeh žatvy bol plynulý len s krátkymi prerušeniami spôsobenými búrkami začiatkom júla. Potom už žatevné práce prebiehali plynule. Úrody obilnín a repky sú o cca 20-30% nižšie ako v predchádzajúcom roku. Počasie počas vegetačného obdobia sa negatívne prejavilo na kvalite hlavne pri pšeniciach. Výnosy tiež vo viacerých lokalitách negatívne ovplyvnili škody spôsobené premnoženou raticovou zverou a výpadky zo zamokrených častí polí.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/8Wmc6dl.jpeg"></figure><p><span><span><span><span><span><span new="" roman="" times=""><span><b></b></span></span></span></span></span></span></span></p>
+
+<p>Na Gemeri (okresy Rimavská Sobota, Revúca) bol stav k 1.7.2024 nasledovný: žatva začala koncom 25. týždňa zberom ozimného jačmeňa a&nbsp;ozimných pšeníc ktoré boli postihnuté nepriazňou počasia, taktiež repky ktoré zďaleka nebudú tak výnosné ako v posledné roky sme boli zvyknutí. Momentálne máme časté lokálne dažde prerušujúce žatevné práce. 9.7.2024 Ukončený je zber ozimného jačmeňa a finišuje zber repky. Počasie praje žatevným prácam.16.7.2024: finišuje zber pšenice ozimného a jarného jačmeňa. Zároveň je ukončený zber repky, Prebieha ber slamy, podmietka a zber krmovín. 23.7.2024: končíme zber pšenice ozimného a jačmeňa jarného, prebiehajú požatevné práce s akcentom na prípravu pôdy pod osev repky.1.8.2024: žatevné práce finišujú. 8.8.2024: žatva je ukončená, horšia kvalita a nižšie výnosy charakterizujú toho ročnú žatvu.</p>
+
+<p>V&nbsp;oblasti Severného Spiša (okres Stará Ľubovňa) sa začiatok žatvy očakáva v&nbsp;tretej dekáde júla, rovnako v&nbsp;oblasti Dolného Spiša, kde sa začiatok žatvy očakáva v&nbsp;období „okolo Magdalény“ (22.07.). 01.07: Minulotýždňové miestne prudké búrkové prehánky zatiaľ nenarobili škody na porastoch. Pre región extrémne, až tropické teploty však v súčasnej fenofáze vývoja porastov veľmi negatívne vplývajú na dozrievanie zŕn. V spojení s prudkými prehánkami je možné očakávať ich poškodenie, či zahorenie. Od vývoja počasia preto závisí aj začiatok žatvy na Dolnom Spiši, ktorý očakávame najskôr o 2 týždne. 09.07: Koncom minulého týždňa začali v regióne prvé žatevné pokusy v porastoch ozimného jačmeňa. Porasty obilnín v uplynulom týždni boli stojaté, úrodu očakávame priemernú. začiatok plnej žatvy v závislosti od vývoja počasia očakávame ku koncu týždňa. Porasty ozimnej repky sú desikované a predpoklad ich zberu je v tomto týždni. Včerajšia prietrž, ktorá sa prehnala regiónom, spôsobila na niektorých porastoch obilnín a repky poľahnutie. Prípadné škody ňou spôsobené momentálne podniky vyhodnocujú. Súbežne s prípravou na žatvu prebieha zber ozimných strukovín, ďatelinovín a tráv na semeno, zber krmovín z OP a z TTP. 16.7.2024 Žatevné práce v regióne začali v minulom týždni len v porastoch ozimného jačmeňa. Prvé odhady ukazujú priemernú úrodu. Minulotýždňové na región netypické až takmer tropické horúčavy (denne 30 - 34°) na jednej strane priaznivo vplývajú na postup v žatevných prácach, na druhej strane však tieto teploty veľmi negatívne vplývajú na dozrievanie zŕn. Porasty obilnín a ozimnej repky sú momentálne stojaté, sú v poslednej fáze dozrievania. Tieto horúčavy, ale aj tie očakávané, budú mať veľmi negatívny vplyv na kvalitu produkcie úrody. 23.07.2024: Žatevné práce v regióne sa v uplynulom týždni rozbehli naplno, najmä v zbere ozimného jačmeňa, ozimnej repky a skorších odrôd jarného jačmeňa. Koncom týždňa zberové práce sa presunuli do porastoch ozimnej pšenice. Predbežné výsledky ukazujú na priemernú úrodu. Kvalitu úrody vzhľadom na začiatok žatvy je predčasne hodnotiť. Súbežne so žatevnými prácami prebieha zaorávanie drvenej slamy, zber slamy a vo vyšších polohácha aj zber krmovín z TTP. 30.07.2024 Žatevné práce v uplynulom týždni pokračovali plynule bez prerušenia. Na podmienky regiónu horúce, až tropické počasie a dostatok žatevnej techniky umožnili výrazný posun vo výmere zožatých plôch. Súčasne so žatvou prebiehajú na poliach ostatné zberové práce, ako je zber slamy, zaorávanie slamy/ekoschéma, zber VRK a ostatné práce. žatvu vo vyšších polohách očakávame v tomto týždni. Kvalita pozberanej úrody na podnikoch závisí od intenzity výživy a ochrany porastov. Porasty obilnín pred žatvou neboli v regióne postihnuté prudkými a nárazovými búrkami, boli stojaté a aj napriek vysokým teplotám v poslednom štádiu zrelosti je kvalita pozberanej úrody veľmi dobrá. Na druhej strane tohoročnú úrodu obilnín, ale aj repky hodnotíme ako priemernú. 06.08.2024 Žatevné práce v regióne sú okrem vyššie položených polôh takmer ukončené. Priaznivé počasie umožnilo začať žatvu aj v týchto polohách. Na koreni ostávajú ešte malé výmery porastov jarnej pšenice, triticale, ovsa a plochy jarnej repky. 27.08.2024 Žatva v regióne je ukončená. Dosiahnutú úrodu hlavných hustosiatych plodín hodnotíme ako priemernú. Tropické horúčavy v posledných dňoch žatvy veľmi negatívne sa prejavili nielen na výške úrody, ale aj na jej kvalite, zvlášť na úrode jarnej repky. Práce na poliach pokračujú v zbere slamy, príprave pôdy pod sejbu ozimín, v sejbe ozimnej repky a rozmetaní a zaorávaní MH. V súčasnosti vplyvom tropických horúčav (pre región v poslednom týždni denne nad 31 -32° bez zrážok) sa veľmi výrazne prejavuje nedostatok pôdnej vlahy, čo môže mať veľmi negatívny dopad najmä na vzchádzanie už zasiatych plôch ozimnej repky. Ak v nasledujúcich dňoch nedôjde k zmene vo vývoji počasia, je možné očakávať aj nedostatok pastvy, najmä na južných svahoch nielen vo vyšších ale aj v stredných polohách regiónu.</p>
+
+<p>Pod Tatrami (okresy Kežmarok, Poprad) k 01.07.: žatva ešte nezačala. 9.7.2024 - v 27. týždni v regióne Poprad začal zber ozimného jačmeňa. 16.7.2024 - zber ozimného jačmeňa pokračuje veľmi sporadicky, nakoľko každý druhý deň je zber prerušovaný lejakmi. 3.7.2024 - žatevné práce pokračovali, zatiaľ bolo zožaté 15 % ozimnej pšenice, 95 % ozimného jačmeňa, raž ozimná bola zožatá na100 % a repka na 65 %. Rýchlosť priebehu žatvy závisí veľmi od počasia. 30.7.2024 - žatevné práce pokračovali v závislosti od poveternostných podmienok, pšenica bola zožatá na 45 %, jačmeň spolu na 64 %, raž ozimná 100 %, ovos 12 % a repka na 72 %. 6.8.2024 - žatevné práce v 31. týždni v našom regióne pokračujú, zatiaľ je na 100 % zožatý ozimný jačmeň s úrodou 3,8 t/ha, raž ozimná s úrodou 3,5 t/ha a tritikale s úrodou 4t/ha. 13.8.2024 - žatevné práce pokračovali, ale zatiaľ ešte nie sú všetky plodiny pozberané, je potrebné ešte zožať pšenicu ozimnú, jarnú, jačmeň jarný, ovos a repku. 27.8.2024 - v regióne Poprad boli žatevné práce v 34. týždni ukončené.</p>
+
+<p>V&nbsp;okrese Stará Ľubovňa poľnohospodári v 28. týždni zožali 99 ha ozimného jačmeňa a 30 ha ozimnej pšenice. Nepriaznivé daždivé počasie nedovolilo pokračovať v žatevných prácach v plnom nasadení. Ostatné týždne naši poľnohospodári využili vhodné poveternostné podmienky a žatvu ukončili v 32. týždni. 87 ha ozimného jačmeňa bolo zobraté na zeleno. Dosiahnuté výsledky oproti roku 2023 sú u hustosiatych obilnín lepšie, s úrodou 4,29 t/ha a predstavujú index 119 %. U repky sú slabšie s úrodou 2,35 t/ha a predstavujú 88 %.</p>
+
+<p>V okrese Bardejov žatva zatiaľ neprebieha, predpoklad začatia je v 27. týždni. 1.7.2024 v regióne Bardejov žatva ešte nezačala, všetko závisí od počasia. 8.07.2024 žatva začala 02.07.2024 zberom ozimného jačmeňa 16.07.2024 žatva pokračuje ako dovoľuje počasie, jačmeň ozimný pozberaný na 80 %. Skosených je 59,43 ha raže na zeleno do vakov. 23.07.2024: žatva pokračuje, občas ju pozastavia lokálne búrky, jačmeň ozimný skosený na 100 %, obilniny spolu skosené na 46 % 30.07.2024: obilniny sú skosené na 60 %, súčasne prebieha zaorávanie slamy. 06.08.2024: v regióne máme zožatú pšenicu ozimnú, jačmeň ozimný, raž ozimnú a tritikale na 100 %, je potrebné zožať jarné obilniny a jarnú repku. K&nbsp;27.08.2024 je žatva ukončená.</p>
+
+<p>V&nbsp;okresoch Svidník a&nbsp;Stropkov podľa informácie z&nbsp;01.07.2024 žatevné práce začali dva poľnohospodárske subjekty zberom ozimného jačmeňa. K&nbsp;06.08. je žatva za rok 2024 ukončená.</p>
+
+<p>V&nbsp;okresoch Prešov a&nbsp;Sabinov sa žatevné práce naplno rozbehli. Boli však prerušené víkendovými lokálnymi búrkami. Dokonca v niektorých oblastiach aj s ľadovcom. Žatva bola ukončená v&nbsp;závere júla.</p>
+
+<p>V okrese Vranov nad Topľou žatevné práce začali V 28. týždni v regióne Vranov nad Topľou žatevné práce pokračovali. Cez víkend práce boli pozastavené, nakoľko v našom regióne prevládali burky a krupobitie. Z tohto dôvodu nebol ukončený zber repky ozimnej. Jačmeň ozimný bol pozberaný na 100% s výnosom 4,11 t/ha. Žatevné práce v regióne Vranov nad Topľou boli ukončené v 31. týždni. Úroda s porovnaním s rokom 2023 je nižšia. Poľnohospodári, pokiaľ im to umožní počasie ďalej pokračujú v prácach na polí, a to zber slamy, sena, podmietka a iné</p>
+
+<p>Žatva začala v&nbsp;regióne Humenné (okresy Medzilaborce, Humenné, Snina) v 25. týždni. Počas prvých troch týždňov sa pozbierala repka a jačmene. Pšenica je zozbieraná na 40%. Tento víkend dažde prerušili žatvu a predpovedané počasie na ďalšie dni je tiež pre tieto práce nepriaznivé. Zatiaľ sú úrody porovnateľné s priemerom predchádzajúcich rokov, čo sa však ešte môže zmeniť a to nie len vo výnosoch ale aj kvalite. K&nbsp;27.08.2024 je žatva ukončená.</p>
+
+<p>18.6.2024 je zrejme historický dátum začiatku žatvy v okrese Košice-okolie. Po mesiac trvajúcom daždivom počasí (od 16.5.) nastali extrémne horúčavy a tým na ľahkých pôdach pod Turnianskym hradom bolo možné zberať ozimný jačmeň. Napriek tomu, že do väčšiny plôch je problémový vstup, k 27.6. je pozberaných cca 75 % výmery tejto plodiny s výnosom okolo 5,6 t/ha. Začiatok zberu ostatných plodín nastane v prvých dňoch júla. 01.07.: žatva sa postupne rozbieha, dokončuje sa zber ozimného jačmeňa, priemerná úroda za okres klesá oproti hláseniu k 27.6. Zaznamenávame aj 4,4 t/ha. Začal sa zber repky ozimnej prvé úrody (z 90 ha) nedosahujú ani 1 t/ha – je to dôsledok enormne mokrej zimy a podmáčaného terénu počas celej vegetačnej doby. Žatva je prerušovaná prehánkami. K 9.7. žatva a s ňou súvisiace práce prebiehajú v plnom prúde. Dokončuje sa zber repky – priemerná úroda za okres bude okolo 3,11 t/ha. Zber ozimných pšeníc je hotový na cca 20% - úrody zatiaľ: 5,8 t/ha s kvalitou kŕmneho obilia. k 16.7. extrémne horúčavy a sucho napomohli nevídanému postupu žatvy počas uplynulého týždňa. Ostáva dokončiť zber cca 15% plôch ozimnej pšenice a cca 40% plôch jarného jačmeňa. K 22.7 máme zber letných plodín v podstate ukončený. Posledné hektáre jarných pšeníc a jarného jačmeňa bolo potrebné desikovať, tie nie sú zatiaľ zožaté. Je to dôsledok poveternostných vplyvov, kedy porasty boli založené do dlhodobo podmáčaných plôch a následne mesiac trvajúce dažde (máj – jún) spôsobili druhotné zaburinenie. Priemerné úrody jednotlivých plodín za okres sú na úrovni dlhodobých priemerov, no oproti predchádzajúcemu roku sú výrazne nižšie.</p>
+
+<p>V&nbsp;okrese Trebišov podľa informácie z 25.06.2024 sa začali žatevné práce v 25. týždni zberom jačmeňa, úrody sa zdajú byť slabšie ako po minulé roky a to z dôvodu nízkej objemovej hmotnosti. Repka a pšenice sa zbierajú tento týždeň. Farmárom komplikujú práce búrky (niekde napadlo aj 50 mm zrážok a pridal sa aj silný vietor), ktoré sa vyskytli v okrese cez víkend. V niektorých lokalitách stojí voda na poliach, čo znemožňuje vstup na pozemky. Stav k 01.07.2024: Farmári pokračujú zberom repky, zberajú sa aj pšenice tvrdé a ozimné. Jačmeň je poväčšine pozbieraný. Realizujú sa podmietky po zbere a osievajú sa medziplodiny. Stav čo sa týka zamokrených pozemkov v niektorých lokalitách aj naďalej trvá. Stav k 16.07.2024: postupne sa v regióne ukončujú žatevné práce, realizujú sa podmietky, kosenie, zber slamy a sena, lisovanie. Stav k 23.07.2024: väčšina poľnohospodárskych subjektov ukončila žatvu. Zhrnutie: Hlavné žatevné práce v&nbsp;okrese Trebišov je možné považovať za ukončené. Priebeh žatvy bol viac menej plynulý a&nbsp;to až na pár výnimiek (intenzívne jednorazové zrážky). Čo sa týka úrod môžeme považovať rok 2024 za priemerný – slabo priepustné pôdy sa vyznačovali rapídne slabšími úrodami ako priepustnejšie pôdy. Kvalita mäkkých pšeníc vychádzala poväčšine B kvality, príznačné boli pre nich vysoké objemové hmotnosti a&nbsp;nízka hladina dusíkov. U&nbsp;jarných obilnín prevládali nízke objemové hmotnosti a&nbsp;vysoká hladina dusíkatých látok. Výskyt choroby fuzariózy bol zaznamenaný sporadicky. Hektárové úrody v&nbsp;prípade repky sa nachádzali v&nbsp;širokom rozpätí od 1,2 – 4,5 t z&nbsp;ha v&nbsp;závislosti od poškodenia porastov hrabošmi a&nbsp;výmokmi. V&nbsp;súčasnosti farmári v&nbsp;okrese dokončujú senáže, realizujú silážovanie a&nbsp;hnojenie organickými hnojivami, prebiehajú prípravné práce na sejbu repky.</p>
+
+<p>V&nbsp;oblasti Michaloviec (okresy Michalovce, Sobrance) podľa informácie z&nbsp;25.06.2024 sa žatevné práce začali v&nbsp;25. týždni (20. júna) v sobraneckom okrese, kde tradične najskôr dozrieva ozimný jačmeň. Práce však dlho nepokračovali pre lokálne búrky a dažde do 25 mm. Pri priaznivom počasí dnes alebo zajtra sa začne aj so zberom repky. Inde prebiehalo plečkovanie slnečnice, chemické postreky a senážovanie. Pokiaľ nebude pršať - naplno sa rozbehnú žatevné práce až v závere týždňa. Zatiaľ je málo pozberaných plôch na hodnotenie hektárových úrod. 16.júl 2024 - žatevné práce vo väčšine podnikov boli ukončené ešte minulý týždeň. Ostali minimálne, zanedbateľné plochy, ktoré boli podmočené - tie sú už tiež pozbierané. Priebeh žatvy bol vzhľadom na priaznivé počasie veľmi dobre zvládnutý, avšak júnové dažde zhoršili kvalitu najmä pšenice a v porovnaní s minulým rokom tiež hektárové výnosy sú až o jednu tonu nižšie, v priemere 10 - 15 %. Požatevné práce (podmietky, kosby, zber slamy a sena a&nbsp;pod.) pokračujú. Počiatočné realizačné ceny boli vcelku dobré, avšak nastal určitý pokles cien, čo nás neteší. Veľmi dobre vyzerajú porasty kukurice, slnečnice i sóji. Vyzerá to na sľubné úrody...</p>
+
+<h2 class="doc-subheading">K&nbsp;30.08.2024 bol z&nbsp;celoslovenského hľadiska stav žatvy nasledovný: </h2>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/4l7kx7K.png"></figure><p><span><span><span><b><span><span><span new="" roman="" times=""></span></span></span></b></span></span></span></p>
+
+<h2 class="doc-subheading">Špecifiká „ročníka“ 2024</h2>
+
+<p>Podobne ako v&nbsp;minulom roku, aj v&nbsp;roku 2024 sa ukazujú niektoré špecifiká „ročníka“, ktoré je potrebné riešiť nie len po stránke agrotechnickej, ale aj po stránke administratívnej, predovšetkým voči PPA a&nbsp;ÚKSÚP. SPPK zároveň aktuálne komunikuje s&nbsp;MPRV SR úpravu/zmiernenie niektorých podmienok v&nbsp;rámci Dobrých poľnohospodárskych a&nbsp;environmentálnych podmienok (DPEP), ešte pre rok 2024.</p>
+
+<p>Vzhľadom k výskytu silných dažďov v&nbsp;jari tohto roku a&nbsp;premnožených hrabošov a&nbsp;poľovnej zveri, opakovane upozorňuje úrad SPPK svojich členov na nevyhnutnosť poľnohospodárov, zapojiť sa do monitoringu všetkých typov. V&nbsp;tomto monitoringu SPPK nerieši presné vyčíslenie škôd, ale odhad týchto škôd. Apelujeme touto formou na poľnohospodárov, aby sa zapojili do tohto monitoringu/odhadu škôd a&nbsp;v&nbsp;najbližšom čase chceme znovu žiadať MPRV SR o&nbsp;riadny zber údajov, v&nbsp;súlade so chválenou schémou štátnej pomoci na náhradu škôd spôsobených nepriaznivou poveternostnou udalosťou, ktorú možno prirovnať k&nbsp;prírodne katastrofe.</p>
+
+<h2 class="doc-subheading">Aktuálna situácia k&nbsp;30.08.2024</h2>
+
+<p>Za uplynulé roky sme sa bežne stretávali, že žatva bývala aj prerušovaná dažďami, tento rok nám za posledné roky, žiaľ potvrdzuje opakovanú extrémnu „nevyrovnanosť“ počasia, teda prudké zmeny prebytku a&nbsp;nedostatku zrážok, kedy síce celoročne sumár teplôt a&nbsp;zrážok sa možno veľmi nelíši od priemeru, ale v&nbsp;kľúčových štádiách vývoja porastov „letnej“ a&nbsp;jesennej“ žatvy sú tieto poškodzované nevhodným priebehom teplôt a&nbsp;dažďa. Pohľad praxe: prvý pol rok tohto roku bol z&nbsp;pohľadu obilnín mimoriadne mokrý.</p>
+
+<p>Žatva je ukončená.</p>
+
+<p>Úrody a&nbsp;kvalita jednotlivých plodín sú rozdielne v&nbsp;závislosti od regiónu, priebehu počasia a&nbsp;vplyvu škodcov. &nbsp;</p>
+
+<p>To isté sucho, ktoré napomohlo dokončeniu žatvy, však zároveň znamená nedostatok vlahy pre tvoriacu sa úrodu plodín jesenného zberu.</p>
+
+
+
+<p>Zdroj:</p>
+
+<p>Slovenský hydrometeorologický ústav,</p>
+
+<p>Slovenská poľnohospodárska a&nbsp;potravinárska komora,</p>
+
+<p>Regionálne poľnohospodárske a&nbsp;potravinárske komory,</p>
+
+<p>poľnohospodárske subjekty.</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

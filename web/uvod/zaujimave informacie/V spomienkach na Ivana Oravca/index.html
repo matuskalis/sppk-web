@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>V spomienkach na Ivana Oravca — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>V spomienkach na Ivana Oravca</nav>
+
+  <article>
+    <h1 class="doc-title">V spomienkach na Ivana Oravca</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Jana Holéciová, hovorkyňa SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">30. decembra 2020</span></p>
+
+    <div class="doc-body">
+<p><strong>Rodina a&nbsp;verejnosť sa dnes /30. decembra/ lúči&nbsp;so zosnulou osobnosťou slovenského poľnohospodárstva Ivanom Oravcom. Na pamiatku a&nbsp;z&nbsp;úcty k&nbsp;tak veľkému človeku vám prinášame spomienky na Ivana Oravca.</strong></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/QcshIRJ.jpg"></figure><p></p>
+
+
+
+<h2 class="doc-subheading">MILAN SEMANČÍK, bývalý predseda SPPK, predseda RPPK Stará Ľubovňa, RD Kyjov</h2>
+
+<p><em>Oponentúra diplomovej práce a&nbsp;človek s&nbsp;veľkým Č</em></p>
+
+
+
+<p>„Náš príbeh sa začal v&nbsp;roku 1985, keď som končil mechanizačnú fakultu a&nbsp;Ivan mi robil oponentský posudok na diplomovú prácu. Nevedel som, kto to je, len že ide o&nbsp;predsedu PD DEVIO. Keď som začal robiť v&nbsp;predstavenstve veľkej komory, už sme sa poznali a&nbsp;spolupracovali sme. Dokonca som mu nejakú dobu robil aj podpredsedu. Ivana si navždy zapamätám ako pracovitého, húževnatého a&nbsp;nepoddajného človeka. Keď sa do niečoho zahryzol, tak si išiel za svojim cieľom. Bol odborník na svojom mieste. Vždy, keď bolo treba, rád poradil. Bol človek s&nbsp;veľkým Č, akých je na tomto svete málo.</p>
+
+
+
+<p>Pamätná je aj jeho veta, ktorú povedal pri príležitosti nášho vstupu do EÚ - <em>my sa nebojíme konkurencie, ale nerovnakých podmienok na podnikanie.</em> Túto vetu si všetci zapamätali, je to historická myšlienka, ktorá platí aj dnes, stále.“</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/t4XnZIw.png"></figure><p></p>
+
+<p><span><small>Rokovanie Predstavenstva SPPK, rok 2007, Žiar nad Hronom&nbsp;</small></span></p>
+
+
+
+<h2 class="doc-subheading">ALEXANDER PASTOREK, bývalý podpredseda SPPK, predseda RPPK Komárno, AGROCOOP Imeľ</h2>
+
+<p><em>Bol vizionár. Veril, že raz, keď sa ľudia nabažia zahraničných potravín, začnú sa nanovo vracať za domácou kvalitou.</em></p>
+
+
+
+<p>„Intenzívnejšie sme sa zoznámili približne pred 20 rokmi. Bolo to v&nbsp;období, keď sa Ivan stal predsedom SPPK a&nbsp;ja predsedom Regionálnej poľnohospodárskej a&nbsp;potravinárskej komory Komárno. Pri príležitosti ukončenia školského roka sme u&nbsp;nás zvykli robiť regionálne trhy. Chceli sme ľuďom ukázať, že vieme vyrábať lokálne produkty. Zámerne, pretože v tom čase na Slovensko prišli nadnárodného obchodné reťazce a&nbsp;spotrebitelia siahali po dovozových potravinách. Na podujatie som pozval Ivana. Prišiel, čo bola pre nás veľká poklona. Chodil som s&nbsp;ním po výstave a on hovorí: <em>„Treba robiť takéto regionálne podujatia, aby ľudia zistili, že majú nakupovať slovenské potraviny, nielen zahraničné. Naše výrobky sú vzácne. Verím, že raz príde doba, keď budeme nanovo vyhľadávať slovenské potraviny“.</em></p>
+
+
+
+<p>Ivan mal teda už pred 20 rokmi víziu, že medzi spotrebiteľmi nebudú hrať prvé husle len veľké nákupné centrá, ale že si spoločnosť začne uvedomovať, čo dobré robia naši potravinári a poľnohospodári a&nbsp;že si to budú aj vážiť. Tejto myšlienke&nbsp;veril a&nbsp;fandil jej. Som rád, že po 20 rokoch si ľudia postupne začínajú nanovo všímať domáce produkty. Ivan sa z&nbsp;časti dožil svojho sna. Len to pravé orechové, keď bude spoločnosť úprimne ďakovať slovenským poľnohospodárom a&nbsp;potravinárom, bude prichádzať ešte niekoľko rokov a&nbsp;to Ivan už nestihne.“</p>
+
+
+
+<p><strong>STANISLAV BECÍK, bývalý minister pôdohospodárstva, Združenie agropodnikateľov, družstvo, Dvory nad Žitavou </strong></p>
+
+<p><em>Holandské objatie v Brne</em></p>
+
+
+
+<p>"Počas 1. polroka 2009, keď bola predsedajúcou krajinou EÚ Česká republika, uskutočnilo sa v&nbsp;Brne zasadanie ministrov poľnohospodárstva krajín EÚ. Ja som si na rokovanie zobral ako poradcu Ivana Oravca. Témou bola tzv. progresívna modulácia. Počas slávnostného obeda, ktorého sa zúčastnilo 27 európskych ministrov, si dal Ivan, sediac pri mne, pivo. Čašník mu však priniesol českú značku, ale Ivan chcel slovenské pivo. Aj ho nakoniec dostal. Holandská ministerka a&nbsp;maltský minister ostali veľmi zaskočení&nbsp;Ivanovou požiadavkou. Holanďanka až tak, že chytila Ivana za ramená, silno ho objala a&nbsp;vyriekla vetu, ktorú si budem s&nbsp;Ivanom navždy spájať – <em>vtedy budeme v&nbsp;EÚ veľkí a&nbsp;ťahať spolu za jeden povraz, keď budeme takí lokálpatrioti, ako si ty!</em> A&nbsp;ja som si vtedy povedal, že toto nedokáže hocikto. My sme u&nbsp;tej Holanďanky neprehrali, práve naopak.</p>
+
+
+
+<p>Ivan bol čestný a&nbsp;rovný, za tieto jeho vlastnosti som si ho nesmierne vážil. Samozrejme že prišli aj chvíle, keď sme boli ako dvaja kohúti, aj ja som trval na svojom názore a&nbsp;aj on. V&nbsp;jednom sme sa však vždy zhodli: zbohatni tak, aby tí, čo sú vedľa teba a&nbsp;tvoria hodnoty pre krajinu a národ, zbohatli úmerne spolu s&nbsp;tebou. Ak len ty budeš rásť namiesto nich, ďaleko to v&nbsp;živote nedotiahneš. Meno firmy robí zamestnanec, zamestnávateľ robí len politiku.</p>
+
+
+
+<p>Je mi za ním veľmi, veľmi smutno.</p>
+
+
+
+<h2 class="doc-subheading">JOZEF URMINSKÝ, bývalý predseda PPD Prašice - Jacovce &nbsp;</h2>
+
+<p><em>Problémy riešil systémovo a&nbsp;do hĺbky</em></p>
+
+
+
+<p>"S&nbsp;Ivanom som spolupracoval od roku 1994. Hovoril som s&nbsp;ním do posledných dní jeho života, pár dní pred smrťou som mu ešte prial krásne Vianoce. Keď som sa dozvedel, čo sa stalo, tak ako keby mal obarila morová rana. Ivana som považoval za človeka s&nbsp;tromi veľkými Č. Bol úprimný, zásadový, priamy a cieľavedomý. Nikoho neodmietol. Každého, kto sa na neho obrátil, vedel v&nbsp;prvom rade pochopiť, poradiť a&nbsp;keď bolo treba, aj pomôcť. A&nbsp;to sa málokedy vidí nielen v&nbsp;súčasnej dobe, ale aj v&nbsp;minulosti. Páčilo sa mi, že to, čo zmeškal ako funkcionár, sa do konca života snažil naprávať svojou životosprávou, športovaním, prechádzkami. Približne raz za pol roka sme sa niekde stretli. Úprimne ma tešilo, že som na ňom videl, ako pookrial, aký bol aktívny.</p>
+
+
+
+<p>U&nbsp;neho sa mi vždy páčila jeho taktika a&nbsp;premyslenosť krokov, stratégia aj do vlastných radov – do samosprávy. On išiel do hĺbky systémového riešenia problémov, táto vlastnosť mnohým dnes chýba. Ľudia ho nazývajú bojovníkom za slovenské poľnohospodárstvo. Ja by som ho nazval, že bol človekom na svojom mieste, ktorý svojím premysleným znalostným ekonomickým lobizmom dokázal komunikovať so všetkými sférami riadenia spoločnosti – či to boli ministri, premiéri. Dokázal si k&nbsp;nim nájsť cestu a&nbsp;na základe argumentov s&nbsp;hlbokou znalosťou problému dokázal ľudí motivovať k&nbsp;jeho riešeniu. Koľkokrát sa mi stalo, že chcel počuť názor iných na niečo. Nemal v&nbsp;štýle diktovať, ale presviedčať na základe argumentov.</p>
+
+
+
+<p>Jeho odchod znášam veľmi ťažko. Takýto ľudia by si za obdobie tak dlhoročnej a cieľavedomej roboty zaslúžili x-rokov pokojného rodičovského a dedkovského života, aby to, čo zmeškali za profesionálnej kariéry, si naplno užili vo vyššom veku."</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/9dmnB6E.png"></figure><p></p>
+
+<p><small><span>Ivan Oravec počas XVIII. VZ SPPK</span></small></p>
+
+
+
+<h2 class="doc-subheading">IGOR JAKUBIČKA, predseda PD DEVIO Nové Sady</h2>
+
+<p><em>Taktika generačnej výmeny a&nbsp;Ivanova turistika </em></p>
+
+
+
+<p>"S&nbsp;Ivanom som sa poznal od roku 1989, už vtedy som chcel ísť pracovať na družstvo do Nových Sadov. Do práce ma prijímal až v&nbsp;auguste 1990. Chcel som sa stať mechanizátorom, ale miesto nebolo voľné. Povedal mi – <em>nechaj, niečo vymyslím.</em> Začínal som ako traktorista, neskôr som bol pravou rukou agronóma a&nbsp;od januára 1994 konečne mechanizátorom. Spomínam si na krásne roky s&nbsp;Ivanom, keď sme spolu robili na družstve, v&nbsp;teréne, pri zvieratách. Do všetkého ma zasväcoval a&nbsp;pridával mi ďalšie funkcie na družstve. Od roku 2006 sa začal so mnou baviť o&nbsp;budúcom smerovaní družstva po jeho odchode do dôchodku. V&nbsp;tajnosti držal tieto naše víkendové debaty 6 rokov a&nbsp;až v&nbsp;roku 2012 zverejnil svoj zámer mať zo mňa najskôr výkonného podpredsedu, ktorý mu schválilo predstavenstvo družstva. Navždy si budem vážiť jeho zmysel pre generačnú výmenu a&nbsp;taktiku, s&nbsp;akou na ňu išiel. Najskôr dlhodobé zaúčanie do chodu podniku, neskôr výmena riadiacich funkcií. Bol tak veľkým človekom, že po zmene vedenia mi uvoľnil svoju vlastnú kanceláriu a&nbsp;sám si zriadil kanceláriu v&nbsp;malých priestoroch na inom konci budovy. Dal mi úplne voľnú ruku pri riadení podniku, v&nbsp;tom vnímam jeho osobnosť. Predsedom som sa stal v&nbsp;roku 2014.</p>
+
+
+
+<p>Tak, ako mal Ivan rád mobil, tak mal rád aj počítač. Nepresedel bez aktivity ani po výmene funkcií: buď študoval cez mobil alebo počítač, niť medzi ním a&nbsp;družstvom sa nepretrhla. Všetky dokumenty každý mesiac čítal, sledoval. Každé ráno až do 22. decembra komunikoval s našou ekonómkou. &nbsp;</p>
+
+
+
+<p>Príkladom nám išiel aj so svojou sebadisciplínou. Lekár mu pre zdravotné problémy nariadil každodenný pohyb a&nbsp;Ivan si to zobral k&nbsp;srdcu doslovne. Denne pomocou turistických paličiek nachodil 7-10 km zrýchlenou chôdzou. Keď bolo pekne, kráčal v&nbsp;prírode, v&nbsp;teréne. Keď pršalo, vybral sa do nitrianskeho nákupného centra. Pomedzi obchody si vytvoril pomyselný turistický okruh, ktorým kráčal a&nbsp;kráčal, kým neprešiel svojich denných 10 km. Týmto rituálom sa stal známym a&nbsp;známou sa stala aj príhoda, keď ho na jednej takej obchôdzke zastavila aj SBS z&nbsp;nákupného centra, pretože jej už bol Ivan podozrivý. Za pekného počasia viedol jeho okruh aj rôznymi príjemnými krčmičkami pod Zoborom, kde ho miestni poznali a&nbsp;vždy s&nbsp;ním prehodili kus reči. Denný pohyb si neodpustil ani počas korony.</p>
+
+
+
+<p>Pre nás všetkých, ktorí sme s&nbsp;ním pracovali, bolo pre nás cťou, že sme mohli byť vedľa neho. Jeho priamy pohľad do očí, bol taký poctivý, na ktorý sa nezabúda. Nedalo sa ho oklamať ani odborne a&nbsp;ani ľudsky. Bol nekompromisný a&nbsp;tvrdý, no na druhej strane poctivý, úprimný a nikdy nebol zákerný. Bol aj priateľský, vedel hovoriť aj o&nbsp;rodine, priateľoch. Bude nám chýbať. Jeho odchod je pre nás obrovskou stratou."</p>
+
+
+
+<h2 class="doc-subheading">JOZEF BAKO, riaditeľ RPPK Nitra </h2>
+
+<p><em>Bojovník aj pri rokovaniach s&nbsp;Mečiarom či záchrana protézy v bazéne </em></p>
+
+
+
+<p>„Ivan bol otrok mobilov. Bol vždy na linke a&nbsp;nonstop telefonoval. Mobil musel mať pri sebe stále, aj&nbsp;počas rokovania v&nbsp;Košiciach. Keď po skončení diskusie sadol do auta a&nbsp;odišiel domov, čudoval sa, že mu nikto nevolá. Veľké bolo jeho prekvapenie, keď si za Košicami uvedomil, že mobil si zabudol na nabíjačke v&nbsp;rokovacej miestnosti. Musel sa preň vrátiť, ale najskôr musel v&nbsp;budove nájsť človeka, ktorý mu odomkne už zavretú miestnosť s&nbsp;mobilom. &nbsp;</p>
+
+
+
+<p>Ivan pôsobil v&nbsp;pohnutej dobe. Zažil množstvo zaujímavých rokovaní, aj krízových diskusií, či úsmevných situácií. S&nbsp;bývalým premiérom Mečiarom rokoval v&nbsp;Trenčianskych Tepliciach. Keď s&nbsp;ním nastupoval do výťahu, odmietol pustiť do kabínky ďalšieho pána s&nbsp;komentárom – <em>čo nevidíte, už je nás tu dosť!</em> Až neskôr zistil, že z&nbsp;výťahu vyhodil premiérovho ochrankára. Bol tvrdým zástancom slovenských poľnohospodárov a&nbsp;potravinárov. Ani vtedajšieho premiéra Mečiara neváhal na rokovaní vyzvať, aby zaplatil producentom potravín všetko to, čo im štát dlží.</p>
+
+
+
+<p>Spomínam si aj na veľmi úsmevnú príhodu so stratenou protézou v&nbsp;bazéne. Ivanovi vypadla do vody počas plávania. Zachraňoval ju spolu s&nbsp;miestnym plavčíkom, ktorého požiadal, aby mu zuby z&nbsp;vody vylovil. &nbsp;&nbsp;</p>
+
+
+
+<p>Asi sa s&nbsp;mnohými zhodneme v&nbsp;tom, že Ivan bol čestný, neúplatný človek, srdcom otvorený. Svoju funkciu nikdy nezneužíval. Na prvom mieste boli vždy najskôr poľnohospodári a&nbsp;potravinári, až potom on.“</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/ejypYLs.png"></figure><p></p>
+
+
+
+<h2 class="doc-subheading">JOZEF SEDLÁK, dlhoročný novinár</h2>
+
+<p><em>Jeden z&nbsp;mála poľnohospodárov, ktorého si novinári zapamätali</em></p>
+
+
+
+<p>„Som presvedčený o&nbsp;tom, že Ivan ako jeden z&nbsp;mála slovenských poľnohospodárov, nadlho utkvie novinárom v&nbsp;pamäti. Bude to tým, že o&nbsp;odvetví pred kamerami a&nbsp;diktafónmi nehovoril iba s&nbsp;vervou, ale vedel presvedčiť aj ostatných. Novinári počas rozhovorov videli človeka, ktorý poľnohospodárstvu dokonale rozumie. Zároveň videli, že je čestný človek. Ivan sa vždy vedel zastať poľnohospodárov a&nbsp;vedel odlíšiť&nbsp;zrno od pliev. Nabádal novinárov, aby odlišovali, čo je v&nbsp;poľnohospodárstve dobré a&nbsp;čo zlé. Vždy nástojil na tom, aby bolo poľnohospodárstvo a&nbsp;potravinárstvo prezentované v&nbsp;médiách v&nbsp;reálnom obraze, aby si spoločnosť uvedomila strategický význam tohto odvetvia slovenskej ekonomiky. To bola najdôležitejšia črta.</p>
+
+
+
+<p>Ak sa už novinári dostali na Ivanove poľnohospodárske družstvo, tak sa mohli na vlastné oči presvedčiť, že jeho predseda nehovorí len tak do vetra. Skutočne mohli vidieť, že sú na družstve, ktoré má tradíciu a&nbsp;obrovský význam pre región. Ivan bol rovný a&nbsp;čestný chlap, o&nbsp;čom svedčí aj transformácia, ktorá sa uskutočnila na PD DEVIO Nové Sady. Ako predseda nikdy nezabudol na žiadneho podielnika. Dokonca podnik vyplácal určité percento zisku pre podielnikov. Ak hovoril o&nbsp;pozitívach družstva ako takého, tak tým myslel, že družstvá urobili zo Slovenska modernú poľnohospodársku krajinu, že odbremenili ľudí od najväčšej driny a&nbsp;že vychovali nové generácie poľnohospodárov, ktorí majú moderné zmýšľanie a&nbsp;vedia pokračovať v&nbsp;úspechoch podniku. &nbsp;</p>
+
+
+
+<p>Žiaľ, začiatkom 90. rokov a&nbsp;na prelome tisícročí sa do politiky dostali ľudia, ktorí nezvládli transformáciu a&nbsp;zatlačili domáci agropotravinársky segment na perifériu národného hospodárstva. Ivan bol ten, kto politikom a&nbsp;spoločnosti neustále pripomínal, že chlebové odvetvie si zaslúžil viac.</p>
+
+
+
+<p>Následky tej doby a&nbsp;nepremyslených krokov vidíme aj dnes v&nbsp;podobe dopadov klimatických zmien a&nbsp;pandémie na krajinotvorbu a&nbsp;potravinovú sebestačnosť. Ivanov odkaz je v&nbsp;tom obrovský. Kde by sme dnes boli, keby malo Slovensko viac takých PD DEVIO?“</p>
+
+
+
+
+
+
+
+<p><strong><em>IVAN ORAVEC, ĎAKUJEME TI ZA VŠETKO!</em></strong></p>
+
+<p><strong><em>ODPOČÍVAJ V POKOJI!&nbsp;</em></strong></p>
+
+<p><strong><em>... a nech sa Ti tam hore dobre gazduje ...</em></strong></p>
+
+
+
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

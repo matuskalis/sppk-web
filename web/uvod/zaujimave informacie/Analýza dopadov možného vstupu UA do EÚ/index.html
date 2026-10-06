@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analýza dopadov možného vstupu UA do EÚ — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Analýza dopadov možného vstupu UA do EÚ</nav>
+
+  <article>
+    <h1 class="doc-title">Analýza dopadov možného vstupu UA do EÚ</h1>
+    <p class="doc-meta"><span class="doc-meta-item">TO SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">30. apríla 2025</span></p>
+
+    <div class="doc-body">
+<p><span>Slovenská poľnohospodárska a potravinárska komora sa zapája do medzirezortného pripomienkového konania k materiálu ohľadom dopadov možného rozširovania Európskej únie o Ukrajinu. Tento materiál je aktuálne v medzirezortnom pripomienkovom konaní a komora už vyzvala svojich členov k jeho analýze a zaslaniu pripomienok.&nbsp;</span></p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/krNCs7b.jpeg"></figure><p><span></span></p>
+
+<p>Publikujeme prepis najdôležitejších pasáží z materiálu. Jeho celé znenie nájdete <a href="https://www.slov-lex.sk/elegislativa/legislativne-procesy/SK/LP/2025/180/sprievodne-dokumenty?stadiumUuid=35531c8e-6dca-4824-acc0-9543695f5099" class="external" target="_blank" rel="noopener noreferrer"><strong><span>TU</span></strong></a>.&nbsp;</p>
+
+
+
+<h2 class="doc-subheading">Analýza dopadov možného vstupu UA do EÚ</h2>
+
+<p>Spomedzi kandidátskych krajín má Ukrajina (ďalej len „UA“) strategický význam, čo ju predurčuje na prioritu v rámci rozvojových a kooperačných aktivít. Ekonomický vplyv UA ako kandidátskej krajiny sa začne prejavovať už niekoľko rokov pred jej oficiálnym vstupom do EÚ, čo Slovensku poskytuje príležitosť včas využívať tento potenciál.</p>
+
+<p>Integrácia Ukrajiny do jednotného trhu EÚ bude mať významné dopady aj na slovenský agropotravinársky sektor. Na jednej strane vytvára priestor na intenzívnejšiu spoluprácu, technologický transfer a nové obchodné väzby, na druhej strane kladie dôraz na nutnosť zvýšiť konkurencieschopnosť slovenského poľnohospodárstva a jeho spracovateľského reťazca. Slovenská republika môže prostredníctvom cielenej spolupráce, najmä v&nbsp;oblasti spracovania, efektivity dodávateľských reťazcov a podpory diverzifikácie pestovaných plodín, získať výhodné postavenie pri formovaní poľnohospodárskej politiky v širšom regióne.</p>
+
+<p>Je nevyhnutné, aby SR už teraz začala intenzívne pripravovať stratégie na zvládnutie výziev spojených so vstupom UA do EÚ. Tento čas by mal byť využitý na identifikáciu a maximalizáciu výhod, ktoré by mohli vyplynúť z integrácie, ako aj na predvídanie a zmierňovanie potenciálnych rizík.</p>
+
+<p>Benefity – lacná pracovná sila; do roku 2035 sa očakáva potreba nových ľudí v&nbsp;agro 1300 a&nbsp;v&nbsp;potravinárstve 2100</p>
+
+<p>Podľa predbežných odhadov by nemala SR kvôli vstupu UA do EÚ prejsť do stavu čistého prispievateľa do rozpočtu EÚ. Je však vysoko pravdepodobné, že SR, rovnako ako všetci čistí prijímatelia z&nbsp;rozpočtu EÚ, bude disponovať nižším podielom finančných prostriedkov z kohéznej politiky. Na úrovni EÚ bude nevyhnutné prehodnotiť Spoločnú poľnohospodársku politiku členských štátov, ktorá bude musieť prispôsobiť svoje priority a výdavkové kapitoly novým podmienkam. Tieto zmeny budú zásadné pre úspešnú integráciu UA a zabezpečenie stability EÚ. SR má príležitosť získať dodatočné zdroje z&nbsp;nástroja na prepájanie&nbsp;Európy (CEF) na projekty, ktoré podporia prepojenosť EÚ aj cez územie SR s&nbsp;UA.</p>
+
+<p>V oblasti poľnohospodárstva UA najviac konkuruje SR pri pestovaní obilnín a olejnín. Vysoká sebestačnosť UA v oblasti poľnohospodárskeho sektora predstavuje pre SR významnú konkurenciu, ktorú bude potrebné zohľadniť pri plánovaní ďalšieho rozvoja. SR sa musí pripraviť na silnú konkurenciu a byť ochotná prispôsobiť časť svojej poľnohospodárskej výroby produktom, ktoré majú vysoký exportný potenciál na UA.</p>
+
+<p>Odporúčanie: Podporovať vstup UA do EÚ na základe úplného splnenia všetkých Acquis communautaire<a href="#_ftn1" name="_ftnref1" title="">[1]</a>.</p>
+
+<p>V porovnaní so SR má UA výrazne väčší podiel poľnohospodárstva (UA - 11 % oproti SR - 2 %) a ťažobného priemyslu (UA -5,31 % oproti SR - 0,2 %) na celkovej produkcií. UA má mimoriadny poľnohospodársky potenciál vďaka 41,3 mil. ha poľnohospodárskej pôdy, z ktorej 32,9 mil. ha tvorí orná pôda. V porovnaní so SR ide o 22-násobne väčšiu rozlohu poľnohospodárskej pôdy a 24-násobne väčšiu plochu ornej pôdy<a href="#_ftn2" name="_ftnref2" title="">[2]</a>.</p>
+
+<p>UA predstavuje pre SR najvýznamnejšieho konkurenta v oblasti produkcie obilnín a olejnín.</p>
+
+<p>SR musí včas identifikovať svoje komparatívne výhody a preorientovať časť svojej poľnohospodárskej produkcie na komodity s vyššou pridanou hodnotou na hektár alebo so špecifickými vlastnosťami (napr. ekologická kvalita, regionálny pôvod, prémiové produkty). Diverzifikácia pestovaných plodín a podpora vertikál s potenciálom spracovania môžu zvýšiť odolnosť domáceho agrosektora voči externému tlaku. Príležitosťou pre slovenských producentov je tiež spolupráca s ukrajinskými partnermi pri spracovaní a finalizácii produktov, ako aj zapojenie do obnovy spracovateľského priemyslu a potravinovej infraštruktúry na UA.</p>
+
+<p>V porovnaní s EÚ má UA väčšiu výmeru poľnohospodárskej pôdy ako Francúzsko (27,4 mil. ha) či Španielsko (23,9 mil. ha) a jej vstup do EÚ by ju mohol posunúť na popredné miesto v európskom poľnohospodárstve. Pre SR to predstavuje príležitosti v oblasti logistiky ukrajinského exportu a spolupráce v inováciách. Na druhej strane hrozí zvýšená konkurencia lacnejších a výnosnejších ukrajinských produktov, čo by mohlo vyžadovať úpravu poľnohospodárskych politík na zachovanie konkurencieschopnosti. Očakáva sa rast zahraničného obchodu UA.</p>
+
+<p>Vzhľadom na vysokú citlivosť niekoľkých poľnohospodárskych produktov, najmä pšenice, jačmeňa, kukurice, medu a cukru, ktoré majú veľký ekonomický význam, sa SR zasadzuje za zachovanie tarifných kvót pre tieto produkty, a to najlepšie na súčasnej úrovni, aby sa zabezpečili stabilné obchodné podmienky na vnútornom trhu EÚ. V rámci DCFTA sú priemyselné produkty už plne liberalizované, s výnimkou osobných automobilov, kde UA uplatňuje prechodné clo vo výške 1,8 % do 1. januára 2026. EÚ aplikuje 40 colných kvót pokrývajúcich 36 produktov, vrátane hydiny (90 tis. ton), vajec (6 tis. ton), obilnín (pšenica, jačmeň, kukurica), cukru (20 tis. ton), medu (6 tis. ton) či etanolu (100 tis. ton).</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/dbfHgKY.jpeg"></figure><p></p>
+
+<p>UA naopak využíva len niekoľko colných kvót, napríklad na bravčové mäso, hydinu a cukor. Na spracované poľnohospodárske produkty uplatňuje clá v rozpätí 2 – 16 %, pričom väčšina je na úrovni približne 10 %. Aj napriek rozsiahlej liberalizácii obchodu medzi EÚ a UA v zmysle DCFTA bude integrácia UA do EÚ znamenať úplné otvorenie vnútorného trhu EÚ pre dovozy z UA, vrátane potenciálnych negatívnych dopadov na ekonomických aktérov v SR. Na druhej strane bude UA nútená prispôsobiť sa právnemu rámcu Acquis communautaire EÚ, vrátane prísnych štandardov kvality, bezpečnosti a environmentálnych požiadaviek.</p>
+
+<p>O&nbsp;UA je všeobecne známe že patrí k&nbsp;najväčším producentom a&nbsp;vývozcom poľnohospodárskych produktov, predovšetkým obilnín a olejnín. Práve tie tvoria najväčší podiel na celkovom množstve importovaných poľnohospodárskych produktov z UA do EÚ, s&nbsp;priemernou hodnotou 1,86 mld. USD. Napriek tomu, že UA zatiaľ nie je členom EÚ, už teraz jej vývoz obilnín niekoľkonásobne prevyšuje SR. Hoci aj v&nbsp;našom prípade sa u&nbsp;obilnín jedná o&nbsp;najdominantnejšiu poľnohospodársku plodinu, hodnota jej vývozu dosahuje sumu 0,40 mld. USD. Odstránenie colných bariér po vstupe do EÚ spôsobí, že obilniny z&nbsp;UA, ktoré sú častokrát lacnejšie než tie slovenské, sa začnú do členských štátov vyvážať vo väčšom množstve a&nbsp;teda znížia podiel na trhu EÚ obilninám zo SR.</p>
+
+<p>Tento vývoj si vyžaduje komplexnú transformáciu a diverzifikáciu pestovateľského portfólia, pričom zvlášť ohrození sú pestovatelia obilnín a olejnín. Slovenská produkcia ovocia, zeleniny a zemiakov, ktorá je už teraz nízko sebestačná, môže čeliť lacnejšej konkurencii z UA, čo môže viesť k ukončeniu činnosti mnohých domácich pestovateľov. UA sa môže stať významnou konkurenciou v sektore cukru, keďže je silným obchodným partnerom pre EÚ<a href="#_ftn3" name="_ftnref3" title="">[3]</a>. Jej podiel na celkovom dovoze cukru do EÚ rástol až do roku 2023, no v roku 2024 poklesol na 363,19 tisíc ton, čo predstavovalo 28 % podiel na celkovom dovoze do EÚ. Kľúčovým krokom bude podpora inovácií a&nbsp;startupov v poľnohospodárskom sektore, ako aj zlepšenie marketingových stratégií, aby sa zvýšila konkurencieschopnosť slovenských poľnohospodárskych a potravinárskych produktov na medzinárodných trhoch.</p>
+
+<p>SR by mala svoje úsilie koncentrovať na zníženie záporného salda medzinárodného obchodu s potravinami. Výrobný a obchodný model SR je nevýhodný, pretože väčšinu exportu tvoria agrokomodity s nižšou pridanou hodnotou, zatiaľ čo dovoz tvoria drahšie finalizované potraviny, pričom ide o výrobky, pre ktorých výrobu na SR existujú kapacity.</p>
+
+<p>Za účelom budovania moderného a konkurencieschopného poľnohospodárstva na SR bola vytvorená <a href="https://www.enviroportal.sk/dokument/vizia-spolocnych-postupov-pri-budovani-moderneho-podohospodarstva-v-horizonte-roku-2035" class="external" target="_blank" rel="noopener noreferrer">Vízia spoločných postupov pri budovaní moderného poľnohospodárstva do roku 2035</a><a href="#_ftn4" name="_ftnref4" title="">[4]</a>. Cieľom je zaviesť inovácie do poľnohospodárstva a potravinárskeho priemyslu, ktoré zvýšia konkurencieschopnosť slovenskej produkcie, a optimalizovať využívanie zdrojov a výrobu potravín v súlade s prírodou.</p>
+
+<p>Na základe toho MPRV SR definuje opatrenia vyplývajúce z&nbsp;uvedenej vízie: podpora domácich producentov - zabezpečiť štátne dotácie na výrobu a zlepšenie konkurencie schopnosti, podpora miestnych trhov a predaj produktov zo SR; zlepšenie kvality a&nbsp;marketingu; inovácie a technológie v poľnohospodárstve, najmä v oblasti poľnohospodárskej produkcie; vzdelávanie pre poľnohospodárov; zlepšenie prístupu k financiám a osveta pre verejnosť v rámci sektora poľnohospodárstva.</p>
+
+<p>Budúce rozšírenie, vrátane možného prijatia UA, Moldavska a krajín západného Balkánu, bude nevyhnutne ovplyvnené aktuálnymi rozpočtovými výzvami EÚ. Okrem tradičných výdavkov bude potrebné zohľadniť splácanie dlhu v rámci programu Next Generation EU, ako aj tlak na nové výdavky a výzvy spojené so získavaním dodatočných príjmov.</p>
+
+<p>Výsledky ukazujú, že v oboch scenároch rozšírenia by boli dopady na čisté rozpočtové bilancie súčasných členských štátov marginálne. Žiadny zo súčasných členských štátov by sa nezmenil z čistého príjemcu na čistého prispievateľa. Bez uplatnenia prahových hodnôt na obmedzenie dopadov by však viaceré členské štáty čelili výraznému zníženiu alokácií z kohéznej politiky. Redukcie by sa pohybovali od 20 %-25 % (Dánsko, Cyprus, Malta, Francúzsko) až po 40 % -50 % (Nemecko, Fínsko), čo podčiarkuje dôležitosť kontrolných mechanizmov pri plánovaní rozpočtových dopadov rozšírenia.</p>
+
+<p>SR by v aktuálnom programovom období zaznamenala najväčší pokles, ak by UA a krajiny západného Balkánu vstúpili do EÚ súčasne. Je však dôležité poznamenať, že tieto predpoklady vychádzajú z hypotézy, že tieto krajiny by boli členmi EÚ už teraz. - SR by malo k rozširovaniu EÚ pristupovať strategicky, zohľadňujúc nielen finančné dopady, ale aj širšie ekonomické, bezpečnostné a geopolitické prínosy. Postupný vstup krajín západného Balkánu by znamenal relatívne mierny pokles kohéznych fondov (-3,23 %), zatiaľ čo súčasné rozšírenie o tieto krajiny spolu s UA by viedlo k výraznejšiemu zníženiu finančných prostriedkov (-14,12 %). Napriek tomu je potrebné vnímať aj pozitívne efekty, ako sú nové obchodné a investičné príležitosti, posilnenie stability v regióne či lepšia prepojenosť trhov, ktoré môžu dlhodobo priniesť ekonomický rast a posilniť postavenie SR v rámci EÚ.</p>
+
+&nbsp;
+<hr size="1">
+
+<p><a href="#_ftnref1" name="_ftn1" title="">(zdroj: http://eu.euroiuris.sk/pre_pedagogov/zakladne_pojmy)</a></p>
+
+
+
+<p><a href="#_ftnref2" name="_ftn2" title="">[2]</a> Detailnejšia tabuľka je v&nbsp;analytickom materiáli IPP</p>
+
+
+
+<p><a href="#_ftnref3" name="_ftn3" title="">[3]</a> Detailnejšia analýza je v&nbsp;analytickom materiáli IPP, ktorý bude prílohou tohto dokumentu</p>
+
+
+
+<p><a href="#_ftnref4" name="_ftn4" title="">[4]</a> Vízia je analyticko-syntetický dokument, skoncipovaný so zámerom pomenovať súčasný stav, východiská a očakávania rozvoja do roku 2027 a&nbsp;2035. Dostupná na: https://www.enviroportal.sk/dokument/vizia-spolocnych-postupov-pri-budovani-moderneho-podohospodarstva-v-horizonte-roku-2035;</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prezídium COPA, 17. jún 2022 — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../../index.html">Úvod</a><span>/</span><a href="../../../index.html">medzinarodne aktivity</a><span>/</span><a href="../../index.html">COPA-COGECA</a><span>/</span><a href="../index.html">spravy zo zasadnutiC-C</a><span>/</span>Prezídium COPA, 17. jún 2022</nav>
+
+  <article>
+    <h1 class="doc-title">Prezídium COPA, 17. jún 2022</h1>
+    <p class="doc-meta"><span class="doc-meta-item">4. júla 2022</span></p>
+
+    <div class="doc-body">
+<p>Miesto stretnutia:&nbsp; COPA-COGECA, Rue de Trèves 61, 1040 Brusel</p>
+
+<p>Dátum stretnutia: 17. júna 2022</p>
+
+<p>Účastník stretnutia: Konzorcium</p>
+
+<p>Názov aktivity: Prezídium COPA</p>
+
+<p>Podrobný popis aktivity:</p>
+
+<p>Predsedali prezidentka COPA Christiane Lambertová (FR) a&nbsp;prezident COGECA Ramon Armengol (ES).</p>
+
+
+
+<p>Výmena názorov s&nbsp;Pascalom Canfinom (DG ENVI) o&nbsp;súčasných kľúčových témach</p>
+
+<p>Pascal Canfin za kľúčové označil viesť konštruktívne diskusie. Zelená transformácia poľnohospodárstva je podľa neho nevyhnutná, poľnohospodári však musia mať garantované príjmy tak, aby boli schopní pokračovať vo svojej činnosti, preto bola zachovaná výška rozpočtu SPP. Ďalšou prioritou musí byť predchádzanie nekalej súťaži, preto musia platiť&nbsp; rovnaké pravidlá pre poľnohospodárov v&nbsp;EÚ a&nbsp;mimo nej. Riešením je zavedenie zrkadlových doložiek&nbsp; do obchodných dohôd. Úspešná transformácia potravinového systému musí zahŕňať všetkých aktérov, vrátane spotrebiteľov. Nová SPP podľa neho predstavuje pozitívnu dohodu, ktorá zaistí prínosy tým, ktorí k&nbsp;transformácii prispievajú.</p>
+
+<p>Poľnohospodárstvo hrá dôležitú úlohu aj v&nbsp;energetike – poľnohospodári môžu produkovať obnoviteľnú energiu, čo im zaistí ďalší príjem, biopalivá tiež môžu byť alternatívou leteckého kerozínu. Pre poľnohospodárov by mohla byť zaujímavá aj iniciatíva uhlíkového poľnohospodárstva, ktorá im môže pomôcť generovať ďalšie príjmy, nutné je však zaistiť fungujúci trh s&nbsp;uhlíkovými kreditmi.</p>
+
+
+
+<p>Diskusia:</p>
+
+<p>ES reprezentant upozornil na neúnosnú situáciu týkajúcu sa veľkých šeliem, podporil preto iniciatívu výboru AGRI ohľadom revízie smernice o&nbsp;biotopoch. Upozornil na zníženie prostriedkov PPPs – pokiaľ za ne nie je lepšia alternatíva, znížia sa výnosy aj celkový objem produkcie. Upozornil aj na stratu 25 % ornej pôdy za posledných 25 rokov, preto odmietol ciele na ďalšie zníženie plochy o&nbsp;10 %.</p>
+
+<p>P. Canfin súhlasil, že politika na ochranu šeliem v&nbsp;EÚ je úspešná, preto bude treba revidovať pravidlá, ale až po odsúhlasení klimatického balíčka. Súhlasil, že treba nájsť vhodné alternatívy za PPPs a&nbsp;súhlasil aj s&nbsp;tým, že poľnohospodársku pôdu treba chrániť. Na druhej strane upozornil, že poľnohospodári sami svoju pôdu predávajú.</p>
+
+<p>DK reprezentantka referovala o&nbsp;veľkom príspevku ekologických poľnohospodárov, ktorí už veľmi obmedzili používanie pesticídov, preto by teraz nemali byť trestaní požiadavkou na ďalšie znižovanie.</p>
+
+<p>P. Canfin súhlasil, že treba rozlišovať medzi tými, ktorí už pokrok dosiahli, inak iniciatíva postráda zmysel. Rozdiely by mali byť zohľadnené aj v&nbsp;pripravovanom legislatívnom návrhu týkajúceho sa udržateľného používania pesticídov.</p>
+
+<p>BE reprezentant upozornil na obrovské dopady právne záväzných cieľov v&nbsp;oblasti obnovy prírody a&nbsp;znižovania PPPs.</p>
+
+<p>AT reprezentant uviedol, že poľnohospodári sa usilujú o&nbsp;zníženie závislosti na hnojivách, ale to nie je možné zo dňa na deň a&nbsp;treba prijať realistický pohľad.</p>
+
+<p>PL reprezentant oponoval P. Canfinovi v&nbsp;pohľade na prioritu zaistenia príjmov poľnohospodárov. Upozornil, že poľnohospodári majú problémy už teraz, pred implementovaním cieľov stratégie F2F. Potrebné sú financie&nbsp; a&nbsp;skutočná pomoc.</p>
+
+<p>P. Canfin upozornil, že napr. 2/3 produkcie obilnín sú v&nbsp;EÚ určené na krmivá, preto je potrebné nájsť rovnováhu. Vykonávanie cieľov obnovy bude financované kombináciou verejných a&nbsp;súkromných prostriedkov a&nbsp;pokiaľ sa budú týkať poľnohospodárov, musí im byť poskytnutá príslušná finančná podpora.</p>
+
+
+
+<p>&nbsp;Prezídium COPA</p>
+
+<p>Predsedala prezidentka COPA Christiane Lambertová (FR).</p>
+
+<p>Výmena názorov s&nbsp;Catherine Geslain-Lanéelleovou (riaditeľka pre veterinárne a&nbsp;rastlinolekárske otázky, potraviny a&nbsp;lesníctvo – sekretariát Rady) o&nbsp;činnosti FARM</p>
+
+<p>Zástupkyňa Rady informovala o&nbsp;iniciatíve FARM (Food and Agriculture Resilience Mission), ktorej zahájenie oznámil FR prezident 24. 3. 2022 v&nbsp;spolupráci s&nbsp;ďalšími partnermi z&nbsp;EÚ, G7 a&nbsp;Africkej únie. Jej cieľom je zabrániť katastrofálnym dopadom vojny na UA na globálnu potravinovú bezpečnosť, preto sa sústreďuje na mobilizáciu potravinárskych systémov – verejných a&nbsp;súkromných – aby sa obmedzili riziká na celosvetovej úrovni. Iniciatíva je založená na 3 pilieroch: obchodnom, produkčnom a&nbsp;solidárnom. Zástupkyňa upozornila, že akútne treba riešiť vývoz poľnohospodárskych komodít (najmä obilnín) z&nbsp;UA a&nbsp;navýšenie skladovacích kapacít na nadchádzajúci zber úrody. Objem produkcie na UA pravdepodobne klesne na polovicu, preto je nutné využiť všetok produkčný potenciál a súčasne zaistiť udržateľnosť a&nbsp;odolnosť potravinových systémov (nielen v&nbsp;EÚ).</p>
+
+
+
+<p>Diskusia:</p>
+
+<p>Zástupkyňa Rady uviedla, že ide o&nbsp;politickú iniciatívu, pri ktorej je dôležitá široká spolupráca na všetkých úrovniach: regionálnej, európskej a&nbsp;globálnej. Preto veľmi úzko spolupracujú s&nbsp;FAO, EK a&nbsp;G7.</p>
+
+<p>SE reprezentant zdôraznil zložitosť aktuálnej situácie pre poľnohospodárov, upozornil na nutnosť riešenia energetickej transformácie EÚ, ocenil preto iniciatívu a&nbsp;prisľúbil spoluprácu.</p>
+
+<p>IE reprezentant upozornil na zásadný problém EÚ – nedostatok hnojív a&nbsp;ich masívne zdražovanie.</p>
+
+<p>Zástupkyňa Rady uviedla, že tieto problémy sú často spomínané na rokovaniach Rady pre poľnohospodárstvo a&nbsp;rybolov, najmä vysoké ceny vstupov a&nbsp;obmedzený prístup k&nbsp;hnojivám. Komisár na rokovaniach uviedol, že prechod na udržateľný spôsob produkcie je potrebný, poľnohospodári už&nbsp;mnoho vecí aj učinili, aktuálne je potrebné zaistiť, aby nebola narušená potravinová bezpečnosť. Výzvou je posilnenie vzájomnej spolupráce na dosiahnutie udržateľnosti a&nbsp;odolnosti bez ohrozenia produkčnej kapacity. Na to sú nevyhnutné investície a&nbsp;inovatívne riešenia. Ambiciózne sú aj ciele na zníženie používania pesticídov. Na záver odporučila využiť skutočnosť, že poľnohospodárstvo a&nbsp;potravinová bezpečnosť sú teraz prioritnou témou a&nbsp;odporučila vyslať signál o&nbsp;pripravenosti poľnohospodárov.</p>
+
+<p>Predsedajúca skonštatovala, že je veľmi zložité motivovať poľnohospodárov k&nbsp;zachovaniu súčasnej úrovne produkcie popri všetkých chystaných politických iniciatívach Komisie.</p>
+
+<p>Zástupkyňa Rady súhlasila s&nbsp;ambicióznosťou Komisie, ale upozornila, že návrhy Komisie musia schváliť členské štáty aj Európsky parlament.</p>
+
+
+
+<p>Na schválenie:</p>
+
+<ul>
+	<li>návrh príspevku C-C k&nbsp;návrhu Komisie o nariadení o&nbsp;udržateľnom používaní PPPs</li>
+</ul>
+
+<p>Revidovaná verzia dokumentu bola schválená písomnou procedúrou v&nbsp;rámci skupiny POCC/CCC dňa 9. 6. 2022. RO reprezentant informoval o&nbsp;novšej uniknutej verzii dokumentu Komisie, podľa ktorej budú existovať 3 ciele zníženia PPPs a&nbsp;dáta by mali byť vyhodnocované podľa použitia a&nbsp;nie na základe predaja. Pre rôzne typy pesticídov budú použité rôzne koeficienty, ale návrh aj tak nie je férový voči krajinám, ktorých súčasné použitie pesticídov je pod európskym priemerom.</p>
+
+<p>Dokument bol schválený.</p>
+
+<ul>
+	<li>návrh stanoviska k&nbsp;akčnému plánu na zlepšenie prístupu k hnojivám</li>
+</ul>
+
+<p>Dokument bol pozmenený na základe diskusie skupiny POCC dňa 2. 6. 2022 a&nbsp;bez námietok schválený.</p>
+
+<ul>
+	<li>návrh predbežných úvah o&nbsp;zákaze plastových obalov na predaj ovocia a zeleniny</li>
+</ul>
+
+<p>Pracovná skupina pre ovocie a&nbsp;zeleninu vyjadrila svoje obavy a&nbsp;pripravila prvé úvahy k&nbsp;tejto záležitosti.</p>
+
+<p>Dokument bol schválený.</p>
+
+<ul>
+	<li>návrh diskusného dokumentu C-C k&nbsp;návrhu Komisie na revíziu systému zemepisných označení</li>
+</ul>
+
+<p>Konsolidovaná verzia bola zaslaná skupine POCC/CCC na schválenie písomným schvaľovacím postupom.</p>
+
+<p>Dokument bol schválený.</p>
+
+
+
+<p>Na prediskutovanie a&nbsp;prípadné schválenie:</p>
+
+<ul>
+	<li>návrh prehlásenia C-C o cieľoch EÚ v&nbsp;oblasti obnovy prírody</li>
+</ul>
+
+<p>Sekretariát referoval o&nbsp;pravdepodobnom odklade termínu zverejnenia návrhu Komisie o&nbsp;cieľoch obnovenia prírody. C-C vytvorili reflexný dokument založený na uniknutých dokumentoch návrhu. Opisuje nereálne ciele, ktoré sa kladú na poľnohospodárov a&nbsp;lesníkov, pričom postráda jasnú a&nbsp;súdržnú finančnú podporu na jej financovanie.</p>
+
+<ul>
+	<li>pozícia C-C k revízii smernice o&nbsp;priemyselných emisiách (IED)</li>
+</ul>
+
+<p>Sekretariát pripravil pozičný dokument pozostávajúci z&nbsp;3 častí, v&nbsp;ktorom vyjadruje nespokojnosť s&nbsp;návrhom Komisie, pokiaľ nebudú vyriešené určité varovné signály, týkajúce sa porovnávania poľnohospodárskych podnikov s&nbsp;priemyslom.</p>
+
+<p>Sekretariát upozornil na veľké diskusie v&nbsp;posledných týždňoch, mnohé organizácie žiadali odmietnutie návrhu Komisie a&nbsp;zachovanie súčasnej smernice. Podľa sekretariátu by však takéto prehlásenie Komisia hneď odmietla. Uviedol, že dokument nerozlišuje medzi chovom dobytka, ošípaných alebo hydiny. Ďalej žiada elimináciu zapojenia verejnosti do procesu povoľovania a&nbsp;elimináciu delegovaných aktov Komisie na zmenu rozsahu pôsobnosti smernice.</p>
+
+<p>Prvá časť dokumentu bola schválená.</p>
+
+<ul>
+	<li>návrh stanoviska C-C k&nbsp;rámcu pre udržateľné potravinové systémy</li>
+</ul>
+
+<p>Komisia zahájila 12-týždennú verejnú konzultáciu, týkajúcu sa iniciatívy rámca pre udržateľné potravinové systémy,&nbsp;ktorá je otvorená do 21. 7. 2022. Sekretariát vypracoval návrh stanoviska k&nbsp;tejto iniciatíve, dokument bude predložený pracovnej skupine POCC/CCC v&nbsp;júli.</p>
+
+
+
+<p>Spätná väzba na kampaň EUFarmers4Ukraine</p>
+
+<p>Sekretariát aktuálne zbiera podnety od zainteresovaných členov. Objavujú sa 2 modely pomoci: priame poskytovanie fyzických darov platforme v&nbsp;PL a&nbsp;finančné platby družstvu. Prvý dar bol potvrdený v&nbsp;týždni od 6. 6. 2022 od LRF vo forme 10 ton ozimnej pšenice.</p>
+
+<p>Informácie a&nbsp;výmena názorov na aktuálny stav SPP, dlhodobej vízie pre vidiecke oblasti a&nbsp;návrhu nariadenia o&nbsp;SAIO (štatistika vstupov a&nbsp;výstupov v&nbsp;poľnohospodárstve)</p>
+
+<p>SPP: Sekretariát referoval o&nbsp;pokračujúcom procese hodnotenia listov Komisie. V&nbsp;kontexte súčasnej krízy na UA vyzval Komisiu na uvoľnenie niektorých pravidiel SPP v&nbsp;roku 2023. Prípadné výnimky by sa mali týkať pravdepodobne štandardov DPEP 7 a&nbsp;8. Sekretariát referoval o&nbsp;návrhu zmeny nariadenia ohľadom zvláštneho opatrenia na poskytnutie výnimočnej dočasnej podpory v&nbsp;rámci Európskeho poľnohospodárskeho fondu pre rozvoj vidieka (EPFRV). Podľa tohto návrhu budú členské štáty môcť upraviť svoje programy rozvoja vidieka a&nbsp;vyčleniť 5 % svojich rozpočtov EPFRV na obdobie 2021-2022 na podporu poľnohospodárov.</p>
+
+<p>Dlhodobá vízia pre vidiecke oblasti: Komisia publikovala oznámenie 30. 6. 2021, sekretariát už zahájil analýzu predložených pozmeňovacích návrhov. V&nbsp;dňoch 15. a&nbsp;16. 6. 2022 sa uskutočnila konferencia k paktu o vidieku.</p>
+
+<p>V diskusii sa predsedajúca zmienila o&nbsp;DPEP 7 (rotácia plodín), označila ho za nevhodné opatrenie a&nbsp;vyzvala všetky organizácie na lobovanie u&nbsp;svojich ministerstiev.</p>
+
+<p>DE reprezentant informoval, že čo sa týka požiadaviek C-C na umožnenie výnimiek SPP v&nbsp;roku 2023, nový „zelený“ DE minister je proti.</p>
+
+<p>RO reprezentantka informovala, že RO minister poľnohospodárstva je pripravený podporiť požiadavku na zavedenie mimoriadnych opatrení pri DPEP 7 a&nbsp;ďalšie výnimky z&nbsp;podmienenosti v&nbsp;roku 2023.</p>
+
+<p>GS na záver uviedol, že komisár Wojciechowski podporuje udelenie výnimky na rok 2023 pri niektorých štandardoch DPEP, ale potrebuje získať súhlas kolégia komisárov, preto je nevyhnutné iniciatívu podporiť a&nbsp;vyzval na kontaktovanie komisárov.</p>
+
+
+
+<p>Informácie a&nbsp;výmena názorov na hlasovania plenárneho zasadnutia Európskeho parlamentu v&nbsp;dňoch 6. – 9. 6. 2022 o&nbsp;balíku Fit for 55</p>
+
+<p>Sekretariát referoval o&nbsp;výsledku hlasovania Európskeho parlamentu o&nbsp;niekoľkých častiach balíka Fit for 55. Z&nbsp;pohľadu C-C boli kľúčové najmä hlasovania ohľadom návrhu nariadenia o&nbsp;emisiách, využívania pôdy, LULUCF, CBAM a&nbsp;EU ETS. Navrhnutú revíziu EU ETS Parlament prekvapivo odmietol, návrh bol vrátený na prepracovanie výboru ENVI. Návrh CBAM bol vrátený výboru ešte pred hlasovaním o&nbsp;pozmeňovacích návrhoch. Parlament prijal svoj postoj k&nbsp;návrhu nariadenia o&nbsp;LULUCF a&nbsp;poslanci podporili návrh Komisie, aby cieľ EÚ na rok 2030 pre čisté odstránenie skleníkových plynov z&nbsp;LULUCF činil aspoň 310 mil. ton ekvivalentu CO2. Europoslanci vo svojom stanovisku podporili, aby emisie z&nbsp;poľnohospodárskeho odvetvia boli riešené oddelene od lesníctva. Podporili aj cieľ nulových emisií osobných automobilov a&nbsp;dodávok v&nbsp;roku 2035.</p>
+
+
+
+<p>Pre informáciu:</p>
+
+<ul>
+	<li>voľba prezidenta COPA dňa 23. 9. 2022</li>
+</ul>
+
+<p>GS informoval o&nbsp;nadchádzajúcich voľbách nového predsedníctva COPA, termín na zaslanie kandidatúr (CV + motivačný list) je 16. 9. 2022. Voľby prebehnú prezenčne.</p>
+
+<p>Predsedajúca oznámila záujem obhajovať mandát.</p>
+
+<ul>
+	<li>kongres EÚ farmárov 2022</li>
+</ul>
+
+<p>Kongres s&nbsp;názvom Odolné európske poľnohospodárstvo a&nbsp;globálne výzvy sa bude konať 12. – 14. 10. 2022 v&nbsp;chorvátskom Šibeniku. Pozvánky hosťom už boli odoslané, na portáli AgriInfo je posledná verzia programu. Účasť už potvrdil komisár Wojciechowski, sekretariát dúfa v&nbsp;účasť zástupcov CZ predsedníctva&nbsp; a&nbsp;UA ministerstva poľnohospodárstva.</p>
+
+<ul>
+	<li>téma odlesňovania v&nbsp;Parlamente a&nbsp;Rade</li>
+</ul>
+
+<p>Komisia zverejnila dňa 17. 11. 2021 návrh nariadenia týkajúci sa odlesňovania, C-C svoj reflexný dokument schválili na februárových prezídiách. Hlasovanie vo výbore ENVI prebehne v&nbsp;júni, na plenárnom zasadnutí v&nbsp;septembri. Sekretariát C-C zaslal svoje komentáre a&nbsp;priebeh hlasovania bude pozorne sledovať a&nbsp;rozošle zoznam hlasovania (voting list).</p>
+
+<ul>
+	<li>lesnícka stratégia EÚ v&nbsp;Európskom parlamente</li>
+</ul>
+
+<p>Hlasovanie výboru ENVI prebehlo začiatkom júna, výbor AGRI bude hlasovať 11.- 12. 7. 2022, sekretariát pripraví odporúčané zoznamy hlasovania a&nbsp;vyzval na kontaktovanie europoslancov.</p>
+
+<ul>
+	<li>spustenie intranetu AgriPulse</li>
+</ul>
+
+<p>Zatiaľ je spustená testovacia beta verzia, ostrá verzia bude spustená v&nbsp;lete. Prihlasovacie údaje sú zhodné s&nbsp;prihlasovacími údajmi do portálu AgriInfo.</p>
+
+
+
+<p>Rôzne</p>
+
+<p>GS informoval o&nbsp;plánovanom zasadnutí finačného výboru C-C koncom júna, kde sa bude schvaľovať rozpočet na budúci rok, vrátane členských príspevkov. Návrh zatiaľ počíta so zachovaním tohtoročnej úrovne členských príspevkov.</p>
+
+
+
+<h2 class="doc-subheading">Prínos aktivity pre poľnohospodárov v&nbsp;SR:</h2>
+
+<p>Prenos informácií pre členov SPPK k&nbsp;danej problematike.</p>
+
+<h2 class="doc-subheading">Vyplývajúce úlohy pre SPPK:</h2>
+
+<p>Pre SPPK nevyplývajú zo zasadania žiadne úlohy.</p>
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Slovenské poľnohospodárstvo a potravinová bezpečnosť štátu — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Slovenské poľnohospodárstvo a potravinová bezpečnosť štátu</nav>
+
+  <article>
+    <h1 class="doc-title">Slovenské poľnohospodárstvo a potravinová bezpečnosť štátu</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Pavel Koncoš</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">18. mája 2020</span></p>
+
+    <div class="doc-body">
+<h2 class="doc-subheading">Autor príspevku: Pavel Koncoš</h2>
+
+
+
+<p><span><strong>Nazdávam sa, že vývoj vo svete aj na Slovensku dospel v poslednom čase ku nevyhnutnosti zásadných zmien a ku prechodu od pravicového liberalizmu a globalizácii ku posilňovaniu národného a štátneho riadenia ekonomík. V tomto duchu sa treba opäť vrátiť aj k pojmu potravinová bezpečnosť štátu a jej dosiahnutiu, pričom ju môžeme definovať ako stav, kedy majú všetci obyvatelia štátu zabezpečený trvalý fyzický a ekonomický prístup k dostatočnej, bezpečnej a výživnej potrave, ktorá spĺňa ich výživové potreby pre aktívny a zdravý život.</strong></span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/bqqVtYC.jpg"></figure><p><small><span>Ilustračné foto</span></small></p>
+
+
+
+<p>Osobitne zdôrazňujem&nbsp;dostatočnosť potravín vyrobených na Slovensku&nbsp;a&nbsp;v&nbsp;jeho jednotlivých regiónoch a&nbsp;kvalitu potravín spojených s&nbsp;ich nutričnou hodnotou. Pretože ako uvádzajú najnovšie, najmä čínske výsledky výskumov zdravia a&nbsp;vzťahu ku konzumovaným potravinám a&nbsp;odvolávajúc sa aj na Prof. Petra Staněka, jedným z&nbsp;kľúčových fenoménov chorobnosti je chemické zloženie potravy a&nbsp;vzťah mikrobiómu pôdy ku mikrobiómu ľudí, pretože sa už dávnejšie zistilo, že mikrobiálne zloženie ľudského tela je priam totožné s&nbsp;mikrobiómom ľudí žijúcich&nbsp; v&nbsp;danom chotári či regióne.</p>
+
+
+
+<p>Z&nbsp;pohľadu budúceho stavu slovenskej ekonomiky a&nbsp;sociálneho postavenia občanov Slovenska si musíme dostatočne dôrazne uvedomovať vzťah medzi poľnohospodársko-potravinárskym komplexom a&nbsp;zdravím občanov. V&nbsp;predchádzajúcom období som bol jeden z&nbsp;mála poľnohospodárskych politikov, ktorí trvale upozorňovali na nevyhnutnosť potravinovej bezpečnosti. Dokonca niekedy v&nbsp;roku 2002 istý „novinár“ napísal, že dnes už o&nbsp;potravinovej bezpečnosti hovorí iba Koncoš po vzore Stalina. V&nbsp;tomto čase už aj Brigita Schmögnerová, moja súputníčka a&nbsp;častá oponentka v&nbsp;bývalej SDĽ a&nbsp;vo vláde SR prehlasuje, že v&nbsp;čase transformácie ekonomiky sme zanedbali rozvoj poľnohospodárstva a&nbsp;potravinárskeho priemyslu. Dotknem sa ešte kvality a&nbsp;nutričnej vyváženosti potravín, ktorá sa v&nbsp;predchádzajúcom období aj v&nbsp;Bruseli definovala ako bezpečnosť potravín. Nesúhlasím s&nbsp;týmto pojmom, pretože do dnešných kvalitných obalov alebo konzervy môžeme zabaliť čokoľvek, trebárs piliny a&nbsp;po sterilizácii to bude bezpečné, aj keď to vôbec nemá atribúty kvality a&nbsp;nutričnej hodnoty.</p>
+
+
+
+<p>Pozrime sa stručne na vývoj a súčasnú úroveň slovenského poľnohospodárstva a&nbsp; úroveň potravinovej bezpečnosti Slovenska.&nbsp;</p>
+
+
+
+
+
+<p>Najskôr sa však krátko vrátim do roku 2002, kedy som končil vo funkcii ministra pôdohospodárstva. Napriek výraznému poklesu objemu poľnohospodárskej produkcie v&nbsp;prvej poprevratovej dekáde oproti roku 1989, bol podiel vybratých výrobkov slovenského pôvodu v&nbsp;obchodnej sieti Slovenska väčšinou nad 90 percent (napr. hovädzie mäso 95 , bravčové mäso 84, mäsové výrobky 97, hydinové mäso 87, mlieko a&nbsp;smotany 99, syry a&nbsp;tvarohy 90, maslo mliekárenské 98, mlynské výrobky 96, rastlinné oleje 100 percent). Problémy už v&nbsp;tom čase boli s&nbsp;výrobou zeleniny, ovocia a&nbsp;odvodených výrobkov, s&nbsp;podielom cestovín, trvanlivého pečiva, alkoholických a&nbsp;nealkoholických nápojov, cukroviniek a&nbsp;pod. I&nbsp;tak bol podiel potravín slovenského pôvodu v&nbsp;obchodnej sieti Slovenska v&nbsp;roku 2002 nad 72 percent. V&nbsp;roku 2012 to bolo už iba 49 percent a&nbsp;dnes nie je slovenských potravín v&nbsp;domácej obchodnej sieti viac ako 35 percent.</p>
+
+
+
+<p>Poľnohospodárska produkcia v&nbsp;roku 2018 bola na úrovni necelých 2&nbsp;200 mil. EUR, teda o&nbsp;700 mil. EUR nižšia oproti roku 1990, kedy prekračovala 2&nbsp;900 mil. EUR. Významný, v&nbsp;negatívnom zmysle, je pokles objemu poľnohospodárskej výroby, ale&nbsp;<strong>slovenských poľnohospodárov nectí najmä úroveň poľnohospodárskej výroby na 1 hektár poľnohospodársky využívanej pôdy, ktorý je 1&nbsp;178 EUR</strong>, čo je iba 50-percentná výška z&nbsp;priemeru krajín EÚ-28 a&nbsp;horší v&nbsp;tomto ukazovateli sú iba poľnohospodári Estónska, Litvy, Bulharska a&nbsp;Lotyšska. Samotní poľnohospodári odôvodňujú takúto nízku úroveň výroby nízkymi podporami do poľnohospodárstva a&nbsp;vyjednaním horších prístupových podmienok v&nbsp;prístupovom procese ku EÚ v&nbsp;porovnaní s&nbsp;inými krajinami.&nbsp;</p>
+
+
+
+<p>Musím zdôrazniť, že slovenské ministerstvo pôdohospodárstva a&nbsp;jeho zástupcovia nedojednali v&nbsp;prístupovom procese o&nbsp;nič horšie podmienky ako napr. susediace štáty V-4, ale kritériá, ktoré stanovila európska komisia boli pre všetky krajiny európskej desiatky, ktoré pristupovali do únie drasticky obmedzujúce s&nbsp;úrovňou dotácií do prevádzky iba niekde na 25 % oproti starým členským štátom. Vlády prístupových krajín mohli tieto dotácie čiastočne dorovnávať, druhá Dzurindova vláda, ale ani nasledujúce túto možnosť však na rozdiel od vlád Maďarska, Česka a&nbsp;Poľska nevyužila. Európska komisia, najmä pod tlakom Poľska súhlasila s&nbsp;dosť výrazným navýšením prostriedkov na rozvoj vidieka, ale opäť, druhá vláda Dzurindu, v&nbsp;ktorej už SDĽ nebola, ani túto možnosť v&nbsp;decembri 2002 pri podpise prístupovej zmluvy do EÚ nevyužila a&nbsp;naopak, v&nbsp;roku 2004 po vstupe Slovenska do únie aj zo stávajúcich prostriedkov poskytnutých komisiou krátila o&nbsp;cca 3,1 mld. korún a&nbsp;zdroje presunula z&nbsp;ministerstva pôdohospodárstva do iných programov mimo odvetvie. Tým sa dosť výrazne obmedzila možnosť posilnenia konkurenčnej schopnosti celého odvetvia aj s&nbsp;krajinami V-4, ktoré naopak akceptovali aj zvýšenie týchto zdrojov v&nbsp;roku 2002.&nbsp;</p>
+
+
+
+<p>Aj napriek tomu si dovolím tvrdiť, že nie výška dotácií, ale ich smerovanie na podporu konkrétnych opatrení bola jednou z&nbsp;príčin katastrofálneho zníženia potravinovej bezpečnosti Slovenska, ktorá sa prepadla aj pre neefektívnu výplatu dotácií na ha poľnohospodárskej pôdy.&nbsp;<strong>Myslím, že je namieste uviesť výšku podpôr v&nbsp;roku 1989, ktorá bola v&nbsp;tom čase 600 mil. EUR, napr. v&nbsp;roku 2002 iba necelých 250 mil. EUR a&nbsp;v&nbsp;roku 2018 dosiahla 890 mil. EUR.</strong></p>
+
+
+
+<p>Nechcem v&nbsp;tomto príspevku uvádzať podrobný ekonomický rozbor výsledkov poľnohospodárstva, ale pokladám za dôležité porovnať aspoň výšku podpôr do poľnohospodárstva s&nbsp;výškou poľnohospodárskej produkcie. Kým sa na 1&nbsp;000 EUR podpôr vyrobilo v&nbsp;r. 1989 4&nbsp;800 EUR poľnohospodárskej produkcie, v&nbsp;roku 2002 bola poľnohospodárska produkcia na 1&nbsp;000 EUR podpôr vo výške 7&nbsp;800 EUR, v&nbsp;roku 2018 to bolo iba 2&nbsp;400 EUR. V&nbsp;rokoch 1990-1999 bol pokles celkovej poľnohospodárskej výroby spôsobený deštrukčnou ekonomickou reformou podporenou&nbsp;devalváciou koruny, rozbitím dodávateľsko-odberateľských vzťahov, liberalizáciou cien, zrušením zápornej dane z&nbsp;obratu a&nbsp;liberalizáciou trhu (voľný trh bol pre poľnohospodárstvo cestou do pekla), zbabranou privatizáciou potravinárskych podnikov i&nbsp;bývalých štátnych majetkov. V&nbsp;druhej a&nbsp;tretej dekáde na úroveň poľnohospodárskej výroby vplývala dvojaká poľnohospodárska politika EÚ a&nbsp;nízka konkurencieschopnosť slovenského poľnohospodárstva a&nbsp;potravinárstva, ovplyvnená od samého začiatku reformy aj zásadnou zmenou podnikateľskej štruktúry a&nbsp;osobitne nezáujem poľnohospodárov o&nbsp;rozvoj živočíšnej výroby, ktorá veľmi významne klesala a&nbsp;rastlinná výroba svojím objemom v&nbsp;posledných rokoch výrazne prekročila objemy živočíšnej výroby. Ak intenzita rastlinnej výroby je viac menej porovnateľná s&nbsp;intenzitou výroby v&nbsp;okolitých krajinách, v&nbsp;živočíšnej výrobe je iba málo poľnohospodárov, ktorí znesú porovnanie s&nbsp;úrovňou dosahovanou poľnohospodármi v&nbsp;ostatných štátoch EÚ a&nbsp;iba málo z&nbsp;nich sa tomuto odvetviu výroby venuje.</p>
+
+<h2 class="doc-subheading">Vývoj agropotravinárskeho zahraničného obchodu Slovenska</h2>
+
+<p>Všetky disproporcie vo vývoji poľnohospodárstva a&nbsp;potravinárskeho priemyslu za&nbsp;posledných tridsať rokov sa v&nbsp;konečnom dôsledku negatívne odzrkadlili vo vývoji agropotravinárskeho zahraničného obchodu a&nbsp;v&nbsp;podieli slovenských výrobkov na domácom trhu, ktorý bol v&nbsp;roku 2018 v&nbsp;mliekárenskom priemysle 59 percent, v&nbsp;mäsovom 36, v&nbsp;hydinárskom 47, mlynárskom 61, pekárenskom 22 a&nbsp;v&nbsp;pivovarnícko-sladovníckom priemysle 70 percent.&nbsp;</p>
+
+
+
+<p>Zo Slovenska sa teda vyvážajú väčšinou poľnohospodárske výrobky a&nbsp;dovážajú sa hotové potravinárske výrobky s&nbsp;vyššou pridanou hodnotou. Saldo zahraničného obchodu s&nbsp;poľnohospodárskymi výrobkami je približne vyrovnané, ale saldo zahraničného obchodu potravinárskych výrobkov je mínus 1,6 mld. EUR pri ich dovoze za viac ako 3,5 mld. EUR.&nbsp;Alarmujúca je skutočnosť, že na celkovom dovoze potravín sa nahraditeľné komodity, tie ktoré môžeme vyrobiť v&nbsp;domácich podmienkach, podieľajú až 79 percentami.&nbsp;Je na mieste otázka, či aj dnes a&nbsp;do budúcnosti môže platiť miklošovské vyjadrenie: „Ak nebudeme vyrábať dosť potravín doma, dovezieme ich zo zahraničia“.&nbsp;&nbsp;Dnes, žiaľ väčšina potravín skonzumovaných na Slovensku má svoj pôvod v&nbsp;zahraničí&nbsp;a&nbsp;dodávam, že po prekonaní súčasnej ekonomickej krízy nebude vždy možné doviesť potraviny zo zahraničia.</p>
+
+
+
+<p>Medzi podnikmi dodávateľsko-odberateľského reťazca prvovýroba-spracovanie-obchod, sa prejavujú výrazné rozdiely v&nbsp;kapitálovej sile jednotlivých subjektov a&nbsp;miera koncentrácie v&nbsp;prospech &nbsp;maloobchodu. Z&nbsp;hľadiska horizontálnych vzťahov je nízka úroveň spolupráce a&nbsp;organizovanosti medzi prvovýrobcami a&nbsp;tým aj ich slabá vyjednávacia pozícia vo vzťahu k&nbsp;spracovateľom a&nbsp;obchodu. Zdôrazňujem, že väčšina obchodu s&nbsp;potravinami je aj na Slovensku ovládaná zahraničným kapitálom, ktorý je sústredený u&nbsp;niekoľkých firiem. Aj preto je potravinová bezpečnosť Slovenska veľmi, veľmi citlivá a&nbsp;ohrozená.&nbsp;<strong>Náprava tohto kritického stavu je nevyhnutná, ale chcem zdôrazniť, že je možná iba ak sa prijmú zásadné zmeny v&nbsp;politickom a&nbsp;ekonomicko-sociálnom riadení štátu, výrobu potravín nevynímajúc.&nbsp;</strong>Aj po druhej svetovej vojne sa slovenský vidiek a&nbsp;výrobu potravín podarilo dostať na vysokú úroveň porovnateľnú s&nbsp;okolitými krajinami, iba vďaka odvážnym politickým zmenám, s&nbsp;dôrazom na zmenu politického myslenia a&nbsp;pozdvihnutia vzdelanostnej úrovne ľudí pracujúcich v&nbsp;poľnohospodárstve. Ak úroveň života na slovenskom vidieku menili v&nbsp;18. –&nbsp;19. storočí predovšetkým kňazi a&nbsp;učitelia, často jediní vzdelanci na dedine, tak po roku 1945 a&nbsp;najmä po roku 1950 to boli predovšetkým poľnohospodárski inžinieri a&nbsp;ostatní vzdelanci, ktorí do odvetvia prichádzali pracovať. Skúsme sa aj v&nbsp;tomto smere poučiť z&nbsp;histórie.</p>
+
+
+
+<p><strong>Ak chceme previesť poľnohospodársko-potravinársky komplex na trajektóriu rozvoja, musíme nápravu začať od usporiadania vlastníctva pôdy a&nbsp;legislatívy upravujúcej ochranu pôdneho fondu</strong>. Ešte stále máme tisíce hektárov s&nbsp;neusporiadaným vlastníctvom k&nbsp;pozemkom, parcely sú na jednej strane rozdrobené, na druhej strane, najmä v&nbsp;poslednom období investovali do nákupu pôdy finanční oligarchovia, čo sa prejavilo aj na zvýšení ceny pôdy. Napr. v&nbsp;okrese Rimavská Sobota a&nbsp;okolí sa dnes cena poľnohospodárskej pôdy vyšplhala na viac ako 5&nbsp;000,- EUR za hektár, v&nbsp;poľnohospodársky intenzívnych oblastiach viac ako 7&nbsp;000,- EUR za hektár, čo je zvýšenie za posledný rok o&nbsp;viac ako tretinu. Podnikatelia hospodáriaci na pôde však väčšinou hospodária na prenajatej pôde a&nbsp;nájomné za pôdu dosť výrazne zhoršuje ekonomiku hospodárenia a&nbsp;nepriaznivo vstupuje aj do ceny potravín. Náprava vlastníctva pôdy je možná viacerými spôsobmi.</p>
+
+
+
+<p>Pôdu neznámych vlastníkov by mal ako odúmrť prevziať do svojho vlastníctva štát. Túto alternatívu, ktorú sme navrhovali už v&nbsp;roku 1999 však Ústavný súd SR zamietol, pokladajúc takýto krok za neoprávnené vyvlastnenie. Preto dnes navrhujem, aby štát takúto pôdu odkúpil za symbolickú cenu a&nbsp;výnosy z&nbsp;predaja uložil na depozitných účtoch, najlepšie v&nbsp;Národnej banke Slovenska. Po určitom čase, napr. o&nbsp;desať rokov, by prostriedky na depozitných účtoch mali prepadnúť v&nbsp;prospech štátu. Tak či tak, po tridsiatich rokoch od prevratu sa dnes ťažko nájde niekto, kto sa ku vlastníctvu tejto pôdy prihlási.</p>
+
+
+
+<h2 class="doc-subheading">Vyriešenie vzťahu aktívnych poľnohospodárov k pôde</h2>
+
+<p>Osobitným problémom je vyriešenie vzťahu aktívnych poľnohospodárov ku pôde. Niektorí autori navrhujú všetku pôdu zoštátniť a&nbsp;následne rozdeliť rovnakou mierou pre všetkých obyvateľov krajiny s&nbsp;tým, že ju sami budú obrábať. V&nbsp;dnešnej dobe rozvinutej deľby práce si však takéto riešenie neviem ani predstaviť a&nbsp;rozhodne by neprispelo ku zvýšeniu potravinovej bezpečnosti štátu. Takýto scenár nápravy vlastníckych vzťahov ku pôde sa uplatnil v&nbsp;roku 1990 v&nbsp;Rumunsku, kde každý občan dostal rovnakú výmeru pôdy s&nbsp;povinnosťou na nej hospodáriť. Navštívil som túto krajinu v&nbsp;druhej polovici deväťdesiatych rokov, videl som pôdu väčšinou neobrábanú alebo obrábanú primitívnym spôsobom. Pochopiteľne aj s&nbsp;dopadom na zásobovanie trhu domácimi potravinami a&nbsp;katastrofálnu chudobu na vidieku. Myslím, že doteraz sa im problémy s&nbsp;takouto pozemkovou reformou nepodarilo odstrániť. Mohlo by sa to urobiť iba v&nbsp;prípade celosvetovej katastrofy hroziacej neriešiteľnou ekonomickou krízou.</p>
+
+
+
+<p>Sú krajiny, napr. Dánsko, kde pôdu môže vlastniť iba ten, kto na nej sám pracuje. Asi v&nbsp;duchu môjho výroku: „Pôda patrí tomu, kto ju obrába“. Ďalší spôsob usporiadania vlastníctva pôdy by tak spočíval v&nbsp;nákupe všetkej pôdy štátom za úradne stanovenú cenu a&nbsp;jej následný predaj výkonným poľnohospodárom, ktorí na pôde pracujú. Pritom veľkosť vlastníctva pôdy môže byť stanovená tak, ako bola pri prvej pozemkovej reforme za I. ČSR na 150 ha poľnohospodárskej a&nbsp;spolu 250 ha všetkej pôdy. Po skončení aktívneho hospodárenia&nbsp; bude roľník (nerád používam slovo farmár) povinný predať pôdu tomu, kto na nej bude následne hospodáriť.&nbsp;</p>
+
+
+
+<p>Opäť použijem príklad z&nbsp;Dánska, kde pôda nie je ani predmetom dedenia a&nbsp;ak preberá štafetu v&nbsp;hospodárení gazdovský potomok, musí si pôdu od svojho otca (matky) odkúpiť za úradnú cenu ako ktorýkoľvek iný občan. Spôsob takéhoto vlastníctva a&nbsp;užívania pôdy, vrátane úradných cien, musí byť stanovený zákonom. Obmedzenie výmery vlastnenej pôdy u&nbsp;nás naráža na veľkosť hospodárstiev, ktoré presahujú výmeru niekoľko sto hektárov a&nbsp;umelo znižovať veľkosť fariem by bolo z&nbsp;hľadiska konkurencieschopnosti nelogické, preto ako účelnejšie riešenie je, aby všetku pôdu vykúpil štát a&nbsp;následne ju prenajímal obhospodarovateľom, resp. poľnohospodárskym podnikom. Určitým riešením by bola aj možnosť vlastniť pôdu obchodnými spoločnosťami, ktorých poľnohospodárska výroba je rozhodujúcou ekonomickou aktivitou. Potom sa musí doriešiť usporiadanie vlastníctva pôdy v&nbsp;prípade konkurzu. V&nbsp;aktuálnych prípadoch môžu byť vlastníkmi poľnohospodárskej alebo lesnej &nbsp;pôdy aj obce, ale za predpokladu, že založia sami obecný podnik, ktorý bude na pôde hospodáriť. Bol by to aj účinný spôsob zakladania napr. sociálnych podnikov a&nbsp;riešenia vidieckej nezamestnanosti. Riešenie vlastníckych vzťahov k&nbsp;pôde môže byť aj iné, podstatné je, aby pôda nebola predmetom špekulácií napr. špekulatívnych nákupov pri budúcich záberoch pôdy pod výstavbu alebo v&nbsp;časoch finančnej krízy, do obdobia ktorej aj v&nbsp;súčasnosti nastupujeme. Aj z&nbsp;dôvodu špekulatívnych nákupov je dnes vlastníctvo pôdy koncentrované v&nbsp;rukách oligarchov a&nbsp;hospodárenie sa deje hlavne na prenajatej pôde.</p>
+
+
+
+<p>Vo vzťahu k&nbsp;pôde je veľmi dôležité udržiavanie, prípadne aj zvyšovanie pôdnej úrodnosti. Tá závisí predovšetkým od vyrovnaného hospodárenia s&nbsp;organickou hmotou a&nbsp;udržania dobrých hydrologických pomerov. Aj vplyvom znížených stavov hospodárskych zvierat, ale aj využívaním biomasy na produkciu energie, obsah organických látok a&nbsp;humusu značne klesol, znížili sa počty mikroorganizmov v&nbsp;pôde a&nbsp;vytráca sa z&nbsp;nej život. Výpadok hnojenia organickými hnojivami sa agronómovia snažia nahrádzať rôznymi enzýmami a&nbsp;bakteriálnymi prípravkami, účinnosť takýchto náhrad je však krátkodobá a&nbsp;problematická. Základom udržania úrodnosti pôdy preto musí byť vyvážený vzťah medzi rastlinnou a&nbsp;živočíšnou výrobou.</p>
+
+
+
+<p>Snáď všetky vlády od roku 2002 zakotvili v&nbsp;programových vyhláseniach budovanie závlah či riešenie protipovodňových opatrení. Žiaľ, takmer všetko čo bolo v&nbsp;oblasti hydromeliorácií a&nbsp;zavlažovacích sústav vybudované za socializmu, a&nbsp;bolo to na vysokej úrovni, sa nepremysleným zrušením Štátnej melioračnej správy pred rokom 1994 a následnými prenájmami týchto zariadení pre politických spriaznencov bez ohľadu na ich odbornosť a&nbsp;vzťah ku pôde, na ktorej boli tieto zariadenia postavené či zriadené zničilo, rozkradlo a&nbsp;devastovalo.&nbsp;</p>
+
+
+
+<p>Nápravu môžeme vykonať iba s&nbsp;využitím historických skúseností z&nbsp;riešenia vlahových pomerov v&nbsp;krajine a&nbsp;na pôde. Prvý krok musí byť opätovné&nbsp;<strong>zriadenie štátnej melioračnej správy</strong>, ktorá bude mať za úlohu inventarizáciu súčasného stavu melioračných a&nbsp;zavlažovacích sústav a&nbsp;vypracovanie systému ich následného obhospodarovania a&nbsp;udržiavania. Najlepším riešením je, ak sa nadviaže na skúsenosti s&nbsp;organizovaním a&nbsp;prevádzkou melioračných alebo vodohospodárskych družstiev.</p>
+
+<p>Ešte raz zdôrazňujem historickú skúsenosť, pretože prvé melioračné družstvo v&nbsp;bývalom Uhorsku bolo založené na Východoslovenskej nížine, v&nbsp;oblasti Trebišova. Podpora výstavby odvodňovacích a&nbsp;zavlažovacích sústav sa musí riešiť na plochách, ktoré prekračujú možnosti individuálnych hospodárov alebo aj väčších poľnohospodárskych podnikov. Osobitne pri očakávanom otepľovaní klímy a&nbsp;následnom striedaní dlhých období sucha s&nbsp;obdobiami dažďov sa musia vodohospodárske pomery riešiť v&nbsp;oblastiach celých jednotlivých regiónov Slovenska, alebo významných vodohospodárskych celkov, napr. spomínaná Východoslovenská nížina, Podunajská nížina, Považie, Ponitrie a&nbsp;pod. Mnohé, pôvodne odvodňovacie kanály sú ešte pravdepodobne schopné revitalizácie a&nbsp;vhodnými stavebnými zásahmi sa budú môcť využívať nielen na odvodňovanie, ale i&nbsp;na zadržiavanie vody v&nbsp;krajine v&nbsp;obdobiach na vodu bohatých a&nbsp;následné podmáčanie pôd v&nbsp;obdobiach sucha. Aj o&nbsp;tomto navrhovanom systéme treba diskutovať a&nbsp;hľadať vhodné spôsoby kapitálového prepojenia štátu, resp. štátnej organizácie a&nbsp;užívateľov poľnohospodárskej pôdy.</p>
+
+
+
+<p>Aj v&nbsp;záujme hospodárenia s&nbsp;vodou a&nbsp;ochrany pôdy pred eróziou, štát musí podporiť napr. výsadbu vetrolamov, remízok a&nbsp;stromoradí so zachovaním ekonomicky odôvodnenej veľkosti a&nbsp;tvaru honov. To všetko sa na Slovensku už dialo v&nbsp;období socializmu a&nbsp;pre príklady netreba chodiť ďaleko.</p>
+
+
+
+<p>V&nbsp;úvode som naznačil niektoré problémy so zabezpečovaním dostatočnej intenzity výroby a&nbsp;tým aj zabezpečením potravinovej dostatočnosti z&nbsp;vlastnej výroby u&nbsp;všetkých potravín mierneho pásma. Príčiny tohto stavu som stručne naznačil, osobitne chcem zdôrazniť nelogičnosť dotačnej politiky EÚ, ktorá podmieňuje objem vyplácaných dotácií viac menej iba starostlivosťou o&nbsp;krajinu a&nbsp;životné prostredie, bez povinnosti na pôde vykonávať zmysluplné aktivity, pestovať poľnohospodárske plodiny a&nbsp;chovať hospodárske zvieratá a&nbsp;dotácie sa vyplácajú na hektár poľnohospodárskej pôdy. Na kontrolu správnej poľnohospodárskej praxe, ako ju byrokrati z&nbsp;EÚ nazvali, sa pritom vynakladajú nehorázne finančné prostriedky, vrátane leteckého snímkovania krajiny a&nbsp;následných fyzických kontrol. Počet úradníkov ministerstva pôdohospodárstva spolu s&nbsp;Platobnou agentúrou, ktorá pod ministerstvo patrí, sa oproti roku 2002 zvýšil asi štvornásobne, pričom efektívnosť kontroly je diskutabilná. Starostlivosť o&nbsp;životné prostredie je tiež mizerná, pretože stačí, ak užívateľ pôdy danú výmeru udržiava mulčovaním burín a&nbsp;náletov plevelných rastlín a&nbsp;získava nárok na dotácie. Takýto stav je najmä na lúkach a&nbsp;pasienkoch. Nečudujme sa preto, že mnohí poľnohospodári stratili sedliacku česť a&nbsp;prestali sa venovať chovu hospodárskych zvierat, ktorý je náročný na investície i&nbsp;prevádzkové náklady. Aj z&nbsp;týchto príčin klesla zamestnanosť v&nbsp;poľnohospodárstve, krajina v&nbsp;podhorských a&nbsp;horských oblastiach je väčšinou zanedbaná, nepríťažlivá ani pre turistický ruch, nieto pre trvalý život. Tieto oblasti, kde poľnohospodárstvo bolo zväčša jedinou aktivitou pre udržanie práce a živobytia sa vyľudnili, alebo ich obývajú iba dôchodcovia a&nbsp;poberatelia sociálnych dávok (nechcem povedať lumpenproletariát, lebo s&nbsp;proletariátom nemajú nič spoločné).</p>
+
+
+
+<p><strong>Zásobenie obyvateľstva domácimi produktmi živočíšneho pôvodu neprekračuje približne 35 – 40</strong>&nbsp;<strong>percentnú potrebu</strong>. Paradoxne tí poľnohospodári, ktorí sa živočíšnej výrobe neprestali venovať, dosahujú spravidla veľmi dobrú úroveň úžitkovosti zvierat i&nbsp;primeranú ekonomickú efektívnosť výroby. Rozvoj živočíšnej výroby má význam nielen&nbsp; pre udržiavanie krajiny, zvýšenie domácej produkcie živočíšnych výrobkov a&nbsp;zabezpečenie sebestačnosti týchto produktov, ale je dôležitým faktorom aj pre zadržiavanie vody v&nbsp;krajine. V&nbsp;zanedbanej krajine, na nekosených a&nbsp;nespásaných svahovitých lúkach a&nbsp;pastvinách sa totiž neudrží dažďová voda, ale ani zimná vlaha z topiacich sa snehov, pretože voda po dlhej, starej tráve stečie ako zo strechy. Zvyšky starých tráv znižujú aj kvalitu vody, pretože po prestarnutí a&nbsp;počas vegetačného pokoja zahnívajú a&nbsp;plesnejú a&nbsp;produkty tohto procesu&nbsp; znečisťujú povrchové i&nbsp;podzemné vody. V&nbsp;čase&nbsp; ubúdania zdrojov vody, je takéto hospodárenie trestuhodné a&nbsp;nemá nič spoločné s&nbsp;ochranou prírody a&nbsp;krajiny. Zdôrazňujem, že iba dobre obhospodarovaný trávny porast má dobrú retenčnú schopnosť, ktorá sa vyrovná vododržnej funkcii lesa.</p>
+
+
+
+<p>Náprava takéhoto nelogického stavu sa dá zvládnuť iba&nbsp;<strong>zásadnými zmenami v&nbsp;dotačnej politike</strong>,&nbsp;<strong>zrušením dotácií na hektár pôdy a&nbsp;prechod ku kontrole „korunou“,</strong>&nbsp;<strong>teda viazaním výplaty dotácií</strong>&nbsp;<strong>na reálnu poľnohospodársku výrobu a&nbsp;čisté tržby z&nbsp;nej</strong>, diferencovane podľa prírodných podmienok a&nbsp;druhu výroby, v&nbsp;tejto etape s&nbsp;dôrazom na rozvoj chovu hospodárskych zvierat. Zatiaľ sme v&nbsp;poľnohospodárstve nevymysleli účinnejší spôsob štátnej podpory, ako bola výplata diferenciálnych príplatkov za socializmu, viazaná na 100 korún čistých tržieb z&nbsp;poľnohospodárstva podľa pôdno-ekologických jednotiek a&nbsp;prírodných podmienok. Všetky ostatné spôsoby sú len mrhaním peňazí platcov daní a&nbsp;teda väčšiny občanov štátu. Odporcovia dotačnej politiky, ktorá podporuje zvyšovanie výroby namietajú prebytkom potravín v&nbsp;EÚ. Ale vo svete hladuje viac ako 900 mil. ľudí a&nbsp;podľa oznámenia OSN sa v&nbsp;dôsledku krízy spôsobenej súčasnou pandémiou prepadne do pásma chudoby ďalších viac ako 500 mil. ľudí.&nbsp;</p>
+
+
+
+<p>Prebytok potravín vo svete nie je spôsobený nadvýrobou, ale hladovaním chudobných a&nbsp;ich nízkou spotrebou u&nbsp;stále väčšej časti svetovej populácie. A&nbsp;to je výzva pre nevyhnutné politické zmeny v&nbsp;riadení sveta a&nbsp;jednotlivých štátov. Jedným zo spôsobov tlmenia poľnohospodárskej nadvýroby bude aj prechod ku trojpoľnému hospodáreniu a&nbsp;súvisiacej modifikácii osevných postupov, povinné úhorovanie pôdy nevynímajúc. Takto sa utlmí aj znižovanie pôdnej úrodnosti a&nbsp;s tým súvisiace zvyšovanie chemizácie poľnohospodárstva. Toto bude tiež významný príspevok ku výrobe zdravých alebo aspoň zdravších potravín. Zmenu dotačnej politiky si musí osvojiť každá rozumne konajúca vláda a&nbsp;bez odkladu sa musia začať rokovania s&nbsp;Európskou komisiou o&nbsp;zmenách v&nbsp;Spoločnej poľnohospodárskej politike. Poľnohospodárstvo a&nbsp;potravinárstvo SR bolo pri vstupe do EÚ obetované v&nbsp;prospech západoeurópskych krajín.&nbsp;Je čas na ekonomickú nápravu tejto obete a&nbsp;ak treba aj na nápravu politickú.</p>
+
+
+
+<p>Naznačil som už nedostatočnú horizontálnu kooperáciu poľnohospodárskych výrobcov i&nbsp;potravinárskeho priemyslu. Poľnohospodári po prevrate pozakladali zväzy výrobcov podľa jednotlivých komodít. Týmto zväzom však nedali takmer žiadne vyjednávacie právomoci vo vzťahu ku odberateľom výrobkov alebo dodávateľov poľnohospodárskych potrieb. Do obchodných, málokedy dlhodobých zmluvných vzťahov vstupujú takmer vždy zástupcovia členských organizácií a&nbsp;nie poverení zástupcovia samotného zväzu. Prvovýrobcovia tak strácajú vyjednávaciu silu a&nbsp;najmä&nbsp; výrobky živočíšnej výroby a&nbsp;zvieratá&nbsp; predávajú za ceny ponúknuté odberateľmi. Dôvodom neochoty prenášania kompetencií na samotný zväz a&nbsp;užšej spolupráce je aj celková spoločenská atmosféra, podozrievavosť z&nbsp;možnej korupcie a&nbsp;nízka vymožiteľnosť práva pri prípadných podvodoch. Obchodnými podvodmi a&nbsp;nezaplatením za dodané výrobky alebo zvieratá sa vyznačovali najmä prvé roky po prevrate a&nbsp;prvých privatizáciách odberateľských organizácií. To bolo potom aj dôvodom nezáujmu prvovýrobcov usilovať sa o&nbsp;vertikálnu kooperáciu pri privatizácii spracovateľských podnikov alebo iných obchodných organizácií.&nbsp;</p>
+
+
+
+<p>Pokiaľ v&nbsp;západnej Európe je prvovýrobca podielnikom, resp. členom družstva niekoľkých spracovateľských organizácií a&nbsp;má možnosť kontrolovať úroveň riadenia týchto podnikov, na Slovensku sa privatizácia nevyužila na ekonomické prepojenie prvovýroby a&nbsp;dodávateľsko-odberateľského segmentu výroby a&nbsp;služieb, ale tieto podniky sa dostali do rúk politickým spriaznencom, často neodborníkom. Aj preto mnohé podniky išli do konkurzu, opäť s&nbsp;dlhmi voči farmárom za odobratú produkciu. Toto je jeden z&nbsp;dôvodov, prečo v&nbsp;niektorých potravinárskych odvetviach chýbajú spracovateľské kapacity, vyváža sa nespracovaná produkcia a&nbsp;živé zvieratá a&nbsp;spätne dovážame hotové potraviny. To jednak vplýva na vyššie ceny potravín, ale aj ohrozuje potravinovú dostatočnosť a&nbsp;bezpečnosť štátu.&nbsp;</p>
+
+
+
+<p>Iba na okraj dodávam, že vo funkcii ministra pôdohospodárstva som podpísal privatizačné projekty iba štyroch spracovateľských podnikov s&nbsp;podmienkou, aby prvovýrobcovia mali 51 percentný podiel na privatizovanom majetku. Aj v&nbsp;týchto podnikoch svoje podiely poľnohospodári veľmi skoro predali a&nbsp;možno iba uvažovať, či za výhodných podmienok&nbsp; napr. pre poľnohospodárske družstvo. Ak chceme tento závažný problém riešiť,&nbsp;<strong>štát musí v&nbsp;každom potravinárskom odvetví</strong>&nbsp;<strong>vybudovať primerané spracovateľské kapacity a&nbsp;vytvoriť priestor pre domáci odbyt</strong>&nbsp;<strong>poľnohospodárskej výroby</strong>. Nie je ani ekonomicky únosné, aby sme pri dostatočnej výrobe potravinárskeho obilia dovážali múku, alebo aby sme vyvážali živé zvieratá a&nbsp;zo zahraničia dovážali mäso a&nbsp;mäsové výrobky. Preto je to úloha štátu, lebo samotní poľnohospodári či potravinári nemajú na novú výstavbu dostatočný finančný kapitál a&nbsp;tiež slovenská produkcia negarantuje konkurencieschopnosť takýchto podnikov voči mnohokrát nadnárodným gigantom, ktorí ovládajú trh v&nbsp;niekoľkých krajinách. Nemusíme sa tohto kroku báť, pretože napr. na porážku celého množstva vyprodukovaných ošípaných stačí na Slovensku jeden bitúnok, od ktorého budú nakupovať jatočné polovičky ošípaných ďalší spracovatelia mäsa a&nbsp;výrobcovia mäsových výrobkov. Na doplnenie máme dostatok malých bitúnkov a&nbsp;malých výrobní mäsových výrobkov. Ani z&nbsp;hľadiska nárokov na štátny rozpočet nevidím žiadny problém, pretože v&nbsp;prvom rade treba riešiť spomínané problémy pri porážkach jatočných zvierat a&nbsp;kapacity na spracovanie obilia (a u mlynov máme asi tiež dostatočnú kapacitu, pôjde iba o&nbsp;ich využitie).</p>
+
+
+
+<p>V&nbsp;žiadnom prípade sa&nbsp;nemôže&nbsp;podpora výstavby nových kapacít riešiť&nbsp;poskytovaním dotácií. Takto sa iba vytvára priestor na korupciu a&nbsp;po určitom období sa investor takýchto podnikov i&nbsp;tak zbaví. Mali sme dosť spracovateľských fabrík vo všetkých potravinárskych odvetviach a&nbsp;do ich rekonštrukcie preto, aby spĺňali normy EÚ sa vynaložilo dosť dotačných zdrojov. Rekonštruovali sa napr. bitúnky v&nbsp;D. Strede, Lučenci a&nbsp;Zbrojníkoch, ktorých kapacita plne pokrývala potreby Slovenska. Majitelia ich však nedokázali z&nbsp;rôznych dôvodov udržať pri „živote“ a&nbsp;po splnení požadovanej doby prevádzky a&nbsp;následnom predaji novým majiteľom sa dostali do konkurzu alebo jednoducho skončili s&nbsp;porážkou zvierat.&nbsp;&nbsp;</p>
+
+
+
+<p>Naopak, štátne prostriedky určené na dotácie je možné použiť ako&nbsp;podiel štátu&nbsp;v&nbsp;budovaných podnikoch, ktorý spoluinvestor môže po určitom čase od štátu kúpiť a&nbsp;stať sa výlučným vlastníkom podniku. Kapitalizáciu štátnych financií je možné využiť aj ako možné zabránenie konkurzom tak podnikov poľnohospodárskej prvovýroby, ako aj spracovateľského priemyslu. Takto môžu svoje pohľadávky „ošetriť“ aj Všeobecná zdravotná poisťovňa alebo Sociálna poisťovňa. Následne, po ekonomickom zotavení podniku, môžu opäť svoj podiel predať v&nbsp;prvom rade spolumajiteľovi alebo ak nemá záujem, aj iným subjektom.&nbsp;<strong>Štát a&nbsp;iné verejnoprávne inštitúcie, ktoré budú svoje pohľadávky kapitalizovať, by mali zriadiť osobitnú konsolidačnú a správcovskú&nbsp;inštitúciu s&nbsp;právomocami priameho riadenia týchto</strong>&nbsp;<strong>subjektov a&nbsp;priebežnej kontroly nakladania so spoločným majetkom.</strong>&nbsp;Kapitalizácia štátnych pohľadávok je známa aj inde vo svete a&nbsp;je iste ekonomicky prospešnejšia ako konkurz alebo likvidácia podnikov. Štátne vlastníctvo je rovnocenné s&nbsp;inými formami vlastníctva a&nbsp;bolo bagatelizované ako nevýhodné dzurindovsko – miklošovským klanom, hoci napr. Slovenský plynárenský podnik aj Slovenské elektrárne neboli privatizované, ale predané akciovým spoločnostiam s&nbsp;vysokou majoritnou účasťou štátov. Tento krok Nemecka, Francúzska a&nbsp;Talianska môžeme smelo zaradiť do arzenálu neokoloniálnej politiky. O&nbsp;rovnocennom partnerstve v&nbsp;rámci EÚ nemôže byť ani reči! Platí to aj pre predaj potravinárskych podnikov, napr. pivovarov, cukrovarov a&nbsp;pod., ktoré predávali zahraničným vlastníkom už domáci privatizéri.</p>
+
+
+
+<h2 class="doc-subheading">Priestor na odbyt slovenských výrobkov</h2>
+
+<p>Vytvorenie priestoru na odbyt produktov poľnohospodárskej prvovýroby je iba jedným krokom ku stabilizáciu domácej výroby.&nbsp;<strong>Nevyhnutná je aj cenová stabilizácia odbytu a&nbsp;garantovanie minimálnych</strong>&nbsp;<strong>cien pre výrobcov</strong>, čo tiež nezapadá do rámca spoločnej poľnohospodárskej politiky. Ale pokles domácej produkcie a&nbsp;závislosť štátu na dovozoch potravín sú tak veľké, že vláda slovenskej republiky spoločne napr. s&nbsp;krajinami V-4, musí vstúpiť do zásadných rokovaní s&nbsp;európskou komisiou, čo môže byť aj nástrojom na posilnenie štátnej suverenity. Inštitúciu na reguláciu trhu sme už na Slovensku mali zriadenú, aj keď v&nbsp;nej bol v určitom období priestor na korupciu. Ale skúsenosti aj v&nbsp;tejto oblasti sú dostatočne známe, ako korupcii zabrániť a&nbsp;priestor pre korupčné jednanie legislatívne vytlačiť. Tam, kde je to možné, uvažujme aj s&nbsp;<strong>vytváraním odbytových organizácií</strong>&nbsp;<strong>prepojených s&nbsp;obchodom</strong>. Veď záujem napr. o&nbsp;pestovanie zeleniny u&nbsp;malých pestovateľov sa stratil, keď sa zlikvidovali celoštátne organizácie poverené nákupom a&nbsp;spracovaním tejto produkcie aj s&nbsp;primeranou garanciou nákupných cien.</p>
+
+
+
+<p>Ďalšou oblasťou deformácie investovania v&nbsp;poľnohospodárstve je dotačná podpora nákupu poľnohospodárskej techniky, v&nbsp;žargóne poľnohospodárov podpora nákupu sólostrojov. Každá táto&nbsp; dotácia deformuje uvažovanie poľnohospodárov pri obstarávaní strojov, pretože sa snažia nakupovať stroje ktoré sú dotované, bez ohľadu na ich využiteľnosť v&nbsp;danom podniku. Len tak sa mohlo stať, že tzv. roľníci z&nbsp;východného Slovenska prišli v&nbsp;r. 2019 do Bratislavy protestovať na vysokovýkonných traktoroch, ktorých cena prekračovala finančné možnosti protestujúcich.&nbsp; Aj v&nbsp;tejto oblasti máme pozitívnu skúsenosť, keď sme od roku 2000 zrušili priame dotácie na nákup sólostrojov a&nbsp;podporu sme smerovali iba do oblasti úhrady časti úrokov pri čerpaných bankových úveroch. Po zavedení takéhoto systému podpory sa nákup strojov dosť výrazne zvýšil a&nbsp;zvýšila sa aj ich ekonomická využiteľnosť v&nbsp;podnikoch, ktoré stroje zaobstarali.</p>
+
+
+
+<p>Podobne by sa mala nasmerovať aj podpora na novú výsadbu ovocných sadov a&nbsp;pod. I&nbsp;tu bol stanovený čas využívania zakladaných sadov na 5 rokov a&nbsp;žiaľ boli aj investori, ktorí zakladanie ovocných sadov urobili zámerne veľmi nekvalitne a&nbsp;čo najlacnejšie oproti pôvodným projektom a&nbsp;po piatich rokoch sad zlikvidovali. Splnili dotačné podmienky, iba sad nikdy nerodil. Aj preto navrhujem pri poskytovaní dotácií na akékoľvek tituly osobitnú opatrnosť a&nbsp;prezieravosť.</p>
+
+
+
+<p><strong>Významným nástrojom oživenia poľnohospodársko-potravinárskeho komplexu je stabilizácia jestvujúcich a&nbsp;zakladanie nových družstiev ako obchodných spoločností hospodáriacich na pôde,</strong>&nbsp;<strong>prepojených so spracovateľským priemyslom a&nbsp;obchodom</strong>. Môžu to byť&nbsp;<strong>moderné družstevné</strong>&nbsp;<strong>agrokombináty&nbsp;</strong>hospodáriace v&nbsp;jednotlivých regiónoch, u&nbsp;niektorých odvetví aj s&nbsp;celoštátnou pôsobnosťou.&nbsp; Snahy o&nbsp;podporu takýchto foriem hospodárenia takmer vždy stroskotali na malom záujme samotných výrobcov. Treba preto analyzovať dôvody nezáujmu o&nbsp;družstevné hospodárenie v&nbsp;agrokomplexe a&nbsp;následne prijať organizačné i&nbsp;politické opatrenia na jeho podporu.</p>
+
+<p>Po roku 1990 sa družstevné podnikanie deformovalo aj tým, že do obchodného zákonníka sa umožnilo aj v&nbsp;prípade družstiev upustiť od hlasovania jeden člen – jeden hlas a&nbsp;pripustilo sa hlasovanie podľa výšky členských podielov. Preto dnes vo väčšine družstiev vlastnia majetkové podiely predovšetkým manažéri družstiev, či akýchsi družstevných akciových spoločností. Som zástancom družstevného hospodárenia v&nbsp;poľnohospodárstve, ale aj v&nbsp;iných odvetviach. Nesmieme však zabúdať, že&nbsp;<strong>aj v&nbsp;družstvách musí byť zodpovedajúca pracovná disciplína a&nbsp;iniciatíva všetkých členov, ktorá sa najľahšie dosiahne efektívnou hmotnou zainteresovanosťou a&nbsp;hospodárením s&nbsp;využitím tzv.</strong>&nbsp;<strong>vnútropodnikovej banky</strong>. Sám mám s&nbsp;takouto formou riadenia družstva vynikajúce skúsenosti, boli rozpracované už pred rokom 1989 a&nbsp;tam, kde sa takáto forma riadenia využívala, dosahovala sa vysoká intenzita výroby, prepojená s&nbsp;vysokou produktivitou práce a&nbsp;ekonomickou efektívnosťou hospodárenia. Uvedomelosť členov družstva a&nbsp;jeho zamestnancov je dôležitá, ale na trvalú konkurencieschopnosť podnikania spojenú s&nbsp;inováciami vo výrobe jednoducho nestačí.</p>
+
+<h2 class="doc-subheading">Zakladanie agrokombinátov</h2>
+
+<p>Zakladanie agrokombinátov bude mať osobitný význam aj pre podporu rozvoja regiónov. Pomôže sa tak stabilizovať zamestnanosť v&nbsp;poľnohospodárskej prvovýrobe, potravinárskom priemysle, obchode i&nbsp;službách. Znížia sa nároky na dopravnú obslužnosť územia a&nbsp;čo je dôležité, podporí sa výroba a&nbsp;spotreba zdraviu prospešných potravín (viď poznámku o&nbsp;zhodnosti biómu človeka a&nbsp;zvierat s&nbsp;biómom pôdy, kde ľudia žijú) aj podpora samotného dobrého zdravotného stavu a dlhovekosti obyvateľstva v&nbsp;danom regióne. Takto bude možné aj do vyľudnených regiónov vrátiť život a&nbsp;podporiť ich všestranný rozvoj. Na základe skúseností možno predpokladať, že s&nbsp;rozvojom poľnohospodárskej a&nbsp;potravinárskej výroby sa budú rozvíjať aj remeslá a&nbsp;služby. Už pred rokom 1989 mali moderné poľnohospodárske podniky nielen rôzne pridružené výroby, ale prevádzkovali detské jasle a&nbsp;materské školy, starali sa o&nbsp;rozvoj kultúry a&nbsp;športu v&nbsp;obciach a&nbsp;o&nbsp;celkové zveľaďovanie vidieckeho života. Všetko tu už bolo, iba treba využiť poznatky a&nbsp;prispôsobiť ich novým podmienkam.</p>
+
+
+
+<p>Pri podpore domáceho spracovateľského priemyslu nesmieme zabudnúť na&nbsp;<strong>podporu kvality</strong>&nbsp;<strong>vyrábaných potravín</strong>. Preto sa treba vrátiť ku normám a&nbsp;certifikácii jednotlivých výrobkov s&nbsp;dôrazom na stabilitu zdravotnej prospešnosti a&nbsp;samozrejme nezávadnosti. Opäť je to opatrenie, ktoré bude narážať na medzinárodné a&nbsp;európske pravidlá riadenia kvality potravín, ktoré síce hovoria o&nbsp;bezpečných potravinách, ale v&nbsp;čase keď sa vyrábajú umelé chuťové, aromatické prísady či farbivá, nie je problém „šikovným“ chemikom vyrobiť chutné, oku lahodiace potraviny, ktoré budú aj bezpečné, ale s&nbsp;mizernou nutričnou hodnotou, v&nbsp;ktorých je pôvodná surovina zamenená nahrážkami. Takéto výrobky sa síce dobre predávajú , ale ich vplyv na zdravie konzumentov je často škodlivý a&nbsp;môžeme ich smelo označiť za (p)otraviny. Je bezpochyby, že náprava aj v&nbsp;tejto oblasti narazí na silný politický odpor a&nbsp;tiež odpor nadnárodných monopolov, ktoré ovládli svetové trhy. Musíme si priznať, že pomerne vážnym problémom sú aj zmenené „chute“ a&nbsp;návyky najmä mladých ľudí, pretože chuť tradičných potravín sa z&nbsp;trhu dávnejšie vytratila (spomeňme si na chuť prvomájových párkov). Zvyšovaniu kvality potravín musí preto napomáhať aj primeraná osveta.</p>
+
+
+
+<p>Tam, kde o&nbsp;hospodárenie na pôde, aj keď vyhovuje pre poľnohospodársku výrobu, nebude záujem, alebo poľnohospodárskemu podniku hrozí konkurz, štát by mal pristúpiť aj&nbsp;<strong>ku zakladaniu štátnych majetkov</strong>, ktoré boli významným stabilizátorom hospodárenia často v&nbsp;horších prírodných podmienkach a&nbsp;ktoré sa nezmyselne privatizovali takmer vždy politickým prívržencom. Obdobie po privatizácii štátnych majetkov predstavovalo v&nbsp;poklese poľnohospodárskej výroby druhú vlnu, hneď po poprevratovej transformácii hospodárstva. Pre zaujímavosť dodávam, že v&nbsp;Poľsku štátne majetky z&nbsp;obdobia socializmu neprivatizovali a&nbsp;doteraz hospodária ako štátne podniky, dosahujúce vynikajúce výsledky vo výrobe aj ekonomike. K&nbsp;vôli historickej pravde tiež pripomínam, že v&nbsp;roku 1994 sme na ministerstve pôdohospodárstva zastavili už rozbehnutú privatizáciu štátnych majetkov a&nbsp;vypracovali sme program ich prenájmu pre akciové spoločnosti vytvorené zo zamestnancov ŠM. Žiaľ, voľby do NR SR v&nbsp;jeseň 1994 všetko zmenili.</p>
+
+
+
+<p>Výroba kvalitných potravín si vyžaduje, aby tieto boli na otvorenom trhu konkurencieschopné a&nbsp;cenovo primerané príjmom domáceho obyvateľstva. Asi ťažko by sme sa vracali ku politike lacných potravín, tak ako ju poznáme z&nbsp;rokov socialistického zriadenia v&nbsp;štáte. Mám na mysli vtedajšiu zápornú daň na potraviny. Nie je možné zavádzať napr. dvojakú daň z&nbsp;pridanej hodnoty na domáce a&nbsp;dovozové potraviny a&nbsp;neplnilo by to požadovaný účel. Treba však hľadať možnosti úspory nákladov v&nbsp;poľnohospodárskej výrobe i&nbsp;potravinárstve. Takouto možnosťou je napr<strong>. úhrada celej výšky alebo&nbsp; časti odvodov na zdravotné a&nbsp;sociálne poistenie pre zamestnancov v&nbsp;poľnohospodárskych a&nbsp;vybraných</strong>&nbsp;<strong>potravinárskych podnikoch (podľa odvetví</strong>)&nbsp;<strong>štátom</strong>. Tento nástroj podpory domácich výrobcov sa úspešne uplatňuje napr. v&nbsp;Poľsku, ale bol známy do roku 1989 aj v&nbsp;našich podmienkach. Pomohlo by to zvýšiť mzdy v&nbsp;celom odvetví, pretože práca na poli a&nbsp;v&nbsp;maštali sa stala neatraktívna aj vplyvom jej slabého ohodnotenia.</p>
+
+
+
+<p>Napriek technickej modernizácii celého agrokomplexu narážajú poľnohospodári na nezáujem žiakov o&nbsp;štúdium v&nbsp;poľnohospodárskych aj potravinárskych&nbsp; študijných odboroch. Priznávam svoju chybu, keď som v&nbsp;roku 2001 súhlasil s&nbsp;prevedením poľnohospodárskeho učňovského školstva od ministerstva pôdohospodárstva pod riadenie samosprávnych krajov. Následné zrušenie odboru vedy a&nbsp;školstva na ministerstve po roku 2002 iba dovŕšilo destabilizáciu poľnohospodárskeho školstva<strong>. Preto sa musia obnoviť ministerstvom pôdohospodárstva riadené stredné odborné školy s&nbsp;dôrazom na výchovu robotníckych a&nbsp;stredných odborných kádrov pre potreby poľnohospodárskej praxe vrátane&nbsp; potravinárskeho priemyslu</strong>.&nbsp; Tieto školy sa musia vyňať z&nbsp;pod riadenia samosprávnych krajov. Nakoniec v&nbsp;počiatočnej fáze by postačovala jedna odborná škola pre jeden kraj. Vysokovýkonné technológie a&nbsp;objem výroby viac nevyžaduje.&nbsp;</p>
+
+
+
+<p>Na výchove odborníkov sa musia vhodnou formou zainteresovať aj podniky. Ak niekto dokáže kúpiť výkonný stroj za niekoľko stotisíc EUR, nesmie šetriť práve na výchove odborníkov potrebných pre obsluhu takéhoto stroja.&nbsp;<strong>Bolo by vhodné, aby sa v&nbsp;tejto súvislosti problémom zaoberali aj orgány Slovenskej poľnohospodárskej a&nbsp;potravinárskej komory, ktorá by mala prevziať pod svoju kuratelu riadenie Agroinštitútu v&nbsp;Nitre a&nbsp;túto organizáciu opätovne využiť pre riadenie pôdohospodárskeho odborného školstva i&nbsp;trvalé vzdelávanie pracovníkov v&nbsp;pôdohospodárstve.</strong></p>
+
+
+
+<p>Priam katastrofálne dopadli pracoviská rezortnej vedy a&nbsp;výskumu, ktoré sa postupne zdecimovali do stavu, že sú niektorými politikmi pokladané skôr za rozpočtovú záťaž ako prínos pre pozdvihnutie úrovne poľnohospodárstva a&nbsp;potravinárstva prostredníctvom zavádzania vedecko-technických poznatkov.&nbsp; Riešením môže byť posilnenie odborného a&nbsp;rozpočtového riadenia z&nbsp;úrovne ministerstva pôdohospodárstva, ale aj možné prepojenie ministerstva pôdohospodárstva a&nbsp;rozvoja vidieka so Slovenskou poľnohospodárskou univerzitou v&nbsp;Nitre a&nbsp;zaradením rezortných výskumných ústavov pod riadenie univerzity. Financie na výchovu mladých odborníkov by sa tak účelne prepojili s&nbsp;priamou zainteresovanosťou na zapojení vedecko-pedagogických pracovníkov i&nbsp;súčasných odborníkov z&nbsp;výskumnej sféry na konkrétnom riešení požadovaných vedeckých úloh a&nbsp;výskumných prác. V&nbsp;každom prípade bez odbornej garancie z&nbsp;úrovne objednávateľa a&nbsp;odberateľa výsledkov výskumu, teda ministerstva pôdohospodárstva by ani takéto prepojenie neprinieslo požadovaný efekt, skôr len ďalšiu devastáciu vedeckého zázemia v&nbsp;pôdohospodárstve. Uvedomme si, že popri rozvoji univerzitného a odborného školstva sa rozvíjali aj vedecko-výskumné ústavy už za Rakúsko – Uhorska, I. ČSR a&nbsp;osobitne v&nbsp;rokoch socialistického zriadenia. Ich poslanie je v&nbsp;tomto období vedy ako výrobnej sily nezastupiteľné.</p>
+
+
+
+<p>Po nástupe novej vlády v&nbsp;roku 2020 a&nbsp;inštalácii nového ministra pôdohospodárstva a&nbsp;rozvoja vidieka sa dostali do popredia, už po niekoľkýkrát od prevratu, aj otázky veľkosti poľnohospodárskych podnikov. Cieľom súčasného vedenia ministerstva je aj v&nbsp;programovom vyhlásení zakotvené uprednostňovanie malých poľnohospodárskych fariem a&nbsp;tzv. stropovanie dotácií pre veľké poľnohospodárske podniky. Dovolím si tvrdiť, že diskusia o&nbsp;veľkosti podnikov je kontraproduktívna a&nbsp;nerieši zásadné problémy slovenského agrokomplexu a&nbsp;vidieka. Priestor pre podnikanie musia mať malí aj veľkí hospodári, každý kto je ochotný a&nbsp;schopný v&nbsp;tomto ťažkom odvetví žiť a&nbsp;pracovať.</p>
+
+<p>Aj pri vysokej nezamestnanosti, aká donedávna na Slovensku bola, a&nbsp;obávam sa, že opäť aj bude, sa pracovať do poľnohospodárstva či potravinárstva, jednoducho do týchto pracovne veľmi náročných odvetví nikto nehrnul a&nbsp;preto sa aj naďalej musia poľnohospodári i&nbsp;potravinári spoliehať na substitúciu živej práce modernou a&nbsp;výkonnou technikou vyžadujúcou si odborne dostatočne pripravených ľudí na všetkých postoch a&nbsp;vo všetkých formách podnikania.&nbsp;</p>
+
+
+
+<p>Musíme si uvedomiť, že aj v&nbsp;alpských oblastiach Rakúska, Bavorska či Švajčiarska rodinu roľníka neuživí ani hospodárstvo o&nbsp;výmere niekoľko desiatok hektárov. Aj v&nbsp;takomto prípade sa musia títo ľudia zaoberať aj získaním príjmov z&nbsp;odvetví služieb alebo mimosezónnym zamestnaním časti členov rodiny u&nbsp;ostaných zamestnávateľov. Pravdaže, sú aj v&nbsp;poľnohospodárstve odvetvia s vysokou potrebou živej ľudskej práce a&nbsp;tam je aj priestor pre malé hospodárstva, ak je práca na nich dostatočne ekonomicky výnosná. Nechcem zachádzať do podrobností, ale pracovná vyťaženosť ľudí pracujúcich na pôde je na obdivovaných súkromných hospodárstvach väčšinou viac ako desať hodín denne bez možnosti dovolenky alebo iného voľna. Spoločnosť ich teda vykorisťuje a&nbsp;núti v&nbsp;záujme vlastného prežitia pracovať takmer ako vo feudalizme. Návrat ku takémuto spôsobu života je na Slovensku zaujímavý iba pre malú skupinu obyvateľov.</p>
+
+
+
+<p>Problémov, ale aj úspechov je v&nbsp;slovenskom poľnohospodárstve a&nbsp;potravinárstve a&nbsp;na vidieku&nbsp; dosť. Pokúsil som sa načrtnúť niektoré riešenia, ktoré mnohí nebudú akceptovať. Sú to však riešenia, ktoré si súčasné postavenie chlebového odvetvia na Slovensku vyžaduje. V&nbsp;každom prípade návrhy v&nbsp;príspevku obsiahnuté pokladám za základ do ďalšej diskusie.</p>
+
+
+
+<p>Zverejnené so súhlasom autora Pavla Koncoša</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

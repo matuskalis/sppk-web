@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kandidát na eurokomisára — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Kandidát na eurokomisára</nav>
+
+  <article>
+    <h1 class="doc-title">Kandidát na eurokomisára</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Európske spravodajstvo, Konzorcium s ČR</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">2. októbra 2019</span></p>
+
+    <div class="doc-body">
+<p><span>Vypočúvanie bolo slabé, neuspokojivé. Janusz&nbsp;Wojciechowski bude musieť teraz zodpovedať 7 písomných otázok a následne sa bude musieť zúčastniť druhého kola tzv."grilovania". termín zatiaľ nie je známy.</span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/rLTxkV3.jpg"></figure><p></p>
+
+
+
+<p>Veřejné slyšení Evropského Parlamentu s&nbsp;kandidátem na post komisaře pro zemědělstvi.&nbsp; Janusz Wojciechowski.</p>
+
+
+
+<p>Veřejné slyšení bylo v&nbsp;trvání tří hodin, v&nbsp;první části se kandidát krátce představil, následovalo celkem 25 otázek ze strany europoslanců (7 otázek ze strany koordinátorů frakcí, 18 otázek ze strany ostatních europoslanců).</p>
+
+
+
+<p>Wojciechowski byl členem Evropského parlamentu po dobu 12 let, poslední tři roky byl členem Evropského účetního dvora (EÚD), kde měl na starosti mimo jiné i zemědělskou politiku.</p>
+
+
+
+<p>V&nbsp;minulosti se zabýval mladými zemědělci, a toho se bude držet i nadále – během pouhých deseti let jsme přišli o více než 4 miliony zemědělců v&nbsp;Evropské Unii, což se rovná ztrátě 30.000 zemědělců denně; ve Francii stále narůstá počet sebevražd mezi zemědělci.</p>
+
+
+
+<p>Jednou z&nbsp;motivací pro kandidaturu je vytvoření dlouhodobé strategie pro zemědělskou politiku. Například u klimatu už taková strategie existuje, zde zatím chybí, a to je třeba změnit.</p>
+
+
+
+<p>Zemědělská politika je politikou pro celou společnost – pro ochranu klimatu, životního prostředí, biologické rozmanitosti, či dobrého zacházení se zvířaty.Prvním krokem bude zpráva o stavu zemědělské politiky v&nbsp;EU – bude shrnovat současný stav i vizi do budoucna, bude zaměřena na počet zemědělců, generační obměnu.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/497M0Ue.jpg"></figure><p></p>
+
+
+
+<p>Zemědělská politika navíc bude součástí Evropské zelené dohody (European Green Deal) – bude nutné nastavit podmínky tak, aby zemědělci byli schopni reagovat na zvyšující se požadavky v&nbsp;oblasti ochrany životního prostředí, měli bychom nastavit II. pilíř tak, aby alespoň 30 % z&nbsp;něj bylo určeno na environmentálním podnikům. To by mělo pomoci zejména malým rodinným podnikům.</p>
+
+
+
+<p>Přislíbil podporu malým a středním podnikům se zvláštním zaměřením na rodinné farmy.</p>
+
+
+
+<p>Slíbil komunikaci s&nbsp;europoslanci, se zemědělci, se zástupci zájmových organizací.</p>
+
+
+
+
+<p>OTÁZKY ZE STRANY KOORDINÁTORŮ</p>
+
+
+
+<p>1/ HERBERT DORFMANN (EPP, IT): navázal dotaz na vyjádření Evropského účetního dvora k&nbsp;Společné zemědělské politice a na písemné vyjádření kandidáta na komisaře pro zemědělství poskytnuté Výboru pro zemědělství před veřejným slyšením. Koordinátor vznesl dotaz, jak hodlá jako komisař přistoupit k&nbsp;tomu, že některé členské státy mají podpory založeny na historickém modelu?</p>
+
+
+
+<p>Odpověď: Současný návrh je možné dále měnit, nevylučuje snahu předchozí návrh Evropské komise vylepšit. Je otevřený další debatě o návrzích, zemědělská politika musí být zelenější.</p>
+
+
+
+<p>Dorfmann reagoval na odpověď – měli bychom se tedy vzdát historického modelu podpor v&nbsp;prvním pilíři? Nebylo by to překážkou pro podporu znevýhodněných oblastí?</p>
+
+
+
+<p>Odpověď: Jedná se o problematiku, o které je nutné stále diskutovat, a návrh v&nbsp;tomto směru zlepšit. Musíme usilovat o to, aby bylo v&nbsp;EU zemědělství ve všech oblastech, i v&nbsp;těch, kde podmínky nejsou ideální.</p>
+
+
+
+<p>2/ PAOLO DE CASTRO (S&amp;D, IT): ve světě dochází k&nbsp;ekologickým a klimatickým katastrofám, na to musíme reagovat. Současný návrh Evropské komise ale ponechává veškerou odpovědnost na členských státech, ty musí vytvořit 27 různých strategií, které by měly reflektovat i tyto oblasti. Vznesl dotaz, zda návrh Komise přispěje k&nbsp;udržitelnosti těchto oblastí.</p>
+
+
+
+<p>Odpověď: Kandidát uvedl, že doufá, že ano. Je nutné posílit flexibilitu členských států, současně je ale nutné zabránit renacionalizaci politiky. SZP musí více chránit klima a životní prostředí, opět zopakoval, že je otevřen úpravám návrhu.</p>
+
+
+
+<p>De Castro reagoval na odpověď – měl by existovat systém kontrol přípustnosti nákladů na základě nového modelu SZP? Ve stanovisku EÚD se hovořilo o tom, že by tento systém měl být založen na stejných podmínkách a plnění.</p>
+
+
+
+<p>Odpověď: Kandidát opětovně zdůraznil, že je otevřen dalším diskusím k&nbsp;této otázce.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/E83x8rh.jpg"></figure><p></p>
+
+
+
+<p>3/ ULRIKE MÜLLER (RENEW EUROPE, DE): Vznesla dotaz stran změny na DG AGRI, odkud bylo přesunuto řešení problematiky státních podpor, které nyní bude řešit DG pro hospodářskou soutěž. Tím bylo oslabeno portfolio komisaře pro zemědělství. Dotaz doplnila o pravidla pro přechodné období – kdy budou představena, a jak bude situace vypadat.</p>
+
+
+
+<p>Odpověď: přesun státních podpor je v&nbsp;kompetenci předsedkyně Evropské komise, EÚD hovořil v&nbsp;minulosti o tom, že v&nbsp;této oblasti panuje řada nepravostí. Až 20 % kontrol prokázalo nedostatky ve výplatě státních podpor, nepochybuje ale o tom, že komunikace s&nbsp;komisařem či komisařkou pro hospodářskou soutěž bude fungovat bez problémů. Pravidla pro přechodné období Evropská komise již připravila, budou zveřejněna v&nbsp;nadcházejících týdnech, plánem je, aby nová SZP byla implementována od roku 2022.</p>
+
+
+
+<p>Müller reagovala na odpověď – přesun státních podpor pod jiné generální ředitelství Evropské komise je další překážkou, dalším rizikem zdržení. Zemědělci musí být schopni zajistit dodávky potravin evropským občanům bez zdržení.</p>
+
+
+
+<p>4/ MARTIN HÄUSLING (ZELENÍ, DE): Co chcete konkrétně udělat, abyste zabránil ztrátě biodiverzity, za kterou jsou zodpovědní právě zemědělci. Jaké jsou Vaše cíle a Vaše konkrétní plány pro budoucnost? Nezmiňujete problematiku ekologického zemědělství ani pesticidů.</p>
+
+
+
+<p>Odpověď: své návrhy na podporu zemědělství, které bude příznivější pro životní prostředí, a které bude chránit biologickou rozmanitost, kandidát na komisaře předloží v&nbsp;brzké době. Rád by podporoval zemědělce, kteří používají krmiva z&nbsp;vlastní produkce, a nedováží krmiva ze třetích zemí. Dále by rád zlepšil životní podmínky zvířat – menší hustota zástavu, používání slámy při chovu prasat, či letní pastvy.</p>
+
+
+
+<p>Häusling reagoval na odpověď – hovořil jste i o malých zemědělcích, jak konkrétně chcete podpory malých zemědělců dosáhnout, jak konkrétně je chcete podpořit – i ve vztahu k&nbsp;velkým podnikům. Jak můžete převzít odpovědnost za až 30 % škrty v&nbsp;II. pilíři? A jaké je Vaše stanovisko k&nbsp;externí konvergenci?</p>
+
+
+
+<p>Odpověď: podpora malých zemědělců je možná například skrze II. pilíř, problémem ale je, že velká část rozpočtu pro II. pilíř putuje jen malému počtu příjemců. Podpořil, aby finance z&nbsp;II. pilíře byly rozdělovány většímu počtu zemědělců.</p>
+
+
+
+<p>5/ IVAN DAVID (I&amp;D, CZ): Budete prosazovat, aby zemědělci dostávali v&nbsp;členských státech srovnatelné dotace? Budete podporovat uzavírání obchodních dohod, které umožní masivní dovoz potravin a komodit ze třetích zemí do Evropské Unie?</p>
+
+
+
+<p>Odpověď: problém s&nbsp;obchodní dohodou s&nbsp;Mercosurem – existuje řada citlivých sektorů, Komise bude tuto situaci blízce monitorovat. V&nbsp;roce 2020 Komise připraví hodnocení všech potenciálních dopadů na evropské zemědělce, bude se to kromě Mercosuru týkat i dalších obchodních dohod (např. Singapur nebo Austrálie), zemědělci se nesmí stát obětí těchto dohod. Stran externí konvergence – jsme na správné cestě, otázkou je, kam až v&nbsp;tomto směru zajdeme. O tom bude muset rozhodnout ještě Parlament a Rada.</p>
+
+
+
+<p>David reagoval na odpověď – jak se postavíme k&nbsp;zemědělcům poté, co už dojde k&nbsp;ztrátách v&nbsp;jejich hospodaření v&nbsp;souvislosti s&nbsp;obchodními dohodami?</p>
+
+
+
+<p>Odpověď: musíme požadovat stejné – tedy v&nbsp;EU platné – standardy v&nbsp;rámci dohod se třetími zeměmi.</p>
+
+
+
+<p>6/ ZBIGNIEW KUZMIUK (ECR, PL): Evropská Unie je největším vývozcem zpracovaných potravin, jak v&nbsp;tomto kontextu chcete zajistit Evropanům dostatek dodávek potravin?</p>
+
+
+
+<p>Odpověď: ano, EU je čistým vývozcem zpracovaných potravin, dá se říci, že evropské potravinářství je úspěšnější než evropské zemědělství. Musíme podpořit zemědělce, aby byli silnější a úspěšnější.</p>
+
+
+
+<p>7/ LUKE MING FLANAGAN (GUE/NGL, IE): vznesl dotaz stran dovozu hovězího masa. Celkem se dováží 300.000 tun hovězího masa každý rok, v&nbsp;dohodě s&nbsp;Mercosurem je dodatek, tzv. pojistka o možném omezení dovozů. Jakým způsobem by byla tato pojistka aktivována, zejména v&nbsp;souvislosti s&nbsp;Brexitem? A jak prosím přistupujete k&nbsp;antimikrobiální rezistenci?</p>
+
+
+
+<p>Odpověď: K&nbsp;hovězímu masu uvedl, že plánuje cestu do Irska k&nbsp;projednání problému přímo s&nbsp;irskými zemědělci a politiky. Problému antimikrobiální rezistence je si vědom, je nutné snížit objem používaných antibiotik zejména v&nbsp;podnicích zabývajících se intenzivním zemědělstvím. Intenzivní zemědělství není dobré pro životní prostředí ani pro klima, a jako komisař odmítá tento systém podporovat. Průmyslové zemědělství ohrožuje životní prostředí a klima.</p>
+
+
+
+<p>OTÁZKY OSTATNÍCH EUROPOSLANCŮ:</p>
+
+
+
+<p>8/ JUAN IGNACIO ZOIDO ALVAREZ (EPP, ES): Vznesl dotaz týkající se obchodu s&nbsp;olivami a olivovým olejem.</p>
+
+
+
+<p>Odpověď: Wojciechowski bude problematiku řešit s&nbsp;komisařem pro obchod Philem Hoganem.</p>
+
+
+
+<p>9/ CLARA AGUILERA GARCÍA (S&amp;D, ES): vznesla dotaz stran plánované strategie „Farm to Fork“. Komise by nyní ráda zvolila nový přístup – znamená to, že bude zahájena skutečná potravinová politika EU, která se opře o DG AGRI, COMP či SANTE? Předsedkyně komise Vás žádá pouze o příspěvek k&nbsp;této strategii, nemělo by ale zemědělství být vedoucím hráčem v&nbsp;tomto směru?</p>
+
+
+
+<p>Odpověď: zemědělství je jen jednou z&nbsp;politik, které se tato nová strategie týká, spolupráce mezi jmenovanými ředitelstvími bude pokračovat. Jedná se o důležitou strategii, kterou bude nutno prosazovat, i v&nbsp;kontextu snahy o posílení biodiverzity.</p>
+
+
+
+<p>10/ DACIAN CIOLOS (RENEW EUROPE, RO): Vznesl dotaz týkající se obav z&nbsp;renacionalizace v&nbsp;kontextu návrhu na nový systém SZP.</p>
+
+
+
+<p>Odpověď: stran obav z&nbsp;renacionalizace kandidát uvedl, že je nadále ochoten se o návrzích Komise bavit.</p>
+
+
+
+<p>11/ ANNE SANDER (EPP, FR): výkyvy cen, dopady klimatických změn, postupné sbližování EU trhů se světovými cenami, obchodní dohody – to vše má na zemědělce dopady. Dochází k&nbsp;větší nejistotě, ke snižování příjmů atd. Budete schopen modernizovat dostupné nástroje tak, abychom byli schopni chránit zemědělce před šoky na trzích?</p>
+
+
+
+<p>Odpověď: ano, musíme učinit více kroků s&nbsp;cílem chránit zemědělce na trhu, musíme pokračovat nad rámec současných opatření, musíme posílit systém tržních intervencí.</p>
+
+
+
+<p>12/ CARMEN AVRAM (S&amp;D, RO): vznesla dotaz týkající se nekalých obchodních praktik a jejich kontrol</p>
+
+
+
+<p>Odpověď: ano, bude nutné řešit případný výskyt nekalých obchodních praktik, v&nbsp;tomto směru bude třeba správně implementovat nástroje proti výskytu nekalých obchodních praktik. Komisař pro zemědělství zde bude spolupracovat s&nbsp;komisařkou pro hospodářskou soutěž.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/PctQMrm.jpg"></figure><p></p>
+
+
+
+<p>13/ FRANCISCO GUERREIRO (ZELENÍ, PT): svůj dotaz opřel o nutnost snížit stavy hospodářských zvířat, o cesty, jak zlepšit welfare zvířat, a jak do tohoto procesu zapojit DG SANTE? Další dotaz směřován na podmínky transportu zvířat – budete se snažit omezit či úplně zakázat přepravu na dlouhé vzdálenosti v&nbsp;Evropě?</p>
+
+
+
+<p>Odpověď: welfare zvířat bude patřit mezi priority Komise, nutno motivovat zemědělce, aby snížili intenzitu živočišné výroby. Podpořil omezení přepravy zvířat na dlouhé vzdálenosti.</p>
+
+
+
+<p>14/ MARA BIZZOTTO (I&amp;D, IT): jak chcete chránit konkurenceschopnost malých evropských zemědělců, a jak chcete chránit některé z&nbsp;důležitých komodit v&nbsp;kontextu rozvoje mezinárodního obchodu?</p>
+
+
+
+<p>Odpověď: Wojciechowski bude udržovat úzkou spolupráci s&nbsp;komisařem pro obchod Philem Hoganem, aby bylo zajištěno, že se zemědělci nestanou obětí mezinárodních obchodních dohod.&nbsp;</p>
+
+
+
+<p>15/ MAZALY AGUILAR (ECR, ES): je nutné zabránit tomu, aby Evropská unie obětovala chov dobytka ve svých obchodních dohodách. Opětovně vznesla dotaz týkající se welfare zvířat.</p>
+
+
+
+<p>Odpověď: měli bychom vnímat problémy zemědělců v&nbsp;celé Evropě, musíme podporovat zemědělce, aby dobrovolně zlepšovali podmínky zvířat a snižovali intenzitu chovů.</p>
+
+
+
+<p>16/ PETER JAHR (EPP, DE): vznesl dotaz týkající se externí konvergence, a upozornil na skutečnost, že průmyslové a intenzivní zemědělství není totéž, což se doposud z&nbsp;vyjádření kandidáta mohlo zdát. Zastropování a degresivita – v&nbsp;rámci COMAGRI jsme nalezli kompromis (zastropování nebo redistributivní platby) – musíme členským státům zajistit dostatečnou flexibilitu a současně podpořit malé zemědělce. Jste s&nbsp;tímto kompromisem spokojen?</p>
+
+
+
+<p>Odpověď: ano, to je pravda, není to to stejné. Je ale přesvědčen o tom, že je špatně, pokud toho průmyslového a intenzivního zemědělství budeme mít příliš mnoho, a to teď bohužel máme. Intenzivní zemědělství je patologické pro zemědělskou politiku. Stran externí konvergence – není spravedlivé, aby zemědělci, kteří spolu často sousedí, čelili vysokým rozdílům v&nbsp;platbách, které dostávají ze strany EU. Návrh komise v&nbsp;tomto směru není dostatečný, a je potřeba ho dále projednávat. Ke kompromisu uvedl, že je ochoten ho diskutovat, jedná se o zajímavý kompromis, k&nbsp;věcem by mělo být přistupováno flexibilně – například v&nbsp;ČR je průměrná velikost podniku přes 130 ha, v&nbsp;PL je to 10 ha, v&nbsp;RO pod 10 ha. Nutno tedy stran malých a velkých zemědělských podniků přistupovat k&nbsp;situaci flexibilně.</p>
+
+
+
+<p>17/ ELSI KATAINEN (RENEW EUROPE, FI): pouze rentabilní zemědělství může zajistit bezpečné dodávky potravin. Jak zajistíte, aby SZP zachovala všude v&nbsp;EU rentabilní produkci, a to i ve znevýhodněných regionech? Podpořil byste flexibilitu mezi jednotlivými pilíři SZP, aby mohla být eko-schémata například podporována z&nbsp;II. pilíře?</p>
+
+
+
+<p>Odpověď: nejde o to, že bychom měli podporovat intenzivní zemědělství proto, že je efektivnější – je efektivnější pouze z&nbsp;krátkodobé perspektivy, nikoli ale z&nbsp;té dlouhodobé, tedy z&nbsp;perspektivy životního prostředí a klimatu. Je nutno podporovat zemědělství, které bude životní prostředí a klima brát v&nbsp;potaz. Zemědělci k&nbsp;tomu nebudou nuceni, v&nbsp;plánu je je podporovat. Stran převodu mezi pilíři – ano, samozřejmě podpoří převody mezi pilíři, a to oběma směry. Bude to ale muset být pro dobro životního prostředí a pro dobro klimatu.</p>
+
+
+
+<p>18/ DANIELA RONDINELLI (NI, IT): V&nbsp;oblasti mezinárodních dohod se zemědělství stalo obětí – dovážíme potraviny ošetřované postupy, které jsou v&nbsp;EU zakázány, dokonce dochází i k&nbsp;podvodům.</p>
+
+
+
+<p>Odpověď: nepřísluší komentovat výsledky minulého komisaře, obchodní politika by ale měla chránit zájmy zemědělců. V&nbsp;této otázce bude aktivním komisařem a bude chránit evropské zemědělce, aby se nestávali oběťmi při projednávání mezinárodních obchodních dohod.</p>
+
+
+
+<p>19/ MARIA NOICHL (S&amp;D, DE): EU se zavázala dodržovat environmentální cíle OSN, tedy například&nbsp;zastavení ztráty biodiverzity a k&nbsp;ochraně půdy. Jak se stavíte k&nbsp;udržitelnosti dovozů krmiv, např. sóji? Jak se stavíte k&nbsp;problematice odlesňování, které je způsobeno produkcí těchto plodin?</p>
+
+
+
+<p>Odpověď: EU dováží 40 miliard tun sóji každý rok, Wojciechowski ale chce podpořit v&nbsp;rámci II. pilíře ty zemědělce, kteří nebudou využívat dovážená krmiva. EÚD zpracovávalo zprávy i k&nbsp;problematice desertifikace, v&nbsp;tomto směru bude spolupracovat s&nbsp;komisařem pro životní prostředí. Odlesňování – problémem zejména ve&nbsp;třetích zemích, se kterými EU obchoduje.</p>
+
+
+
+<p>20/ JAROSLAW KALINOWSKI (EPP, PL): stran Strategických plánů a povinnosti definice aktivního zemědělce – 50 % příjemců zemědělských dotací nejsou zemědělci, ale vlastníci zemědělské půdy, a doufáme, že se v&nbsp;tomto na Vás můžeme spolehnout. Dále vznesl dotaz stran pravidel podmíněnosti navržených v&nbsp;návrhu Evropské komise.</p>
+
+
+
+<p>Odpověď: definici aktivního zemědělce skutečně potřebujeme, a na její implementaci budu nadále pracovat. Stran podmíněnosti uvedl, že EÚD vyhodnotil návrh Evropské komise v&nbsp;této oblasti jako nevyhovující, a toto stanovisko by mělo být vzato v&nbsp;potaz.</p>
+
+
+
+<p>21/ MATT CARTHY (GUE/NGL, IE): ztráta tak velkého množství zemědělců v&nbsp;posledních deseti letech je výsledkem toho, že se zemědělci neuživí. Zaútočil na velké zemědělské podniky, ty největší podle něj získávají 10 % celkového evropského rozpočtu, nejen rozpočtu SZP, ale rozpočtu celkového. Jak chcete řešit rozdělování finančních prostředků, a jak chcete řešit korporáty? V&nbsp;celé Evropě by mělo být povinné zastropování přímých plateb.</p>
+
+
+
+<p>Odpověď: jako komisař bude připraven vyslechnout si zemědělce, uznat jejich problémy, a nalézt na ně řešení. Rozdíly mezi velkými a malými zemědělci jsou problematické, situace je taková, že 80 % dotací putuje k&nbsp;20 % zemědělců. To bude muset být reflektováno v&nbsp;dlouhodobé strategii pro zemědělství, v&nbsp;současném návrhu tuto situaci může změnit pouze možná zastropování v&nbsp;kombinaci s&nbsp;definicí aktivního zemědělce. To jsou otázky, ke kterým je stále třeba diskutovat, nutno podpořit malé a střední zemědělce. Argumentem řady členských států je, že situace v&nbsp;zemědělském sektoru v&nbsp;členských státech je rozdílná, a je proto třeba ji reflektovat. Rozumí pozicím těchto států, i když Komise usiluje o povinné zastropování.</p>
+
+
+
+<p>22/ ISABEL CARVALHAIS (S&amp;D, PT): dotaz zaměřila na vzdálené regiony. Co chcete učinit pro to, abyste pomohl venkovským oblastem, které čelí desertifikaci i odlivu lidí z&nbsp;venkovských oblastí. Co chcete udělat pro malé zemědělce ve vzdálených regionech?</p>
+
+
+
+<p>Odpověď: plně chápu složitou situaci, a jsem otevřen úpravám návrhu Komise s&nbsp;cílem podpořit všechny regiony, i ty nejvzdálenější.</p>
+
+
+
+<p>23/ MOLLY SCOTT CATO (ZELENÍ, UK): opřela dotaz o problematiku sekvestrace uhlíku, nutno podporovat rotace plodin, do SZP by měla patřit i protipovodňová opatření v&nbsp;lesnictví, zemědělství musí být udržitelné. Proti agro-průmyslu v&nbsp;zemědělství.</p>
+
+
+
+<p>Odpověď: souhlas s&nbsp;odmítnutím agro-průmyslu.</p>
+
+
+
+<p>24/ ASGER CHRISTENSEN (RENEW EUROPE, DK): jak zajistíte, že zemědělci budou schopni poskytovat dostatečné množství potravin, a přitom současně dodržovat veškeré požadavky, které na ně klademe? Jak ospravedlníte, že malí zemědělci v&nbsp;řadě případů znečišťují více než velcí zemědělci.</p>
+
+
+
+<p>Odpověď: je třeba se zaměřit na to, jaký by měl být správný přístup k&nbsp;zemědělství v&nbsp;EU, musíme zemědělce motivovat. Další byrokratická pravidla by neměla být vytvářena. Podle vlastních slov nikdy neřekl, že bude chránit pouze malé podniky, chce chránit malé a střední podniky. Není problém s&nbsp;velikostí podniků, ale s&nbsp;kvalitou produkce.</p>
+
+
+
+<p>25/ CHRISTOPHE HANSEN (EPP, LU): Vznesen dotaz týkající se vyšetřování Evropským úřadem pro boj proti podvodům – byly Vaše pohledávky proplaceny z&nbsp;Vaší vlastní iniciativy?&nbsp; A jak máte v&nbsp;plánu vést třetinu evropského rozpočtu, když nejste schopen dát si do pořádku vlastní cestovní náklady?</p>
+
+
+
+<p>Odpověď: z&nbsp;vlastní iniciativy vrátil zhruba 11.000 EUR ještě před zahájením vyšetřování, vyšetřování ze strany Evropského úřadu pro boj proti podvodům bylo spíše reakcí na platbu, platba nebyla provedena v&nbsp;reakci na vyšetřování. Vyšetřování již bylo ukončeno. Pasoval se do pozice oběti, nejednalo se o pochybení z&nbsp;jeho strany.</p>
+
+
+
+<p>ZÁVĚREČNÝ PROJEV KANDIDÁTA NA POST KOMISAŘE PRO ZEMĚDĚLSTVÍ</p>
+
+
+
+<p>Wojciechowski uvedl, že je připraven komunikovat s&nbsp;Evropským parlamentem a dalšími stakeholdery s&nbsp;cílem vybudovat strategii pro zemědělství a rozvoj venkova.</p>
+
+
+
+<p>VÝSLEDEK: ZEMĚDĚLŠTÍ KOORDINÁTŘI POLITICKÝCH FRAKCÍ NEDOPORUČILI KANDIDÁTA NA POST KOMISAŘE PŘÍMO, JANUSZ WOJCIECHOWSKI BUDE MUSET ZODPOVĚDĚT DALŠÍCH SEDM PÍSEMNÝCH DOTAZŮ ZE STRANY COMAGRI (JEDNU OTÁZKU ZA KAŽDOU FRAKCI), A NÁSLEDNĚ BUDE POZVÁN NA DRUHÉ KOLO GRILOVÁNÍ V&nbsp;EVROPSKÉM PARLAMENTU. KOORDINÁTOŘI VYSTOUPENÍ OZNAČILI ZA NEUSPOKOJIVÉ A NEDOSTATEČNÉ.</p>
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

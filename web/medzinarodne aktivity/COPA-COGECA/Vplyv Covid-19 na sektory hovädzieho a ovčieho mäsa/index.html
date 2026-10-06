@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vplyv Covid-19 na sektory hovädzieho a ovčieho mäsa — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">medzinarodne aktivity</a><span>/</span><a href="../index.html">COPA-COGECA</a><span>/</span>Vplyv Covid-19 na sektory hovädzieho a ovčieho mäsa</nav>
+
+  <article>
+    <h1 class="doc-title">Vplyv Covid-19 na sektory hovädzieho a ovčieho mäsa</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Copa-Cogeca</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">30. marca 2020</span></p>
+
+    <div class="doc-body">
+<p>Poznámka: Situácia sa vyvíja, preto už niektoré údaje nemusia platiť. Ide o voľný preklad zo záznamov, v ktorých sa môžu vyskytovať rôzne chyby.</p>
+
+
+<h2 class="doc-subheading">RAKÚSKO</h2>
+
+<p>V Rakúsku je trh s hovädzím mäsom pod obrovským tlakom a situácia sa vyvíja pomerne rýchlo ... každým dňom sa zhoršuje …</p>
+
+<ul>
+	<li>Z&nbsp;dôvodu uzatvorenia &gt; gastronómia, všetky reštaurácie, jedálne, a&nbsp;pod. sú teraz zatvorené&nbsp; &gt; toto boli miesta, kde sa predala veľká časť hodnotného mäsa (steaky).</li>
+	<li>Na začiatku uzatvorenia sme zaznamenali situáciu, keď sa vyššie objemy predávali prostredníctvom maloobchodných kanálov (čiastočne aj v dôsledku panického nákupu), čo čiastočne vykompenzovalo prerušenie odvetvia gastronómie.</li>
+	<li>Ale teraz zažívame klesajúci dopyt po čerstvom hovädzom mäse &gt; spotrebitelia majú skôr tendenciu kupovať mleté ​​mäso a / alebo iné druhy mäsa (hydina - ľahšie sa varí ...) - takže trh drahšieho mäsa klesá&gt; a to je miesto, kde sú peniaze…</li>
+	<li>Ďalej vidíme, že príjmy z vedľajších produktov (koža) dramaticky klesajú (zo 120 EUR / zviera na 60 EUR a menej ...), čo vedie k zvýšenému tlaku na trhu (v dôsledku situácie, keď sú garbiarne tiež odstavené ...)</li>
+	<li>Sektor v Rakúsku čelí vyšším nákladom na pracovnú silu &gt; z dôvodu nedostatku pracovníkov z východoeurópskych krajín (cestovné obmedzenia / karanténne pravidlá ...). Mäsový priemysel v Rakúsku (bitúnky) závisí do veľkej miery (80%) od zahraničných pracovných síl (dochádzajúci z krajín východnej Európy).</li>
+	<li>Naše vývozy sa spomaľujú smerom k zastaveniu (oveľa nižší dopyt zo strany Nemecka, španielska a Francúzska).</li>
+	<li>Veľkonočný biznis môže tiež zostať na dosť nízkej úrovni (sociálne dištancovanie, žiadne veľké rodinné stretnutia, reštaurácie zatvorené) …)</li>
+</ul>
+
+
+
+<h2 class="doc-subheading">BELGICKO FWA</h2>
+
+<p>Dôsledky krízy Covid-19 sa časom prejavia. V súčasnosti máme určité počiatočné trendy, ale niekedy to môžu byť cyklické následky paniky na trhu.</p>
+
+<h2 class="doc-subheading">Hovädzie mäso</h2>
+
+<ul>
+	<li>Staré kravy zaznamenali pokles cien.</li>
+	<li>Nerovnováha jatočného tela sa zvyšuje s prechodom od spotreby mimo domácnosti k domácej spotrebe. Mleté mäso a produkty na varenie sú viac žiadané ako ušľachtilé kusy mäsa.</li>
+	<li>Problémy s presmerovaním balenia HORECA na maloobchodné porcie.</li>
+	<li>Počet zvierat na trhoch klesá. Pre predaj živých zvierat to komplikuje veci.</li>
+	<li>Taliansko je hlavným dovozcom živých zvierat. Zatiaľ všetko pokračuje. A čo nasledujúce týždne?</li>
+	<li>Vnútorná domáca spotreba je priaznivá pre spotrebu belgického mäsa. Uzatvorenie HORECA by mohlo uprednostniť vnútorný trh.</li>
+</ul>
+
+<h2 class="doc-subheading">Ovčie mäso</h2>
+
+<p>Belgický trh nie je sebestačný. Covid-19 má momentálne malý vplyv na marketing jahniat.</p>
+
+
+
+<h2 class="doc-subheading">BELGICKO BOERENBOND</h2>
+
+<p>Naši výrobcovia hovädzieho mäsa zažívajú už niekoľko rokov štrukturálnu krízu. Máme tu hlavne plemeno Belgické modré (jatočné telá typu S). Toto mäso je určené predovšetkým pre miestny trh. Vývoz je veľmi obmedzený. Vplyv tohto druhu na situáciu na trhu je pre tento druh hovädzieho mäsa stále obmedzený. Ceny a dopyt zo strany maloobchodníkov a mäsiarov zostávajú stabilné a dopyt dokonca minulý týždeň mierne vzrástol, pravdepodobne aj z dôvodu hromadenia zásob domácnosťami. Otázkou je, či to tak bude aj v nasledujúcich týždňoch. Na druhej strane však prestal existovať predaj do stravovacieho priemyslu a reštaurácií. Obidva tieto faktory teda môžu v nasledujúcich týždňoch vyvolať ďalší tlak na trh.</p>
+
+<p>V prípade dojníc (viac na „priemyselné“ spracovanie) a teľacieho mäsa pozorujeme nepriaznivý vplyv. Ceny a predaj dojníc sú pod silným tlakom (predaj potravinárskym službám zmizol a vývoz je zložitý). Pokiaľ ide o teľacie mäso, vývoz na dôležité trhy, ako sú Taliansko a Španielsko, je veľmi ťažký a predaj do reštaurácií v Belgicku zmizol).</p>
+
+<p>Ďalšou dôležitou výzvou bude prevádzka logistického reťazca (bitúnky, ...) v nasledujúcich týždňoch.</p>
+
+
+
+<h2 class="doc-subheading">DÁNSKO</h2>
+
+<h2 class="doc-subheading">Hovädzie mäso</h2>
+
+<p>Najvyššou prioritou v súčasnosti je zaistenie celého dodávateľského reťazca, aby sa jedlo dostalo do regálov. Aby sa to dosiahlo, je nevyhnutné udržiavať hranice v rámci EÚ otvorené pre potraviny a prácu. Vidíme nárast v maloobchode - najmä v prípade mletého mäsa. Maloobchod zaznamenáva niektoré straty z potravinových služieb, ale nie za drahšie časti a vývoz do potravinových služieb v južnej Európe úplne vymizol.</p>
+
+<p>Je stále skoro a je ťažké predpovedať ďalšie verejné iniciatívy na boj proti Covid19. Zdôrazňujeme však, že nemáme nedostatok potravín. Typy mäsa, ktoré sa bežne používajú v hoteloch a reštauráciách, sa práve teraz ukladajú do chladiarenských skladov. Toto odvetvie je schopné uspokojiť spotrebiteľské požiadavky - aj keď vidíme ďalší nárast v maloobchode.&nbsp;</p>
+
+<p>Preto máme tiež obavy, že Komisia by dovozcom mohla poskytnúť flexibilitu, pokiaľ ide o využívanie dovozných kvót. Obávame sa, že takáto flexibilita by mohla spôsobiť ďalšie narušenie už nestabilného trhu.</p>
+
+
+
+<h2 class="doc-subheading">FÍNSKO</h2>
+
+<h2 class="doc-subheading">Hovädzie mäso</h2>
+
+<p>Počas epidémie Covid-19 sa dopyt po mletom mäse zdvojnásobil. Existujú problémy s hodnotnými časťami. Zdá sa, že ľudia kupujú viac základných potravín. Zvýšil sa aj dopyt po údeninách a párkoch. Bitúnky sa dobre pripravili na zvládnutie šírenia vírusu. Priemyselný sektor zabezpečuje, že porážka a spracovanie mäsa sú schopné pokračovať. Ľudia pracujúci v mäsovom priemysle sa vyhýbajú riziku infekcie.</p>
+
+
+
+<h2 class="doc-subheading">Ovčie mäso</h2>
+
+<p>Predaj mäsa priamo z fariem spotrebiteľom je v sektore oviec bežnejší ako v iných sektoroch mäsa. Počas epidémie Covid-19 je ešte obľúbenejší priamy predaj z fariem spotrebiteľom a dodávka domov. Pracovnú silu počas sezóny jarných jahniat je ťažšie zohnať.&nbsp;</p>
+
+
+
+<h2 class="doc-subheading">FRANCÚZSKO FNB</h2>
+
+<p>V tejto fáze (v týždni 16. - 24. marca) bude mať zatvorenie reštaurácií, škôl a&nbsp;jedální, atď. predovšetkým účinok prerozdelenia na spotrebu smerom k domácej spotrebe, neočakávame pokles (keďže supermarkety dodávajú najmä francúzske mäso a obchod s mäsom v EÚ sa udržiava). Okrem toho sa obchod s živými zvieratami s Talianskom a Španielskom stále uskutočňuje za rovnakých podmienok a toky sa udržiavajú. Napokon tok krmív a zásob pre poľnohospodárske podniky a priemyselné odvetvia naďalej funguje.</p>
+
+<p>Otázky a neistoty na nasledujúce dni a týždne sú hlavne logistické a súvisia s dostupnosťou pracovnej sily.</p>
+
+
+
+<h2 class="doc-subheading">FRANCÚZSKO FNO</h2>
+
+<p>Spotreba ovčieho mäsa je obzvlášť dôležitá počas veľkonočného obdobia. Tento rok bude, žiaľ, pravdepodobne iný.</p>
+
+<p>Veľkým problémom sú ľudia, ktorí sa zaoberajú zabíjaním, prepravou / ktorí sa presúvajú z jednej farmy na druhú. Nie je k dispozícii dostatok špeciálneho vybavenia na ich ochranu.</p>
+
+<p>Skutočnosť, že reštaurácie a jedálne boli uzavreté, povedie k presunu ovčieho mäsa do supermarketov, s ďalším tlakom na tejto úrovni, kde spotreba nie je príliš priaznivá.</p>
+
+<p>Dnes mäsiarstva žiadajú zásoby ovčieho mäsa. Živý vývoz do Talianska je zložitý.</p>
+
+
+
+<h2 class="doc-subheading">NEMECKO</h2>
+
+<p><strong>Krmivo</strong>: Žiadne problémy v&nbsp;dodávkach.</p>
+
+
+
+<p><strong>Výroba</strong>: Na trhu s bitúnkami sú veľké neistoty. Niektoré porážkové spoločnosti objednávajú veľmi opatrne. Dopyt je však zmiešaný. Dopyt po spracovaní výrobkov pre supermarkety je vysoký. Spotreba mimo domácností sa rozpadla, pretože reštaurácie a školy atď. musia byť zatvorené. Existuje malý cenový tlak. Koronakríza ovplyvňuje medzinárodný obchod (vývoz do Talianska).</p>
+
+
+
+<p><strong>Pracovná sila</strong>: Obavy o chorých zamestnancov a obavy o zatvorenie spoločností.</p>
+
+
+
+<p><strong>Obchod</strong>: Export do Číny: chladené kontajnery sú stále vzácne. Export do Číny trochu stagnuje. Obavy z uzavretia spoločností.</p>
+
+
+
+<p><strong>Distribúcia</strong>: Poskytovanie potravín obyvateľstvu má najvyššiu prioritu a je systémovo dôležité. Hranica sa uzatvára. Na prepravu živých zvierat na hranici nesmie existovať dlhá čakacia doba.</p>
+
+
+
+<p>Z prémiových hovädzích výrobkov sa presunul na iné výrobky (hydina alebo bravčové mäso). Pokiaľ ide o prístup k práci, mohli by sme čeliť vážnym výzvam čo sa týka pracovníkov na bitúnkoch a v spracovateľskom priemysle (už teraz v spracovaní hydiny, neskôr možno aj pre dobytok a ošípané).</p>
+
+<p>Reštaurácie a McDonalds sú stále otvorené (skrátené otváracie hodiny), ale iba na tovar so sebou / obsluhu priamo do auta. Najmä ak spoločnosť McDonalds všetko zastaví, zvýši sa tlak na trh.</p>
+
+<p>Prudké zníženie cien jatočného hovädzieho dobytka minulý týždeň znížilo ochotu výrobcov dodávať na trh, takže objemy porážok sa prispôsobili nižšiemu dopytu.</p>
+
+
+
+<p>Dopyt pohostinstiev sa takmer úplne zrútil, týka sa to najmä kvalitnejších častí. Maloobchod / diskontní predajcovia potravín okrem toho vyžadovali menšie množstvo spracovaného tovaru. Predaj jalovíc a ťažkých jatočných kráv (vývoz) bolo ťažké realizovať. Ceny sa napriek tomu dokázali stabilizovať u všetkých druhov. Koronavírus spôsobuje prudký pokles spotreby teľacieho mäsa, a tým pádom aj ceny teľacieho mäsa. V dôsledku toho sa v aktuálnom týždni, v ktorom sa podáva správa, očakáva výrazné zníženie cien teľacieho mäsa.</p>
+
+<p>Predaj kože sa zrútil v dôsledku zastavenia výroby niektorých výrobcov automobilov. To má ďalší vplyv na ceny.</p>
+
+<p>V niektorých oblastiach Nemecka existujú problémy s kapacitou na laboratórne testovanie. Týka sa to najmä vyšetrení v zmysle zákona o chorobách zvierat, napr. pre katarálnu horúčku oviec - modrý jazyk. Laboratórna kapacita je potrebná na vykonávanie vyšetrení koronavírusu. To tiež znamená, že s teľatami nemožno obchodovať z ochranného pásma.</p>
+
+
+
+<h2 class="doc-subheading">GRĚCKO</h2>
+
+<h2 class="doc-subheading">Všeobecné poznámky </h2>
+
+<p>Zatvorenie reštaurácií malo za následok okamžitý negatívny vplyv na spotrebu mäsa a prerozdelenie dodávok do supermarketov. Dodávky alebo priama domáca spotreba sú teraz hlavnými kanálmi spotreby mäsa. Pravdepodobné zrušenie turistickej sezóny 2020 je veľkým postrachom spracovateľov mäsa a veľkoobchodníkov, pretože tento segment predstavuje 25% ekonomiky a hlavný zdroj príjmov.</p>
+
+
+
+<h2 class="doc-subheading">Ovčie mäso</h2>
+
+<p>Spotreba ovčieho mäsa je tradične veľmi dôležitá počas veľkonočného obdobia, ktoré nasleduje po dlhotrvajúcom pôstnom období s minimálnou spotrebou mäsa. Skutočnosť, že reštaurácie sú zatvorené, vedie k presunu ovčieho a kozieho mäsa do supermarketov. To a skutočnosť, že vývoz do Talianska a Španielska je tento rok extrémne minimálny, vedie k prebytku ponúk zo strany výrobcov a následne k podstatne nižším cenám výrobcov pod výrobnými nákladmi.</p>
+
+
+
+<h2 class="doc-subheading">Hovädzie mäso</h2>
+
+<p>Veľký nárast porážok zvierat dovážaných alebo chovaných v Grécku (nárast približne o 45% za štrnásť dní) v dôsledku okamžitého dodania mäsa od miestnych výrobcov ako obáv, ktoré sa týkajú prípadného oneskorenia pri dovoze mäsa. Očakáva sa, že tento výnimočný posun sa vráti na menšie percento, až kým sa neukončia zásoby teliat, ktoré sa doteraz odvážali na bitúnky.</p>
+
+
+
+<h2 class="doc-subheading">MAĎARSKO</h2>
+
+<p>Pokiaľ ide o chovateľov dobytka, súčasným problémom je, či je možné zachovať bezpečnosť krmív.</p>
+
+<p>Podľa našich informácií boli niektorí domáci výrobcovia kŕmnych zmesí zmluvne viazaní na celý rok a podľa ich správ dodávky zatiaľ prešli dobre. Situácia sa tu však môže z jedného momentu na druhý zmeniť. Ďalším typickým problémom je dočasné zmiznutie a neprístupnosť trhov, ktoré v súčasnosti v rôznej miere ovplyvňuje rôzne oblasti.</p>
+
+<p>V prípade hovädzieho dobytka a ošípaných môže byť riešením ďalšie výkrm a chov zvierat, ale na jednej strane to predstavuje značné dodatočné náklady (náklady na chov, zmenu technológie) a na druhej strane to môže viesť k nižším nákupným cenám..</p>
+
+
+
+<p><strong>Hovädzie mäso</strong>: Maďarský trh hromadného stravovania, stravovacích služieb a reštaurácií - všeobecne HORECA - bol zdecimovaný, čo má vážny vplyv na predaj mäsa s vyššou hodnotou. Toto je vážny problém v sektore výkrmu, pretože maďarské bitúnky predávajú červené mäso hlavne na domáci trh, vývoz je obmedzený. Predaj mladých zvierat na výkrm nie je problém, ale preprava si vyžaduje veľkú pozornosť a väčšiu organizáciu, pretože prekročiť cez hranice je ťažšie, takže vodiči musia čakať dlhšie a predpisy karantény sťažujú zamestnávanie vodičov.</p>
+
+
+
+<p><strong>Ovčie mäso</strong>: Veľká noc je jedným z hlavných období predaja maďarskej jahňacej výroby. V súčasnosti sa zásielky po krátkom problémovom období dostanú na taliansky trh. Ceny v posledných týždňoch klesli, čo je v súčasnej situácii veľmi nepriaznivé. Došlo k prerušeniu dodávky mäsa do Rakúska, Slovenska, Slovinska a Českej republiky. Tieto informácie sa týkajú súčasnej situácie a môžu sa z jedného dňa na druhý meniť v závislosti od šírenia COVID-19.</p>
+
+
+
+<p><strong>Obidva druhy mäsa</strong>: Kľúčovou prioritou je zachovanie kontinuity dopravy. Ak je preprava obmedzená, potrvá to dlhšie, pokiaľ ide o získavanie krmiva pre zvieratá; vývoz a dovoz živých zvierat sú pod neistotou.</p>
+
+
+
+<h2 class="doc-subheading">ÍRSKO</h2>
+
+<h2 class="doc-subheading">Hovädzie mäso</h2>
+
+<p>V prvom rade je to ešte veľmi krátke a vplyv COVID 19 ešte úplne nenarazil na obchod s mäsom a trhy, preto ide o veľmi skoré predbežné hodnotenie.</p>
+
+<p>Výrobné ceny primárneho hovädzieho dobytka sú klesli o 5 centov / kg. Ceny za vyradené kravy klesli o&nbsp;10 centov / kg.</p>
+
+<p>Spracovatelia / bitúnky sú so špecifikáciami omnoho prísnejšie a náročnejšie, pretože viac výrobkov ide maloobchodnou cestou na rozdiel od stravovacích služieb.</p>
+
+<p>Na trhu sa hovorí o väčších zníženiach cien na úrovni farmy.</p>
+
+<p>Určitá úroveň panického predaja na úrovni farmy ako strach z narušenia dodávateľského reťazca sa zintenzívňuje, napríklad prepuknutie vírusu COVID-19 v závode na spracovanie mäsa, čo by malo výrazné následky pre pracovníkov a poľnohospodárov, ktorí sa obávajú, že nedokážu spracovať zvieratá.</p>
+
+<p>Na domácom írskom trhu zostáva maloobchod silný, s výrazným nárastom dopytu po mletých výrobkoch.</p>
+
+<p>Trh s potravinami a reštauráciami bol však zdecimovaný, čo má zase vážny dopad na predaj steakového mäsa s vyššou hodnotou.</p>
+
+<p>Podobné trendy na vývozných trhoch. Pevný maloobchodný dopyt po mletých výrobkoch a&nbsp;predných štvrťkách, nižší dopyt po steakoch. Strata v oblasti stravovania a reštaurácií je veľmi výrazná. Okrem toho spoločnosť McDonalds uzavrela svoje prevádzky (objem 40 000 ton hovädzieho mäsa v hodnote 160 miliónov EUR ročne).</p>
+
+<p>Hlavné obavy týkajúce sa dopravy v exportnej krajine, akou je Írsko, sa týkajú vodičov nákladných vozidiel, ktorých veľmi znepokojujú cestovné obmedzenia a uzavretie plavidiel.</p>
+
+<p>Hlavné obavy z hladkého fungovania jednotného trhu.</p>
+
+<p>Maloobchodné predajne zostávajú dobre zásobené a&nbsp;aj keď bolo vidno určitú úroveň nákupnej paniky, nie je to hlavný problém.</p>
+
+
+
+<h2 class="doc-subheading">Ovčie mäso</h2>
+
+<p>Cena výrobcu klesla o 20 – 30 centov / kg v&nbsp;priebehu týždňa.</p>
+
+<p>Strata reštauračného obchodu na domácom aj exportnom trhu je veľmi výrazná, najmä preto, že Veľká noc (12. apríla) je vždy silným obdobím predaja jahniat (kresťanský sviatok) v celej EÚ a Ramadán (moslimský sviatok) sa začína 23. apríla.</p>
+
+<p>Spracovatelia hovoria o strate hlavných trhových zmlúv v oblasti pohostinstva a&nbsp;potravinových služieb na domácom aj exportnom trhu.</p>
+
+<p>Doteraz neexistujú žiadne závažné problémy s dostupnosťou krmiva alebo nedostatkom pracovných síl u hovädzieho dobytka alebo oviec.</p>
+
+<p>Doprava predstavuje problém kvôli nedostatku kontajnerov v dôsledku problémov v&nbsp;COVID-19 v Číne a prerušeniami pohybu tovaru do / z čínskych prístavov.</p>
+
+<p>Opäť zdôrazňujeme, že ide o veľmi skorý predbežný pohľad a väčšina očakáva, že dopad bude oveľa závažnejší na úrovni farmy, pretože problém COVID-19 sa v nasledujúcich týždňoch a mesiacoch vyvíja.</p>
+
+
+
+<h2 class="doc-subheading">TALIANSKO COLDIRETTI</h2>
+
+<h2 class="doc-subheading">Hovädzie mäso</h2>
+
+<p>Situácia sa neustále mení, týždeň čo týždeň, predovšetkým pokiaľ ide o ceny mäsa.</p>
+
+
+
+<h2 class="doc-subheading">Dojnice určené na porážku</h2>
+
+<p>Pokiaľ ide o dojnice určené na zabitie, situácia je veľmi kritická z dôvodu ukončenia činností HORECA a potravinárskych kanálov, ktoré sú s nimi prepojené.</p>
+
+<p>Vzhľadom na nemožnosť umiestniť mäso na tieto kanály (hamburgery pre Burger King a McDonald's, hotely, reštaurácie, jedálne, ...), ktoré sú vo všeobecnosti jedinými obchodnými miestami pre tento druh výrobkov, ceny dojníc určených na porážku klesli (-20%) a porážková činnosť je ohrozená z dôvodu nulového dopytu. Všeobecnejšie povedané, podľa posledných záznamov o trhu (berúc do úvahy posledné dva týždne) na niekoľkých trhoch v severnom Taliansku sa zaznamenal významný pokles cien jatočných kráv, a to priemyselných plemien (pokles o 30%). Pokles cien bol zaznamenaný aj v prípade mliečnych teliat.</p>
+
+<p>Súčasná kríza v sektore mlieka, ktorá bola spôsobená ukončením činností HORECA, navyše priniesla tlak na ziskovosť talianskych mliečnych fariem. S cieľom podporiť tieto farmy požiadalo Coldiretti talianske ministerstvo poľnohospodárstva o vykonanie priamych intervencií zameraných na poskytnutie hospodárskej podpory odvetviu.</p>
+
+
+
+<h2 class="doc-subheading">Teľacie mäso</h2>
+
+<p>Teľacie mäso a mäso z&nbsp;jalovíc sa drží vďaka vysokému dopytu zo strany veľkoobchodu, pre ktoré je toto mäso určené.</p>
+
+<p>A nakoniec, v súlade s najnovšími opatreniami prijatými talianskou vládou musia garbiarne tiež zostať zatvorené, a preto nemôžu byť dodávané zvieracie kože. Nastane problém s likvidáciou pre poľnohospodárov, ako aj strata príjmu.</p>
+
+
+
+<h2 class="doc-subheading">Dodávky surovín</h2>
+
+<p>Blokovanie hraníc zavedené niektorými členskými štátmi spomalilo obchod a spôsobili problémy so zásobovaním surovinami, najmä sójou pochádzajúcou z východnej Európy (Ukrajina). Z východu sú dodávky prerušené kvôli obavám súvisiacim s pohybom vodičov nákladných vozidiel, ktorí po opustení Talianska boli v karanténe. Ceny surovín navyše rastú.</p>
+
+
+
+<h2 class="doc-subheading">Ovčie mäso</h2>
+
+<p>Obchodné subjekty v potravinovom dodávateľskom reťazci zaznamenali vážne spomalenie trhu s jahňacím mäsom v Taliansku a Španielsku, ktoré v dôsledku zatvorenia reštaurácií a barov znižuje dovoz talianskeho jahňacieho mäsa.</p>
+
+<p>Okrem toho, ako aj v sektore hovädzieho mäsa, existujú problémy v obchode a doprave z dôvodu nebezpečenstva kontaminácie pre vodičov nákladných vozidiel.</p>
+
+<p>Pokiaľ ide o jahňacie mäso s&nbsp;chráneným zemepisným označením zo Sardínie, v marci došlo k výraznému zníženiu počtu zabitých zvierat určených na domáci trh (-50%), ako aj zásielok určených na vývoz do Španielska (-45%) plus zníženie o 80% medzi druhým a tretím týždňom toho istého mesiaca.</p>
+
+<p>Okrem toho, vzhľadom na veľkonočné obdobie, doteraz neexistujú predobjednávky, plány predaja a cenníky. Vzhľadom na zhoršujúcu sa zdravotnú situáciu došlo k výraznému zníženiu nákupných cien jahniat, ktoré sú oveľa nižšie ako ceny zaznamenané v rovnakom období minulých rokov (-20%).</p>
+
+<p>Odhady potvrdzujú, že počet zabitých zvierat bude v nadchádzajúcich týždňoch okolo Veľkej noci vysoký, a to kvôli ťažkostiam pri umiestňovaní tejto produkcie na trh, čo priťažuje situácii chovateľov už roky postihnutých hlbokou krízou súvisiacou s poklesom produkcie ovčieho mlieka. Chovatelia sa spoliehajú na veľkých maloobchodníkov, že ich v tejto ťažkej núdzi podporia.</p>
+
+
+
+<h2 class="doc-subheading">HOLANDSKO</h2>
+
+<h2 class="doc-subheading">Hovädzie mäso</h2>
+
+<p>Predaje sú rôzne v&nbsp;závislosti od reťazca. Problémy spôsobujú najmä dodávky do odvetvia stravovania a zníženie cien. Predaj domov a predaj supermarketom bude pokračovať ako zvyčajne.</p>
+
+
+
+<h2 class="doc-subheading">Kozie mäso</h2>
+
+<p>Existujú náznaky, že dopyt po kozom mäse začína klesať. Najmä vývozy do Španielska zlyhávajú.</p>
+
+
+
+<h2 class="doc-subheading">Ovčie mäso</h2>
+
+<p>Dopyt po jahňatách stagnuje. Ceny klesli asi o 10%. Okolo Veľkej noci je tradične vrcholné obdobie. Predaj pre stravovacie služby zmizol. Dopyt zo zahraničia stagnuje.</p>
+
+
+
+<h2 class="doc-subheading">POĽSKO</h2>
+
+<p>Situácia je nestabilná.</p>
+
+<p>Dopyt z Talianska a Španielska klesol.</p>
+
+<p>Doprava na hraniciach bola obrovská.</p>
+
+<p>Domáci dopyt minulý týždeň vzrástol.</p>
+
+<p>Teraz domáci dopyt klesol, ľudia majú plné mrazničky.</p>
+
+<p>Ceny na bitúnkoch sú nízke.</p>
+
+<p>Predajcovia hovädzieho dobytka ponúkajú výrobcom výrazne nízke ceny.</p>
+
+<p>Je ťažké predvídať najbližšiu budúcnosť.</p>
+
+<p>Účinky pandémie koronavírusu sa prejavujú najmä na domácom trhu s hovädzím mäsom. Už vieme, že niektoré bitúnky zabíjajú len 2 - 3 dni v týždni. Dostali sme informácie, že jedna zo spoločností, ktoré dodávajú hovädzie mäso do popredného reťazca rýchleho občerstvenia, má v úmysle porážku zastaviť. Takáto silná kríza súvisí okrem iného so skutočnosťou, že vyše 80 % hovädzieho mäsa vyrobeného v Poľsku sa exportuje. V dôsledku veľkých logistických problémov sa predaj vyrábaného mäsa stretáva s mnohými ťažkosťami. Preto môže mať Poľsko vážne obavy týkajúce sa zachovania súčasného počtu jatočných zvierat. V priemysle teda existuje veľké znepokojenie súvisiace s nákupnými cenami živých zvierat. Myslíme si, že v určitom čase sa situácia vráti do normálu, ale v súčasnosti existuje veľké množstvo chaosu v oblasti dopravy a logistiky - hovorí zástupca spoločnosti UPEMI.</p>
+
+<p>V posledných týždňoch sme zaznamenali drastické zníženie nákupných cien hovädzieho dobytka. Toto však nie je najväčší problém: stále častejšie sa vyskytujú situácie, keď majú výrobcovia problémy s včasným odstavením zvierat.</p>
+
+
+
+<h2 class="doc-subheading">SLOVINSKO</h2>
+
+<p>Vo všeobecnosti je zložitá situácia, pretože konzumácia hovädzieho mäsa klesla po prepuknutí koronavírusového ochorenia, najmä kvôli zatvoreniu reštaurácií, hotelov, škôl, materských škôl atď.</p>
+
+<ul>
+	<li>Na bitúnkoch môže dôjsť k oneskoreniu z dôvodu nedostatku dopytu,</li>
+	<li>Kvôli oneskoreniu sa stáva situácia kritickou pri extenzívne chovaných zvieratách, ktoré môžu dosiahnuť vyšší vek (nad 30 mesiacov), a tak dostanú menej zaplatené,</li>
+	<li>Všetky bitúnky od začiatku minulého týždňa znížili ceny až o 30 centov / kg, na druhej strane ceny u maloobchodníkov zostali rovnaké,</li>
+</ul>
+
+<p>Niektoré družstvá mali problémy s vývozom zvierat do iných členských štátov v dôsledku problémov s prepravou, ale zatiaľ to nie je žiadny vážny problém.</p>
+
+
+
+<h2 class="doc-subheading">ŠPANIELSKO ASAJA</h2>
+
+<p>Cena, ktorú poľnohospodári dostávajú za svoje zvieratá, tak za výkrm hovädzieho dobytka, ako aj za zabitie zvieraťa, klesá.</p>
+
+<p>Na druhej strane je veľký problém s prémiovými kusmi hovädzieho mäsa, pretože tieto kusy mäsa, ktoré sú určené sektoru služieb, nemajú odbyt, pretože reštaurácie, hotely sú zatvorené ... tiež sme zaznamenali väčší dopyt po výrobkoch v supermarketoch (vonkajšie trhy sú zakázané).</p>
+
+<p>Máme problémy s presídlením pracovníkov do fariem (je to reštriktívnejšie), ale zatiaľ to ovplyvňuje najmä sektor ovocia a zeleniny.</p>
+
+<p>Je veľmi dôležité zdôrazniť význam udržiavania voľného pohybu tovaru prostredníctvom „zelených trás“, aby sa pokračovalo v dodávkach vstupov. Nemôžeme uzavrieť hranice, pretože potrebujeme bielkoviny pre zvieratá. Napríklad v Španielsku sa vyprodukuje iba 0,1% sóje, ktorá sa využíva vo výžive dobytka.</p>
+
+<p>Veľké mliekarenské podniky navyše využívajú COVID-19 a&nbsp;opätovne prerokovávajú zmluvy o&nbsp;dodávkach mlieka smerom nadol. Využívajú skutočnosť, že poľnohospodári nemôžu vyjednávať osobne, čo vyvoláva veľa neistoty.</p>
+
+
+
+<h2 class="doc-subheading">ŠPANIELSKO COAG</h2>
+
+<h2 class="doc-subheading">Mäso</h2>
+
+<p>Sektor varuje pred zastavením trhu s mliečnymi jahňatami (menej ako 8 kg živej hmotnosti). Tento produkt je konzumovaný s výrazne sezónnym charakterom (predovšetkým vianočné a veľkonočné sviatky) a je úzko spojený s oslavami (svadby, krstiny, sviatky a iné rodinné oslavy, z ktorých mnohé sa konajú v tomto ročnom období). Keďže boli všetky prevádzky kanála HORECA (hotely, reštaurácie a stravovanie) zatvorené a veľkonočný týždeň bol pozastavený, dopyt drasticky poklesol. Zvieratá sú preto stále na farmách a okrem poklesu príjmov z predaja sa zvyšujú aj náklady na ich chov.</p>
+
+
+
+<h2 class="doc-subheading">Mlieko</h2>
+
+<p>V prípade kozieho mlieka je situácia komplikovaná, pretože:</p>
+
+<ul>
+	<li>v dôsledku uzavretia kanála HORECA je menší dopyt po mlieku na výrobu syra. Zrecie komory samotných výrobcov, ako aj spracovateľských a marketingových spoločností, sa začínajú naplňovať, čo spôsobuje problémy so riadením a predajom produktu.</li>
+	<li>Zdá sa, že rovnaká situácia sa vyskytuje v iných krajinách, ktoré tiež vyrábajú kozie mlieko (Taliansko, Holandsko, Portugalsko).</li>
+	<li>To znamená, že vo veľmi krátkom čase dôjde k výraznému zvýšeniu ponuky mlieka na úrovni Španielska aj na úrovni EÚ, čo bude sprevádzané stiahnutím dopytu.</li>
+</ul>
+
+
+
+<h2 class="doc-subheading">Hovädzie mäso</h2>
+
+<p>Bitúnky nechcú vyradenú kravu za žiadnu cenu. Je to preto, lebo časť jatočného tela (ako je steak alebo bedrá) je určená na stravovanie a zvyšok sa zvyčajne predáva hamburgerom. Pretože je celý kanál HORECA uzavretý, pre tento typ mäsa neexistuje žiadny predaj. Keďže sa trhy s hovädzím dobytkom pozastavili, chovy prestali nakupovať teľatá na výkrm. Z krátkodobého až strednodobého hľadiska sa očakáva pokles cien týchto zvierat. Uzatvorenie veľtrhov a trhov by nemalo viesť k prerušeniu činnosti, pretože obchodníci by mohli naďalej nakupovať teľatá z fariem a ponúkať ich na predaj prostredníctvom svojej obchodnej a dopravnej siete.</p>
+
+<p>V prvých dňoch krízy došlo k výraznému zvýšeniu dopytu po teľacom mäse, najmä na domácom trhu (v dôsledku situácie nákupov domácností do zásob). Očakáva sa, že tento nárast dopytu bude krátky a situácia sa v nasledujúcich dňoch stabilizuje. V súčasnosti sa udržiava vývoz živých zvierat do tretích krajín, aj keď v tomto sektore existuje veľká neistota, čo sa stane v nasledujúcich týždňoch pri preprave živých zvierat do arabských krajín.</p>
+
+
+
+<h2 class="doc-subheading">ŠPANIELSKO COOPERATIVAS</h2>
+
+
+
+<h2 class="doc-subheading">Trh</h2>
+
+<ul>
+	<li>Existujú určité obavy, že nebude dostatok sóje. Nejde o problém výroby, ale o riadenie jej prepravy.</li>
+	<li>Argentína uviedla, že zníži počet zásielok. Obmedzenie časti výroby sójovej múky.</li>
+	<li>V Španielsku je nedostatok lodí na prepravu a nezáujem o potrebu prejsť karanténou.</li>
+	<li>Obavy z budúcich problémov s platbami.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;</li>
+</ul>
+
+<h2 class="doc-subheading">Dojnice</h2>
+
+<ul>
+	<li>Relatívne normálna situácia. Objednávky sa v týchto týždňoch zvýšili, očividne sa však očakáva, že v najbližších týždňoch po nahromadení zásob sa prejaví odrazový efekt.</li>
+	<li>Vývoz sa zastavil, a tiež odvetvie stravovania, ktoré ovplyvňuje družstvá, ktorých výroba smeruje do týchto miest určenia.</li>
+	<li>Určitá stabilita sa očakáva budúci týždeň, bude však potrebné ju vyhodnotiť.</li>
+</ul>
+
+
+
+<h2 class="doc-subheading">Ovčie mlieko</h2>
+
+<ul>
+	<li>Relatívne normálna situácia, pokiaľ ide o mlieko. Problémy s malými mliekarňami, ktoré zastavili výrobu v dôsledku ochrnutia kanála HORECA, berú do úvahy syry s&nbsp;označením pôvodu, ktoré úzko súvisia so sviatkami (Veľká noc). Ovplyvnené boli aj zásielky do Portugalska.</li>
+	<li>Je to čas jarných pôrodov a&nbsp;zatvorenie reštaurácií, ktoré sú hlavným cieľom jahniat, znamenalo pre družstvá, ktoré pracujú s týmto výrobkom (najmä Castilla y Leon), ranu.</li>
+	<li>Minulý týždeň došlo k určitému nárastu objednávok v dôsledku masívnych nákupov uskutočnených spotrebiteľmi, ale tento týždeň sú všetky objednávky pozastavené a&nbsp;jedinou možnosťou je mrazenie. Od budúceho týždňa sa domnievajú, že situácia sa stane neudržateľnou, pretože nastane čas špičkovej výroby mlieka s úplným zmiznutím jeho trhu.</li>
+</ul>
+
+
+
+<h2 class="doc-subheading">Kozie mlieko</h2>
+
+<ul>
+	<li>Mimoriadne alarmujúca situácia. Priemysel už naznačil, že napriek úplnému zlyhaniu trhu prestane nakupovať mlieko. Hotely a pohostinstvá (predaj kozieho syra), syrárne (hlavný cieľ) a vývoz sú úplne ochromené. Budúci týždeň sa očakáva nebývalá kríza.</li>
+	<li>Portugalsko a Francúzsko ponúkajú mlieko.</li>
+</ul>
+
+
+
+<h2 class="doc-subheading">Hovädzie mäso</h2>
+
+<ul>
+	<li>Absolútny kolaps trhu so starým hovädzím mäsom. Tento trh predstavuje približne 15% španielskej výroby hovädzieho mäsa a jeho cieľom sú reštaurácie. Uzavretie reštaurácií - kde sa odbytuje sviečková - a služby na mieste reťazcov rýchleho občerstvenia, ako sú McDonalds alebo Burger King – pre ktoré je určený zvyšok kanála, viedli k úplnému kolapsu tohto trhu, čo prinútilo bitúnky na spustenie zmrazenia výroby. OSI Food, distribútor mäsa spoločnosti McDonalds, vyhlásil nariadenie o&nbsp;dočasnom zamestnaní a takmer úplne ukončil svoju činnosť v Španielsku.</li>
+	<li>Úplný kolaps trhu s vedľajšími produktmi. Tieto výrobky, ktoré zvyčajne predstavujú ziskové rozpätie bitúnkov, úplne stagnujú, pretože ich hlavným cieľom je vývoz do tretích krajín. Aj keď neexistujú žiadne problémy s dopravou alebo vývozom, zákazníci na tretích trhoch ich prestali nakupovať.</li>
+	<li>Vážna kríza v&nbsp;prípade mäsiarov, ktorí distribuovali svoju produkciu spoločnostiam HORECA</li>
+	<li>Výrazný nárast v porážkach a predaji teľacieho mäsa (mäso pre supermarkety).</li>
+</ul>
+
+
+
+<h2 class="doc-subheading">Ovčie mäso</h2>
+
+<ul>
+	<li>Súbežným problémom je, že keďže niektorí sprostredkovatelia / obchodníci prestali vykupovať zvieratá z fariem poľnohospodárov, ktorí sú členmi družstiev, ktoré predtým predávali časť svojej výroby v zahraničí, teraz požadujú, aby družstvá od nich zvieratá odoberali, a dochádza k konfliktom v týchto spoločnostiach.</li>
+</ul>
+
+<p>Existujú veľké obavy z prerušenia vývozu ťažkých jahniat zo Španielska. Vzhľadom na to, že cieľom týchto zvierat je zabitie a / alebo spotreba v arabských krajinách počas kolektívnych osláv (Ramadán, Lamb Festival), existuje obava, že pravdepodobné obmedzenie pohybu a zhromažďovania v týchto krajinách by mohlo viesť k poklesu dopytu. Zatiaľ sa však nič nepotvrdilo a budeme musieť počkať na Veľkú noc, po ktorej sa začne kampaň na Ramadán.</p>
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

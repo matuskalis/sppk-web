@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPPK – Menu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f5f5f5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ─────────────────────────────────────────────────────────── */
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid #009a44;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 2px 12px rgba(0,154,68,0.06);
+    }
+    .navbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Desktop links */
+    .desktop-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      justify-content: center;
+    }
+    .nav-btn {
+      background: none;
+      border: none;
+      color: #000000;
+      font-size: 13.5px;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      padding: 16px 18px;
+      font-family: 'Inter', sans-serif;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+    .nav-btn:hover { color: #009a44; }
+    .nav-btn.active {
+      color: #009a44;
+      font-weight: 600;
+    }
+    .nav-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 18px;
+      right: 18px;
+      height: 2px;
+      background: #009a44;
+      border-radius: 1px 1px 0 0;
+    }
+
+    /* Hamburger */
+    .hamburger-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 14px 8px;
+      flex-direction: column;
+      gap: 5px;
+      align-items: center;
+      justify-content: center;
+    }
+    .hamburger-btn span {
+      display: block;
+      width: 24px;
+      height: 2.5px;
+      background: #000;
+      border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+    .hamburger-btn.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+    .hamburger-btn.open span:nth-child(2) { opacity: 0; }
+    .hamburger-btn.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+    /* Mobile active label */
+    .mobile-active-label {
+      display: none;
+      font-size: 14px;
+      font-weight: 600;
+      color: #009a44;
+      padding: 16px 0;
+    }
+
+    /* Mobile drawer */
+    .mobile-drawer {
+      display: none;
+      flex-direction: column;
+      border-top: 1px solid rgba(0,154,68,0.15);
+      background: #ffffff;
+      padding: 8px 0 12px;
+    }
+    .mobile-drawer.open { display: flex; }
+    .drawer-btn {
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 13px 24px;
+      font-size: 15px;
+      font-weight: 400;
+      color: #000;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      border-left: 3px solid transparent;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+    .drawer-btn:hover { background: rgba(0,154,68,0.05); }
+    .drawer-btn.active {
+      font-weight: 700;
+      color: #009a44;
+      border-left-color: #009a44;
+    }
+
+    /* ── Mobile breakpoint ───────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .desktop-nav-links { display: none !important; }
+      .hamburger-btn { display: flex !important; }
+      .mobile-active-label { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+
+    <!-- Desktop nav links -->
+    <div class="desktop-nav-links" id="desktopNav"></div>
+
+    <!-- Hamburger (mobile) -->
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Otvoriť menu" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <!-- Active label (mobile) -->
+    <span class="mobile-active-label" id="mobileLabel">Úvod</span>
+
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="mobile-drawer" id="mobileDrawer"></div>
+</nav>
+
+<script>
+  const NAV_LINKS = ["Úvod", "Tlačové správy", "Dokumenty", "Legislatíva", "O nás", "Kontakt"];
+  let active = "Úvod";
+  let menuOpen = false;
+
+  function setActive(link) {
+    active = link;
+    document.getElementById("mobileLabel").textContent = link;
+    renderDesktop();
+    renderDrawer();
+    menuOpen = false;
+    document.getElementById("mobileDrawer").classList.remove("open");
+    document.getElementById("hamburgerBtn").classList.remove("open");
+  }
+
+  function toggleMenu() {
+    menuOpen = !menuOpen;
+    document.getElementById("mobileDrawer").classList.toggle("open", menuOpen);
+    document.getElementById("hamburgerBtn").classList.toggle("open", menuOpen);
+  }
+
+  function renderDesktop() {
+    const nav = document.getElementById("desktopNav");
+    nav.innerHTML = NAV_LINKS.map(link => `
+      <button
+        class="nav-btn ${link === active ? 'active' : ''}"
+        onclick="setActive('${link}')"
+      >${link}</button>
+    `).join("");
+  }
+
+  function renderDrawer() {
+    const drawer = document.getElementById("mobileDrawer");
+    drawer.innerHTML = NAV_LINKS.map(link => `
+      <button
+        class="drawer-btn ${link === active ? 'active' : ''}"
+        onclick="setActive('${link}')"
+      >${link}</button>
+    `).join("");
+  }
+
+  renderDesktop();
+  renderDrawer();
+</script>
+
+</body>
+</html>

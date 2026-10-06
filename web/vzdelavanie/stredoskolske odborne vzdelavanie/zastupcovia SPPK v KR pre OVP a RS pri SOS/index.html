@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zástupcovia SPPK v krajských radách pre OVP a radách škôl pri SOŠ — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">vzdelavanie</a><span>/</span><a href="../index.html">stredoskolske odborne vzdelavanie</a><span>/</span>zastupcovia SPPK v KR pre OVP a RS pri SOS</nav>
+
+  <article>
+    <h1 class="doc-title">Zástupcovia SPPK v krajských radách pre OVP a radách škôl pri SOŠ</h1>
+    <p class="doc-meta"><span class="doc-meta-item">9. apríla 2026</span></p>
+
+    <div class="doc-body">
+<p>Krajská rada pre odborné vzdelávanie a prípravu</p>
+
+<p>Krajská rada pre odborné vzdelávanie a prípravu (ďalej len „krajská rada“) je poradným orgánom predsedu samosprávneho kraja v oblasti odborného vzdelávania a prípravy.&nbsp;</p>
+
+<p>Krajská rada plní najmä tieto úlohy:</p>
+
+<p>a) prerokúva regionálnu stratégiu odborného vzdelávania a prípravy v nadväznosti na hospodárske a sociálne potreby rozvoja regiónu,</p>
+
+<p>b) prerokúva plán potrieb trhu práce v oblasti odborného vzdelávania a prípravy na úrovni samosprávneho kraja,</p>
+
+<p>c) vyjadruje sa k návrhu žiadosti na zaradenie strednej odbornej školy, strediska praktického vyučovania, školského hospodárstva, strediska odbornej praxe alebo pracoviska praktického vyučovania do registra škôl a školských zariadení Slovenskej republiky (ďalej len „register“),</p>
+
+<p>d) vyjadruje sa k návrhu žiadosti na vyradenie strednej odbornej školy, strediska praktického vyučovania, školského hospodárstva, strediska odbornej praxe alebo pracoviska praktického vyučovania z registra,</p>
+
+<p>e) vyjadruje sa k návrhu žiadosti na zmenu v registri,</p>
+
+<p>f) prerokúva a odporúča samosprávnemu kraju predložiť návrh na zaradenie nového študijného odboru alebo učebného odboru a ich zameraní do sústavy odborov vzdelávania,</p>
+
+<p>g) prerokúva a odporúča samosprávnemu kraju predložiť návrh na vyradenie existujúceho študijného odboru alebo učebného odboru a ich zameraní zo sústavy odborov vzdelávania,</p>
+
+<p>h) vyjadruje sa k počtu tried prvého ročníka všetkých stredných odborných škôl v územnej pôsobnosti samosprávneho kraja pre nasledujúce prijímacie konanie, ktoré sú nad rozsah potrieb trhu práce príslušného samosprávneho kraja,</p>
+
+<p>i) vyjadruje sa k návrhom na zriadenie centier odborného vzdelávania a prípravy,</p>
+
+<p>j) vyjadruje sa k systému informovania žiakov a ich zákonných zástupcov o potrebách trhu práce a o kvalite odborného vzdelávania a prípravy v stredných odborných školách v územnej pôsobnosti samosprávneho kraja.</p>
+
+<p>Krajská rada sa pri príprave stanovísk a návrhov opatrení vychádza z odborných poznatkov a skúseností samosprávnych krajov, orgánov miestnej štátnej správy v školstve, úradov práce, sociálnych vecí a rodiny, zástupcov zamestnávateľov, stavovských organizácií a profesijných organizácií a zástupcov zamestnancov a&nbsp;z odborných stanovísk vysokých škôl, výskumných a iných ústavov a inštitúcií.</p>
+
+<p>Krajskú radu tvoria predseda, podpredseda, tajomník a ďalší členovia. Predsedom krajskej rady je predseda samosprávneho kraja, podpredsedom krajskej rady je jeden zo zástupcov organizácií, ktorého si zvolia členovia krajskej rady z&nbsp;členov, tajomníkom krajskej rady je vedúci zamestnanec odboru školstva samosprávneho kraja.</p>
+
+<p>Ďalšími členmi krajskej rady sú zástupcovia regionálneho úradu, úradu práce, sociálnych vecí a rodiny v sídle kraja, regionálnej komory Slovenskej obchodnej a priemyselnej komory, krajskej zložky Slovenskej živnostenskej komory, príslušných regionálnych poľnohospodárskych a potravinárskych komôr a regionálnych komôr so štatútom, oblastnej komory Slovenskej lesníckej komory, Slovenskej banskej komory, Asociácie zamestnávateľských zväzov a združení Slovenskej republiky, Republikovej únie zamestnávateľov, zamestnávateľských zväzov a združení a zamestnávateľov v kraji,&nbsp; zamestnancov pôsobiacich u zamestnávateľov v kraji, územnej školskej rady.&nbsp;</p>
+
+<p>Krajská rada môže podľa potreby zriaďovať pracovné skupiny na prerokúvanie odborných otázok patriacich do jej pôsobnosti a na prípravu podkladov na jej zasadnutia.</p>
+
+<p>Zasadnutia krajskej rady sa konajú spravidla raz za tri mesiace. V naliehavých prípadoch môže predseda krajskej rady zvolať aj mimoriadne zasadnutie krajskej rady.</p>
+
+<p>Členstvo v krajskej rade je čestnou funkciou bez nároku na odmenu. Cestovné náhrady hradí vysielajúca organizácia.</p>
+
+
+
+<h2 class="doc-subheading">Zástupcovia SPPK v radách škôl pri stredných odborných školách</h2>
+
+<table>
+	<tbody>
+		<tr>
+			<td>
+			<p>Samosprávny kraj</p>
+			</td>
+			<td>
+			<p>Škola</p>
+			</td>
+			<td>
+			<p>Nominovaný zástupca</p>
+			</td>
+			<td>
+			<p>Zamestnanie</p>
+			</td>
+			<td>
+			<p>Dátum nominácie</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Žilinský</p>
+			</td>
+			<td>
+			<p>SOŠ polytechnická, Demänovská cesta 669, 031 01 Liptovský Mikuláš</p>
+			</td>
+			<td>
+			<p>Ing. Dana Flórová</p>
+			</td>
+			<td>
+			<p>Liptovská poľnohospodárska a potravinárska komora Liptovský Mikuláš - riaditeľka</p>
+			</td>
+			<td>
+			<p>9.12.2013</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Nitriansky</p>
+			</td>
+			<td>
+			<p>SOŠ - Szakközépiskola, Ul. 1. mája, 947 01 Hurbanovo</p>
+			</td>
+			<td>
+			<p>Ing. Alexander Pastorek</p>
+			</td>
+			<td>
+			<p>Agrocoop Imeľ, a.s. - riaditeľ</p>
+			</td>
+			<td>
+			<p>7.1.2014</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Trenčiansky</p>
+			</td>
+			<td>
+			<p>SOŠ Pruské, 018 52 Pruské 294</p>
+			</td>
+			<td>
+			<p>Ing. Ján Kopšo</p>
+			</td>
+			<td>
+			<p>Poľnohospodárske družstvo „Vršatec“ Pruské - predseda</p>
+			</td>
+			<td>
+			<p>7.1.2014</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Košický</p>
+			</td>
+			<td>
+			<p>SOŠ obchodu a služieb, Nám. slobody 12,</p>
+
+			<p>073 01 SOBRANCE</p>
+			</td>
+			<td>
+			<p>Ing. Juraj Gašpar</p>
+			</td>
+			<td>
+			<p>AGRO-BIO s.r.o., Závadka</p>
+			</td>
+			<td>
+			
+
+			<p>17.2.2022</p>
+
+			
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Prešovský</p>
+			</td>
+			<td>
+			<p>SOŠ lesnícka, Kollárova 10, 080 01 Prešov</p>
+			</td>
+			<td>
+			<p>Ing. Peter Fedor</p>
+			</td>
+			<td>
+			<p>Lesy Slovenskej republiky š.p., oblastný manažér verejných obstarávaní</p>
+			</td>
+			<td>
+			<p>20.10.2022</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Košický</p>
+			</td>
+			<td>
+			<p>SOŠ ekonomická, Stojan 1, 052 01 Spišská Nová Ves</p>
+			</td>
+			<td>
+			
+
+			<p>Ing. Palacková Adriana</p>
+			</td>
+			<td>
+			<p>Agrofarma, spol. s r.o. Nálepkovo – konateľka spoločnosti</p>
+			</td>
+			<td>
+			<p>11.1.2023</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Nitriansky</p>
+			</td>
+			<td>
+			<p>SOŠ - Szakközépiskola, Dunajský rad 138, 946 36 Kravany nad Dunajom</p>
+			</td>
+			<td>
+			<p>Ildikó Tóthová</p>
+			</td>
+			<td>
+			<p>Regionálna poľnohospodárska a potravinárska komora Komárno - riaditeľ</p>
+			</td>
+			<td>
+			<p>13.4.2023</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Trenčiansky</p>
+			</td>
+			<td>
+			<p>SOŠ obchodu a služieb, Piešťanská 2262/80, 91501 Nové Mesto nad Váhom</p>
+			</td>
+			<td>
+			<p>Ing. Vladimír Králik</p>
+			</td>
+			<td>
+			<p>PD Bošáca</p>
+			</td>
+			<td>
+			<p>14.3.2024</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Žilinský</p>
+			</td>
+			<td>
+			<p>SOŠ poľnohospodárstva a služieb na vidieku v Žiline, Predmestská 82, 010 01 Žilina 1</p>
+			</td>
+			<td>
+			<p>Ing. Peter Marušák</p>
+			</td>
+			<td>
+			<p>AGROFATRA, s.r.o. Žilina</p>
+			</td>
+			<td>
+			<p>5.2.2026</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Trnavský</p>
+			</td>
+			<td>
+			<p>SOŠ poľnohospodárstva a služieb na vidieku, Zavarská 9, Trnava&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+			</td>
+			<td>
+			<p>Ing. Ivan Fabián, MBA</p>
+			</td>
+			<td>
+			<p>Regionálna poľnohospodárska a potravinárska komora Trnava</p>
+			</td>
+			<td>
+			<p>13.3.2026</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Trnavský</p>
+			</td>
+			<td>
+			<p>SOŠ regionálneho rozvoja a Strednej odbornej škole záhradníckej, Rakovice č. 25&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+			</td>
+			<td>
+			<p>Vanda Petrášová</p>
+			</td>
+			<td>
+			<p>Plantex s.r.o. Veselé</p>
+			</td>
+			<td>
+			<p>13.3.2026</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Prešovský</p>
+			</td>
+			<td>
+			<p>SŠ Čaklov 249&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+			</td>
+			<td>
+			<p>Andrej Mihalčin</p>
+			</td>
+			<td>
+			<p>Agrodružstvo Bystré</p>
+			</td>
+			<td>
+			<p>13.3.2026</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Prešovský</p>
+			</td>
+			<td>
+			<p>SOŠ agropotravinárska a technická, Kušnierska brána 349/2, Kežmarok</p>
+			</td>
+			<td>
+			<p>Ing. Júlia Vojteková</p>
+			</td>
+			<td>
+			<p>Poľnohospodárske družstvo podielnikov v Spišskej Teplici</p>
+			</td>
+			<td>
+			<p>8.4.2026</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Banskobystrický</p>
+			</td>
+			<td>
+			<p>Stredná odborná škola Milana Hodžu, Pod Bánošom 80, 974 11 Banská Bystrica</p>
+			</td>
+			<td>
+			<p>Ing. Alena Mikulinová</p>
+			</td>
+			<td>
+			<p>Poľnohospodárske družstvo „Bukovina“ Strelníky</p>
+			</td>
+			<td>
+			<p>10.7.2026</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Banskobystrický</p>
+			</td>
+			<td>
+			<p>SOŠ lesnícka, Akademická 16<br>
+			969 01 Banská Štiavnica</p>
+			</td>
+			<td>
+			<p>Ing. Štefan Vozár</p>
+			</td>
+			<td>
+			<p>dôchodca</p>
+			</td>
+			<td>
+			<p>10.7.2026</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Banskobystrický</p>
+			</td>
+			<td>
+			<p>Spojená škola, Železničná 5,&nbsp; 987 01 Poltár</p>
+			</td>
+			<td>
+			<p>Ing. Juraj Kušpál</p>
+			</td>
+			<td>
+			<p>GPPK Rimavská Sobota</p>
+			</td>
+			<td>
+			<p>10.7.2026</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Banskobystrický</p>
+			</td>
+			<td>
+			<p>Gymnázium Augusta Horislava Škultétyho, Obchodná akadémia a Stredná odborná škola, Školská 21, 990 01 Veľký Krtíš</p>
+			</td>
+			<td>
+			<p>Radovan Kajba</p>
+			</td>
+			<td>
+			<p>Agrodružstvo Senné</p>
+			</td>
+			<td>
+			<p>10.7.2026</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Trnavský</p>
+			</td>
+			<td>
+			<p>SSOŠ ADVENTIM - Magán Szakközépiskola ADVENTIM, Komenského 1219/1<br>
+			929 01 Dunajská Streda</p>
+			</td>
+			<td>
+			<p>Ildiko Tóthová</p>
+			</td>
+			<td>
+			<p>RPPK Komárno - riaditeľka</p>
+
+			
+			</td>
+			<td>
+			<p>10.7.2026</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Trnavský</p>
+			</td>
+			<td>
+			<p>SSOŠ spotrebných družstiev Jednota a Jednota Fogyasztási Szövetkezetek Magán Szakközépiskolája, Vinohradská 192/48<br>
+			931 01 Šamorín</p>
+			</td>
+			<td>
+			<p>Ildiko Tóthová</p>
+			</td>
+			<td>
+			<p>RPPK Komárno - riaditeľka</p>
+
+			
+			</td>
+			<td>
+			<p>10.7.2026</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Nitriansky</p>
+			</td>
+			<td>
+			<p>SOŠ poľnohospodárstva a služieb na vidieku, Na lúkach 18, 934 03 Levice</p>
+			</td>
+			<td>
+			<p>Mgr. Renáta Dobrovoľná</p>
+			</td>
+			<td>
+			<p>TEKOVIA, spol. s r.o. Levice - konateľka</p>
+			</td>
+			<td>
+			<p>20.7.2026</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Nitriansky</p>
+			</td>
+			<td>
+			<p>SOŠ, Krušovská 2091, 955 01 Topoľčany</p>
+			</td>
+			<td>
+			<p>Peter Spišák</p>
+			</td>
+			<td>
+			<p>PD Radošinka Veľké Ripňany - zootechnik</p>
+			</td>
+			<td>
+			<p>20.7.2026</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Nitriansky</p>
+			</td>
+			<td>
+			<p>SOŠ potravinárska, Cabajská 6, 949 01 Nitra</p>
+			</td>
+			<td>
+			<p>Daniela Kováčová</p>
+			</td>
+			<td>
+			<p>PekaStroj, s.r.o. Nitra - konateľka</p>
+			</td>
+			<td>
+			<p>20.7.2026</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>Nitriansky</p>
+			</td>
+			<td>
+			<p>SOŠ chovu koní a služieb</p>
+
+			<p>Štúrova 74, 927 01 Šaľa</p>
+			</td>
+			<td>
+			<p>Ing. Samuel&nbsp; Sokol</p>
+			</td>
+			<td>
+			<p>Národný žrebčín Topoľčianky, š.p. - riaditeľ</p>
+			</td>
+			<td>
+			<p>20.7.2026</p>
+
+			<p>(23.1.2025)</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

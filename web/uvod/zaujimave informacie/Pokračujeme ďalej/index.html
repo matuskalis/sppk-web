@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pokračujeme ďalej — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Pokračujeme ďalej</nav>
+
+  <article>
+    <h1 class="doc-title">Pokračujeme ďalej</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Jana Holéciová, hovorkyňa SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">31. mája 2019</span></p>
+
+    <div class="doc-body">
+<p><span>Taký, aký sme tu ešte nemali. Zlomový. Turbulentný. A&nbsp;mimoriadne tragický. Aj takýmito prívlastkami by sa dal charakterizovať uplynulý rok 2018, ktorý ovplyvnil dianie snáď v&nbsp;každej jednej sfére nášho života. Tragické udalosti súvisiace s&nbsp;vraždou investigatívneho novinára Jána Kuciaka a&nbsp;jeho snúbenice výrazne zasiahli aj agropotravinárske odvetvie na Slovensku. S&nbsp;udalosťami, ktoré sa nedali naplánovať a predvídať, sa muselo vysporiadať aj nové vedenie Slovenskej poľnohospodárskej a&nbsp;potravinárskej komory, ktoré si v&nbsp;máji 2018 zvolili delegáti XXXI. Valného zhromaždenia SPPK. S&nbsp;predsedom SPPK Emilom Machom sme sa preto prirodzene rozprávali aj o&nbsp;jeho hodnotení roka 2018 v&nbsp;kontexte s&nbsp;dramatickým vývojom v&nbsp;krajine.</span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/KFNUY27.jpg"></figure><p></p>
+
+
+
+<ul>
+	<li><strong><em>Pred rokom Vás delegáti XXXI. Valného zhromaždenia Slovenskej poľnohospodárskej a&nbsp;potravinárskej komory zvolili za nového predsedu najväčšej agropotravinárskej samosprávy na Slovensku. Ako spätne hodnotíte uplynulých 12 mesiacov vo funkcii?</em></strong></li>
+</ul>
+
+
+
+<p>„Hodnotím ich ako mimoriadne náročné, turbulentné a&nbsp;plné nových výziev a&nbsp;to aj vzhľadom na to, čo sa všetko stalo v&nbsp;predchádzajúcich dvanástich mesiacoch. Nikdy by som si nepomyslel, že toto obdobie bude patriť medzi najnáročnejšie v&nbsp;mojom doterajšom profesijnom živote. Keď som kandidoval na post predsedu najväčšej agropotravinárskej samosprávy na Slovensku, v&nbsp;mojom prejave som hovoril o&nbsp;prioritách pre odvetvie, ktoré som chcel okamžite riešiť. Pôvodné plány však museli ísť načas bokom, pretože sme pokračovali v&nbsp;obhajobe práce všetkých slušne podnikajúcich poľnohospodárov. Namiesto zvyšovania kreditu slovenských výrobcov potravín odvetvie čelilo všeobecnému označeniu agromafia, agrobaróni či mafiánske spolky. V&nbsp;takejto nepriaznivej atmosfére sa nedalo dobre pracovať. Dookola sme vysvetľovali, že poľnohospodári sa nesmú deliť na malých a&nbsp;veľkých. Existuje len jedno delenie, a&nbsp;to na aktívnych a&nbsp;tých, ktorí zneužívajú dotačný systém a&nbsp;obohacujú sa dotáciami na úkor tých druhých. Ale aj inak povedané: podporujme tých, ktorí produkujú, prinášajú pridanú hodnotu a&nbsp;zamestnanosť na vidiek a&nbsp;na tých, ktorí sa len vezú na zle nastavenom systéme podpôr, ktoré sú, žiaľ, odviazané od produkcie.“</p>
+
+
+
+<ul>
+	<li><strong><em>Myslíte si, že sa podarilo verejnosti aspoň sčasti vysvetliť, že nie malí a&nbsp;veľkí, ale skutočne poctiví poľnohospodári, ktorí vyrábajú s&nbsp;pridanou hodnotou a&nbsp;ľudia, ktorí zneužívajú dotačný systém? </em></strong></li>
+</ul>
+
+
+
+<p>„Doba, ktorú žijeme, nám v&nbsp;tom paradoxne do určitej miery pomohla. Aj napriek tomu si však myslím, že skutočnú hodnotu významu slova poľnohospodár – potravinár, a&nbsp;je jedno, či hospodári na malej výmere alebo veľkej, ešte spoločnosť úplne nepochopila a nedocenila. Stane sa tak až vtedy, keď verejnosť, spotrebitelia, budú automaticky siahať po domácich potravinách, keď nám nebude vadiť pach maštaľného hnoja na poli, traktory na cestách spomaľujúce premávku a&nbsp;keď budeme viac variť zo slovenských potravín v&nbsp;reštauráciách, nemocniciach a školách. A&nbsp;na to nám nestačí len jeden rok záujmu o&nbsp;agropotravinárstvo, navyše vyvolaného najmä tragédiou, smrťou novinára. K&nbsp;tomu, aby sme zažívali väčšiu spoločenskú úctu a&nbsp;dovolím si povedať, že aj obdiv, potrebujeme viac. Potrebujeme zmeniť vnímanie celej jednej generácie spotrebiteľov a&nbsp;to nedosiahneme v&nbsp;priebehu pár mesiacov. Dôležité je, že sme začali konať. Do určitej miery nám v&nbsp;tom pomáhajú aj masívne potravinové škandály v&nbsp;Európe a&nbsp;vo svete, ale ruku k&nbsp;dielu musia priložiť aj politici ďalšími správne pripravenými systémovými zmenami a&nbsp;v&nbsp;neposlednom rade aj my, poľnohospodári a&nbsp;potravinári väčšou angažovanosťou a&nbsp;spájaním sa. A&nbsp;to nehovorím len o spájaní sa do tak žiaducich odbytových združení, ale aj o spájaní sa v&nbsp;hodnotách a myšlienkach. Na tom musíme ešte výrazne popracovať.“</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/cMdT94Y.jpg"></figure><p></p>
+
+
+
+<ul>
+	<li><strong><em>Ako?</em></strong></li>
+</ul>
+
+
+
+<p>„Zjednocovaním našich vzájomných postojov. Vzájomnými diskusiami. A&nbsp;pokojne, nech sú aj búrlivé, to situácii len prospeje. Nie som naivný, aby som si myslel, že každý s&nbsp;každým poľnohospodárom musí súhlasiť. Ale hlavné myšlienkové prúdy musíme mať spoločne zladené, na jednej vlnovej dĺžke. Snahe o&nbsp;silnejšie postavenie agropotravinárstva na Slovensku neprospieva, ak tu máme obrazne povedané dvesto rôznych organizácií, ktoré obhajujú poľnohospodárov a&nbsp;potravinárov. Stále sa pýtam, akú majú tie ktoré organizácie zastupiteľnosť a&nbsp;relevantnosť? Akých členov obhajujú a&nbsp;pri akej výmere? Nemôžeme sa len drobiť a&nbsp;deliť. Prirovnám to k&nbsp;orchestru, ktorý musí ušiam znieť kompaktne, harmonicky. Momentálne nám to škrípe a&nbsp; nástroje sú rozladené.</p>
+
+
+
+<p>Aj preto sa snažíme na jednej strane viac rozprúdiť verejnú mienku, aby vyvolaný mediálny tlak v&nbsp;oblasti agropotravinárstva nepoľavil. Na druhej strane rokujeme s&nbsp;politikmi. A&nbsp;rovnako intenzívne diskutujeme aj s&nbsp;našimi členmi, poľnohospodármi, potravinármi. Do verejnej debaty zapájame aj ďalšie agropotravinárske samosprávy, či už združené v&nbsp;Rade poľnohospodárskych a&nbsp;potravinárskych samospráv SR alebo máme snahu viesť odborný, korektný a&nbsp;slušný dialóg aj s&nbsp;organizáciami, ktoré nie sú členmi RPPS.</p>
+
+
+
+<ul>
+	<li><strong><em>Čo Vás rok vo funkcii predsedu SPPK naučil a&nbsp;čo Vám vzal? </em></strong></li>
+</ul>
+
+
+
+<p>„Určite mi vzal časť voľného času a&nbsp;priestoru na súkromný život. S&nbsp;tým som ale automaticky počítal, takže vnútorne som nastavený na mimoriadne aktívny dvojnásobný pracovný režim, keďže okrem tejto funkcie riadim aj podnik v&nbsp;Trnave. Rok na stoličke predsedu SPPK ma naučil opäť trochu inej dravosti a&nbsp;zároveň aj diplomacii pri vyjednávaní. Získal som alebo som aj upevnil dôležité kontakty na domácej a&nbsp;zahraničnej pôde, vďaka ktorým sa snažíme s&nbsp;vedením komory a&nbsp;ľuďmi na Úrade SPPK v&nbsp;Bratislave napĺňať priority odvetvia. Naučil som sa viac čítať medzi riadkami z toho, čo sa povie za rokovacím stolom a z&nbsp;toho, čo by malo platiť vo výslednej podobe. A&nbsp;určite s&nbsp;úsmevom povedané, viac som spoznal bratislavské, viedenské a bruselské letiská a&nbsp;pocit, aké je to stáť pred zapnutými televíznymi kamerami.</p>
+
+
+
+<ul>
+	<li><strong><em>Pravdou je, že čím ďalej, tým viac sa aj v&nbsp;poľnohospodárstve dostáva k&nbsp;slovu lobing. Do akej miery vníma, resp. pochopila poľnohospodárska a&nbsp;potravinárska verejnosť nutnosť lobingu aj v&nbsp;chlebovom odvetví? &nbsp;</em></strong></li>
+</ul>
+
+
+
+<p>Stále nedostatočne. Netajím sa tým, že jednou z&nbsp;mojich úloh je aj stretávať sa s&nbsp;politikmi a&nbsp;lobovať v Bruseli, Bratislave, na hocijakom mieste za lepšie postavenie slovenských poľnohospodárov a&nbsp;potravinárov. Lobing je legálna činnosť, je to v užšom zmysle slova proces ovplyvňovania zákonodarcov, ministrov a iných štátnych <a href="https://sk.wikipedia.org/wiki/%C3%9Aradn%C3%ADk" title="Úradník" class="external" target="_blank" rel="noopener noreferrer">úradníkov</a>, prípadne hospodárskych subjektov&nbsp; za účelom presadiť spoločný záujem agropotravinárov. Jeho nevyhnutnosť &nbsp;priniesla doba, ktorú žijeme. Snažíme sa o&nbsp;obrodu chlebového odvetvia, snažíme sa ovplyvniť pripravovanú Spoločnú poľnohospodársku politiku po roku 2020. Je preto nielen prirodzené, ale priam nevyhnutné, aby bol predseda najsilnejšej agropotravinárskej samosprávy lobistom a&nbsp;aby sa stretával aj s&nbsp;politikmi, či sa to už niekomu páči alebo nie.</p>
+
+
+
+<p>Veď sa len pozrime do západnej Európy: silné agropotravinárske krajiny majú silnú podporu a&nbsp;lobing zdola, priamo od výrobcov potravín. Štátnu pomoc nezvýšime v&nbsp;kancelárii RPPK alebo na &nbsp;Úrade SPPK, ale oficiálnymi a&nbsp;neoficiálnymi diskusiami na ministerstvách, verejných fórach a&nbsp;v&nbsp;kanceláriách parlamentu či úradu vlády. Aj toto je jedna z&nbsp;mojich úloh. Musíme predsa presvedčiť politikov, aby upravili v&nbsp;kolónke štátneho rozpočtu a štátnej pomoci v&nbsp;agropotravinárstve číslicu smerom nahor. A&nbsp;na to im potrebujem povedať aj to, čo za to. Akú protihodnotu prinesie finančne posilnené odvetvie pre tento štát a&nbsp;spoločnosť, napríklad zdravotníctvo a školstvo. A&nbsp;na to zase potrebujem mať vytvorené profesionálne zázemie v&nbsp;Úrade SPPK, ktorého zamestnanci mi pripravujú odborné podklady, prezentácie, cestujú do zahraničia, porovnávajú vývoj na európskom trhu, zbierajú oficiálne aj neoficiálne informácie k&nbsp;množstvu tém, s&nbsp;ktorými potom denne pracujeme. Samozrejme, nejde to bez spolupráce s&nbsp;Predstavenstvom SPPK, regionálnymi komorami a&nbsp;našimi zväzmi a&nbsp;združeniami. Aj preto sme nastúpili, nazvem to na cestu vnútornej obrody SPPK a&nbsp;jej finančného posilnenia. Bez toho sa nikam ďaleko nedostaneme. Položím otázku: „Chceme, aby nás zhltol spoločný, no dravý európsky trh?“ Odpoveď nech si dá každý sám.“</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/Qfah1Km.jpg"></figure><p></p>
+
+
+
+<ul>
+	<li><strong><em>Minulý rok bol pre agropotravinárske odvetvie charakteristický množstvom nových tém. Niektoré sa dotiahli do úspešného konca, niektoré sú tesne pred finále. Spokojnosť z&nbsp;Vašej strany?&nbsp; </em></strong></li>
+</ul>
+
+
+
+<p>&nbsp;„Pri bilancii vlaňajšieho roka musíme, či chceme alebo nie, vychádzať z&nbsp;mimoriadne dôležitej premisy: Slovensko a aj poľnohospodári &nbsp;ako celok dostali vlani od spoločnosti silnú facku. Prechádzame obrodením a&nbsp;snažíme sa ako spoločnosť nájsť nielen pravdu, ale aj väčšiu solidaritu, porozumenie, spolupatričnosť a&nbsp;vhodné nástroje na zmenu stavu roky podceňovaného odvetvia. Sme za to, aby sa na jednej strane odkryli všetky karty. Na druhej strane robíme všetko preto, aby dosiahli naši poľnohospodári a&nbsp;potravinári väčšiu konkurencieschopnosť v&nbsp;európskom priestore.</p>
+
+
+
+<p>Nemôžeme byť krátkozrakí, naivní a&nbsp;tváriť sa, že dôsledky dlhoročnej stagnácie odvetvia v&nbsp;podobe 40% zastúpenia potravín na pultoch obchodoch napravíme za pár mesiacov. Pevne veríme, že prijaté rozhodnutia od minulého roka sa ukážu ako správne rozhodnutia. Myslím si, že nikto nepochybuje o&nbsp;tom, že potrebujeme viac podporiť živočíšnu a&nbsp;špeciálnu rastlinnú výrobu. A&nbsp;tak tu máme zelenú naftu. Mať poľnohospodára v&nbsp;Rade Slovenského pozemkového fondu? Ešte pred pár rokmi čistá utópia, rovnako ako znovuzrodenie komplexných pozemkových úprav, ktoré táto krajina, investície v&nbsp;nej a&nbsp;pokoj medzi poľnohospodármi potrebuje ako soľ. Ideme sa vrátiť k&nbsp;preplácaniu nákladov na likvidáciu kadáverov, na poistenie plodín. Štát prijal niektoré zásadné legislatívne kroky, ktoré smerujú k&nbsp;zlepšeniu postavenia dodávateľov v&nbsp;potravinovom reťazci.</p>
+
+
+
+<p>Takže odpoveď na Vašu otázku znie: keď porovnám krátkosť obdobia, množstvo tém, ktoré sme otvorili a&nbsp;ktoré sa uzavreli, tak áno, som spokojný. Právom preto hovoríme o&nbsp;minulom roku, že bol prelomový. Jedným dychom však dodávam, že v&nbsp;aktivitách pokračujeme ďalej. Úloh je veľa, konkurencia v Európe vysoká.“</p>
+
+
+
+<ul>
+	<li><strong><em>Hlavné plány na tento rok? </em></strong></li>
+</ul>
+
+
+
+<p>„Vidím tri línie, ktoré riešime. Tou prvou je vyššia štátna pomoc v&nbsp;budúcoročnom štátnom rozpočte. Druhou oblasťou je práca na Spoločnej poľnohospodárskej politike po roku 2020 a&nbsp;množstvo zahraničných aktivít s&nbsp;tým súvisiacich, a&nbsp;to aj prostredníctvom platformy V4, Krajín troch morí, Konzorcia s&nbsp;českými poľnohospodárskymi samosprávami a&nbsp;v&nbsp;neposlednom rade organizáciou COPA-COGECA, ktorej sme sa vlani stali opätovne členmi. Treťou hlavnou témou je vyššia podpora pre potravinárov. Poľnohospodárskemu sektoru sa vychádza v&nbsp;ústrety viacerými podpornými opatreniami. Teraz nesmieme zabudnúť na potravinárov. Je totiž prirodzené, že bez silnej potravinárskej zložky, teda spracovateľského priemyslu, nemá význam liať peniaze len do poľnohospodárstva.</p>
+
+
+
+<p>Silnou témou je aj legislatíva. Čaká nás diskusia napríklad k&nbsp; pozemkovým úpravám, nižšej DPH na potraviny a&nbsp;rovnako ku každému jednému legislatívnemu zámeru, ktorý nám život prinesie.&nbsp;&nbsp;</p>
+
+
+
+<p>No a&nbsp;okrem toho budeme pokračovať napríklad v&nbsp;práci v&nbsp;oblasti stredoškolského odborného vzdelávania. SPPK zo zákona vydáva certifikáty, ktoré oprávňujú našich zamestnávateľov vzdelávať študentov v&nbsp;oblasti duálneho systému vzdelávania. Vzdelávať budeme aj najmladších spotrebiteľov prostredníctvom už tradičného projektu Hovorme o&nbsp;jedle.</p>
+
+
+
+<p>Prirodzene, všetky nosné témy budeme ďalej zastrešovať mediálne a&nbsp;to nielen prostredníctvom tlačových správ a&nbsp;tlačových besied, ale aj populárnych sociálnych sietí a&nbsp;videí.</p>
+
+
+
+<p>Verím, že práve s&nbsp;aktívnou podporou našich regiónov a&nbsp;jednotlivých členov budeme vedieť ponúknuť spoločnosti a&nbsp;štátu ako takému naozaj rozumné riešenia. Také riešenia, ktoré následne politici pretavia do systémových krokov, ktoré z&nbsp;dlhodobého hľadiska posunú úroveň slovenského agropotravinárstva o&nbsp;stupeň vyššie. A&nbsp;tým aj kredit značky SPPK.“ &nbsp;</p>
+
+
+
+<p>Zhovárala sa Jana Holéciová, hovorkyňa SPPK</p>
+
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

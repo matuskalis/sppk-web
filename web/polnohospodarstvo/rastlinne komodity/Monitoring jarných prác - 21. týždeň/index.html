@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitoring jarných prác - 21. týždeň — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">polnohospodarstvo</a><span>/</span><a href="../index.html">rastlinne komodity</a><span>/</span>Monitoring jarných prác - 21. týždeň</nav>
+
+  <article>
+    <h1 class="doc-title">Monitoring jarných prác - 21. týždeň</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Odbor poľnohospodárstva a služieb</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">31. mája 2019</span></p>
+    <p class="members-note">Tento text je na sppk.sk prístupný len prihláseným členom komory.</p>
+
+    <div class="doc-body">
+<p><span>V&nbsp;20. týždni vplyvom daždivého počasia boli jarné práce zastavené prakticky na celom území Slovenskej republiky. Tento doterajší vývoj počasia a&nbsp;stav poľných prác je značne podobný ako v&nbsp;rovnakom období minulého roku.</span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/Ui8S4Pe.jpg"></figure><p><span></span></p>
+
+
+
+<p>V&nbsp;16. týždni sa takmer na celom Slovensku vyskytli <strong>nočné mrazy</strong>. Najviac poškodené výmery ovocia boli na juhozápadnom Slovensku. Intenzitu mrazov ešte zvýšilo suché počasie. Škody mali byť presnejšie vypočítané pri nasledujúcej prebierke plodov, čo sa očakávalo o&nbsp;tri týždne. K&nbsp;20. týždňu bol konštatovaný výpadok na úrode ovocia približne 20 %, úroda by mohla byť zdanlivo rovnaká, ak bude pozberaná, teda ak ju bude mať kto zberať. Väčšie poškodenie je na kvalite ovocia a&nbsp;kto včas nespustil ochranu proti mrazom pri plus 2 °C (Protimrazová ochrana na kvalitu ovocia), musí očakávať zhoršenú vizuálnu stránku ovocia a toto bude menej hodnotené zákazníkom. Prvý zber jahôd sa predpokladá viac poškodený, možno na úrovni 15 – 20 %.</p>
+
+
+
+<p>Bližšie informácie uvádzame pri jednotlivých regiónoch. Informácia za jednotlivé regióny zahŕňa celý priebeh jarných prác a&nbsp;informáciu za aktuálny týždeň.</p>
+
+
+
+<p>V&nbsp;závere tejto správy uvádzame celkové hodnotenie doterajšieho stavu jarných prác v&nbsp;tomto roku za všetky regióny/okresy a&nbsp;porovnanie s&nbsp;dvoma predchádzajúcimi rokmi.</p>
+
+
+
+<h2 class="doc-subheading">Prehľad počasia</h2>
+
+
+
+<p>V&nbsp;13. - 14. týždni sa zrážky vyskytli na celom území Slovenska. Väčšinou boli úhrny od 5 do 10 mm. Na celom území Slovenska sa v&nbsp;14. – 16. týždni postupne zväčšoval nedostatok vlahy. O&nbsp;suchu v&nbsp;tom čase sa hovorilo aj v&nbsp;susednej Českej republike. Podľa meraní z&nbsp;konca marca patrí k&nbsp;najzraniteľnejším oblastiam južná a&nbsp;stredná Morava, severná časť Sliezska a&nbsp;severozápadné Čechy. V&nbsp;17. týždni sa na Slovensku vyskytli zrážky, ale veľmi rôznej intenzity, na väčšine územia s&nbsp;úhrnom do 10 mm. V&nbsp;18. – 20. týždni pokračovalo daždivé počasie. V&nbsp;21. týždni sa zrážky vyskytli na celom území Slovenska. Najviac zrážok spadlo na severe stredného Slovenska a severozápade, pričom najvyššie týždenné úhrny zrážok boli až v intervale 80 - 90 mm. Najmenej zrážok spadlo v okolí Popradu, a to okolo 10 mm. Vlaha sa tak doplnila na celom území Slovenska a v porovnaní s minulým týždňom sa zmiernilo sucho aj v hlbšej vrstve. Najvyššia teplota vzduchu bola 27 °C v nedeľu a najchladnejšie bolo v piatok 2 °C na Orave. Intenzitu sucha dokumentuje nasledujúca mapa odchýlky pôdnej vlhkosti od zvyčajného stavu v období 1961 – 2010 (autor SHMÚ).</p>
+
+
+
+<p>Pre porovnanie stavu sucha uvádzame „mapu sucha“ za 16. a&nbsp;21. týždeň. Z&nbsp;mapy aktuálnej k&nbsp;26. máju vyplýva, že v&nbsp;21. týždni na väčšine územia (s výnimkou lokálneho výskytu najmä na Gemeri) Slovenska už nebolo riziko sucha, avšak v&nbsp;hlbšej vrstve (40 – 100 cm) pretrvávalo na juhu západného Slovenska začínajúce sucho, na juhu východného Slovenska mierne až extrémne sucho.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/Ns6KJh1.jpg"></figure><p></p>
+
+
+
+<h2 class="doc-subheading">Informácie z&nbsp;regiónov</h2>
+
+<p>V&nbsp;<strong>Bratislavskom</strong> kraji (okresy Bratislava, Malacky, Pezinok, Senec) <strong>priaznivé počasie v&nbsp;13. -&nbsp;16. týždni umožnilo bezproblémovú sejbu plodín</strong>, poľnohospodári však hlásili nedostatok zrážok. K&nbsp;záveru 14. týždňa bol ukončený výsev pšenice, jačmeňa, ovsa, hrachu a&nbsp;cukrovej repy, prebiehal výsev kukurice a slnečnice. K&nbsp;záveru 15. týždňa bola kukurica na zrno zasiata na 51 % výmery, kukurica na siláž na 30 % výmery,&nbsp;slnečnica na 60 % výmery, zemiaky vysadené na 95 % výmery. Do začiatku 17. týždňa pokročil výsev kukurice na zrno na 69 %, kukurice na siláž na 51 %, slnečnice na 92 %. Výsadba zemiakov bola ukončená na 100 % výmery. <strong>Poľnohospodári z&nbsp;bratislavského regiónu potvrdzujú, že zimnej vlahy už dávno v&nbsp;pôde niet a&nbsp;jarná tiež chýbala. Začali preto zavlažovať.</strong> Polievali intenzívne plodiny, ako je cibuľa, cesnak, ale aj mak na vzchádzanie. V&nbsp;prípade, že by sa v&nbsp;najbližšom období nevyskytli zrážky, zvažovali poľnohospodári polievať už aj extenzívne plodiny, napr. pšenicu.</p>
+
+<p>V&nbsp;17. týždni poľnohospodári postupne ukončovali sejbu kukurice na zrno (vysiatych bolo 83 % výmery) a kukurice na siláž (79 % výmery). Prebiehala sejba sóje (vysiatych bolo 60 % výmery). <strong>Daždivé počasie v&nbsp;18. týždni spomalilo jarné práce</strong>. Porasty sú vďaka výdatným zrážkam v dobrej kondícii, na druhej strane sejba kukurice na zrno (k záveru 19. týždňa bolo vysiatych 98 % výmery) a&nbsp;sóje (vysiatych je 90 % výmery) je v dôsledku daždivého počasia zastavená. V okolí Plaveckého Štvrtku diviačia zver poškodila cca 50 ha osiatej kukurice, bude nutné dosievať. <strong>Stav jarných prác k&nbsp;záveru 20. týždňa ostal nezmenený. Sejba kukurice na zrno a sóje bola v dôsledku daždivého počasia zastavená. K&nbsp;záveru 21. týždňa poľnohospodári bratislavského kraja stihli dosiať zvyšok výmery kukurice na zrno a&nbsp;sóje. Ošetrovanie plodín je spomaľované z&nbsp;dôvodu pretrvávajúceho daždivého počasia. Vinohradníci napriek používaniu dostupných opatrení evidujú na viniči škody veľkého rozsahu, spôsobené premnoženou poľovnou zverou. Rozsah škôd bude možné zistiť až v&nbsp;čase zberu.</strong></p>
+
+
+
+<p>V&nbsp;okrese <strong>Galanta</strong> mimoriadne priaznivé počasie umožňovalo nerušene vykonávať jarné práce v&nbsp;priebehu 13. – 14. týždňa. V&nbsp;15. týždni sa n<strong>a porastoch už značne prejavoval vlahový deficit, čo podľa odborníkov predurčovalo výpadok z očakávanej produkcie vo výške až okolo 30 %.</strong> V priebehu februára, marca a apríla padli v niektorých lokalitách iba nízke až nemerateľné zrážky, ktoré boli hneď eliminované silnými vetrami. K&nbsp;záveru 17. týždňa zostávalo už iba dokončiť sejbu kukurice (aktuálne bolo vysiatych 89 % výmery), ktorá bola rozložená na 18. týždeň. Začiatkom 18. týždňa poľnohospodári pokračovali v sejbe kukurice (aktuálne bol výsev ukončený na 98 %) a na ďalšie obdobie ostávala iba nepatrná plocha, kde meškala sejba z dôvodu čakania na služby. <strong>Dlhotrvajúce suché obdobie vystriedalo počas 18. - 19. týždňa daždivé, chladné počasie, ktoré pomáha vegetácii</strong>, ale v mnohých prípadoch nedostatok vlahy sa už prejavil v nevyrovnanom raste ozimín i jarín. Všeobecne vo väčšine prípadoch tieto hustosiate obilniny sú menej odnožené a porasty sú riedke. Ďalšie dažde sú veľmi potrebné pri tvorbe klasov a pre vývojový rast kukurice, slnečnice a cukrovej repy. Na jednej strane daždivé a chladné počasie je dobré, ale silné veterné počasie v tomto období zamedzuje ošetreniu porastov proti škodcom, hubovitým chorobám i burinám. K&nbsp;záveru 19. týždňa bol ukončený výsev všetkých plodín, vrátane kukurice.</p>
+
+
+
+<p>V 20. týždni daždivé počasie brzdilo ošetrenie porastov kukurice, slnečnice a cukrovej repy, hlavne proti burinám a sťažovalo práce so zberom krmovín. V&nbsp;21. týždni bolo možné v&nbsp;poľných prácach pokračovať až v&nbsp;závere týždňa. <strong>Atmosferické zrážky a chladné počasie počas mája značne pomohli všetkým porastom, ktoré predtým trpeli v dôsledku dlhodobého sucha počas marca a apríla.</strong> U hustosiatych obinín podľa možnosti a potreby sa aplikujú ešte fungicídy preventívne proti hubovitým chorobám a insekticídy na zamedzenie vývoja a zničenie živočíšnych škodcov. Súčasne sú vykonávané práce súvisiace so zberom krmovín.</p>
+
+
+
+<p>V&nbsp;<strong>Trnavskom</strong> regióne (okresy Hlohovec, Piešťany, Trnava) boli k&nbsp;záveru 17. týždňa vysiate všetky jarné plodiny. <strong>Poľnohospodári sa od začiatku vegetačného obdobia snažili zachytiť čo najviac zostávajúcej zimnej vlahy v&nbsp;pôde a&nbsp;preto už koncom februára siali jačmene, začiatkom marca cukrovú repu, hneď na to kukuricu, slnečnicu, hrach a&nbsp;strukoviny. Neobvykle skoro pustili aj závlahy na zeleninu.</strong> &nbsp;<strong>Silný vietor navyše pôsobil ako fén: aj ten najmenší dážď okamžite vyfúkal z&nbsp;pôdy preč.</strong> Matúš Pestún, vedúci divízie rastlinnej výroby PD Hlohovec, dopĺňa, že v&nbsp;ich oblasti spadlo od začiatku roka len 62 mm zrážok. Výrazný deficit zrážok sa podpísal pod nepriaznivé vývojové štádium jednotlivých plodín. "Na začiatku mája hovoríme o&nbsp;40 % výpadku produkcie raže na zeleno. Výška raže, ktorá pri kosbe býva zvyčajne 110 cm, bola len 80 cm, dokonca miestami len 50 cm. Už pri raži je predpoklad, že výrazný deficit zrážok nebude mať len negatívny dopad na rastlinnú výrobu, ale aj na živočíšnu výrobu v objemových krmivách", dodal M. Pestún. <strong>Trnavský región preverí v&nbsp;tomto roku okrem jarného počasia aj počet hrabošov v&nbsp;porastoch.</strong> Po miernej zime veľká časť populácie prežila, čo dáva predpoklad na jej výraznú&nbsp; reprodukciu. Vyplýva to z&nbsp;jarného monitoringu hrabošov v&nbsp;trnavskom a&nbsp;hlohoveckom regióne, ktorý robia výskumníci z Katedry ekológie a&nbsp;environmentalistiky Fakulty prírodných vied Univerzity Konštantína Filozofa v&nbsp;Nitre. V&nbsp;tomto období sa hraboše nachádzajú v&nbsp;porastoch repky. Keďže je vysoká, dravce sa k&nbsp;hrabošom už nevedia dostať. Keď repku poľnohospodári pokosia, hraboše sa presunú do obilia, kde budú robiť ďalšie škody na úrode. &nbsp;<strong>Systémovými opatreniami, vyčlenením finančných prostriedkov a zvýšením populácie dravcov by sa v&nbsp;budúcnosti mohlo zabrániť premnoženiu hraboša.</strong></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/ZKD1Pb9.jpg"></figure><p></p>
+
+
+
+<p>Niektorí členovia RPPK TT sú aktívni v&nbsp;programe Intersucho, dôležité v&nbsp;tomto programe je kontinuálne poskytovanie informácií, v&nbsp;opačnom prípade sú výsledky prieskumu nereprezentatívne/skreslené.</p>
+
+<p><strong>V&nbsp;20. – 21. týždni boli jarné práce v&nbsp;regióne prerušované, z&nbsp;dôvodu daždivého počasia a&nbsp;vysokej vlhkosti pôdy, zabraňujúcej vstupu mechanizmov na pozemky a&nbsp;ošetrovaniu porastov.</strong></p>
+
+
+
+<p>V&nbsp;okrese <strong>Nové Zámky</strong> bol k&nbsp;záveru 14. týždňa ukončený výsev pšenice, jačmeňa, ovsa a&nbsp;hrachu, pokračoval výsev slnečnice (vysiaty bol podiel 59 % predpokladanej výmery), kukurice na siláž (50 %),&nbsp;sóje (18 %) a kukurice na zrno (30 %). V&nbsp;15. týždni, aj vďaka priaznivému počasiu, sa poľnohospodárom podarilo výrazne pokročiť v&nbsp;jarných prácach, čoho dôkazom je aj nárast podielu obsiatych výmer jarných plodín k&nbsp;záveru 15. týždňa (slnečnica bola vysiata na 96 % výmery, kukurica na zrno na 61 % výmery, kukurica na siláž na 60 % výmery, sója na 22 % výmery). K&nbsp;záveru 17. týždňa je kukurica na zrno vysiata na 94 % výmery, kukurica na siláž a slnečnica na 100 % výmery, sója na 93 % výmery. V&nbsp;18. – 20. týždni boli jarné práce prerušované z&nbsp;dôvodu daždivého počasia. K&nbsp;záveru 20. týždňa bol prakticky ukončený výsev všetkých jarných plodín. <strong>V&nbsp;21. týždni poľnohospodári okresu Nové Zámky vykonávali ošetrovanie porastov, práce boli prerušované dažďom, lokálne sprevádzaným aj krupobitím.</strong></p>
+
+
+
+<p>V&nbsp;okrese <strong>Levice</strong> jarné práce na poliach prebiehali v&nbsp;13 – 16. týždni vďaka priaznivému počasiu prakticky bez prerušenia. K&nbsp;záveru 15. týždňa poľnohospodári levického okresu stihli zasiať kukuricu na zrno na 98 % výmery, kukuricu na siláž na 33 %, slnečnicu na 46 %. Výsev jarných plodín bol ukončený v okrese Levice v&nbsp;20. týždni. <strong>Práce na poliach boli v&nbsp;18. 19. týždni z&nbsp;dôvodu daždivého počasia prakticky zastavené, v&nbsp;20. týždni prebiehali len v&nbsp;tých prípadoch, ak bolo možné v priebehu daždivého počasia ich vykonať, ako napr. ošetrovanie prípravkami na ochranu rastlín, najmä herbicídmi a fungicídmi.</strong> Senážovanie niektoré podniky začali a pre nepriaznivé počasie aj prerušili.</p>
+
+
+
+<p>V&nbsp;regióne <strong>Nitra</strong> (okresy Nitra, Šaľa, Zlaté Moravce, Topoľčany) v&nbsp;13. týždni bol zahájený výsev kukurice a&nbsp;slnečnice, ukončený bol výsev pšenice, jačmeňa, ovsa, hrachu. V&nbsp;14. týždni pokročil výsev kukurice na 39 %, slnečnice na 56 % a&nbsp;cukrovej repy na 95 % predpokladanej výmery. Priaznivé počasie umožnilo veľký posun vo výseve jarných plodín aj v&nbsp;15. – 16. týždni. K&nbsp;záveru 15. týždňa bola kukurica na zrno vysiata už na 79 %, slnečnica na 59 %, cukrová repa na 100 % výmery. Poľnohospodári začali s&nbsp;výsevom sóje (vysiatych bolo 7 % výmery). Výrazný posun v&nbsp;jarných prácach bol v&nbsp;16. týždni, kedy bola kukurica na zrno vysiata už na 99 % výmery, kukurica na siláž na 86 % výmery, slnečnica na 99 % výmery a&nbsp;sója na 34 % výmery. V&nbsp;17. týždni sa poľnohospodárom podarilo na 100 % dokončiť výsev kukurice na zrno a&nbsp;slnečnice, kukurica na siláž je vysiata na 98 % výmery. K&nbsp;záveru 19. týždňa je na 100 % ukončený výsev všetkých plodín. <strong>V&nbsp;20. – 21. týždni prebiehalo ošetrovanie porastov, limitované lokálnymi zrážkami.</strong></p>
+
+
+
+<p>V&nbsp;oblasti <strong>Senice</strong> (okresy Senica, Skalica) priaznivé počasie (podobne ako vo väčšine ostatných regiónov) umožnilo v&nbsp;12. – 14. týždni vykonávať jarné práce. V&nbsp;14. týždni prebiehal výsev kukurice na siláž (vysiatych bolo 26 % výmery) a&nbsp;na zrno (vysiatych bolo 21 % výmery), slnečnice (47 %), sóje (77 %), jačmeňa (98 %) a&nbsp;cukrovej repy (výsev bol ukončený na 100 % výmery). Súčasne sa vykonávalo prihnojovanie repky a chemická ochrana pšenice proti burinám a chorobám a chemické ošetrenie cukrovej repy. V&nbsp;15. týždni práce na poliach naďalej pokračovali, čiastočne boli prerušované víkendovými zrážkami. Kukurica na zrno bola na 100 % výmery vysiata v&nbsp;15. týždni, slnečnica v&nbsp;17. týždni, kukurica na siláž v&nbsp;19. týždni. <strong>V 18. týždni boli práce na poliach prerušované zrážkami v úhrne od 30 - 50 mm, čo výrazne prospelo hlavne jarným plodinám ale aj ostatným porastom.</strong> V 19. týždni boli práce na poliach prerušované prehánkami, úhrn zrážok bol približne 15 mm. <strong>V&nbsp;20. – 21. týždni prevládalo v&nbsp;regióne daždivé počasie, čo výrazne obmedzovalo možnosť ošetrovania porastov.</strong></p>
+
+
+
+<p>V&nbsp;<strong>Trenčianskom</strong> regióne (okresy Myjava, Nové mesto nad Váhom, Trenčín) porasty ozimných obilnín prezimovali pomerne dobre, zdravé, dobre vyvinuté. Porasty repky boli poškodené v dôsledku spásania zverou. Počas mesiaca marec poľnohospodári zaznamenali zrážky len cca 44 mm. Sejba jačmeňa začala ešte vo februári. V 13. týždni sa už naplno rozbehli sejby ostatných jarín, napr. cukrovej repy, horčice. Teplé, slnečné počasie v&nbsp;14. týždni umožnilo plynule pokračovať v jarných prácach - regeneračné prihnojovanie ozimín, chemické ošetrenie repky ozimnej insekticídom v dôsledku zvýšeného výskytu škodcov. V rámci sejby pokročili práce v oseve cukrovej repy, ovsa, slnečnice. Zároveň prebiehala príprava pôdy pred sejbou kukurice, ktorá sa mala rozbehnúť v 15. týždni. K&nbsp;záveru 14. týždňa bolo osiatych 100 % výmery pšenice, jačmeňa a hrachu, 94 % ovsa, 73 % slnečnice a&nbsp;80 % cukrovej repy. V&nbsp;15. týždni boli podmienky pre sejbu pomerne dobré, siala sa najmä kukurica, ktorá bola osiata zhruba z polovice plánovanej plochy a cukrová repa, osiata bola na 94 % plánovanej plochy. Repka začala kvitnúť, pšenice boli vo fáze steblovania. Jačmeň jarný bol vo fáze odnožovania, ale začal sa prejavovať zrážkový deficit, ktorý trval až do 17. týždňa. V&nbsp;16. týždni sa siala prevažne kukurica (kukurica na zrno bola vysiata na 54 % výmery, kukurica na siláž na 64 % výmery), slnečnica bola vysiata na 78 % výmery. Vykonaná bola chemická ochrana repky proti blyskáčikom, u horčice voči skočkám, tiež sa prihnojovali jarné obilniny. V&nbsp;17. týždni pokračoval výsev kukurice na siláž (vysiatych bolo 90 % výmery) a zahájená bola sejba sóje (vysiatych bolo 8 % výmery). Osev ostatných plodín bol ukončený. <strong>Chladné počasie a zrážky koncom 18. týždňa prerušili jarné práce.</strong> Nie je ukončený osev kukurice na siláž (chýba cca 50 ha), kukurice na osivo (40 ha) a sóje. V 18. týždni sa začalo so sejbou ciroku. &nbsp;Daždivé počasie trvajúce od konca 18. týždňa, počas celého 19. a&nbsp;20. týždňa prerušilo poľné práce na väčšine regiónu. <strong>V&nbsp;21. týždni boli poľné práce prerušené v dôsledku výdatných dažďov</strong>. V niektorých častiach regiónu spadlo za 24 hodín od 23 do 62 mm zrážok, čo <strong>spôsobilo vyliatie sa niektorých potokov a zatopenie parciel</strong>. Škody na plodinách sú nahlásené len na kukurici (vymleté asi na výmere približne 7 ha). Vzhľadom k tomu, že na druhý deň dážď ustúpil a hladiny potokov začali klesať, nepredpokladajú sa škody vo väčšom rozsahu. Poľné práce už pokračujú a sú zamerané najmä na ošetrenie a chemickú ochranu. Jarné osevy boli ukončené v 20 týždni.</p>
+
+
+
+<p>V&nbsp;okrese <strong>Bánovce nad Bebravou</strong> v&nbsp;období 13. – 17. týždňa padli iba minimálne zrážky s&nbsp;týždenným úhrnom od 0 do 10 mm, poľnohospodári postupne siali repku, kukuricu, cukrovú repu, slnečnicu, vykonávali postreky na reguláciu obilnín, herbicídne a fungicídne postreky. V 15. týždni bolo vysiatych 76 % výmery kukurice zrnovej 58 % výmery kukurice silážnej, v&nbsp;16. týždni bolo vysiatych už 99 % výmery zrnovej a&nbsp;68 % výmery kukurice silážnej. V 18. týždni padlo v regióne Bánovce nad Bebravou okolo 16 mm zrážok. Prebiehala príprava na senážovanie lucerny, počasie v tom bránilo. Vykonávali sa postreky jačmeňa jarného fungicídne aj herbicídne, herbicídny postrek cukrovej repy a&nbsp;chystal sa postrek repky ozimnej do plného kvetu. V 19. týždni v okrese Bánovce nad Bebravou padlo okolo 40 mm zrážok. Poľnohospodári pokračovali v insekticídnej a fungicídnej ochrane ozimnej repky, vykonávala sa herbicídna ochrana jarného jačmeňa, ovsa siateho a cukrovej repy. Už dva týždne sa čakalo na vhodné počasie, aby bolo možné senážovať lucernu siatu. <strong>V 20. týždni v okrese Bánovce nad Bebravou padlo približne 20 - 30 mm zrážok. Postupne sa senážuje, keď to počasie dovolí. </strong></p>
+
+
+
+<p>V&nbsp;regióne <strong>Považskej Bystrice</strong> (okresy Ilava, Považská Bystrica, Púchov) boli obilniny k&nbsp;záveru 13. týždňa osiate na 48 %. Oziminy prevažne dobre prezimovali, len repka bola mierne poškodená spásaním lesnou zverou. V&nbsp;14. týždni jarné práce pokračovali prihnojovaním ozimín a prípravou pôdy na sejbu kukurice. V&nbsp;15. týždni poľnohospodári pokračovali vo výseve obilnín (vysiatych bolo 63 % výmery), cukrovej repy (vysiatych bolo 86 % výmery), začali s&nbsp;výsevom kukurice na siláž (vysiatych bolo 13 % výmery). Na trvalých trávnych porastoch pokračovali práce bránením pôdy a podsevom. <strong>K&nbsp;záveru 17. týždňa boli osevy jarných plodín ukončené.</strong> Poľnohospodári pociťovali nedostatok vlahy.<strong> V&nbsp;18. – 19. týždni sa poľnohospodári dočkali dlho očakávanej vlahy. </strong>Naplno sa rozbiehala pasienková sezóna a&nbsp;začalo senážovanie krmovín. Poľnohospodári neevidujú sucho, aktuálne zrážky výdatne pomohli všetkým plodinám. Členovia zaoberajúci sa chovom oviec sa pripravujú na aktivitu „Ovenálie“.</p>
+
+
+
+<p>Jarné práce v okrese <strong>Prievidza</strong> začali už koncom februára prihnojovaním ozimnej repky a ozimných obilnín. Na prelome februára a marca začala sejba jarného jačmeňa a priaznivé podmienky umožnili aj sejbu jarnej repky a cukrovej repy. Popri prácach na ornej pôde poľnohospodári ošetrovali trvalé trávne porasty bránením a prihnojovaním. Koncom marca podniky v celom okrese spustili nitratáciu ozimín a prihnojovanie trvalých trávnych porastov. Viaceré podniky na juhu okresu začali s prípravou pôdy pod kukurice a sóju. <strong>Za prvý kvartál roku bol deficit zrážok oproti predchádzajúcim rokom 45 – 55 %</strong>. K&nbsp;záveru 15. týždňa bola pšenica zasiata na 83 % výmery, jačmeň a&nbsp;cukrová repa prakticky na 100 % výmery, kukurica na siláž na 55 % výmery, repka na 97 % výmery, sója na 3 % výmery a&nbsp;zemiaky boli vysadené na 10 % výmery. <strong>K&nbsp;záveru 16. týždňa boli osevné práce v&nbsp;okrese Prievidza ukončené.</strong> Deficit vlahy skracuje predlžovanie internódií na steblách ozimín a repka nevytvára požadovaný habitus. Podniky v dôsledku nedostatku krmív a slamy začali pastvu.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/UTScNgj.jpg"></figure><p></p>
+
+
+
+<p><strong>Okres Prievidza naďalej trpel suchom aj k&nbsp;záveru 17. týždňa. V mesiaci apríl padlo priestorovo v okrese 15 - 20 mm. Deficit pôdnej vlahy sa zvyšoval a ohrozená bola výroba krmív. </strong>V&nbsp;širšom regióne (aj mimo okresu Prievidza), lokálne sucho pretrvávalo aj v&nbsp;19. týždni. Členovia RPPK Prievidza evidovali pokles hladiny spodnej vody. Sucho spôsobilo aj to, že sa predpokladal nedostatok vlahy pre založenie zostávajúcich výmer kukurice na siláž, ktoré majú byť založené po zbere ozimných miešaniek. Atmosferické zrážky v&nbsp;20. týždni spomalili znižovanie pôdnej vodnej kapacity. <strong>Priestorový úhrn zrážok od 15 - 25 mm v rámci okresu blahodarne pôsobí na ozimné obilniny a repku.</strong> Výdatnejšie zrážky kondične pomohli cukrovej repe a kukurici. Poľné práce sú zamerané hlavne na boj proti burinám a ošetrenie obilnín proti listovým chorobám a chorobám klasov. <strong>Väčšina podnikov začala zelenú žatvu</strong>. <strong>V&nbsp;21. týždni prebiehal zber krmovín, limitovaný dažďami. Na prelome 21. a&nbsp;22. týždňa padlo v&nbsp;priebehu troch dní miestami 70 mm zrážok.</strong></p>
+
+
+
+<p>V&nbsp;oblasti <strong>Turca</strong> (okresy Martin, Turčianske Teplice) jarné práce vďaka priaznivému počasiu v&nbsp;skorej jari výrazne pokročili. Obilniny boli k&nbsp;záveru 13. týždňa osiate približne na 78 % výmery, k&nbsp;záveru 14. týždňa na 86 % výmery, z&nbsp;toho pšenica, jačmeň a&nbsp;ovos boli vysiate na 100 % výmery. Vyorávka ozimín bola hlásená na 1 % výmery repky ozimnej z dôvodu zničenia osevu poľovnou zverou. Jarné práce na Turci pokračovali v&nbsp;15. týždni osevom kukurice na zrno (vysiatych bolo 7 % výmery) a kukurice na siláž (vysiatych bolo 12 % výmery). Výsev repky bol ukončený na 100 % výmery. V&nbsp;17. týždni výsev kukurice na zrno (vysiatych bolo 81 % výmery) a na siláž (vysiatych bolo 59 % výmery) výrazne pokročil. Sója bola vysiata na 67 % výmery. <strong>Subjekty hlásili k&nbsp;17. týždňu málo zrážok.</strong> V&nbsp;18. týždni sa výsev kukurice na zrno (zasiatych bolo 89 % výmery) a na siláž (vysiatych bolo 97 % výmery) pomaly blížil ku koncu. Zostávalo ešte osiať pohánku. Osevné práce pozastavili zrážky. K&nbsp;záveru 19. týždňa je kukurica na zrno vysiata na 100 % výmery, kukurica na siláž na 98 % výmery, zostáva vysiať ešte 10 hektárov pohánky. V&nbsp;20. týždni bol ukončený aj výsev kukurice na siláž. <strong>V&nbsp;21. týždni sa stav jarných prác nezmenil.</strong></p>
+
+
+
+<p>Na<strong> Orave</strong> (okresy Dolný Kubín, Námestovo, Tvrdošín)&nbsp; začali poľnohospodári s&nbsp;jarnými prácami v&nbsp;závere 13. týždňa, smykovaním, diskovaním, prihnojovaním ozimín, výsevom jarných plodín a ďatelinotrávnych miešaniek. K&nbsp;záveru 16. týždňa bol na Orave prakticky ukončený výsev jarných plodín, s&nbsp;výnimkou kukurice s&nbsp;podsevom viky. V&nbsp;tomto období začínala pasienková sezóna. <strong>V&nbsp;21. týždni, následkom pokračujúceho daždivého počasia, bola pôda vo väčšine regiónu premočená a&nbsp;nebolo možné ošetrovať porasty ani vykonávať zber krmovín.</strong></p>
+
+
+
+<p>V&nbsp;<strong>Žilinskom</strong> regióne (okresy Bytča, Žilina) bol k&nbsp;záveru 14. týždňa ukončený výsev pšenice na 100 % výmery, výsev jačmeňa na 96 % výmery. K&nbsp;záveru 20. týždňa mali členské podniky zasiate jarné obilniny. Kukurica na siláž vzhľadom k nepriaznivému počasiu nie je zatiaľ zasiata na celej výmere.</p>
+
+
+
+<p>Na <strong>Liptove</strong> (okresy Liptovský Mikuláš, Ružomberok) poľnohospodári naplno využívali priaznivé jarné počasie, k&nbsp;záveru 14. týždňa bolo zasiatych 90 % výmery pšenice, 97 % jačmeňa, 80 % repky, 100 % hrachu na zrno. Priaznivé počasie v&nbsp;15. týždni umožnilo výrazne pokročiť v&nbsp;osevoch jarných plodín, výsev pšenice a&nbsp;repky bol ukončený na 100 %, jačmeňa na 97 %, ovsa na 98 %. <strong>K&nbsp;záveru 16. týždňa stihli poľnohospodári na Liptove vysiať všetky obilniny, začali s&nbsp;výsevom kukurice na siláž a&nbsp;výsadbou zemiakov. V&nbsp;regióne postupne začala pasienková sezóna, podľa klimatických a&nbsp;poveternostných podmienok konkrétnych lokalít – </strong>pasenie hovädzieho dobytka a&nbsp;oviec začalo v&nbsp;oblasti Dolného Liptova, zatiaľ čo na Hornom Liptove prebiehala príprava na pasienkovú sezónu. K&nbsp;záveru 17. týždňa bolo vysiatych 12 % výmery kukurice na siláž. <strong>V&nbsp;regióne bolo veľmi sucho. V&nbsp;18. týždni došlo v&nbsp;regióne k&nbsp;prudkej zmene počasia, bolo chladno a&nbsp;snežilo, čo (aj v&nbsp;okolitých regiónoch) znamenalo prerušenie pasenia. Daždivé počasie v&nbsp;regióne pretrvávalo aj v&nbsp;19. – 21. týždni, práce na poliach boli prakticky prerušené.</strong></p>
+
+
+
+<p>V&nbsp;regióne <strong>Zvolena</strong> (okresy Detva, Zvolen, Žarnovica, Žiar nad Hronom) bol k&nbsp;záveru 19. týždňa ukončený výsev všetkých plodín. Naplno prebieha pasienková sezóna. Problém tohtoročného dočasného sucha spočíval v&nbsp;tom, že prípadné atmosferické zrážky neboli celoplošné, ale mali lokálny charakter, čo znamenalo nedostatok vlahy v&nbsp;niektorých častiach regiónu. <strong>V&nbsp;20. – 21. týždni v&nbsp;regióne vládlo daždivé počasie, preto nebolo možné vykonávať poľné práce.</strong></p>
+
+
+
+<p>V&nbsp;okrese <strong>Krupina</strong> poľnohospodári, vzhľadom na dobré počasie, v mesiaci február siali jarné obilniny. V&nbsp;závere marca začali siať aj kukuricu na siláž, vzhľadom k tomu, že v&nbsp;týchto klimatických podmienkach bývajú mrazy aj v apríli, ktoré by poškodili vzídenú kukuricu, poľnohospodári sa neponáhľali s jej výsevom. <strong>Silné vetry vysušovali pôdu a začal sa prejavovať vlahový deficit.</strong> K&nbsp;záveru 14. týždňa bolo vysiatych 100 % výmery pšenice a&nbsp;42 % ovsa. <strong>K&nbsp;záveru 17. týždňa bol v&nbsp;okrese Krupina ukončený výsev všetkých jarín, vrátane výsadby zemiakov. Od 18. do 20. týždňa v&nbsp;okrese pretrvávalo daždivé počasie (od začiatku mája do 21. mája je úhrn zrážok na úrovni 82 mm). Práce na poliach boli prerušené až do záveru 21. týždňa.</strong></p>
+
+
+
+<p>Priaznivé počasie v okresoch <strong>Lučenec </strong>a <strong>Poltár</strong> umožnilo v&nbsp;13. týždni vykonávať jarné práce v dobrých termínoch, v prvých dvoch týždňoch marca väčšina subjektov siala jariny. Prebehlo prihnojovanie ozimín a&nbsp;trvalých trávnych porastov. Ostávalo vykonať sejbu sóje, slnečnice a kukurice. Poľnohospodári okresov Lučenec a Poltár v&nbsp;15. týždni pokračovali v sejbe sóje (vysiatych bolo 69 % výmery), slnečnice (vysiatych bolo 63 % výmery) a&nbsp;kukurice (vysiatych bolo 38 % kukurice na zrno a&nbsp;43 % kukurice na siláž). Výsev pšenice, jačmeňa a&nbsp;raže bol k&nbsp;záveru 15. týždňa ukončený na 100 % výmery. Počasie bolo nepriaznivé vzhľadom na mimoriadny deficit vlahy. Sucho naďalej pretrvávalo. Hrozili škody spôsobené suchom.<strong> V&nbsp;17. týždni boli poľné práce na väčšine výmery regiónu prerušené, poľnohospodári sa dočkali dlho očakávanej vlahy. V&nbsp;18. týždni </strong><strong>spadlo v južnej časti okresu Lučenec 10 mm zrážok, ale aj tak bol stále vlahový deficit</strong>. Vyorávky ozimín dôsledkom sucha konkrétne ozimný jačmeň hlásia zo severnej časti okresu Poltár. <strong>Atmosferické zrážky prerušili zber zelenej hmoty na senážovanie. V&nbsp;19. – 21. týždni padlo veľké množstvo zrážok, vrátane ľadovca, čo na viacerých miestach spôsobilo aj zmyv pôdy. Na poliach sú kaluže vody, nie je možné vstupovať na pôdu mechanizmami.</strong></p>
+
+
+
+<p>V regióne <strong>Rimavskej Soboty</strong> (okresy Revúca, Rimavská Sobota) v 14. týždni poľnohospodári ukončili osevy jarín prvého sledu, pšenice jarnej, jačmeňa, raže a ovsa v optimálnych agrotechnických termínoch. Pokračovalo prihnojovanie ozimín a ich chemické ošetrovanie. Prezimovanie ozimín bolo bezproblémové až na škody spôsobené zverou na repke. Aktuálne sa ukončovali predsejbové práce pod plodiny druhého sledu sóje, kukurice a slnečnice. Po veľkom deficite zimnej vlahy v regióne poľnohospodári zaznamenali cca 20 milimetrov vlahy. V&nbsp;16. týždni pokračoval výsev kukurice a&nbsp;sóje, na trvalých trávnych porastoch sa rozbiehala pasienková sezóna. Doterajší nedostatok vlahy sa zdá byť k&nbsp;záveru 19. týždňa zažehnaný zrážkami, ktoré padli v&nbsp;priebehu uplynulých týždňov. RPPK neeviduje pokles hladiny spodnej vody. <strong>V&nbsp;20. týždni v&nbsp;regióne pretrvávalo daždivé počasie, čo zamedzilo výkonu prác na poliach. V&nbsp;21. týždni poľnohospodári vykonávali ošetrovanie plodín tam, kde to miestne podmienky dovolili. Sú obavy z&nbsp;hubovitých chorôb. Jačmene, hlavne s&nbsp;vyšším hnojením dusíka, políhajú.</strong></p>
+
+
+
+<p>V&nbsp;okrese <strong>Stará Ľubovňa</strong> do záveru 13. týždňa neboli zaznamenané vyorávky ozimín, bol ukončený výsev pšenice, jačmeňa a&nbsp;ovsa, k&nbsp;záveru 14. týždňa bol ukončený aj výsev repky. <strong>V 15. týždni boli jarné osevy obilnín prakticky ukončené.</strong> Pokračovalo sa v&nbsp;príprave na výsadbu zemiakov a sejbu silážnej kukurice. Prebiehalo prihnojovanie a chemické ošetrovanie ozimín ako i ošetrovanie a hnojenie trvalých trávnych porastov. <strong>V&nbsp;16. a&nbsp;17. týždni sa v&nbsp;regióne rozbiehala pasienková sezóna. V&nbsp;18. – 19. týždni prevládalo v&nbsp;okrese daždivé počasie, sucho už v&nbsp;okrese neevidujú. Daždivé počasie v&nbsp;20. – 21. týždni nedovolilo poľnohospodárom ošetrovať porasty, ani vykonávať zber krmovín.</strong></p>
+
+
+
+<p>V&nbsp;okrese <strong>Bardejov </strong>boli obilniny k&nbsp;záveru 13. týždňa zasiate na 92 % výmery. Bola vykonaná vyorávka repky ozimnej z dôvodu poškodenia lesnou zverou. Ukončená bola sejba lucerny siatej. Práce prebiehali bez komplikácií. Stále sa vyskytovali mrazy. V&nbsp;14. týždni poľnohospodári vykonávali regeneračné hnojenie ozimných plodín. V 14. týždni pokračoval výsev jarín, obilniny boli osiate na 96 %, repka na 21 % výmery. Poľnohospodári pociťovali sucho. V 15. týždni poľnohospodári ukončili osev jarných obilnín (pšenice, jačmeňa, ovsa a&nbsp;ostatných obilnín), pokračovali vo výseve repky (vysiatych je 75 % výmery), pokračovalo prihnojovanie trvalých trávnych porastov. V 16. týždni začali poľnohospodári s výsevom kukurice na siláž (vysiatych bolo 16 % výmery), pokročili vo výseve repky (vysiatych bolo 85 % výmery), prihnojovali oziminy. V okrese nepršalo, pretrvávalo sucho. Aj<strong> v 17. týždni pretrvávalo v regióne Bardejov sucho. </strong>V&nbsp;súkromných studniach bol zaznamenaný pokles hladiny spodnej vody. Pokračovalo sa osevom kukurice na siláž (vysiatych je 56 % výmery), sóje (45 % výmery) a strukovín.<strong> V&nbsp;18. týždni sejbu prerušil dážď, ktorému sa poľnohospodári veľmi potešili. </strong>V&nbsp;okrese bolo už kritické sucho, zrážky prišli v&nbsp;najvyšší čas. <strong>&nbsp;Bolo potrebné dosiať už iba kukuricu na siláž</strong> (vysiatych bolo 61 % výmery)<strong> a&nbsp;sóju </strong>(vysiatych bolo 58 % výmery). V 19. týždni naďalej pršalo. Podiel vysiatej plochy kukurice na siláž sa oproti predchádzajúcemu týždňu zvýšil na 74 %, u&nbsp;sóje na 71 %. <strong>V 20. týždni výdatne pršalo, sója je osiata na 94 %, kukurica na siláž 97 % výmery. V&nbsp;21. týždni sa stav prác nezmenil, daždivé počasie nedovolilo pokračovať v&nbsp;jarných prácach ani v&nbsp;polovici 22. týždňa, poľnohospodári dúfajú v&nbsp;zlepšenie počasia kvôli dosiatiu zvyšných plôch sóje a&nbsp;kukurice na siláž a&nbsp;kvôli zberu krmovín.</strong></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/todctPd.jpg"></figure><p></p>
+
+
+
+<p>V trinástom týždni v regióne <strong>Prešov</strong> (okresy Prešov, Sabinov) poľnohospodári čakali na vyššiu teplotu pôdy pre sejbu kukurice, sóje, slnečnice a výsadbu zemiakov. Výsev všetkých obilnín bol ukončený na 100 % predpokladanej výmery. V&nbsp;tom čase prebiehala listová výživa porastov repky ozimnej a ozimnej pšenice viaczložkovým listovým hnojivom a stabilizácia odnoží. V&nbsp;14. týždni poľnohospodári začali s prípravou pôdy a hnojením pred sejbou pre plodiny druhej trate. Prebiehalo ošetrenie repky ozimnej proti krytonosom a hubovým chorobám. V&nbsp;16. týždni v regióne Prešov poľnohospodári začali s druhou traťou výsadby zemiakov (vysadených bolo 57 % výmery) a sejby sóje (vysiatych bolo 47 % výmery) a&nbsp;kukurice (kukurica na zrno bola vysiata na 39 % výmery, kukurica na siláž na 63 % výmery). Prebiehala chemická ochrana olejnín a obilnín. <strong>Sucho v regióne trvalo od 14. do 17. týždňa. </strong>V&nbsp;17. týždni v regióne Prešov pokračovali pestovatelia v sejbe sóje (vysiatych bolo 60 % výmery), kukurice (na zrno bolo vysiatych 73 %, na siláž 79 % výmery), slnečnice (25 %) a výsadbe zemiakov (vysadených bolo 78 % výmery). Práce sa prerušili. <strong>Konečne prišla vlaha. </strong>V&nbsp;devätnástom týždni v regióne Prešov boli iba dva dni, kedy sa dalo vstúpiť do pôdy. Poľnohospodári čakali na priaznivé vlahové a pôdne pomery pre práce na poliach. V&nbsp;dvadsiatom týždni v regióne Prešov poľnohospodári využili dva dni bez zrážok na dokončenie sejby kukurice, slnečnice a sóje. Zemiaky na výmere 24 ha (4 %) zostali nezasadené u najväčšieho pestovateľa. <strong>Bol predpoklad, že do konca 21. týždňa budú všetky jarné práce ukončené. Tento predpoklad sa však nenaplnil, nakoľko v&nbsp;21. týždni sa v&nbsp;regióne vyskytli intenzívne zrážky, vrátane prívalových dažďov. </strong></p>
+
+
+
+<p>V&nbsp;regióne <strong>Svidníka</strong> (okresy Stropkov, Svidník) do záveru 13. týždňa poľnohospodári&nbsp; nezaznamenali vyorávky ozimín, podarilo sa vysiať pšenicu, jačmeň a&nbsp;ovos. V&nbsp;17. týždni boli vysiate všetky obilniny, pokračoval výsev kukurice na siláž. Chovatelia hovädzieho dobytka a&nbsp;oviec postupne začínali s&nbsp;pasením.<strong>&nbsp; Do záveru 17. týždňa pretrvávalo v&nbsp;regióne sucho.</strong></p>
+
+<p>V&nbsp;18. týždni poľnohospodári Svidníckeho regiónu dokončovali osev kukurice na zrno (vysiatych bolo 88 % výmery), na siláž (vysiatych bolo 92 % výmety) a&nbsp;sóje (vysiatych bolo 84 % výmery). Osev ostatných plodín bol ukončený. Aplikujú sa herbicídne a fungicídne postreky. V&nbsp;19. týždni pokročil výsev kukurice na zrno na 93 %, kukurice na siláž na 96 % a&nbsp;sóje na 86 % výmery. Región neevidoval extrémne sucho, avšak aktuálne dažde pomohli plodinám pre ďalšie obdobie vegetácie. <strong>V&nbsp;20. týždni bol ukončený výsev všetkých plodín. V&nbsp;20. - 21. týždni v regióne pretrvávalo v&nbsp;regióne daždivé počasie, poľnohospodári dúfajú v&nbsp;zlepšenie počasia. </strong></p>
+
+
+
+<p>V&nbsp;oblasti <strong>Košíc</strong> sa práce na poli v&nbsp;19. – 20. týždni spomalili alebo úplne zastavili z dôvodu veterného a daždivého počasia. Kvôli nepriazni počasia nie je možné vykonávať zber senáže - ozimnej raže, lucerny. Aktuálnym problémom je síce nadbytok zrážok, čo je však aktuálne považované za priaznivejší stav ako kritické sucho. <strong>Poľné práce (ošetrovanie porastov, zber krmovín) nebolo možné kvôli vysokej vlhkosti pôdy a&nbsp;občasným dažďom vykonávať ani v&nbsp;21. týždni.</strong></p>
+
+
+
+<p>V&nbsp;okrese <strong>Trebišov</strong> sú evidované vyorávky ozimnej repky na úrovni 7 % pôvodnej výmery. K&nbsp;záveru 13. týždňa sa postupne ukončoval výsev jarných obilnín (pšenica 80 %, jačmeň 95 %, ovos 93 %), začal sa výsev kukurice a&nbsp;slnečnice. Sója bola vysiata na 19 %, hrach na 83 %, zemiaky boli vysadené na 46 % výmery. K&nbsp;záveru 15. týždňa bol výsev pšenice, jačmeňa, ovsa, hrachu ukončený na 100 % výmery, kukurice na zrno a&nbsp;kukurice na siláž na 93 %, slnečnice na 99 %, sóje na 40 % výmery. V&nbsp;roku 2018 zaznamenali poľnohospodári v&nbsp;okrese Trebišov deficit 200 mm zrážok. Za prvé tri mesiace tohto roka chýbalo pôde 80 - 100 mm vody. Je to obzvlášť nepríjemný stav, pretože Dolný Zemplín je bez možnosti zavlažovania. Ak by v apríli nenapršalo aspoň 40 - 50 mm, tak by boli vzchádzajúce plodiny poškodené.</p>
+
+<p><strong>K&nbsp;záveru 17. týždňa boli v&nbsp;regióne jarné osevné práce ukončené a&nbsp;poľnohospodári sa konečne dočkali dlho očakávanej vlahy. </strong><em>„Oziminám, ktoré ešte v&nbsp;apríli trpeli nedostatkom zrážok, už toto daždivé počasie veľmi nepomôže. Niektoré porasty pšeníc slabo odnožili a&nbsp;už teraz je predpoklad nižších úrod. Aktuálny dážď však prospieva všetkým jarným plodinám. Porasty sú v&nbsp;dobrej kondícii“, </em>uviedol Alexander Palágyi, člen Predstavenstva SPPK. <strong>V&nbsp;19. – 20. týždni v&nbsp;okrese pretrvávalo daždivé počasie. Poľné práce boli týmto limitované, ale podľa možností bola vykonávaná kosba a&nbsp;senážovanie krmovín.</strong></p>
+
+
+
+<p>V&nbsp;regióne <strong>Dolného Spiša</strong> (okresy Gelnica, Levoča, Spišská Nová Ves) <strong>aktuálne dažde v&nbsp;19. – 20. týždni veľmi pomohli plodinám, nakoľko doterajšie sucho bolo, vzhľadom na pôdnoklimatické podmienky Spiša, už kritické.</strong> V&nbsp;20. týždni nebolo možné vykonávať práce na poliach z&nbsp;dôvodu daždivého počasia.</p>
+
+
+
+<p><strong>V&nbsp;oblasti Michaloviec</strong> (okresy Michalovce, Sobrance) <strong>suché a veterné počasie uplynulých týždňov využili poľnohospodári regiónu na prípravné práce pred sejbou a sejbu jarín - najskôr jačmeňa a slnečnice a neskôr kukurice a sóji, ktoré ešte prebiehajú.</strong> Z ostatných jarných prác to bolo prihnojovanie priemyselnými hnojivami, a chemické ošetrovanie ozimín i jarín herbicídmi, fungicídmi a i insekticídmi. Zároveň sa v&nbsp;17. týždni zahájilo senážovanie napr. raže a budúci týždeň senážovanie lucerny. <strong>Po dlhých mesiacoch čakania na dážď konečne v&nbsp;závere 17. týždňa spadlo zrážok od 15 do 25 mm. Ukončenie osevov jarín sa predpokladalo do konca 18. týždňa. </strong>Dlhotrvajúce sucho poškodilo v&nbsp;rámci ozimín predovšetkým repku olejnú. <strong>V&nbsp;priebehu 19. – 20. týždňa padlo v&nbsp;regióne 30 – 50 mm (v&nbsp;závislosti od lokality). Aktuálne ani k&nbsp;záveru 21. týždňa nebolo možné vstúpiť na pozemky.</strong></p>
+
+<p><strong>Celkové hodnotenie doterajšieho stavu jarných prác v&nbsp;tomto roku za všetky regióny/okresy a&nbsp;porovnanie s&nbsp;dvoma predchádzajúcimi rokmi</strong></p>
+
+
+
+<p><strong>V&nbsp;21. týždni z&nbsp;dôvodu daždivého počasia neboli jarné práce vo väčšine regiónov vykonávané. K&nbsp;záveru 21. týždňa sú v&nbsp;nižšie položených okresoch ukončené výsevy jarných plodín a&nbsp;aktuálne prebieha ošetrovanie plodín, limitované daždivým počasím. </strong></p>
+
+<p><strong>Extrém sucha z&nbsp;predchádzajúcich týždňov vystriedal nadbytok zrážok. Aktuálny nadbytok zrážok je len relatívny, nakoľko na väčšine územia Slovenska iba dopĺňa dlhodobo chýbajúcu vlahu. Zároveň, aktuálne zrážky už nezabránia trvalému poškodeniu niektorých porastov vplyvom doterajšieho sucha.</strong></p>
+
+<p><strong>V&nbsp;niektorých vyššie položených regiónoch sa kvôli daždivému počasiu nepodarilo ukončiť výsev jarín, predovšetkým kukurice na siláž. </strong></p>
+
+<p><strong>Pri aktuálnom daždivom počasí poľnohospodári predpokladajú omnoho vyšší tlak burín a&nbsp;hubovitých chorôb. Vplyvom daždivého počasia je obmedzované ošetrovanie porastov a&nbsp;zber krmovín.</strong></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/WK94ZWb.jpg"></figure><p></p>
+
+
+
+<h2 class="doc-subheading">Zhodnotenie jarných prác v&nbsp;roku 2017</h2>
+
+
+
+<p>Úrad SPPK začal v&nbsp;roku 2017 s&nbsp;monitorom jarných prác v&nbsp;11. týždni, monitoring bol ukončený v&nbsp;23. týždni. Jar roku 2017 začala na väčšine územia pomerne veľkým deficitom zrážok, ktorý pretrvával od konca roku 2016. Sucho sa prehlbovalo v&nbsp;apríli – máji roku 2017 a&nbsp;trvalo až do ukončenia jarných prác. <strong>Následkom sucha boli škody na úrode</strong>. SPPK tieto škody&nbsp; zmonitorovala v&nbsp;spolupráci Ministerstvom pôdohospodárstva a&nbsp;rozvoja vidieka Slovenskej republiky, Agrárnou komorou Slovenska a&nbsp;Štatistickým úradom Slovenskej republiky. V&nbsp;17. týždni <strong>nočné mrazy</strong> spôsobili škody na viacerých poľnohospodárskych plodinách, resp. kultúrach, najviac v&nbsp;sadoch, viniciach, na ozimnej repke, zemiakoch a&nbsp;cukrovej repe. Výška škôd za hlásenia, ktoré spracoval úrad SPPK, bola 9,8 milióna eur.</p>
+
+
+
+<h2 class="doc-subheading">Zhodnotenie jarných prác v&nbsp;roku 2018</h2>
+
+<p>Úrad SPPK začal v&nbsp;roku 2018 s&nbsp;monitoringom jarných prác v&nbsp;13. týždni, monitoring bol ukončený v&nbsp;22. týždni. Nepriaznivé marcové počasie výrazne obmedzovalo začiatok jarných prác, tieto práce sa začali v&nbsp;13. týždni, rozbiehali sa postupne len v&nbsp;regiónoch s&nbsp;dostatočne preschnutými pôdami. <strong>V&nbsp;novodobej histórii meteorologických meraní zaznamenal SHMÚ v jari 2018 dva rekordne teplé </strong>(teplejšie ako doterajšie rekordy) <strong>mesiace za sebou, apríl a&nbsp;máj</strong>. Marec 2018 bol na väčšine územia Slovenska teplotne podnormálny. Apríl 2018 bol najteplejším aprílom od začiatku meteorologických pozorovaní. V&nbsp;apríli bol zaznamenaný aj prvý tropický deň čo pre tento jarný mesiac predstavuje jediný zaznamenaný tropický deň v&nbsp;histórii meraní od roku 1951. Máj 2018 bol na väčšine územia Slovenska teplotne mimoriadne nadnormálny.<strong> Nedostatok vlahy v&nbsp;apríli a&nbsp;máji spôsobil v&nbsp;roku 2018 podpriemerné úrody obilnín.</strong></p>
+
+
+
+<p>Zdroj: SHMÚ, RPPK, poľnohospodárske subjekty, Úrad SPPK</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

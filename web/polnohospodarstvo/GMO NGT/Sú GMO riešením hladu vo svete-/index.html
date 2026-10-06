@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sú GMO riešením hladu vo svete? — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">polnohospodarstvo</a><span>/</span><a href="../index.html">GMO NGT</a><span>/</span>Sú GMO riešením hladu vo svete-</nav>
+
+  <article>
+    <h1 class="doc-title">Sú GMO riešením hladu vo svete?</h1>
+    <p class="doc-meta"><span class="doc-meta-item">RNDr. Igor Šarmír, PhD., SPPK a Európsky hospodársky a sociálny výbor</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">5. júna 2015</span></p>
+
+    <div class="doc-body">
+<p>Skutočnosť, že viac ako miliarda obyvateľov našej planéty hladuje, je nepochybne najväčším škandálom súčasnosti. Napriek tomu, že ľudstvo disponuje takým bohatstvom ako nikdy v&nbsp;minulosti, zomiera každých 5 sekúnd od hladu jedno dieťa do desať rokov. Na nesmiernom bohatstve dnešného sveta nič nemení ani hospodárska a&nbsp;finančná kríza, ktorou svet prechádza a&nbsp;ktorá nemôže slúžiť ako ospravedlnenie dnešného hanebného stavu. Napokon, obrovské množstvo ľudských jedincov hladovalo alebo bolo vážne podvyživených i&nbsp;pred rokom 2007, hoci na druhej strane kríza výrazne rozmnožila ich počet. K&nbsp;hladovaniu spôsobenému nedostatočným každodenným prísunom kalórií (denné minimum je podľa WHO stanovené na 2700 kalórií) sa pridáva tzv. zlá výživa, ktorá síce rešpektuje kritérium potrebného obsahu kalórií, ale neobsahuje viaceré prvky nevyhnutné na „udržateľné“ prežívanie, pričom ide najmä o&nbsp;vitamíny a&nbsp;viaceré stopové prvky. Zlá výživa spôsobuje mnohé vážne chronické patológie (napríklad oslepnutie z&nbsp;dôvodu nedostatku vitamínu A<a href="#_ftn1" name="_ftnref1" title="">[1]</a>) a&nbsp;v&nbsp;konečnom dôsledku vedie k&nbsp;predčasnému úmrtiu. Obeťami zlej výživy je približne ďalšia miliarda osôb najmä v&nbsp;chudobných krajinách.</p>
+
+
+
+<p>Podľa OSN, patrí právo na potraviny už od roku 1948 medzi základné ľudské práva a&nbsp;od roku 2000 existuje i&nbsp;funkcia osobitného spravodajcu OSN pre právo na potraviny. Prvých osem rokov ju vykonával Švajčiar Jean Ziegler, ktorého neskôr vystriedal belgický právnik Olivier de Shutter. Obidvaja sú špičkoví odborníci, ktorí dobre poznajú svoj „terén“ a&nbsp;výrazne prispeli k&nbsp;poznaniu podstaty hladu vo svete (a obidvaja sú veľmi skeptickí pokiaľ ide o&nbsp;riešenie hladu prostredníctvom GMO). Na podniknutie niečoho účinného im ale chýbali (a chýbajú) potrebné právomoci. Problém je v&nbsp;tom, že skutoční páni tohto sveta, to znamená ctihodná spoločnosť, ktorá sa vždy v&nbsp;januári schádza v&nbsp;Davose na Svetom ekonomickom fóre<a href="#_ftn2" name="_ftnref2" title="">[2]</a>, neuznávajú ani právo na potraviny a&nbsp;ani iné práva ekonomického charakteru. Finančné a&nbsp;ekonomické elity a ich „výkonní práporčíci“ (Svetová obchodná organizácia /WTO/, Medzinárodný menový fond /MMF/, Svetová banka a&nbsp;vlády ekonomicky vyspelých krajín) sa formálne hlásia iba k&nbsp;politickým „ľudským právam“. Uznanie ekonomických práv by podľa nich znamenalo narušenie voľného pohybu tovaru a kapitálu a&nbsp;nedeformovaného konkurenčného prostredia, ktoré sú údajne najlepšou garanciou riešenia všetkých ekonomických a&nbsp;sociálnych problémov vrátane hladu. Na lipnutí elít na tejto paradigme nič nemení ani skutočnosť, že v&nbsp;praxi zjavne nefunguje...</p>
+
+
+
+<p>Záchrana ľudstva od hladu patrí už tradične medzi hlavné argumenty obhajcov poľnohospodárskych GMO. Predstavitelia biotechnologických firiem,&nbsp;ich lobistických nátlakových združení typu ILSI<a href="#_ftn3" name="_ftnref3" title="">[3]</a>, ako i&nbsp;pracovníci nimi platených PR agentúr už dvadsať rokov upozorňujú na nárast počtu obyvateľov Zeme, ktorý by mal okolo roku 2050 presiahnuť 9 miliárd, a&nbsp;na simultánne znižovanie poľnohospodárskeho potenciálu v&nbsp;dôsledku narastajúcej urbanizácie, degradácie pôdy a&nbsp;klimatických zmien. Toto podľa nich predstavuje výzvu na ktorú môžu priniesť primeranú odpoveď iba geneticky modifikované plodiny (GMP). V&nbsp;nasledujúcich riadkoch sa pokúsim analyzovať, do akej miery môžu byť takéto očakávania vkladané do GMO reálne.</p>
+
+
+
+<p>Riešenie hladu vo svete pomocou pestovania geneticky GMP je založené na dvoch predpokladoch. Prvým sú údajne výrazne vyššie hektárové výnosy GMP ako dnešných konvenčných plodín a podľa druhého dnes veľké množstvo ľudí hladuje kvôli nedostatočnej výrobe potravín. Je preto potrebné sa bližšie pozrieť, či sú tieto predpoklady splnené.</p>
+
+
+
+<p>Hneď na začiatku treba povedať, že primárnym zámerom transgenézy zameranej na získanie dnes pestovaných GMP nebolo dosiahnutie vyšších hektárových výnosov. Viac ako 99% z&nbsp;nich bolo modifikovaných s&nbsp;cieľom zracionalizovať používanie pesticídov a&nbsp;to prostredníctvom sprostredkovania tolerancie na niektorý z&nbsp;nich (najmä na herbicíd Roundup) alebo zabezpečenia ich generovania samotnou rastlinou (insekticíd Bt), alebo sprostredkovania kombinovaných vlastností. Ostáva otázka, či môže mať zjednodušená aplikácia pesticídov pozitívny dopad na hektárové výnosy. Doterajšie agrárne skúsenosti ale zďaleka nedávajú jednoznačnú odpoveď, pretože popri udávaných prípadoch mierneho zvýšenia hektárových výnosov existuje i&nbsp;veľa vedecky dokumentovaných príkladov, keď sa výnosy naopak znížili. Napokon, ak by dnešné GMP mali mať priaznivý dopad na vyprodukované množstvo potravín (a ak by hlavným problémom hladu bola nedostatočná produktivita klasického poľnohospodárstva) potom by sa to muselo už dnes prejaviť na výraznejšom znížení počtu hladujúcich, pretože GMP sa dnes pestujú na približne 20% svetovej ornej pôdy. Podľa nižšie uvedeného grafu k&nbsp;tomu ale nedochádza.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="http://i.imgur.com/PIpVfVh.jpg"></figure><p></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p><em>Obr. 1 Vývoj počtu podvyživených osôb vo svete v&nbsp;období 1969 a&nbsp;1971 až 2010 v miliónoch</em></p>
+
+
+
+<p>Ako vidno, po niekoľkých desaťročiach poklesu počtu hladujúcich sa okolo rokov 1995 – 1997 tento trend zvrátil. Je to pravdepodobne náhoda, ale toto obdobie presne zodpovedá začiatku ekonomického pestovania GMP vo svete... Samozrejme som ďaleko od tvrdenia, že GMP zvyšujú hlad vo svete, pretože, ako uvidíme nižšie, príčiny sú veľmi komplexné, ale vývoj jednoznačne vylučuje i&nbsp;obhajobu opaku. Isteže je možné tvrdiť, že vo fáze vývoja sú GMP druhej (alebo tretej?) generácie, ktorých primárnou úlohou je zabezpečiť vysoké hektárové výnosy, tak ako i toleranciu na sucho alebo na slané prostredie. Vylúčiť sa to naozaj nedá, je ale možné argumentovať, že takéto GMP sú sľubované už dávno a&nbsp;podľa propagandy Monsanta mala byť Saudská Arábia ešte koncom deväťdesiatych rokov premenená na nový Kansas... Trochu to pripomína Chruščeva zo začiatku šesťdesiatych rokov, podľa ktorého sa ešte jeho generácia mala dožiť komunizmu.</p>
+
+
+
+<p>Pokiaľ ide o&nbsp;tzv. „zlú výživu“, už pred viacerými rokmi sa ju Monsanto pokúsilo riešiť prostredníctvom vyvinutia tzv. zlatej ryže. Tento produkt, ktorý má vysoký obsah vitamínu A, bol určený najmä pre tie chudobné regióny sveta, kde je ryža hlavnou potravou. V&nbsp;praxi sa ale neosvedčil, pretože na vyriešenie predmetného nutričného problému by sa jej muselo pojesť obrovské množstvá.</p>
+
+
+
+<p>Ako vidno, odpoveď na prvú otázku, či GMP môžu zabezpečiť výrazne vyššiu produktivitu (a kvalitnejšiu výživu), nie je jednoznačná. Na druhej strane, posudzovanie predpokladu, že hlad vo svete vyplýva z&nbsp;nedostatočnej výroby nás ale posúva niekde úplne inde.</p>
+
+
+
+<p>Štatistiky sú neúprosné. Podľa FAO sa dnes vyrobí dostatok potravín pre 8 miliárd ľudí, čo je o&nbsp;jednu celú miliardu viac ako svetová populácia. Opäť podľa FAO má svetové poľnohospodárstvo potenciál uživiť i&nbsp;bez GMO 12 miliárd obyvateľov. Pre výrobu potravín stále existuje obrovské nevyužité rezervy, napríklad iba v&nbsp;krajinách strednej a&nbsp;východnej Európy leží ladom asi 10 miliónov hektárov poľnohospodárskej pôdy a&nbsp;obrovské plochy ornej pôdy sú dnes využívané na nepotravinárske účely (výroby biopalív). Príčinou hladovania miliónov detí, žien a&nbsp;mužov teda určite nie je nedostatočná výroba alebo malý potenciál konvenčného poľnohospodárstva, ale celý rad faktorov, na prvom mieste nedostatok prostriedkov u&nbsp;hladujúcich na obstaranie (reálne existujúcich) potravín. Je to extrémna chudoba vo veľkých častiach sveta, ktorá do veľkej miery vyplýva z&nbsp;ekonomickej polarizácie, ku ktorej došlo za posledných 30 rokov. Princípy „slobodného trhu“ orientujú toky tovarov (i potravín) smerom k&nbsp;solventného dopytu a&nbsp;nie smerom k málo solventnej (alebo nesolventnej) potrebe a&nbsp;inak tomu nebude ani v&nbsp;budúcnosti.</p>
+
+
+
+<p>K&nbsp;zbedačovaniu (a&nbsp;následnému prehlbovanou hladu) dochádza najmä z&nbsp;nasledujúcich dôvodov</p>
+
+<ul>
+	<li>
+	<p><strong>strata potravinovej bezpečnosti</strong> niektorých regiónov z&nbsp;dôvodu uplatňovania princípov voľného obchodu. Miestna výroba potravín upadá z&nbsp;dôvodu lacnejších dovozov, čím ale narastá miera vystavenia&nbsp;cenovým fluktuáciám na svetových trhov a&nbsp;znižuje sa zamestnanosť.</p>
+	</li>
+	<li>
+	<p><strong>zadlženosť krajín tretieho sveta</strong>. Splácanie dlhu, ktorého genéza je často veľmi pochybná, stojí chudobné krajiny veľkú časť ich rozpočtu. Dlh už bol síce mnohonásobne splatený, ale z&nbsp;rôznych dôvodov narastá. Základnou podmienkou MMF pri zabezpečovaní ďalších pôžičiek (potrebných na hradenie úrokov z&nbsp;predchádzajúceho dlhu) je zastavenie alebo obmedzenie sociálnych programov štátu.</p>
+	</li>
+	<li>
+	<p><strong>úniky kapitálu</strong>. Na každý dolár rozvojovej pomoci chudobným krajinám pripadá desať dolárov vo forme úniku kapitálu smerom „na sever“ (najmä Švajčiarsko a&nbsp;iné „daňové raje“).</p>
+	</li>
+	<li>
+	<p><strong>špekulácie na komoditných trhoch</strong>. Špekulácie výrazne prehlbujú cenové fluktuácie na svetových trhoch spôsobené napr. neúrodou. Viac ako 95% operácií s&nbsp;agrokomoditami nemá za následok fyzické dodanie tovaru.</p>
+	</li>
+	<li>
+	<p><strong>prepad cien niektorých exportovaných poľnohospodárskych surovín</strong>. Typický príklad je história kávy v Etiópii, ktorá je tam hlavnou exportnou surovinou. Medzi 2000 a&nbsp;2003 sa cena za 1 kg suroviny znížila z&nbsp;3 $ na 86 centov. Skutočné nožnice sa ale otvárajú medzi exportnými cenami suroviny a spotrebiteľskou cenou kávy: v roku 1990 výrobcovia zinkasolali za exportovanú surovinu asi 11 miliárd $ a spotrebitelia na celom svete zaplatili za kávu asi 30 miliárd $. V roku 2004 bol príjem pestovateľov nižší o 5,5 miliardy $, ale spotrebitelia zaplatili za konečný výrobok 70 miliárd $...</p>
+	</li>
+	<li>
+	<p><strong>orientácia na nepotravinárske a&nbsp;exportné poľnohospodárstvo</strong>. Veľkí operátory v&nbsp;chudobných krajinách sa orientujú stále viac na biopalivá (cukrová trstina, palmový olej, kukurica) a&nbsp;na pestovanie krmovín na export (najmä sója GMO), ale i&nbsp;exotických plodín ako káva alebo kakao, pričom výroba potravín pre miestne obyvateľstvo upadá.</p>
+	</li>
+	<li>
+	<p><strong>skupovanie najúrodnejšej pôdy</strong>. Fenomén, ktorý začína byť veľmi nebezpečný najmä v&nbsp;Afrike, pretože zahraničné spoločnosti sa iba zriedka venujú produkcii potravín pre miestne obyvateľstvo.</p>
+	</li>
+	<li>
+	<p><strong>nevyriešené otázky spojené s&nbsp;vlastníctvom pôdy</strong>. Neriešené problémy s vlastníckymi právami (Južná Amerika) spôsobujú vyháňanie malých roľníkov latifundistami do slumov veľkých miest.</p>
+	</li>
+	<li>
+	<p><strong>deformované princípy „voľného obchodu“</strong>. Poľnohospodárstvo v Mexiku bolo do značnej miery zlikvidované po nadobudnutí účinnosti severoamerickej dohody o&nbsp;voľnom obchode začiatkom deväťdesiatych rokov z&nbsp;dôvodu masívnych dovozov výrazne dotovaných amerických potravín.</p>
+	</li>
+	<li>
+	<p><strong>korupcia a&nbsp;kleptománia</strong> miestnych oligarchov a diktátorov. Zairský diktátor Mobutu zanechal asi 8 miliárd dolárov na svojich kontách vo švajčiarskych bankách v&nbsp;čase keď celkový zahraničný dlh jeho krajiny bol asi 13 miliárd. Podobným príkladom je Suarto v Indonézii, Mubarak v&nbsp;Egypte, ben Ali v Tunise a&nbsp;celý rad ďalších. Časť peňazí zo zahraničných pôžičiek ide priamo na súkromné účty oligarchov.</p>
+	</li>
+	<li>
+	<p><strong>bezohľadné vykorisťovanie hraničiace s&nbsp;otrokárstvom</strong>. Nie je to prípad iba latifundistov v&nbsp;Brazílii, ale i&nbsp;spoločností ako Nike a&nbsp;Reebok v&nbsp;Indonézii alebo textilných nadnárodné koncernov v&nbsp;Bangladéši. O&nbsp;podmienkach práce v&nbsp;čínskych továrňach netreba ani hovoriť.</p>
+	</li>
+	<li>
+	<p><strong>mrhanie potravinami</strong>. Viac ako 25% vyrobených potravín sa dnes znehodnotí, z toho veľké množstvo v&nbsp;krajinách poznačených hladom z&nbsp;dôvodu chýbajúcich zariadení na uskladnenie úrody.</p>
+	</li>
+</ul>
+
+<p>...</p>
+
+
+
+<p>Vyššie uvedený zoznam je iba rámcový, všetky spomenuté fenomény sú bohato zdokumentované, existujú k&nbsp;nim množstvo dát i rozsiahla odborná literatúra. Ich spoločným menovateľom je bieda a&nbsp;ďalšie zbedačovanie stoviek miliónov ľudských jedincov, pričom z&nbsp;dôvodu dnešných globálnych politicko-ekonomických pravidiel hry sa priepasť medzi chudobnými a&nbsp;bohatými stále prehlbuje. Napríklad medzi rokmi 2001 a&nbsp;2010 sa počet miliardárov v&nbsp;dolároch vo svete zvýšil zo 497 na 1210 a&nbsp;ich kumulovaný majetok z&nbsp;1 500 miliárd $ na 4 500 miliárd $. Za rovnaké obdobie sa výrazne zvýšil počet osôb žijúcich pod oficiálnou hranicou biedy (príjem menej ako 1 $ za deň). Na vyriešenie najzávažnejších sociálnych problémov, na prvom mieste hladu, by stačilo počas 15 rokov zdaniť majetok 1210 miliardárov dvomi percentami...</p>
+
+
+
+<p>Ak chceme nájsť zmysluplnú odpoveď na otázku položenú v&nbsp;nadpise tohto príspevku je potrebné ju preformulovať nasledovne: „<strong>Môže GMO nejako zlepšiť situáciu v&nbsp;oblasti extrémnej chudoby?</strong>“ Je skutočnosťou, že odpoveď neponúkajú ani výrobcovia GMP, ani ich lobistické organizácie a&nbsp;ani žiadni iní obhajcovia GMO. Tento aspekt jednoducho neriešia a&nbsp;to ani v&nbsp;rovine nereálnych sľubov. Preto uveriť tvrdeniu, že GMO sú riešením hladu vo svete, môžu za týchto okolností iba osoby, ktoré o&nbsp;podstate problému nevedia vôbec nič.</p>
+
+
+
+
+
+<h2 class="doc-subheading">Literatúra</h2>
+
+
+
+<p><strong>Xavier Harel, „La grande évasion“, </strong>LLL Les Liens qui libèrent, 2010</p>
+
+<p><strong>Kempf Hervé, «&nbsp;La guerre secrète des OGM&nbsp;» </strong>, Editions du Seuil, Paris, avril 2007</p>
+
+<p><strong>Kempf Hervé, «&nbsp;Comment les riches détruisent la planète&nbsp;»</strong>, Editions du Seuil, Paris, avril 2007</p>
+
+<p><strong>Robin Marie-Monique, „Le Monde selon Monsanto“</strong>, Editions La Découverte, Paris 2008 a&nbsp;2009</p>
+
+<p><strong>de Schutter Olivier, „Food Commodities Speculation and Food Price Crises“</strong>, United Nations special rapporteur on right to food, Briefing Note 02, September 2010</p>
+
+<p><strong>de </strong><strong>Schutter Olivier, „Vers une nouvelle crise alimentaire“</strong>, United Nations spécial rapporteur on right to food, Les Echos, 11.1.2011</p>
+
+<p><strong>Stiglitz Joseph E., „Le triomphe de la cupidité“</strong>, Les Liens qui Libèrent, Paris, 2010</p>
+
+<p><strong>Ziegler Jean, „Destruction massive“</strong>, Editions du Seuil, Paris, 2011</p>
+
+<p><strong>Ziegler Jean, „L'empire de la honte“</strong>, Librairie Arthème Fayard, 2005</p>
+
+
+
+
+<hr>
+
+<p><a href="#_ftnref1" name="_ftn1" title="">[1]</a> Nedostatkom vitamínu A&nbsp;trpí vo svete 40 miliónov detí. 13 miliónov z&nbsp;nich každoročne z&nbsp;tohto dôvodu oslepne</p>
+
+
+
+<p><a href="#_ftnref2" name="_ftn2" title="">[2]</a> zakladateľ Fóra, Klaus Schwab, vytvoril tzv. „Klub Tisícov“ do ktorého sú prijatí iba šéfovia spoločností, ktorých ročný obrat presahuje 1 miliardu $. Vstupný poplatok členov klubu na Fórum je 10 000 $ a iba oni majú prístup na všetky podujatia konané v&nbsp;rámci Fóra.</p>
+
+
+
+<p><a href="#_ftnref3" name="_ftn3" title="">[3]</a> International Life Science Institute</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

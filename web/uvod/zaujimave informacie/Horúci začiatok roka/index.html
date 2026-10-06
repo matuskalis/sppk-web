@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horúci začiatok roka — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Horúci začiatok roka</nav>
+
+  <article>
+    <h1 class="doc-title">Horúci začiatok roka</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Jana Holéciová, Matej Korpáš</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">26. januára 2022</span></p>
+
+    <div class="doc-body">
+<p><span>Pripomienkovanie Strategického plánu k novej SPP, pokračujúca inflácia a omikronová hrozba z obmedzenia základného chodu štátu ovplyvnili úvodné dni nové roka. Do procesu prípravy podnikateľského prostredia vo vzťahu nielen k týmto témam sa intenzívne zapojila aj Slovenská poľnohospodárska a potravinárska komora.&nbsp;</span></p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/xcEFi3P.jpg"></figure><p><span></span></p>
+
+<h2 class="doc-subheading">Rast vstupov pokračuje</h2>
+
+<p>Podľa údajov analytikov si spotrebiteľ nakupujúci na Slovensku v decembri za potraviny a nealkoholické nápoje priplatil medziročne o 5,8 % viac. Oproti decembru 2020 sme v obchodoch nechali viac najmä za základné potraviny, ako je chlieb či z mliečnych výrobkov mlieko a syry. Výrazne sme si priplatili aj za mäso alebo olej.&nbsp;</p>
+
+<h2 class="doc-subheading">O zdražovaní rokovala aj Únia potravinárov Slovenska&nbsp;</h2>
+
+<p>Tak ako sa očakávalo, zmena kalendárneho roka rast cien nezastavila. Upozornili na to aj členovia Únie potravinárov Slovenska, ktorí rokovali o horúcich novoročných témach 19. januára. Pekári a mlynári už na prelome rokov avizovali, že ceny potravinárskej pšenice sa budú šplhať nad hranicu 300 eur za tonu. Pritom ešte v 30. septembra 2021 mala na burze MATIF Paríž hodnotu 257,50 eur za tonu. Zvyšujúce sa ceny obalových materiálov (papier, fólie), energií a nákladov na ľudskú prácu sú ďalšími faktormi, ktoré vplývajú na cenu potravín.&nbsp;</p>
+
+<p>Z interného prieskumu členov Únie potravinárov Slovenska, konkrétne vybraných pekárskych a cukrárenských podnikov, okrem iného vyplynulo, že v rámci nákladových položiek patria medzi ich vstupné náklady s očakávaným najvýraznejším cenovým medziročným nárastom položky ako surovina, mzdy a odvody a cena energií. Podniky /ich názvy neuvádzame/ len pri týchto troch spomenutých položkách odhadujú ich medziročný nárast v rozmedzí 5-15%. Výraznou mierou sa na nákladoch podieľa aj cena za obalový materiál.&nbsp;</p>
+
+<h2 class="doc-subheading">Reakcie okolitých krajín&nbsp;</h2>
+
+<p>Poľská vláda v snahe o spomalenie inflácie dočasne od februára zruší daň z pridanej hodnoty na potraviny a zníži DPH na pohonné hmoty. Od 1. februára začne v Poľsku platiť nulová DPH na potraviny. DPH na benzín a naftu klesne z 23 percent na osem percent, čo by malo znížiť ceny motorových palív v prepočte o 15 centov na liter. Dočasné zníženie DPH bude platiť šesť mesiacov a má zmierniť vplyv vysokej inflácie na finančnú situáciu domácností.</p>
+
+<p>Na väčšinu potravín s výnimkou luxusných tovarov platí v Poľsku DPH vo výške päť percent, ktorá sa na šesť mesiacov zníži na nulu. (To zaťaží rozpočet krajiny sumou v prepočte 1,54 miliardy eur.)</p>
+
+<p>V Maďarsku dochádza k tzv. zmrazovaniu cien. Ceny šiestich základných potravín sa musia od 1. februára vrátiť na úroveň z 15. októbra 2021. Ide o kryštálový cukor, pšeničnú múku, slnečnicový olej, bravčové stehno, kuracie prsia a plnotučné kravské mlieko. Opatrenie bude platiť tri mesiace. Kabinet sa však zaberá aj otázkou cien energií. Nie je tak vylúčené, že vláda prijme opatrenia aj na ich reguláciu.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/Tcqk3iB.jpg"></figure><p></p>
+
+<h2 class="doc-subheading">Názor potravinárov</h2>
+
+<p>Plánované kroky poľskej a maďarskej vlády okomentovali aj členovia Únie potravinárov Slovenska. Podľa nich sa regulácia cien prejaví veľmi rýchlo v slovensko-poľskej a slovensko-maďarskej pohraničnej oblasti. Pre reguláciou cien vybraných základných potravín očakávajú naši potravinári zvýšenie nákupnej turistiky v blízkych poľských a maďarských oblastiach, čo v kombinácii so zníženými cenami pohonných hmôt môže byť pre Slovákov dvojnásobne lákavé. Potravinári upozorňujú na negatívny vplyv na štátny rozpočet Slovenskej republiky, na možné nákupy potravín aj s horšou kvalitou a nepriamy vplyv na cenotvorbu potravín.&nbsp;<br>
+Naďalej oprávnenou požiadavkou slovenských potravinárov voči štátu ostáva navýšenie finančnej podpory najmä potravinárskeho spracovateľského odvetvia.&nbsp;</p>
+
+<h2 class="doc-subheading">Strategický plán SPP</h2>
+
+<p>V tomto kontexte sa vyjadrila samotná Slovenská poľnohospodárska a potravinárska komora aj v rámci minuloročných a januárových diskusií o príprave Strategického plánu k novej Spoločnej poľnohospodárskej politike uplatňovanej po roku 2023. Ako je známe, začiatkom roka sa Strategický plán dostal do medzirezortného pripomienkového konania, v rámci ktorého Slovenská poľnohospodárska a potravinárska komora vzniesla 64 pripomienok. Medzi zásadné pripomienky patrilo aj navýšenie finančnej podpory pre potravinársky priemysel na Slovensku zo zdrojov Spoločnej poľnohospodárskej politiky a súčasné navýšenie alokácie na investície v spracovateľskom priemysle v II. pilieri SPP. &nbsp;<br>
+Bez masívnych investícií do spracovateľského priemyslu (nielen do spracovania v poľnohospodárskom podniku) nie je možné zvýšiť podiel slovenských potravín na pultoch maloobchodu, ani zlepšiť negatívnu zahraničnoobchodnú bilanciu agrosektora. Potravinársky priemysel je najslabším a najmenej podporovaným článkom potravinovej vertikály (čo sa týka európskych aj národných zdrojov). Bez poskytnutia finančnej pomoci z európskych a národných zdrojov je konkurencieschopnosť slovenského potravinárstva v porovnaní s inými krajinami &nbsp;EÚ veľmi nízka: Slovensko je v hrubej produkcii potravín, nápojov a tabakových výrobkov na chvoste krajín Európskej únie. Taktiež výzvy by mali byť orientované prioritne na stabilizáciu už existujúcich potravinárskych a spracovateľských podnikov, aby dokázali zvýšiť svoju strácajúcu sa konkurencieschopnosť na trhu EÚ, z dôvodu investičnej poddimenzovanosti.</p>
+
+<p>Podpora spracovateľského priemyslu je zásadnou aj v širšom kontexte EÚ, čo reflektuje aj bod 5 Komuniké z rozšíreného zasadania V4 (9 krajín), ktoré sa konalo dňa 20. apríla 2021: „Viac environmentálnych požiadaviek kladených na poľnohospodárov a výrobcov potravín bude znamenať vyššie výrobné náklady, ktoré v súčasnosti nie sú zabezpečené primeranou podporou. Preto musíme zmobilizovať ďalšie zdroje nielen z Fondu obnovy, ale zo všetkých dostupných zdrojov na európskej úrovni. V opačnom prípade náklady zaplatí zákazník so všetkými sociálno-ekonomickými dôsledkami pre spotrebiteľa, najmä pre spotrebiteľa v krajinách s nižšou hodnotou HDP na obyvateľa“.&nbsp;</p>
+
+<h2 class="doc-subheading">Nakoľko nás zasiahne omikron</h2>
+
+<p>Už v úvode roka bolo zo svetového pandemického diania zrejmé, že prichádzajúca vlna omikronu znásobí doterajšie dôsledky koronavírusu v prepojení na infláciu a reakcie konkrétnych štátov na zdražovanie. Takmer prázdne potravinové regály v Spojených štátoch amerických, ktoré prinášali v polovici januára televízie, predpovedali silu omikronu a vplyv na výrobu potravín a zásobovanie v obchodoch.&nbsp;</p>
+
+<h2 class="doc-subheading">SPPK apeluje na zvolanie krízového štábu&nbsp;</h2>
+
+<p>V tejto súvislosti Slovenská poľnohospodárska a potravinárska komora v druhej polovici januára požiadala listom ministra pôdohospodárstva a rozvoja vidieka SR Samuela Vlčana o zvolanie Krízového štábu Ministerstva pôdohospodárstva a rozvoja vidieka SR v čo najkratšom čase. Odvetvie sa potrebuje včas pripraviť na prichádzajúcu silnú 4. vlnu koronavírusu /omikron/, aby výrobcovia vedeli naďalej plynule zvládnuť výrobu potravín.<br>
+Predstavitelia najväčších zamestnávateľov v SR sa už vyjadrili k nevyhnutnosti udelenia výnimiek z karantény. Rovnakú požiadavku prirodzene evidujeme aj zo strany výrobcov potravín a poľnohospodárskej prvovýroby. Je preto nevyhnutné, aby bola takáto výnimka udelená všetkým potravinárskym podnikom a podnikom poľnohospodárskej prvovýroby z dôvodu špecifického charakteru výrobných procesov. Jedným z najväčších rizík omikronovej vlny je totiž podľa odborníkov z oblasti zdravotníctva veľký výpadok zamestnancov a tým znížená dostupnosť kľúčových tovarov či služieb. Aby sa predišlo možným krízovým situáciám v sektore agropotravinárstva, je nevyhnutné, aby sa situácia koordinovala rezortným ministerstvom aj prostredníctvom krízového štábu a aby prijaté návrhy opatrení boli následne ďalej prenášané na vládu SR.&nbsp;</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/XbmWS8K.jpg"></figure><p></p>
+
+<h2 class="doc-subheading">Novela zákona o potravinách</h2>
+
+<p>Ďalšou témou, ktorá v oblasti agropotravinárstva rezonuje začiatkom roka, je novela zákona o potravinách. Novela zákona o potravinách, ktorú už začiatkom februára prerokujú poslanci NR SR, hovorí napríklad aj o predaji potravín po uplynutí dátumu minimálnej trvanlivosti (DMT). Naši výrobcovia potravín však zásadne odmietajú niesť zodpovednosť za potraviny predávané po tomto dátume. Oprávnene sa obávajú, že by tak mohlo dochádzať aj k ohrozovaniu ich dobrého obchodného mena.<br>
+Dátum minimálnej trvanlivosti je výrobcom stanovovaný v záujme garantovať bezpečnosť danej potraviny a zachovania jej kvalitatívnych výživových ukazovateľov.&nbsp;<br>
+Je pravda, že aj po dátume minimálnej trvanlivosti je potravina mnohokrát ešte stále bezpečná na konzumovanie, ale len za predpokladu, že je dodržiavaný postup na jej skladovanie a obal nie je poškodený. Potravina po dátume minimálnej trvanlivosti môže stratiť svoju chuť, vôňu a textúru. Výrobca po odovzdaní potraviny predajcovi nemá možnosť ovplyvňovať riadenie týchto rizík, pretože tovar je majetkom predajcu.</p>
+
+<p>V prípade predaja takýchto potravín bude z pohľadu SPPK nutné ustanoviť osobitný právny režim, ktorým sa zodpovednosť za bezpečnosť takejto potraviny prenesie na predajcu. Tento postoj okrem samotnej Slovenskej poľnohospodárskej a potravinárskej komory zastávajú aj členovia Únie potravinárov Slovenska, ktorí hovoria aj o zriadení osobitného predajného miesta, na ktorom nájdu spotrebitelia dostatočné informácie o charaktere týchto potravín, ale aj o tom, kto preberá zodpovednosť za kvalitu a bezpečnosť potraviny po uplynutí DMT.</p>
+
+<p>Zásadnou požiadavkou SPPK je aj označenie obalu potraviny predávanej po DMT tak, aby nedošlo k prípadnému ohrozeniu zdravia spotrebiteľa. Na obale musí byť uvedená informácia, že ide o potravinu po DMT a deklarácia pojmov ani výživových hodnôt výrobku nemusí zodpovedať skutočnosti. Rovnako tak treba apelovať na spotrebiteľov, že je vhodné skonzumovať potravinu v čo možno najkratšom čase.&nbsp;</p>
+
+<p>Slovenská poľnohospodárska a potravinárska komora a rovnako aj Únia potravinárov Slovenska apelujú na poslancov Národnej rady SR, aby sa po schválení novely zákona o potravinách zodpovednosť za predaj potravín po DMT preniesla na predajcu, nie na výrobcu potraviny.&nbsp;</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

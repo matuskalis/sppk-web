@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Na návšteve — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../index.html">Úvod</a><span>/</span><a href="../index.html">uvod</a><span>/</span>na navsteve</nav>
+
+  <h1 class="page-title">Na návšteve</h1>
+  <p class="page-lead">49 článkov v tejto sekcii.</p>
+
+  <section aria-label="Zoznam článkov">
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">25. októbra 2025</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20u%20osiv%C3%A1rov%20v%20Dolnom%20%C5%A0t%C3%A1le:%20Osiv%C3%A1ri%20hl%C3%A1sia%20nadpriemern%C3%BA%20%C3%BArodu/index.html">Na návšteve u osivárov v Dolnom Štále: Osivári hlásia nadpriemernú úrodu</a></h3>
+          <p class="feed-excerpt">Množitelia kukurice a aj najväčší spracovateľský závod na výrobu osivovej kukurice na Slovensku RWA Slovakia zažívajú v úrode najlepší rok za posledné desaťročie.</p>
+          <div class="feed-author">Tlačový odbor SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20u%20osiv%C3%A1rov%20v%20Dolnom%20%C5%A0t%C3%A1le:%20Osiv%C3%A1ri%20hl%C3%A1sia%20nadpriemern%C3%BA%20%C3%BArodu/index.html"><img src="https://www.sppk.sk/image/5720" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">13. augusta 2025</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20Tradi%C4%8Dn%C3%A9%20hodnoty%20a%20modern%C3%A9%20technol%C3%B3gie%20v%20Pek%C3%A1rni%20Drahovce/index.html">Na návšteve: Tradičné hodnoty a moderné technológie v Pekárni Drahovce</a></h3>
+          <p class="feed-excerpt">Slovenská Pekáreň Drahovce používa na výrobu pekárenských produktov a chleba pšenicu z blízkych polí materského družstva. Kto hľadá zaručený slovenský pôvod múky, nájde ho tak v tamojšom pečive a chlebe.</p>
+          <div class="feed-author">Mária Hvozdíková, Tlačový odbor SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20Tradi%C4%8Dn%C3%A9%20hodnoty%20a%20modern%C3%A9%20technol%C3%B3gie%20v%20Pek%C3%A1rni%20Drahovce/index.html"><img src="https://www.sppk.sk/image/5653" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">19. júna 2025</div>
+          <h3 class="feed-title"><a href="Ro%C4%BEn%C3%ADckemu%20dru%C5%BEstvu%20v%20C%C3%ADferi%20sa%20dar%C3%AD%20pestova%C5%A5%20%C4%BEan,%20cie%C4%BEom%20je%20v%C3%BDroba%20zdravej%20slovenskej%20potraviny/index.html">Roľníckemu družstvu v Cíferi sa darí pestovať ľan, cieľom je výroba zdravej slovenskej potraviny</a></h3>
+          <p class="feed-excerpt">„V tomto regióne sme nepoznali iného pestovateľa ľanu a hlavne veľmi rýchlo sme pochopili, že sa z ľanu dajú vyrábať zdravé potraviny. Potenciál sme videli aj v našej polohe, neďaleko od Bratislavy. Začínali sme pokusne s 12 hektármi,&quot; hovorí agronóm Tomáš Antal z Roľníckeho družstva v Cíferi.</p>
+          <div class="feed-author">Mária Hvozdíková, Tlačový odbor SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Ro%C4%BEn%C3%ADckemu%20dru%C5%BEstvu%20v%20C%C3%ADferi%20sa%20dar%C3%AD%20pestova%C5%A5%20%C4%BEan,%20cie%C4%BEom%20je%20v%C3%BDroba%20zdravej%20slovenskej%20potraviny/index.html"><img src="https://www.sppk.sk/image/5609" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">13. júna 2025</div>
+          <h3 class="feed-title"><a href="Mak%20pod%C4%BEa%20Gabriely%20%C4%8Cechovi%C4%8Dovej,%20sk%C3%BAsenej%20pestovate%C4%BEky%20maku%20pod%C4%BEa%20slovenskej%20trad%C3%ADcie/index.html">Mak podľa Gabriely Čechovičovej, skúsenej pestovateľky maku podľa slovenskej tradície</a></h3>
+          <p class="feed-excerpt">Jarnými poľami rozkvital mak, známa pestovateľka z Jarnej ho seje v dvoch fázach a konštatuje dobrú sezónu</p>
+          <div class="feed-author">Mária Hvozdíková, Tlačový odbor SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Mak%20pod%C4%BEa%20Gabriely%20%C4%8Cechovi%C4%8Dovej,%20sk%C3%BAsenej%20pestovate%C4%BEky%20maku%20pod%C4%BEa%20slovenskej%20trad%C3%ADcie/index.html"><img src="https://www.sppk.sk/image/5608" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">28. mája 2025</div>
+          <h3 class="feed-title"><a href="Slovensk%C3%BD%20zv%C3%A4z%20v%C4%8Del%C3%A1rov%20pl%C3%A1nuje%20nov%C3%A9%20etikety%20s%20QR%20k%C3%B3dom%20pre%20slovensk%C3%A9%20medy%20e%C5%A1te%20tento%20rok/index.html">Slovenský zväz včelárov plánuje nové etikety s QR kódom pre slovenské medy ešte tento rok</a></h3>
+          <p class="feed-excerpt">Počas májového Svetového dňa včiel sme sa v bratislavskej Včelej záhrade Slovenského zväzu včelárov (SZV) rozprávali s fundovaným včelárom a odborníkom, predsedom SZV Pavelom Fiľom. Pri úľoch a včelách v čase rojenia sme sa ho opýtali aj na plánované zmeny ohľadom označovania medov v obchodných reťazcoch na Slovensku a na ochrannú známku Slovenský med.</p>
+          <div class="feed-author">Tlačový odbor SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Slovensk%C3%BD%20zv%C3%A4z%20v%C4%8Del%C3%A1rov%20pl%C3%A1nuje%20nov%C3%A9%20etikety%20s%20QR%20k%C3%B3dom%20pre%20slovensk%C3%A9%20medy%20e%C5%A1te%20tento%20rok/index.html"><img src="https://www.sppk.sk/image/5591" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">30. apríla 2025</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20Zelenina%20nemus%C3%AD%20precestova%C5%A5%20stovky%20kilometrov/index.html">Na návšteve: Zelenina nemusí precestovať stovky kilometrov</a></h3>
+          <p class="feed-excerpt">Ako bezpečne, zdravo a ekologicky vypestovať paradajky či uhorky v modernom skleníku sme sa boli pozrieť v Slnečných záhradách v Sľažanoch.</p>
+          <div class="feed-author">Tlačový odbor SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20Zelenina%20nemus%C3%AD%20precestova%C5%A5%20stovky%20kilometrov/index.html"><img src="https://www.sppk.sk/image/5571" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">4. februára 2025</div>
+          <h3 class="feed-title"><a href="Export%20sa%20komplikuje,%20podpora%20dom%C3%A1cich%20spracovate%C4%BEov%20tak%20naber%C3%A1%20na%20opodstatnenosti/index.html">Export sa komplikuje, podpora domácich spracovateľov tak naberá na opodstatnenosti</a></h3>
+          <p class="feed-excerpt">Mlynský sektor si v posledných rokoch prešiel obrovskou skúškou. Dnes sa ukazuje, že to zvládol. Stalo sa tak aj z dôvodu, že ľudia dôverujú múke zo slovenskej produkcie. Viac o aktuálnom stave v sektore nám porozprával predseda Slovenskej spoločnosti mlynárov Peter Močko.</p>
+          <div class="feed-author">Matej Korpáš, Tlačový odbor</div>
+        </div>
+        <a class="feed-thumb" href="Export%20sa%20komplikuje,%20podpora%20dom%C3%A1cich%20spracovate%C4%BEov%20tak%20naber%C3%A1%20na%20opodstatnenosti/index.html"><img src="https://www.sppk.sk/image/5483" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">30. júla 2024</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20Zachova%C5%A5%20%C5%BEivo%C4%8D%C3%AD%C5%A1nu%20v%C3%BDrobu%20na%20Liptove/index.html">Na návšteve: Zachovať živočíšnu výrobu na Liptove</a></h3>
+          <p class="feed-excerpt">Liptovská poľnohospodárska a potravinárska komora má po 15 rokoch nového predsedu. Stal sa ním Ľubomír Rakyta, riaditeľ firmy Agro Racio s.r.o. vo Svätom Kríži.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20Zachova%C5%A5%20%C5%BEivo%C4%8D%C3%AD%C5%A1nu%20v%C3%BDrobu%20na%20Liptove/index.html"><img src="https://www.sppk.sk/image/5316" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">17. apríla 2024</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20v%20RD%20L%C3%A1tky/index.html">Na návšteve v RD Látky</a></h3>
+          <p class="feed-excerpt">Široký záber podnikania v poľnohospodárstve, ale aj turizme dodáva družstvu stabilitu. O tú však pre meškajúce priame platby dnes prichádzajú.</p>
+          <div class="feed-author">Matej Korpáš, Tlačový odbor</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20v%20RD%20L%C3%A1tky/index.html"><img src="https://www.sppk.sk/image/5217" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">8. februára 2024</div>
+          <h3 class="feed-title"><a href="Vo%20VVDP%20KARPATY%20zhodnocuj%C3%BA%20%C3%BAplne%20v%C5%A1etko/index.html">Vo VVDP KARPATY zhodnocujú úplne všetko</a></h3>
+          <p class="feed-excerpt">Vinohradnícko vinárske družstvo podielnikov KARPATY hľadá možnosti, ako priniesť zákazníkom aj nové inovatívne produkty, ktoré na trhu nie sú. Napriek tomu predseda družstva Lukáš Krasňanský hovorí, že doba je náročná, a tak stratégiou podniku je najmä prežiť.</p>
+          <div class="feed-author">Matej Korpáš, Tlačový odbor</div>
+        </div>
+        <a class="feed-thumb" href="Vo%20VVDP%20KARPATY%20zhodnocuj%C3%BA%20%C3%BAplne%20v%C5%A1etko/index.html"><img src="https://www.sppk.sk/image/5148" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">25. januára 2024</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20u%20zemiakara%20J%C3%A1na%20Kom%C3%A1ra/index.html">Na návšteve u zemiakara Jána Komára</a></h3>
+          <p class="feed-excerpt">Pôvodne učiteľ matematiky Ján Komár sa k poľnohospodárstvu dostal na začiatku 90. rokov už ako 40-ročný. Začínal s malou výmerou, ktorá dnes narástla na 750 hektárov. Nosným pilierom podnikania sú zemiaky, ktoré tvoria až 90% tržieb podniku.</p>
+          <div class="feed-author">Matej Korpáš, Tlačový odbor</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20u%20zemiakara%20J%C3%A1na%20Kom%C3%A1ra/index.html"><img src="https://www.sppk.sk/image/5136" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">8. marca 2023</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20v%20Spojenej%20%C5%A1kole%20v%20Ivanke%20pri%20Dunaji/index.html">Na návšteve v Spojenej škole v Ivanke pri Dunaji</a></h3>
+          <p class="feed-excerpt">V týchto dňoch vrcholí podávanie prihlášok na stredné školy. Práve preto sme sa boli pozrieť na Dni otvorených dverí v Spojenej škole v Ivanke pri Dunaji, ktorá má najväčší počet žiakov v agropotravinárskych odboroch na Slovensku.</p>
+          <div class="feed-author">Matej Korpáš, Tlačový odbor</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20v%20Spojenej%20%C5%A1kole%20v%20Ivanke%20pri%20Dunaji/index.html"><img src="https://www.sppk.sk/image/4777" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">25. novembra 2022</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20v%20Zdru%C5%BEen%C3%AD%20chovate%C4%BEov%20r%C3%BDb%20na%20Slovensku/index.html">Na návšteve v Združení chovateľov rýb na Slovensku</a></h3>
+          <p class="feed-excerpt">Aj napriek extrémnemu suchu sa naši spotrebitelia nemusia obávať toho, že by na Vianoce bol nedostatok kaprov. Na Slovensku vyprodukujeme približne 30 % z našej spotreby kaprovitých rýb, kým zvyšných 70 % musíme dovážať.</p>
+          <div class="feed-author">Matej Korpáš, Tlačový odbor</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20v%20Zdru%C5%BEen%C3%AD%20chovate%C4%BEov%20r%C3%BDb%20na%20Slovensku/index.html"><img src="https://www.sppk.sk/image/4661" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">2. augusta 2022</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20u%20Franti%C5%A1ka%20T%C3%B3tha/index.html">Na návšteve u Františka Tótha</a></h3>
+          <p class="feed-excerpt">„Spolupracujeme s 23 veľkými svetovými firmami z Japonska, Číny, Indie či Južnej Ameriky. Robíme pokusy pre takmer celý svet,“ tvrdí v rozhovore predseda GEMERPRODUKT VALICE - OVD a NAJ agromanažér roka 2021 František Tóth, ktorý stojí aj na čele GRPPK v Rimavskej Sobote.</p>
+          <div class="feed-author">Matej Korpáš, Tlačový odbor</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20u%20Franti%C5%A1ka%20T%C3%B3tha/index.html"><img src="https://www.sppk.sk/image/4526" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">11. júla 2022</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20v%20PD%20Bad%C3%ADn:%20Pricestuje%20repa%20aj%20k%20Banskej%20Bystrici-/index.html">Na návšteve v PD Badín: Pricestuje repa aj k Banskej Bystrici?</a></h3>
+          <p class="feed-excerpt">Mojmír Haško: „Treba nájsť maximum financií pre tých, ktorí ešte v tejto náročnej dobe chcú produkovať.&quot; FOTOREPORTÁŽ</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20v%20PD%20Bad%C3%ADn:%20Pricestuje%20repa%20aj%20k%20Banskej%20Bystrici-/index.html"><img src="https://www.sppk.sk/image/4500" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">28. júla 2021</div>
+          <h3 class="feed-title"><a href="Chceme%20by%C5%A5%20partnerom,%20ktor%C3%A9ho%20vidno/index.html">Chceme byť partnerom, ktorého vidno</a></h3>
+          <p class="feed-excerpt">Na návšteve u Ivana Fabiana, nového riaditeľa RPPK Trnava: &quot;Chceme členom poskytovať profesionálny servis.&quot;</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Chceme%20by%C5%A5%20partnerom,%20ktor%C3%A9ho%20vidno/index.html"><img src="https://www.sppk.sk/image/4002" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">26. augusta 2020</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20u%20Mareka%20Kraj%C4%8Dovi%C4%8Da%20SHR/index.html">Na návšteve u Mareka Krajčoviča SHR</a></h3>
+          <p class="feed-excerpt">Manželia Krajčovičovci sa z poľnohospodárskej výroby postupne posúvajú aj do potravinárstva. Produkujú vynikajúce ovocné šťavy a sirupy, ktoré sú žiadané už aj vo väčších prevádzkach.</p>
+          <div class="feed-author">Matej Korpáš, Tlačový odbor</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20u%20Mareka%20Kraj%C4%8Dovi%C4%8Da%20SHR/index.html"><img src="https://www.sppk.sk/image/3452" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">18. augusta 2020</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20v%20POD%20Abrah%C3%A1m/index.html">Na návšteve v POD Abrahám</a></h3>
+          <p class="feed-excerpt">Od hlavy v smútku v apríli, cez výdatné zrážky v júni, až po veľmi dobrú úrodu obilnín a problémy s odbytom. Aj tak by sa dala popísať aktuálna sezóna v Poľnohospodársko–obchodnom družstve Abrahám v okrese Galanta, ktorý má vo svojom portfóliu širokú škálu plodín, no venuje sa aj živočíšnej výrobe.</p>
+          <div class="feed-author">Matej Korpáš, Tlačový odbor</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20v%20POD%20Abrah%C3%A1m/index.html"><img src="https://www.sppk.sk/image/3444" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">6. novembra 2019</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20v%20Agros,%20s.r.o.%20Gemersk%C3%A1%20Panica/index.html">Na návšteve v Agros, s.r.o. Gemerská Panica</a></h3>
+          <p class="feed-excerpt">Rodina Zsóriovcov začala na Gemeri s poľnohospodárstvom v skorých 90. rokoch. Aktuálne majú v portfóliu už tri subjekty, ktoré dokopy obhospodarujú približne 1 400 ha pôdy z toho 1 200 ha v ekologickom režime.</p>
+          <div class="feed-author">Z Gemera Matej Korpáš, Tlačový odbor</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20v%20Agros,%20s.r.o.%20Gemersk%C3%A1%20Panica/index.html"><img src="https://www.sppk.sk/image/2919" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">23. augusta 2019</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20v%20Agro-Hniezdne/index.html">Na návšteve v Agro-Hniezdne</a></h3>
+          <p class="feed-excerpt">V uplynulých mesiacoch sa v dedinke Hniezdne na severe východného Slovenska dali veci do veľkého pohybu. Spoločnosť Agro-Hniezdne s.r.o. zveľaďuje svoj chotár, ktorý chce čo najviac priblížiť k ľuďom. Majú najvyššie ciele.</p>
+          <div class="feed-author">Z Hniezdneho Matej Korpáš, TO SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20v%20Agro-Hniezdne/index.html"><img src="https://www.sppk.sk/image/2805" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">7. augusta 2019</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20u%20%C4%8Dlena%20Predstavenstva%20SPPK%20Juraja%20Ma%C4%8Daja/index.html">Na návšteve u člena Predstavenstva SPPK Juraja Mačaja</a></h3>
+          <p class="feed-excerpt">Juraj Mačaj: „O výzvach nemôžeme len rozprávať, treba ich aj generovať pomerne rýchlo, pretože poľnohospodári to potrebujú ´včera´. Ja som presvedčený, že produkčná mapa sa prekresľuje a my si tie plodiny musíme vedieť vyrobiť u nás doma.&quot;</p>
+          <div class="feed-author">Matej Korpáš, Tlačový odbor</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20u%20%C4%8Dlena%20Predstavenstva%20SPPK%20Juraja%20Ma%C4%8Daja/index.html"><img src="https://www.sppk.sk/image/2783" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">10. júla 2019</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20V%20AGRIA%20Liptovsk%C3%BD%20Ondrej/index.html">Na návšteve: V AGRIA Liptovský Ondrej</a></h3>
+          <p class="feed-excerpt">V AGRIA Liptovský Ondrej majú podobne ako v iných družstvách veľký problém s pracovnou silou. Cudzincov však zatiaľ nevyhľadávajú. Budúcnosť prispôsobujú faktu, že ľudí niet.</p>
+          <div class="feed-author">Z Liptova Matej Korpáš, TO SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20V%20AGRIA%20Liptovsk%C3%BD%20Ondrej/index.html"><img src="https://www.sppk.sk/image/2709" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">20. júna 2019</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20v%20RPPK%20Michalovce/index.html">Na návšteve v RPPK Michalovce</a></h3>
+          <p class="feed-excerpt">Na východe chcú systematickou prácou s mladou generáciou a väčším zapojením študentov priamo do výrobného procesu zatraktívniť agropotravinárstvo pre budúcich nádejných poľnohospodárov a potravinárov.</p>
+          <div class="feed-author">Zo Zemplínskej Šíravy, Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20v%20RPPK%20Michalovce/index.html"><img src="https://www.sppk.sk/image/2690" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">24. apríla 2019</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20v%20Agromarte,%20a.s.%20Trakovice/index.html">Na návšteve v Agromarte, a.s. Trakovice</a></h3>
+          <p class="feed-excerpt">Peter Martinovič: „Urobíme všetko preto, aby závlahy na trnavskej tabuli ostali funkčné aj v budúcnosti.“</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20v%20Agromarte,%20a.s.%20Trakovice/index.html"><img src="https://www.sppk.sk/image/2625" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">3. apríla 2019</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20v%20PD%20Mal%C5%BEenice/index.html">Na návšteve v PD Malženice</a></h3>
+          <p class="feed-excerpt">Poľnohospodári Poľnohospodárskeho družstva Malženice vykonávali jarné práce v polovici marca už naplno. V čase našej návštevy siali cukrovú repu.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20v%20PD%20Mal%C5%BEenice/index.html"><img src="https://www.sppk.sk/image/2584" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">6. septembra 2017</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20V%20Najkraj%C5%A1om%20chot%C3%A1ri%20roka/index.html">Na návšteve: V Najkrajšom chotári roka</a></h3>
+          <p class="feed-excerpt">PD Hlohovec zaujalo svojim širokým portfóliom činností a organizáciou práce odbornú komisiu natoľko, že v ťažkej konkurencii zvíťazilo v súťaži Najkrajší chotár v kategórii veľké farmy (od 500 ha).</p>
+          <div class="feed-author">Matej Korpáš, Tlačový odbor SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20V%20Najkraj%C5%A1om%20chot%C3%A1ri%20roka/index.html"><img src="https://www.sppk.sk/image/1901" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">9. augusta 2017</div>
+          <h3 class="feed-title"><a href="Dlhy%20nemusia%20zaka%C5%BEd%C3%BDm%20pot%C3%A1pa%C5%A5/index.html">Dlhy nemusia zakaždým potápať</a></h3>
+          <p class="feed-excerpt">Od revolučných čias prešlo PD „Vršatec“ Pruské veľmi zaujímavým vývojom. Súčasný predseda družstva Ján Kopšo, ktorý zároveň šéfuje aj Regionálnej poľnohospodárskej a potravinárskej komore Považská Bystrica, nám predstavil svoj chotár a zaspomínal si aj na náročné časy spojené so zdedenými dlhmi.</p>
+          <div class="feed-author">Matej Korpáš, tlačový odbor SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Dlhy%20nemusia%20zaka%C5%BEd%C3%BDm%20pot%C3%A1pa%C5%A5/index.html"><img src="https://www.sppk.sk/image/1871" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">8. júna 2017</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20V%20PD%20DEVIO%20Nov%C3%A9%20Sady/index.html">Na návšteve: V PD DEVIO Nové Sady</a></h3>
+          <p class="feed-excerpt">S predsedom PD DEVIO Nové Sady Igorom Jakubičkom sme sa počas našej návštevy rozprávali aj o prichádzajúcom suchu a jeho vplyve na porasty cukrovej repy.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20V%20PD%20DEVIO%20Nov%C3%A9%20Sady/index.html"><img src="https://www.sppk.sk/image/1816" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">5. apríla 2017</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20U%20predsedu%20PD%20Meste%C4%8Dko/index.html">Na návšteve: U predsedu PD Mestečko</a></h3>
+          <p class="feed-excerpt">Poľnohospodárstvu musíme robiť osvetu, inak mladých ľudí nepriláka. S Petrom Ježom sme sa rozprávali o nedostatku zamestnancov a o potrebe duálneho vzdelávania v agropotravinárstve.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20U%20predsedu%20PD%20Meste%C4%8Dko/index.html"><img src="https://www.sppk.sk/image/1746" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">22. marca 2017</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20V%20Zdru%C5%BEen%C3%AD%20pestovate%C4%BEov%20obiln%C3%ADn/index.html">Na návšteve: V Združení pestovateľov obilnín</a></h3>
+          <p class="feed-excerpt">Minuloročné žatevné výsledky opäť potvrdili, že otázku, čo s preplnenými skladmi obilia, musíme riešiť systémovo, urgentne a najmä zodpovedne.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20V%20Zdru%C5%BEen%C3%AD%20pestovate%C4%BEov%20obiln%C3%ADn/index.html"><img src="https://www.sppk.sk/image/1727" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">25. januára 2017</div>
+          <h3 class="feed-title"><a href="Zlato%20pod%20Kr%C3%A1%C4%BEovou%20Ho%C4%BEou/index.html">Zlato pod Kráľovou Hoľou</a></h3>
+          <p class="feed-excerpt">Na návšteve: tentokrát sme zavítali k Anne Glejdúrovej, predsedníčke PPD Liptovská Teplička.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Zlato%20pod%20Kr%C3%A1%C4%BEovou%20Ho%C4%BEou/index.html"><img src="https://www.sppk.sk/image/1669" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">26. októbra 2016</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20U%20Ivana%20Oravca/index.html">Na návšteve: U Ivana Oravca</a></h3>
+          <p class="feed-excerpt">Prečítajte si rozhovor s Ivanom Oravcom, bývalým predsedom Slovenskej poľnohospodárskej a potravinárskej komory, ktorý prednedávnom oslávil krásne životné jubileum 70 rokov.</p>
+          <div class="feed-author">Peter Cyprich</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20U%20Ivana%20Oravca/index.html"><img src="https://www.sppk.sk/image/1569" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">3. augusta 2016</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20U%20drobnopestovate%C4%BEov%20a%20%C5%A1%C4%BEachtite%C4%BEov%20mu%C5%A1k%C3%A1tov/index.html">Na návšteve: U drobnopestovateľov a šľachtiteľov muškátov</a></h3>
+          <p class="feed-excerpt">Tentokrát sme s fotoaparátom a diktafónom navštívili podnik, kde to vonia kvetmi a poctivou prácou na poli.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20U%20drobnopestovate%C4%BEov%20a%20%C5%A1%C4%BEachtite%C4%BEov%20mu%C5%A1k%C3%A1tov/index.html"><img src="https://www.sppk.sk/image/1453" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">25. júla 2016</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20V%20PVOD%20Drahovce/index.html">Na návšteve: V PVOD Drahovce</a></h3>
+          <p class="feed-excerpt">Poľnohospodárske výrobno - obchodné družstvo Drahovce v okrese Piešťany, ktoré je členom RPPK Trnava, stavia na poradenstve.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20V%20PVOD%20Drahovce/index.html"><img src="https://www.sppk.sk/image/1447" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">8. júna 2016</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20V%20PD%20Hlohovec/index.html">Na návšteve: V PD Hlohovec</a></h3>
+          <p class="feed-excerpt">Máloktorý poľnohospodársky podnik má také široké portfólio činností, ktorým sa venuje, ako Poľnohospodárske družstvo Hlohovec.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20V%20PD%20Hlohovec/index.html"><img src="https://www.sppk.sk/image/1384" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">15. apríla 2016</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20V%20spolo%C4%8Dnosti%20RENOMIA%20AGRO/index.html">Na návšteve: V spoločnosti RENOMIA AGRO</a></h3>
+          <p class="feed-excerpt">S riaditeľkou RENOMIE AGRO Vierou Tóthovou sme sa rozprávali o zmene klímy, poistení plodín a zvierat.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20V%20spolo%C4%8Dnosti%20RENOMIA%20AGRO/index.html"><img src="https://www.sppk.sk/image/1305" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">30. marca 2016</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20v%20Agra%20pois%C5%A5ovni/index.html">Na návšteve v Agra poisťovni</a></h3>
+          <p class="feed-excerpt">&quot;Posledný termín na podpísanie poistnej zmluvy pri poistení kukurice voči suchu sa tento rok posunul na 15. apríla&quot;, hovorí riaditeľ Agra poisťovne Dalibor Bán.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20v%20Agra%20pois%C5%A5ovni/index.html"><img src="https://www.sppk.sk/image/1283" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">10. marca 2016</div>
+          <h3 class="feed-title"><a href="Takmer%20posledn%C3%BD%20mohyk%C3%A1n/index.html">Takmer posledný mohykán</a></h3>
+          <p class="feed-excerpt">Tentokrát sme boli na návšteve u Ľubomíra Majerčíka, riaditeľa Školského hospodárstva v Trnave.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Takmer%20posledn%C3%BD%20mohyk%C3%A1n/index.html"><img src="https://www.sppk.sk/image/1255" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">18. februára 2016</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20V%20PD%20Bukov%C3%A1/index.html">Na návšteve: V PD Buková</a></h3>
+          <p class="feed-excerpt">„Všetko je o vysokých stavoch zveri. Pokiaľ ich nikto nebude riešiť, tak nepomôžu ani ochranné opatrenia, repelenty, oplôtky&quot;, hovorí predseda PD Buková Peter Duran.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20V%20PD%20Bukov%C3%A1/index.html"><img src="https://www.sppk.sk/image/1225" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">3. februára 2016</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20U%20Slavom%C3%ADra%20Morav%C4%8D%C3%ADka/index.html">Na návšteve: U Slavomíra Moravčíka</a></h3>
+          <p class="feed-excerpt">Riaditeľ Liptovských pekární a cukrární VČELA-Lippek Slavomír Moravčík bol odbornou porotou nominovaný na ocenenie Krištáľové krídlo 2015 v kategórii hospodárstvo.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20U%20Slavom%C3%ADra%20Morav%C4%8D%C3%ADka/index.html"><img src="https://www.sppk.sk/image/1200" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">21. januára 2016</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20Na%20Gazdovskom%20dvore/index.html">Na návšteve: Na Gazdovskom dvore</a></h3>
+          <p class="feed-excerpt">Stanislav Becík, predseda Združenia agropodnikateľov, družstvo, Dvory nad Žitavou: &quot;Pracovitosť a poriadok je základom úspechu&quot;</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20Na%20Gazdovskom%20dvore/index.html"><img src="https://www.sppk.sk/image/1187" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">25. novembra 2015</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20U%20predsedu%20PVOD%20Ko%C4%8D%C3%ADn/index.html">Na návšteve: U predsedu PVOD Kočín</a></h3>
+          <p class="feed-excerpt">&quot;Aj napriek mliečnej kríze neuvažujeme so znížením stavu dojníc&quot;, hovorí predseda PVOD Kočín Jozef Puvák.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20U%20predsedu%20PVOD%20Ko%C4%8D%C3%ADn/index.html"><img src="https://www.sppk.sk/image/1130" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">18. novembra 2015</div>
+          <h3 class="feed-title"><a href="P%C3%A1n%20Forsthoffer,%20na%20zdravie!/index.html">Pán Forsthoffer, na zdravie!</a></h3>
+          <p class="feed-excerpt">Nestor slovenského liehovarníctva naslovovzatý odborník, ktorý sťa z rukáva sype podrobnosti o výrobe liehu a destilátov, ale rovnako zanietene sa pozastavuje nad jednostranným využitím bioplynových staníc ako aj nad spoločenskými neduhmi.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="P%C3%A1n%20Forsthoffer,%20na%20zdravie!/index.html"><img src="https://www.sppk.sk/image/1118" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">3. novembra 2015</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20U%20predsedu%20Zv%C3%A4zu%20pestovate%C4%BEov%20a%20spracovate%C4%BEov%20kukurice/index.html">Na návšteve: U predsedu Zväzu pestovateľov a spracovateľov kukurice</a></h3>
+          <p class="feed-excerpt">Ladislav Moravčík: „Ekonomika poľnohospodárskych podnikov stojí na kukurici. Ak ju nepotiahne smerom hore, tak aspoň stabilizuje“.</p>
+          <div class="feed-author">Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20U%20predsedu%20Zv%C3%A4zu%20pestovate%C4%BEov%20a%20spracovate%C4%BEov%20kukurice/index.html"><img src="https://www.sppk.sk/image/1101" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">21. septembra 2015</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20U%20%C5%A0tefana%20%C4%8Crepa,%20predsedu%20SPDP%20L%C3%BA%C5%BE%C5%88an%20Liptovsk%C3%A1%20L%C3%BA%C5%BEna/index.html">Na návšteve: U Štefana Črepa, predsedu SPDP Lúžňan Liptovská Lúžna</a></h3>
+          <p class="feed-excerpt">Svojpomocné podielnické družstvo poľnohospodárov Lúžňan Liptovská Lúžna s chovom 940 kusov oviec a vlastnou mliekarňou patrí k vyhľadávaným zastávkam turistov prechádzajúcich okolím.</p>
+          <div class="feed-author">Mgr. Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20U%20%C5%A0tefana%20%C4%8Crepa,%20predsedu%20SPDP%20L%C3%BA%C5%BE%C5%88an%20Liptovsk%C3%A1%20L%C3%BA%C5%BEna/index.html"><img src="https://www.sppk.sk/image/1031" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">16. augusta 2015</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve:%20U%20Rastislava%20Sloc%C3%ADka,%20predsedu%20Dru%C5%BEstva%20Agrospol%20Bo%C4%BEkovce/index.html">Na návšteve: U Rastislava Slocíka, predsedu Družstva Agrospol Boľkovce</a></h3>
+          <p class="feed-excerpt">SPPK Vám prináša ďalší článok z rubriky &quot;Na návšteve&quot;. Tentokrát sme zavítali k najväčšiemu slovenskému chovateľovi ošípaných.</p>
+          <div class="feed-author">Mgr. Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve:%20U%20Rastislava%20Sloc%C3%ADka,%20predsedu%20Dru%C5%BEstva%20Agrospol%20Bo%C4%BEkovce/index.html"><img src="https://www.sppk.sk/image/980" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">23. júla 2015</div>
+          <h3 class="feed-title"><a href="Majstri%20v%20ekol%C3%B3gii/index.html">Majstri v ekológii</a></h3>
+          <p class="feed-excerpt">Prechádzka po dvore a najmä popri poliach pripomína pohľady na prosperujúce zahraničné podniky v západnej Európe: dvor lahodiaci oku, čisté stroje, polia takmer bez buriny, upravené medze pri poľných cestách, vetrolamy pri poliach. A pritom sme len necelých 50 km od Bratislavy v podniku SEMA HŠ s.r.o. Sládkovičovo.</p>
+          <div class="feed-author">Mgr. Jana Holéciová, hovorkyňa SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Majstri%20v%20ekol%C3%B3gii/index.html"><img src="https://www.sppk.sk/image/935" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">26. júna 2015</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20u%20%C4%8Dlena%20Predstavenstva%20SPPK/index.html">Na návšteve u člena Predstavenstva SPPK</a></h3>
+          <p class="feed-excerpt">Pozrite si ďalší diel rubriky Na návšteve. Tentoraz sme navštívili Ing. Olivera Šiatkovského, člena Predstavenstva SPPK.</p>
+          <div class="feed-author">Matej Korpáš, tlačový odbor SPPK</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20u%20%C4%8Dlena%20Predstavenstva%20SPPK/index.html"><img src="https://www.sppk.sk/image/885" alt="" loading="lazy" /></a>
+      </article>
+      <article class="feed-card">
+        <div class="feed-text">
+          <div class="feed-date">10. júna 2015</div>
+          <h3 class="feed-title"><a href="Na%20n%C3%A1v%C5%A1teve%20v%20Levickej%20mliekarni/index.html">Na návšteve v Levickej mliekarni</a></h3>
+          <p class="feed-excerpt">Tlačový odbor Slovenskej poľnohospodárskej a potravinárskej komory začína predstavovať vedenie SPPK, regionálne komory i svoje zväzy a združenia.</p>
+          <div class="feed-author">Mgr. Jana Holéciová</div>
+        </div>
+        <a class="feed-thumb" href="Na%20n%C3%A1v%C5%A1teve%20v%20Levickej%20mliekarni/index.html"><img src="https://www.sppk.sk/image/857" alt="" loading="lazy" /></a>
+      </article>
+  </section>
+
+  <section aria-label="Podstránky" style="margin-top:56px;">
+    <h2 class="section-heading-plain">Podstránky</h2>
+    <div class="section-grid">
+      <a class="section-card" href="na%20navsteve%20u%20clenov%20SPPK/index.html">Na navsteve u clenov SPPK</a>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Problematické aspekty dnešného systému garantovania bezpečnosti potravín v EÚ (od Paracelseho princípu k endokrinným disruptorom) — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../../index.html">Úvod</a><span>/</span><a href="../../../index.html">potravinarstvo</a><span>/</span><a href="../../index.html">EFSA</a><span>/</span><a href="../index.html">spravy z EFSA</a><span>/</span>Problematické aspekty dnešného systému garantovania bezpečnosti potravín v EÚ (od Paracelseho princípu k endokrinným dis</nav>
+
+  <article>
+    <h1 class="doc-title">Problematické aspekty dnešného systému garantovania bezpečnosti potravín v EÚ (od Paracelseho princípu k endokrinným disruptorom)</h1>
+    <p class="doc-meta"><span class="doc-meta-item">RNDr. Igor Šarmír, PhD., SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">5. júna 2015</span></p>
+
+    <div class="doc-body">
+<p><em>/tento príspevok bol pôvodne publikovaný v&nbsp;medicínskom časopise InVitro 1/2015/</em></p>
+
+
+
+<p>Bezpečnosť potravín patrí oprávnene medzi priority EÚ. Ide ale o&nbsp;koncept, ktorý sa od určitého obdobia vyvíja a&nbsp;riadi nezávisle od „kvality potravín“, hoci je veľmi diskutabilné, či je to správne. Možno súhlasiť s&nbsp;tvrdením, že „nie všetky bezpečné potraviny sú kvalitné, pričom dlhodobá konzumácia potravín posúdených ako bezpečné, ktoré nespĺňajú kvalitatívne kritériá, môže byť riziková“<a href="#_ftn1" name="_ftnref1" title="">[1]</a>. Pravdepodobným zámerom zdôrazňovania „bezpečnosti“ bez ohľadu na kvalitu je presvedčiť spotrebiteľov o&nbsp;neškodnosti všetkých schválených a&nbsp;predávaných potravín (a ich zložiek), hoci sa tieto nemusia vyznačovať nejakou kvalitatívnou pridanou hodnotou. Z&nbsp;obchodného hľadiska to má veľký význam, pretože to dáva dôležitý pozitívny atribút lacným potravinám, ktorých nízka cena bola dosiahnutá nahradením pôvodných ingredientov lacnejšími&nbsp; (napr. v&nbsp;špekáčkach mäso sójou), prípadne použitím chemických aditív. A&nbsp;nízka cena je v&nbsp;marketingu rozhodujúcim argumentom...</p>
+
+
+
+<p>Z&nbsp;historického pohľadu sa dá povedať, že v&nbsp;Európe&nbsp; bolo za posledných 100 rokov uspokojivým spôsobom vyriešené riadenie mikrobiologických rizík, ktoré svojho času predstavovali najväčšiu hrozbu. Z&nbsp;pohľadu riadenia chemických rizík je ale situácia trochu iná.</p>
+
+
+
+<p>Rôzne zdroje, medzi inými i&nbsp;Medzinárodné centrum pre výskum rakoviny<a href="#_ftn2" name="_ftnref2" title="">[2]</a>, uvádzajú, že po Druhej svetovej vojne bolo do životného prostredia vo väčšej alebo menšej miere uvoľnených viac ako 100&nbsp;000 molekúl, produktov syntetickej chémie, z&nbsp;čoho bolo len asi jedno percento posúdené z&nbsp;pohľadu možného dopadu na ľudské zdravie. Je napríklad zarážajúce, že nikdy nebol oficiálne posúdený najviac používaný herbicíd Roundup, ale iba jeho aktívna zložka glyphosat, hoci obsahuje i&nbsp;množstvo adjuvantov a&nbsp;iných chemických látok. Vedeckým skúmaním nezávislým na priemysle sa zistilo, že adjuvant nazývaný POE-15 je až 10&nbsp;000 x toxickejší ako glyphosate a&nbsp;pritom úplne uniká expertíze!<a href="#_ftn3" name="_ftnref3" title="">[3]</a></p>
+
+
+
+<p>Do potravinového reťazca sa takto dostávajú nielen aditíva, ktoré plnia rôzne funkcie, ale i&nbsp;rezíduá pesticídov t.j. a&nbsp;priori toxických látok a&nbsp;plastov, ktoré „migrujú“ z&nbsp;rôznych obalových materiálov do potravín. Simultánne zarážajúcim spôsobom stúpa počet osôb postihnutých niektorými typmi rakoviny, degeneratívnymi ochoreniami centrálneho nervového systému, obezity a&nbsp;inými civilizačných chorôb. Stále viac expertov poukazuje, že medzi oboma fenoménmi existuje úzky vzťah a, že teda nové produkty chemickej syntézy sú vo veľkej miere zodpovedné za nárast uvedených patológií, hoci na druhej strane existujú i&nbsp;vedci, ktorí to popierajú, pričom stigmatizujú starnutie obyvateľstva, dedičnosť a&nbsp;niektoré spoločenské fenomény ako sú fajčenie alebo alkoholizmus.<a href="#_ftn4" name="_ftnref4" title="">[4]</a> Vo viacerých prípadoch sa ale ukázalo, že išlo o&nbsp;osoby na výplatnej listine výrobcov uvedených kontroverzných produktov.<a href="#_ftn5" name="_ftnref5" title="">[5]</a></p>
+
+
+
+<p>V&nbsp;EÚ je za posudzovanie predmetných rizík zodpovedný Európsky úrad pre bezpečnosť potravín (EFSA), ktorý vznikol v&nbsp;roku 2002, keď sa na náklade viacerých sanitárnych škandálov, najmä tzv. choroby „šialenstva kráv“, ukázala potreba koordinovať túto problematiku na európskej úrovni. Stále síce existujú i&nbsp;národné úrady, ale vo vzťahu k&nbsp;nim si EFSA vydobyla nadradené postavenie. V&nbsp;EÚ má dnes rozhodujúce slovo pri posudzovaní rizík nielen rôznych produktov syntetickej chémie, ktoré sa môžu dostať do potravinového reťazca, ale i&nbsp;napríklad poľnohospodárskych GMO. Na hodnotenie rizík má svoje vlastné postupy, ktoré sa dnes považujú za štandardné a ktoré by mali vylúčiť, aby povolené produkty chemickej syntézy, ktoré sa dostávajú do potravinového reťazca, predstavovali vážnu zdravotnú hrozbu. Dramatický nárast ochorení spomenutých v&nbsp;predchádzajúcom odseku ale naznačuje, že s dnešným systémom hodnotenia najmä chemických rizík nie je všetko v poriadku.</p>
+
+
+
+<p>Problematické aspekty expertízy vykonávanej na úrovni EFSA sú charakteru systémového a metodologického. Systémové problémy sa týkajú samotnej&nbsp; administratívnej procedúry a na tomto mieste sa im nebudem bližšie venovať. Ide najmä o to, že referenčné štúdie, ktoré majú preukázať neškodnosť posudzovaného produktu predkladajú samotní výrobcovia (nezávislosť alebo nestrannosť tu nie sú ani predstierané), že tieto štúdie nebývajú publikované vo vedeckých časopisoch a ich dáta sú predmetom obchodného tajomstva (čo vylučuje kontraexpertízu) a, že EFSA počas svojej existencie čelila závažnej kritike z dôvodu konfliktov záujmov viacerých svojich expertov. Toto všetko vrhá tieň na objektívnosť expertízy i na dosiahnuté výsledky.</p>
+
+
+
+<p>Metodológia dnešného systému hodnotenia bezpečnosti potravín spočíva na tzv. Paracelseho princípe nazvanom podľa významnom lekárovi a&nbsp;alchymistovi<a href="#_ftn6" name="_ftnref6" title="">[6]</a> 15. storočia. Podľa neho „všetko je jed a&nbsp;nič nie je jed. O&nbsp;toxicite nejakej látky rozhoduje iba jej množstvo“. Je skutočnosťou, že z&nbsp;pohľadu chemických látok známych v&nbsp;časoch Paracelseho, ako i&nbsp;dlho po ňom, uvedený princíp dostatočne vystihoval podstatu toxikológie a&nbsp;bol použiteľný v&nbsp;toxikologickej praxi. S&nbsp;príchodom produktov syntetickej chémie a&nbsp;s ich masovým používaním v&nbsp;poľnohospodárstve a&nbsp;potravinárstve sa ale jeho slepé uplatňovanie&nbsp;stalo z&nbsp;viacerých dôvodov problematické. Budem o&nbsp;nich podrobnejšie hovoriť, pretože podstatou súčasného hodnotenia nových produktov je stále, v&nbsp;súlade s&nbsp;Paracelseho princípom, stanovenie hraničného množstva príslušnej látky, ktorú je možné denne konzumovať bez toho, aby to predstavovalo nejaké riziko. Odborne sa tomuto konceptu hovorí Denná Akceptovateľná Dávka (Daily Acceptable Intake) a&nbsp;svojho času predstavoval kompromis medzi záujmami chemického priemyslu uvádzať na trh nové syntetické produkty a&nbsp;obavami spojenými s&nbsp;ich dopadom na ľudské zdravie. Samotný koncept pripúšťa, že predmetné produkty sú toxické a&nbsp;preto je potrebné stanoviť hranicu pod ktorou sa táto toxicita neprejaví. V&nbsp;Európe bol jeho duchovným otcom francúzsky toxikológ René Truhaut, ktorý ale neváhal poukazovať i na limity v&nbsp;jeho uplatňovaní. Denná akceptovateľná dávka sa stanovuje na základe experimentov na laboratórnych zvieratách, pričom v&nbsp;prvej fáze je zámerom zadefinovať množstvo, ktoré nespôsobuje pozorovateľný negatívny účinok. Vzhľadom na existujúce rozdiely v&nbsp;anatómii a&nbsp;fyziológii medzi ľuďmi a&nbsp;laboratórnymi zvieratami je v&nbsp;ďalšej fáze táto „dávka bez pozorovaného účinku“ vydelená bezpečnostným faktorom najčastejšie 100, ale v&nbsp;určitých prípadoch 1000, čo pôsobí dosť spoľahlivo. Býva zadefinovaný v&nbsp;miligramoch alebo mikrogramoch na kilogram hmotnosti spotrebiteľa.</p>
+
+
+
+<p>Prvým problémom spojeným s „dennou akceptovateľnou dávkou“ je skutočnosť, že ide o&nbsp;koncept veľmi technický, dostupný pre úzky okruh odborníkov, ale z&nbsp;pohľadu spotrebiteľov, ktorý v&nbsp;drvivej väčšine ani nevedia o&nbsp;jeho existencii, je nepoužiteľný. Je založených na spotrebiteľských štatistikách a&nbsp;pravdepodobnostiach a&nbsp;potom sa dá napríklad tvrdiť, že na prekročenie DAD umelého sladidla aspartam, by dieťa muselo vypiť 6 litrov coca coly light denne, čo je krajne nepravdepodobné. Neprihliada sa ale k&nbsp;tomu, že aspartam je obsiahnutý v&nbsp;tisícoch rôznych potravinárskych výrobkov dennej spotreby a&nbsp;z&nbsp;tohto pohľadu prekročenie DAD vôbec nie je nepravdepodobné.</p>
+
+
+
+<p>Významným rizikovým faktorom konceptu DAD je to, že jednotlivé produkty chemickej syntézy sa posudzujú iba individuálne, pričom sa nezohľadňuje ani možnosť ich kumulácie v&nbsp;organizme, ani možnosť ich kumulatívneho alebo synergického účinku.</p>
+
+
+
+<p>Mnohé chemikálie majú tendenciu hromadiť sa najmä v&nbsp;tukovom tkanive a&nbsp;množstvo, ktorému potom musí organizmus čeliť je mnohonásobne vyššie ako DAD. Ide napríklad o&nbsp;lindan, chlóroorganický insekticíd komercializovaný od roku 1938. Je to silná neurotoxická látka, ktorá bola v&nbsp;Európe definitívne zakázaná v&nbsp;roku 2006, hoci ju už v&nbsp;roku 1987 zaradilo Medzinárodné centrum pre výskum rakoviny medzi možné karcinogény pre ľudí.</p>
+
+
+
+<p>Možnosť kumulatívneho alebo synergického účinku vyplýva z&nbsp;reality, že ľudský organizmus sa musí vysporiadať nie s&nbsp;individuálnou chemickou molekulou, ktorá je predmetom hodnotenia, ale s&nbsp;veľkým množstvom produktov syntetickej chémie obsiahnutých v&nbsp;ovzduší, vo vode a&nbsp;v&nbsp;potravinách. Z&nbsp;etikety bežne predávaných mäsových výrobkov sa možno dozvedieť, že často obsahujú 5 alebo i&nbsp;viac éčok, pričom rezídua pesticídov, antibiotík alebo plastov sa nespomínajú. Individuálne sú údajne všetky tieto látky v&nbsp;danom množstve „bezpečné“, ale nikto nevie aký je ich spoločný účinok. Realitu synergického účinku potvrdila dánska toxikologička Ulla Haas, ktorá so svojim týmom zistila, že kým individuálny dopad troch posudzovaných molekúl na zdravotný stav testovaných potkanov bol nulový, v&nbsp;prípade koktailu z&nbsp;tých istých molekúl sa u&nbsp;60% zárodkov posudzovaných zvierat zistili závažné problémy. Synergia môže teda až zdesaťnásobiť negatívny účinok.<a href="#_ftn7" name="_ftnref7" title="">[7]</a></p>
+
+
+
+<p>Expertíza založená výlučne na individuálnom posudzovaní jednotlivých molekúl teda dokonale ignoruje to, čomu je ľudský organizmus skutočne vystavený, teda simultánnemu pôsobeniu väčšieho množstva produktov chemickej syntézy. Koncept Dennej Akceptovateľnej Dávky ako princípu na ktorom je postavená toxikológia ale ešte vo väčšej miere spochybnilo zistenie, že mnoho produktov chemickej syntézy má schopnosť narušovať hormonálnu rovnováhu ľudí i&nbsp;zvierat. Pre tieto produkty sa postupne vžilo označenie „endokrinné disruptory“.</p>
+
+
+
+<p>Termín endokrinné disruptory bol navrhnutý na kolukviu, ktoré sa uskutočnilo v&nbsp;júli 1991 vo Winsgpread v&nbsp;štáte Wisconsin (USA) a z&nbsp;ktorého vyšiel manifest nazvaný „Winsgreadská deklarácia“. Iniciátormi podujatia bola biologička Theo Colborn<a href="#_ftn8" name="_ftnref8" title="">[8]</a> a endokrinológovia Ana Soto, a Fréderic vom Saal. Účastníci kolukvia si vymenili skúsenosti týkajúce sa najmä rôznych patológií a&nbsp;deformácií rozmnožovacieho ústrojenstva fauny pozorovaných v&nbsp;rôznych častiach USA, ktoré sa do určitého obdobia v&nbsp;prírode nevyskytovali.&nbsp;Zhodli sa na tom, že ich príčinou mohlo byť iba vážne narušenie hormonálnej rovnováhy predmetných zvierat, ktoré bolo s&nbsp;vysokou pravdepodobnosťou spôsobené novými produktmi syntetickej chémie uvoľňovanými od určitého času vo veľkom do životného prostredia.</p>
+
+
+
+<p>Dávno pred týmto kolukviom a&nbsp;pred tým, aby bol výraz „endikrinné disruptory“ po prvý krát vyslovený, mala klinická prax bohaté a&nbsp;dramatické skúsenosti s&nbsp;narušením hormonálnej rovnováhy zapríčinenej produktom syntetickej chémie. Jeho meno bolo Distilbén (DES). Bol to vlastne prvý, zámerne vyrobený syntetický hormón, ktorý uzrel svetlo sveta ešte v&nbsp;roku 1938 a&nbsp;jeho vynálezcu, chemika menom Charlie Dodds<a href="#_ftn9" name="_ftnref9" title="">[9]</a> upútala jeho mimoriadne silná estrogénna sila. Medzi rokmi 1940 a&nbsp;1975, keď bol definitívne zakázaný, bol predpísaný miliónom ženám ako endokrinná podpora počas tehotenstva (okrem iného ako prevencia samovoľných potratov). Následne bolo zistené, že dcéry týchto žien bývali vo veľkej miere obeťou rakovín a&nbsp;iných chorôb pohlavného ústrojenstva. Celá táto tragická história je dobre zdokumentovaná a&nbsp;okrem iného boli v&nbsp;USA vynesené bezprecedentné rozsudky na základe ktorých museli výrobcovia DES zaplatiť časti obetí vysoké odškodné. Prípady distilbénu, ktorý bol dlho považovaný za zázračný liek, ale i&nbsp;prášku DDT, medzi prvými preukázali kľúčovú úlohu syntetických hormónov na vznik niektorých typov rakoviny.</p>
+
+
+
+<p>Podľa definície sú endokrinné disruptory látky, ktoré napodobňujú prirodzené hormóny, najčastejšie úlohu ženského pohlavného hormónu estrogénu a&nbsp;tým vážne narušujú rovnováhu endokrinného systému, čo môže vyvolať nepriaznivé účinky (vývojové, reprodukčné, nervové a imunitné). Za endokrinné disruptory je považované široké spektrum substancií, prírodných i vyrobených človekom, vrátane liečiv, dioxínov a dioxínom podobných látok, PCB (polychlórované bifenyly), DDT a ďalšie pesticídy, ftaláty a zmäkčovadlá ako napr. bisfenol A. Sú prítomné v mnohých každodenných produktoch ako sú plastové fľaše, plechovky, kovové konzervy na jedlo, čistiace prostriedky, spomaľovače horenia, jedlo, hračky, kozmetika a pesticídy. Patrí medzi ne i&nbsp;najviac používaný herbicíd Roundup.<a href="#_ftn10" name="_ftnref10" title="">[10]</a> Je preukázané, že v&nbsp;ekonomicky vyspelých krajinách sa rozhodujúcim spôsobom podieľajú na dramatickom náraste prípadov niektorých závažných ochorení:</p>
+
+<p>- počet novo diagnostikovaných prípadov rakoviny prostaty sa medzi rokmi 1978 – 2008 viac ako späťnásobil;</p>
+
+<p>- počet novo diagnostikovaných prípadov rakoviny prsníkov sa od Druhej svetovej vojny viac ako strojnásobil;</p>
+
+<p>- počet novo diagnostikovaných prípadov rakoviny semenníkov sa u mladých mužov (25 – 34 rokov) medzi 1975 a 2005 strojnásobil;</p>
+
+<p>- problémy s plodnosťou mužov sledujú ten istý trend. Medzi 1989 a 2005 poklesla koncentrácia spermatozoidov v ejakuláte o jednu tretinu;</p>
+
+<p>- počet prípadov deformácií mužského rozmnožovacieho ústrojenstva u malých detí a kojencov sa zvyšuje paralelne so znižovaním veku puberty u dievčat.</p>
+
+
+
+<p>Toxicita endokrinných distruptorov je v&nbsp;porovnaní s&nbsp;inými jedovatými látkami špecifická. Dôležité je predovšetkým to, že narúšajú hormonálny systém vo veľmi malých množstvách, hlboko pod „dennú akceptovateľnú dávku“. Dochádza dokonca k&nbsp;paradoxu, že v&nbsp;určitých prípadoch sú ich väčšie množstvá bez účinku, zatiaľ čo veľmi malé množstvá spôsobujú závažné patológie. Ďalšou zvláštnosťou je to, že väčšinou sa ich negatívne dopady neprejavia na osobe, ktorá im bola priamo vystavené, ale až na ďalšej generácii, tak ako to bolo v&nbsp;prípade žien, ktorých matky v&nbsp;tehotenstve užívali Distilbén. Najrizikovejšou časťou populácie sú osoby, u&nbsp;ktorých sa vyvíja hormonálny systém, to znamená, že pre endokrinnými disruptormi by mali byť chránené najmä tehotné ženy a&nbsp;malé deti.</p>
+
+
+
+<p>A&nbsp;práve rizikovosť veľmi malých množstiev je hlavným predmetom sporu medzi priemyslom a&nbsp;regulačnými orgánmi na jednej strane a&nbsp;prakticky celou endokrinologickou komunitou na strane druhej. Treba povedať, že produkty chemickej syntézy, ktoré sú endokrinné disruptory, sú do takej miere prítomné v&nbsp;našom každodennom živote, že ich zákaz by mal pre chemický priemysel nedozerné ekonomické dôsledky.</p>
+
+
+
+<p>Európska komisia sa témou endokrinných disruptorov zaoberá od roku 1996, odvtedy vydala 4 pracovné dokumenty (posledný v&nbsp;roku 2011), ale stále chýba relevantná legislatíva, hoci zdravotné riziká, ako i&nbsp;priemyselné produkty, ktoré sú ich zdrojom, sú už dávnejšie jednoznačne identifikované. To čo dnes chýba, je prijatie kompetentnými orgánmi širokej definície endokrinných disruptorov a&nbsp;uznanie, že tieto posledné môžu spôsobovať závažné zdravotné problémy i&nbsp;v&nbsp;množstve hlboko pod „úradne povoleným“. Pod tlakom množiacich sa faktov je EK nútená sa problémom znovu zaoberať a&nbsp;v&nbsp;súčasnosti má celý spor tendenciu gradovať. Pikantné je to, že i jednotlivé útvary Európskej komisie evidentne sledujú v tejto problematike úplne iné priority. Na konci roku 2011 zverilo DG životné prostredie úlohu vypracovať stanovisko k endokrinným disruptorom skupine vedcov pod vedením Andreasa Kortenkamap, profesora na londýnskej univerzite Brunel. Výsledkom bolo zverejnenie v&nbsp;januári 2012 „Správy Kortenkamp“, ktorá bola priaznivá pre spotrebiteľov a&nbsp;podstatne menej pre priemysel.<a href="#_ftn11" name="_ftnref11" title="">[11]</a> Napriek existencii tohto materiálu poverila v októbri 2012 DG Sanco (Zdravotníctvo) EFSA vypracovaním takého istého stanoviska. Zverejnenie mien osemnásť člennej pracovnej skupiny EFSA vzbudilo u mimovládnych organizácií búrku nevôle, pretože sa okrem iného ukázalo, že jedenásti z nich nemajú v tejto problematike žiadne skúsenosti a polovica deklarovala nedávne pracovné kontakty s priemyslom.<a href="#_ftn12" name="_ftnref12" title="">[12]</a> Bohužiaľ sa ukazuje, že v&nbsp;tomto prípade EFSA odmieta stanovisko kompetentnej vedeckej komunity a&nbsp;nechce, i&nbsp;napriek množstvu dôkazov, zmeniť paradigmu na ktorej je postavená jej expertíza. Opiera sa pritom o&nbsp;štúdie vypracované priemyslom od ktorých sa endokrinológovia rázne dištancujú,&nbsp;organizuje podujatia<a href="#_ftn13" name="_ftnref13" title="">[13]</a>, na ktorých majú početnú prevahu zástancovia toxikológie „starej školy“ a&nbsp;potom tvrdí, že ohľadom účinku veľmi malých množstiev neexistuje vedecký konsenzus a&nbsp;preto nie je potrebné na systéme expertízy nič meniť.</p>
+
+
+
+<p>Na druhej strane sa v&nbsp;septembri 2012 uskutočnilo v&nbsp;Berlíne medzinárodné kolukvium na tému endokrinných disruptorov, ktorého sa zúčastnilo 200 vedcov z&nbsp;celého sveta, ktorí odsúdili laxný prístup EFSA k tejto problematike. Ukázalo sa, že spochybňovanie negatívnych účinkov veľmi nízkych dávok nesmierne dráždi endokrinológov. Podľa Fredericka vom Saal, profesora z&nbsp;univerzity Missouri a&nbsp;jedného z&nbsp;najuznávanejších svetových odborníkov, „EFSA svojvoľne ignoruje tisíce vedeckých štúdií a&nbsp;desaťročia výskumu v&nbsp;endokrinológii. Spomenul som stanovisko EFSA na jednej porade Americkej endokrinnej spoločnosti: bolo to ako keby som oznámil na kongrese astrofyziky, že ešte sú ľudia, ktorí veria, že Zem je plochá a&nbsp;leží v&nbsp;strede vesmíru“.<a href="#_ftn14" name="_ftnref14" title="">[14]</a></p>
+
+
+
+<p>V&nbsp;každom prípade dnes EFSA ostáva vo svojom stanovisku stále viac izolovaná a&nbsp;skutočná vedecká komunita s&nbsp;vysokou pravdepodobnosťou odmietne očakávané a&nbsp;pre priemysel priaznivé výsledky správy jej „vedeckého panelu“.</p>
+
+
+
+<p>V poslednej dobe vzbudila najväčšiu pozornosť tzv. Berlaymontská deklarácia<a href="#_ftn15" name="_ftnref15" title="">[15]</a>, nazvaná podľa budovy Európskej komisie, kde sa v&nbsp;júni 2012 konala už spomínaná konferencia venovaná téme endokrinné disruptory. Ide o&nbsp;bezprecedentnú iniciatívu asi stovky významných vedeckých pracovníkov (toxikológov, endokrinológov, vývojových biológov...) v&nbsp;rámci ktorej sú politickí predstavitelia zodpovední za „riadenie rizika“ priamo vyzvaní, aby testy požadované pre povoľovanie nových produktov boli prispôsobené aktuálnemu stavu vedeckého poznania. Tie dnešné sú „<em>úplne neadekvátne</em>“ a&nbsp;neschopné odhaliť nežiadúce účinky produktov, ktoré sú endokrinne disruptory. Deklarácia opätovne zdôrazňuje účinok veľmi malých množstiev a&nbsp;upresňuje, že „<em>niektoré endokrinne disruptory majú toxikologické vlastnosti znemožňujúce stanovenie prahov pod ktorými môže byť vystavenie človeka predmetným produktom zadefinované ako bez rizika</em>“. Podľa jedného z&nbsp;iniciátorov deklarácie, už spomenutého Andreasa Konterkampa, sú všetci signatári, na rozdiel od vedeckého panelu EFSA, osoby, ktoré aktívne publikujú vedecké články na danú tému.&nbsp; Deklarácia predstavuje takto konsenzus vedcov, ktorí sú avantgardou vytvárania poznatkov v&nbsp;tejto oblasti.<a href="#_ftn16" name="_ftnref16" title="">[16]</a> Na alarmujúcu situáciu v&nbsp;oblasti posudzovania endokrinných disruptorov a&nbsp;na potrebu zmeniť spôsob expertízy upozornil i&nbsp;Európsky parlament.<a href="#_ftn17" name="_ftnref17" title="">[17]</a></p>
+
+
+
+<p>Spomedzi známych endokrinných disruptorov je ale jeden, ktorý má trochu osobitný štatút: je to bisfenol A (BPA). Dôvodom je najmä skutočnosť, že sa vyskytuje skoro všade. Chemický priemysel sa oň začal zaujímať od päťdesiatych rokov minulého storočia z&nbsp;dôvodu jednoduchosti jeho štruktúry a&nbsp;fyzikálno-chemických vlastností, ktoré z&nbsp;neho urobili vyhľadávanú zložku v&nbsp;syntéze pevných plastických hmôt. Podľa údajov priemyslu sa ho každoročne syntetizuje viac ako 3 milióny ton a&nbsp;jeho využívanie je veľmi rôznorodé: nájdeme ho v&nbsp;potravinárskych obaloch, v&nbsp;niektorých kontaktných šošovkách, v&nbsp;pokladničných blokoch, v&nbsp;zubných amalgámoch atď... Do roku 1996 boli toxikologické testy bisfenolu A na hlodavcoch vždy vykonávané na pomerne veľkých dávkach a na ich základe americké orgány stanovili jeho DAD: 50 mikrogramov na kilo telesnej váhy denne. V&nbsp;roku 1996 ale Fréderick vom Saal experimentálne náhodou zistil, že dávka BPA 25 tisíc krát menšia ako dovtedy najmenšie študované množstvo bola schopná poškodiť rozmnožovací systém myších samcov ak ich matka bola tejto dávke vystavená iba počas niekoľkých dní gravidity. Znamená to, že vystavenie hlodavcov koncentrácii na úrovni zlomku milióntiny gramu BPA za deň a&nbsp;na kilo telesnej hmotnosti má významné biologické dôsledky. Toto sú už dávky, ktorým je vystavená väčšina ľudských bytostí. Tieto poznatky boli následne potvrdené celým radom ďalších štúdií, i&nbsp;keď na druhej strane dávali chemické firmy a&nbsp;ich lobistické organizácie vypracovať iné štúdie, ktoré dospievali k&nbsp;opačnému záveru. Podľa posúdenia existujúcej vedeckej literatúry Frederick vom Saal zistil, že kým 90% štúdií (94 zo 115) financovaných z&nbsp;verejných zdrojov preukázali významný negatívny vplyv veľmi nízkych dávok BPA na ľudské zdravie, žiadna zo štúdií sponzorizovaných priemyslom to nepotvrdila!<a href="#_ftn18" name="_ftnref18" title="">[18]</a></p>
+
+
+
+<p>Napriek veľkému úsiliu lobistov „vzbudiť pochybnosť“ ohľadom účinku veľmi nízkych dávok BPA, politici a&nbsp;regulačné úrady, postavení pred svoju vlastnú zodpovednosť, sú chtiac-nechtiac nútení konať. Prvou krajinou, ktorá prijala konkrétne opatrenia bola Kanada, ktorá zakázala používanie bisfenolu A&nbsp;pre dojčenské fľaše ešte v&nbsp;roku 2008, v&nbsp;roku 2010 uzákonilo ten istý zákaz Francúzsko a&nbsp;v&nbsp;roku 2011 i&nbsp;Európska únia. Dňa 13. decembra 2012 prijal francúzsky Senát v&nbsp;2. čítaní zákon, ktorý obmedzuje v&nbsp;tejto krajine používanie Bisfenolu A (BPA) v&nbsp;aplikáciách určených na priamy kontakt s&nbsp;potravinami. Predtým, 28.11.2012 bol tento právny text prijatý francúzskym Národným zhromaždením, potom ako ho schválila francúzska vláda.<a href="#_ftn19" name="_ftnref19" title="">[19]</a> Počínajúc prvým dňom mesiaca nasledujúceho po jeho uverejnení v&nbsp;zbierke zákonov (15. deň po jeho schválení Senátom) bola zakázaná výroba, dovoz, vývoz a&nbsp;uvádzanie na trh akéhokoľvek obalu, alebo nádoby obsahujúcich BPA a určených na priamy kontakt s&nbsp;potravinami a&nbsp;nápojmi pre dojčatá a&nbsp;malé deti. Od 1. januára 2015 sa tento zákaz rozšíri na všetky obaly a&nbsp;nádoby prichádzajúcich do priameho kontaktu s&nbsp;potravinami (teda už nie iba tie, ktoré sú priamo určené pre deti).</p>
+
+
+
+<h2 class="doc-subheading">Záver</h2>
+
+
+
+<p>Po zohľadnení všetkých faktov uvedených v&nbsp;tomto príspevku sa úplne legitímne nastoľuje otázka, čo vlastne dnešný systém hodnotenia bezpečnosti potravín spotrebiteľom garantuje a&nbsp;či vôbec niečo. EFSA a&nbsp;DG Sanco sedia na dvoch stoličkách, pretože na jednej strane ich tlačia množiace sa dôkazy o&nbsp;nedostatočnosti celého systému, na druhej strane sú pod silným tlakom lobistov priemyslu. K&nbsp;zmene ich stanoviska dochádza až vtedy, keď sa stane pod tlakom jednoznačne preukázaných vedeckých informácií úplne neudržateľné. Medzitým si ale predmetné produkty vybrali svoju daň vo forme množstva obetí vážnych ochorení, ktorým sa často dalo vyhnúť vďaka poznatkom, ktoré už boli k&nbsp;dispozícii omnoho skôr.</p>
+
+
+
+
+
+<h2 class="doc-subheading">Literatúra</h2>
+
+
+
+<p>[1] Benkimoun Paul, Foucart Stéphane, «&nbsp;La doctrine de l'autorité européenne de sécurité sanitaire est de plus en plus isolée&nbsp;» Le Monde, 12.12.2012</p>
+
+
+
+<p>[2] Benkimoun Paul, Foucart Stéphane, «&nbsp;Le dernier groupe d'expert constitué par l'EFSA mis en cause pour des conflits d'intérêt&nbsp;» Le Monde, 13.12.2012</p>
+
+
+
+<p>[3] CRIIGEN, komuniké z 21. februára 2013</p>
+
+
+
+<p>[4] Christianse Sofie, Hass Ulla et ali<strong>i</strong>, «&nbsp;<em>Synergic disruption of external male sex organ development by a mixture of four antiandrogens</em>”, Environmental Health Perspectives, vol. 117, no 12, December 2009, p. 1839-1846</p>
+
+
+
+<p>[5] Doll Richard &amp; Peto Richard, “The cause of the cancer: quantitative estimates of avoidable risks of cancer in the United States today”, <em>The Journal of the national Cancer institute</em>, vol. 66, n<sup>o</sup> 6, June 1981, p. 1191-1308</p>
+
+
+
+<p>[6] Foucart Stéphane, «&nbsp;L'interdiction du bisphénol A dans les contenants alimentaires définitivement adoptée&nbsp;» Le Monde, 13.12.2012</p>
+
+
+
+<p>[7] Foucart Stéphane, «&nbsp;La Fabrique du Mensonge&nbsp;», DENOȄL, Paris, marec 2013, 302 strán</p>
+
+
+
+<p>[8] Foucart Stéphane, «&nbsp;L'Europe trop laxiste face aux dangers de perturbateurs hormonaux&nbsp;», Le Monde, 25.05.2013</p>
+
+
+
+<p>[9] Kortenkamp, Andreas, Martin Olwenn, Faust Michael, Evans Richard, McKinlay Rebecca, Orton Frances and Rosivatz Erika, „State of the art assessment of endocrine disrupters“, final report, 23.12.2011</p>
+
+
+
+<p>[10] Kortenkamp Andreas et all<strong>, </strong>“The 2013 Berlaymont Declaration on Endocrine Disruptors”, Mai 2013</p>
+
+
+
+<p>[11] Parlement européen «&nbsp;Résolution du 14 mars 2014 sur la protection de la santé publique contre les perturbateurs endocriniens (2012/2066(INI)&nbsp;»</p>
+
+
+
+<p>[12] Richard S. et al., „Differential effects of glyphosate and Roundup on human placental cells and aromatase“, <em>Environm. Health Perspect</em>. 113, 2005</p>
+
+
+
+<p>[13] Robin, Marie-Monique, „Notre poison quotidien“, Arte Editions, Paris, 2011, 479 strán</p>
+
+
+
+<p>[14] vom Saal, Frederick &amp; Hughes, Claude, “An extensive new literature concerning low-dose effects of bisphenol A shows the need for a new risk assessment”, <em>Environmental Health Perspectives,</em> vol. 113, august 2005. P. 926-933</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&nbsp;
+<hr>
+
+<p><a href="#_ftnref1" name="_ftn1" title="">[1]</a> Ing. Miroslav Koberna, riaditeľ Potravinárskej komory Českej republiky</p>
+
+
+
+<p><a href="#_ftnref2" name="_ftn2" title="">[2]</a> Konkrétne Vincent Cogliano citovaný v „Notre poison quotidien“, str. 188</p>
+
+
+
+<p><a href="#_ftnref3" name="_ftn3" title="">[3]</a> communiqué du <a href="http://www.criigen.org/" class="external" target="_blank" rel="noopener noreferrer">CRIIGEN </a>du 21 février 2013&nbsp;</p>
+
+
+
+<p><a href="#_ftnref4" name="_ftn4" title="">[4]</a> Napr. Doll Richard &amp; Peto Richard, “The cause of the cancer: quantitative estimates of avoidable risks of cancer in the United States today”, <em>The Journal of the national Cancer institute</em>, vol. 66, n<sup>o</sup> 6, June 1981, p. 1191-1308</p>
+
+
+
+<p><a href="#_ftnref5" name="_ftn5" title="">[5]</a> Známym prípadom je Sir. Richard Doll, profesor z&nbsp;Oxfordu, ktorý okrem iného obhajoval neškodnosť dioxínu obsiahnutého v&nbsp;defoliante nazvanom „oranžový prášok“, ktorý vo veľkej miere používala americká armáda vo Vietname. Po jeho smrti sa ale v&nbsp;jeho pozostalosti našli dôkazy, že viac ako 20 rokov bol na výplatnej páske spoločnosti Monsanto, jedného z&nbsp;výrobcov oranžového prášku (The Guardian, december 2006).</p>
+
+
+
+<p><a href="#_ftnref6" name="_ftn6" title="">[6]</a> Paracelse, vlastným menom Philippus Theophrastus Aureolus Bombastus von Hohenheim, 1493 - 1541</p>
+
+
+
+<p><a href="#_ftnref7" name="_ftn7" title="">[7]</a> Sofie Christianse, Ulla Hass et alii, «&nbsp;<em>Synergic disruption of external male sex organ development by a mixture of four antiandrogens</em>”, Environmental Health Perspectives, vol. 117, no 12, December 2009, p. 1839-1846,</p>
+
+
+
+<p><a href="#_ftnref8" name="_ftn8" title="">[8]</a> Theo Colborrn je autorkou bestselleru (1997) venovanému problematike endokrinných disruptorov „Our stolen future“ (Naša ukradnutá budúcnosť).</p>
+
+
+
+<p><a href="#_ftnref9" name="_ftn9" title="">[9]</a> Charlie Dods dostal v roku 1948 za vynájdenie distilbénu Nobelovu cenu spolu so Švajčiarom Paulom Müllerom, vynálezcom smutne známeho insekticídu DDT.</p>
+
+
+
+<p><a href="#_ftnref10" name="_ftn10" title="">[10]</a> S. Richard et al., „Differential effects of glyphosate and Roundup on human placental cells and aromatase“, <em>Environm. Health Perspect</em>. 113, 2005</p>
+
+
+
+<p><a href="#_ftnref11" name="_ftn11" title="">[11]</a> Andreas Kortenkamp, Olwenn Martin, Michael Faust, Richard Evans, Rebecca McKinlay, Frances Orton and Erika Rosivatz, „State of the art assessment of endocrine disrupters“, final report, 23.12.2011</p>
+
+
+
+<p><a href="#_ftnref12" name="_ftn12" title="">[12]</a> Paul Benkimoun, Stéphane Foucart, «&nbsp;Le dernier groupe d'expert constitué par l'EFSA mis en cause pour des conflits d'intérêt&nbsp;» Le Monde, 13.12.2012</p>
+
+
+
+<p><a href="#_ftnref13" name="_ftn13" title="">[13]</a> V júni 2012 EFSA zorganizovala vedecké kolukvium o «&nbsp;účinku veľmi malých množstiev v&nbsp;toxikológii a&nbsp;o&nbsp;hodnotení rizík“. Záver bola absencia vedecké konsenzu. Ukázalo sa ale, že 60% účastníkov boli toxikológovia pracujúci pre agentúry zaoberajúcich sa bezpečnosťou potravín, ktorí vo všeobecnosti nevykonávajú originálne výskumy v&nbsp;oblasti endokrinných disruptorov. Polovica zvyšných účastníkov boli vedeckí pracovníci pracujúci pre nadnárodné chemické spoločnosti (Stéphane Foucart, „La fabrique du mensonge“, str. 247 a&nbsp;248).</p>
+
+
+
+<p><a href="#_ftnref14" name="_ftn14" title="">[14]</a> Paul Benkimoun, Stéphane Foucart, «&nbsp;La doctrine de l'autorité européenne de sécurité sanitaire est de plus en plus isolée&nbsp;» Le Monde, 12.12.2012</p>
+
+
+
+<p><a href="#_ftnref15" name="_ftn15" title="">[15]</a> The 2013 Berlaymont Declaration on Endocrine Disruptors</p>
+
+
+
+<p><a href="#_ftnref16" name="_ftn16" title="">[16]</a> Stéphane Foucart, «&nbsp;L'Europe trop laxiste face aux dangers de perturbateurs hormonaux&nbsp;», Le Monde, 25.05.2013</p>
+
+
+
+<p><a href="#_ftnref17" name="_ftn17" title="">[17]</a> Résolution du Parlement européen du 14 mars 2014 sur la protection de la santé publique contre les perturbateurs endocriniens (2012/2066(INI)</p>
+
+
+
+<p><a href="#_ftnref18" name="_ftn18" title="">[18]</a> Frederick vom Saal &amp; Claude Hughes, “An extensive new literature concerning low-dose effects of bisphenol A shows the need for a new risk assessment”, <em>Environmental Health Perspectives,</em> vol. 113, august 2005. P. 926-933</p>
+
+
+
+<p><a href="#_ftnref19" name="_ftn19" title="">[19]</a> Stéphane Foucart, «&nbsp;L'interdiction du bisphénol A dans les contenants alimentaires définitivement adoptée&nbsp;» Le Monde, 13.12.2012</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TÉMA TÝŽDŇA: Nežná revolúcia a pekári — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>TÉMA TÝŽDŇA: Nežná revolúcia a pekári</nav>
+
+  <article>
+    <h1 class="doc-title">TÉMA TÝŽDŇA: Nežná revolúcia a pekári</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Jana Holéciová, hovorkyňa SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">18. novembra 2019</span></p>
+
+    <div class="doc-body">
+<p><span>Slovenské pekárstvo&nbsp;sa v&nbsp;období&nbsp;60-80 rokov minulého storočia vyznačovalo rastom veľkých priemyselných pekární. Po roku 1960 súkromná pekárska výroba už neexistovala.&nbsp;</span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/ESNyT2B.png"></figure><p></p>
+
+
+
+<p>Spracovávali sa koncepcie dlhodobého rozvoja do roku 1980.&nbsp;Všetky boli zamerané na budovanie priemyselných objektov, lebo výroba strojov, zariadení&nbsp;a&nbsp;pecí pre malé pekárne bola zastavená. Centrálne orgány štátu prijali koncepciu vybudovať priemyselnú pekársku výrobu na celom území štátu. Malé výrobne sa ponechali len vo vzdialenejších okrajových oblastiach, kde by dovoz výrobkov z&nbsp;priemyselných centier bol neefektívny, ďalej to boli menšie výrobne v&nbsp;centrách väčších miest pre širšiu ponuku sortimentu.&nbsp;</p>
+
+
+
+<p><em>"Sortiment v&nbsp;tomto období bol pomerne jednoduchý. Vyrábalo sa 5-6 druhov chleba v&nbsp;hmotnostiach 1 kg, 1,5 kg a&nbsp;2 kg. Z&nbsp;bežného pečiva rozhodujúci podiel tvorili rožky 60g,&nbsp;ďalej pletienky a&nbsp;sendviče. Podstatu jemného pečiva tvorili vianočky, makové a&nbsp;orechové záviny, briošky, tlačené koláče, kysnuté bábovky. Doplnkovou výrobou bola strúhanka", </em>uviedla predsedníčka Slovenského zväzu pekárov, cukrárov a cestovinárov Tatiana Lopúchová.&nbsp;</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/Y2OTBOR.png"></figure><p></p>
+
+
+
+<p>Ceny pekárskych&nbsp;výrobkov boli v&nbsp;porovnaní s&nbsp;ostatnými výrobkami veľmi lacné, tak isto ako boli veľmi lacné aj v&nbsp;porovnaní so zahraničnými pekárskymi produktmi. Aby štát mohol udržať pomerne nízke ceny potravín, hlavne pekárskych výrobkov, výrobné organizácie boli dotované cez mínusové dane. Pretože celý odbor patril k&nbsp;dotovaným výrobám a&nbsp;ceny výrobkov určoval štát, ťažko sa presadzovali investičné potreby, devízové prostriedky, ale aj zvyšovanie priemerných miezd, lebo to všetko zaťažovalo štátnu pokladňu. Už začiatkom 60. rokov sa robili pokusy so zmrazovaním pečiva. Zámerom bolo kedykoľvek počas týždňa pečivo vyrobiť a&nbsp;potom hocikedy voľne rozmraziť, zohriať a&nbsp;ešte teplé expedovať. Pokusy dopadli dobre, ale problémom bola nákladovosť výroby a&nbsp;logistiky. Vtedajšie návrhy slovenských pekárov na výrobu mrazeného pekárskeho sortimentu neboli akceptované.</p>
+
+
+
+<p>Logistika rozvozu čerstvých pekárskych výrobkov bola realizovaná nákladnými vozidlami značky Avia a&nbsp;bola pomerne jednoduchá vzhľadom na krátku vzdialenosť od pekára k&nbsp;odberateľovi, pretože&nbsp; trh bol rajonizovaný.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/ZaZtayh.png"></figure><p></p>
+
+
+
+<p><em>"Zmena štátoprávneho usporiadania hospodárskeho a&nbsp;politického systému po nežnej revolúcii v&nbsp;roku 1989 priniesla eufóriu zriaďovania malých súkromných pekární. Veľké priemyselné pekárne ustúpili do úzadia a&nbsp;značne sa im znižovala produkcia na úkor novovznikajúcich malých pekární.&nbsp;Na Slovensko sa začali tlačiť rôzne zahraničné firmy ponúkajúce strojnotechnologické vybavenie pre malé pekárne. Potenciálnych zákazníkov prevážali autami k&nbsp;výrobcom, kde im ukazovali, ako bezchybne pracujú ich stroje, dostalo sa im pohostenie a&nbsp;rôznych suvenírov, čo sa v&nbsp;tej dobe považovalo za niečo mimoriadne",</em> pokračovala v spomienkach na obdobie Nežnej revolúcie a vývoja v pekárenskom priemysle Tatiana Lopúchová.&nbsp;</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/Y6jHEsQ.png"></figure><p></p>
+
+
+
+<p>Asi do roku 1994 nebol problém, aby si ktokoľvek zriadil pekáreň. Banky veľmi ľahko dávali úvery a&nbsp;ľudia si úvery brali, aj napriek tomu, že úroková sadzba sa pohybovala nad 20 % ročne. V&nbsp;rokoch 1990-1992 ožili u&nbsp;viacerých záujemcov o&nbsp;podnikanie v&nbsp;pekárskej výrobe nostalgické spomienky na to, aký dobrý chlieb sa u&nbsp;nich v&nbsp;pekárni piekol pred 40-50 rokmi. Chceli túto nostalgiu oživiť. Viacerým pekárňam ktoré vznikli po roku 1990, sa začalo dariť, mali dobrú kvalitu a&nbsp;služby, primerané ceny a&nbsp;tak po splatení úverov začali svoje kapacity rozširovať a modernizovať. Z&nbsp;pôvodne malých pekární sa stávali stredne veľké podniky.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/uVSBJ6n.png"></figure><p></p>
+
+
+
+<p>Po roku 2010 bola väčšina živnostenských pekární porovnateľná s&nbsp;ktoroukoľvek západoeurópskou pekárňou. Tak isto aj veľké priemyselné pekárne v&nbsp;posledných dvoch desaťročiach vo veľkom investujú do moderných technológií a&nbsp;centralizujú&nbsp;sa. Takto sa vytvárajú samostatné skupiny pekární, ktoré vlastnia slovenskí majitelia.&nbsp;Zásadný rozdiel medzi západoeurópskou pekárskou výrobou a&nbsp;slovenskou pekárskou výrobou predstavujú od roku 1990 najmä ceny výrobkov a&nbsp;celá ekonomika výroby. Ak francúzsky alebo nemecký&nbsp; pekár hodnotí hospodársky rok so ziskom okolo 20 % za slabý a&nbsp;vraj ledva prežíva, na Slovensku najmä po intenzívnejšom nástupe zahraničných obchodných reťazcov od roku 1998 sa pekárska výroba ako celok drží okolo nulového zisku.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/W8Y0tCd.png"></figure><p></p>
+
+
+
+<p>Po roku&nbsp;2010 je už niekoľko rokov ako celok v&nbsp;strate a&nbsp;lepšie – úspešnejšie pekárne majú sotva 3-4 % zisk. Majitelia slovenských pekární si tento fakt uvedomujú a&nbsp;najmä v&nbsp;súčasnej zložitej situácii na trhu práce v&nbsp;rámci svojich finančných možností investujú do modernizácie a&nbsp;automatizácie výroby. Aj v&nbsp;rozvoze pekárskych výrobkov nastala zmena a&nbsp;to taká, že čerstvé pekárske výrobky sa dokážu voziť na vzdialenosť aj 200 km. Rajonizácia vzhľadom na voľný trhový mechanizmus a&nbsp;typ odberateľov bola zrušená a&nbsp;aj preto je takýto typ prepravy finančne náročnejší.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/QpogFPN.png"></figure><p></p>
+
+
+
+<p>Po revolúcii sa na trhu otvoril veľký priestor pre kreativitu domácich pekárov a&nbsp;širokú škálu úžasných výrobkov, či to boli nové tvary, &nbsp;rôzne chuťové vlastnosti alebo&nbsp;zdravé nutričné hodnoty. Negatívom z&nbsp;pohľadu domáceho pekára&nbsp; oproti obdobiu pred rokom 1989 je až priveľmi otvorený trh voči zahraničným výrobkom, ktoré vytláčajú domácu produkciu. Prirodzenú konkurenciu pritom nevnímajú negatívne, ale rôzna dampingová, či dotačná politika zahraničných výrobkov je priamou hrozbou pre slovenské pekárstvo.&nbsp;</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/zYMu8KK.png"></figure><p></p>
+
+
+
+<p>Negatívnym dedičstvom z&nbsp;minulosti je&nbsp; trend dojmu lacných základných potravín a pretrváva na Slovensku dodnes. Preto je na pekárov vyvíjaný tlak ohľadom cenotvorby či už zo strany obchodníkov, ale aj zo strany štátu. Z&nbsp;toho vyplývajú také faktory ako nízka mzda pekárov, či nízka ziskovosť pekárskych firiem.</p>
+
+
+
+<p>Slovenskí pekári si v&nbsp;súčasnosti uvedomujú svoje neľahké postavenie a&nbsp;aj preto spájajú svoje sily v&nbsp;boji proti nekalým obchodným praktikám, či v spoločnej propagácii pekárskeho remesla. A&nbsp;aj to je spoločným znakom súčasných pekárov s&nbsp;tými predrevolučnými pekármi – väčšia súdržnosť a&nbsp;spolupatričnosť.</p>
+
+
+
+<p>Zdroj informácií: História slovenského pekárstva, Vojtech Szemes</p>
+
+
+
+<p>Dobové fotografie nám poskytol Slovenský zväz pekárov, cukrárov a cestovinárov a pochádzajú z archívu p. Rusnáka.&nbsp;</p>
+
+
+
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

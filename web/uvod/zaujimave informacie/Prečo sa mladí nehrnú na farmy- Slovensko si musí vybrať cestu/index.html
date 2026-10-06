@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prečo sa mladí nehrnú na farmy? Slovensko si musí vybrať cestu — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Prečo sa mladí nehrnú na farmy- Slovensko si musí vybrať cestu</nav>
+
+  <article>
+    <h1 class="doc-title">Prečo sa mladí nehrnú na farmy? Slovensko si musí vybrať cestu</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Jozef Sedlák, Pravda</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">3. septembra 2018</span></p>
+
+    <div class="doc-body">
+
+<p><span>Budúcnosť poľnohospodárstva majú v rukách mladí ľudia. Tí sa však doň príliš nehrnú. Prečo majú iné priority? Ako zmeniť agrárnu politiku a ako samo chlebové odvetvie, aby farmy priťahovali mládež? Nad tým v rozhovore pre Pravdu uvažuje mladý, 40-ročný, predseda PD Kozárovce Peter Repiský.</span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/9ggLacI.jpg"></figure><p></p>
+
+<h4><span><small>Peter Repiský je členom Predstavenstva SPPK</small></span></h4>
+
+
+
+
+
+<p><strong>Ľudia sa civilizovali aj chovom dobytka. Prečo dnes práca s&nbsp;ním neláka?</strong></p>
+
+<p>Pozrime sa, ako vyzerá väčšina fariem, a tiež na prevládajúci mediálny obraz poľnohospodárstva. Práve to formuje predstavu spoločnosti o&nbsp;poľnohospodár­stve. Skutočnosť je však zložitejšia, možno aj preto, že ľudia akoby nemali čas ju vnímať.</p>
+
+
+
+<p><strong>Za jogurtom, plátkom syra či chutným steakom je dobytok. Ten sa však sám nenachová.</strong></p>
+
+<p>Pravdaže. Nestačí mať dobytok, ale aj ľudí k&nbsp;nemu. Odveké súžitie človeka a zvieraťa je veľmi dôležité pre našu existenciu aj dnes. Ak majú farmy prosperovať, musíme hľadať ľudí, ktorí majú k&nbsp;zvieratám vzťah. Len čo chýba vzťah a človek chodí na farmu len kvôli zárobku, vidno to na výsledkoch. Človeka musí zviera zaujať, musia spolu cítiť a tvoriť jeden celok. Bohužiaľ ľudí, ktorých práca so zvieratami napĺňa, je čím ďalej, tým&nbsp;menej.</p>
+
+
+
+<p><strong>Koľko z&nbsp;vašich rovesníkov pracuje v&nbsp;poľnohospodár­stve?</strong></p>
+
+<p>Nuž čo viem, zostali okrem mňa dvaja, ale aj tí sa viac venujú obchodnej činnosti, vo výrobnej sfére je nás jednoducho veľmi&nbsp;málo.</p>
+
+
+
+<p><strong>Lenže vy ste na spoločenskom rebríčku relatívne vysoko. Predseda družstva je na dedine stále vážený človek. Ale čo takí kŕmiči či dojičky. Má vôbec kto robiť túto&nbsp;prácu?</strong></p>
+
+<p>Zatiaľ áno, veď chováme 800&nbsp;kusov dobytka. Stále viac sme však nútení hľadať ľudí zvonku. Neoslovujeme iba úrady práce, prezentujeme farmu ako jedného z&nbsp;lídrov v&nbsp;chove slovenského strakatého dobytka, chodíme na rôzne podujatia. Ukazuje sa však, že je problém nájsť vhodných ľudí, či už z&nbsp;blízkeho, alebo zo vzdialenejšieho okolia, a tak asi budeme nútení orientovať sa aj na zahraničných pracovníkov.</p>
+
+
+
+<p><strong>Ale kde budú bývať?</strong></p>
+
+<p>Keďže nemáme vlastné ubytovacie kapacity, bude nevyhnutné ich postupne vybudovať alebo ich hľadať formou nájomných vzťahov. Všetky tieto investície sú však záťažou pre ekonomiku podniku.</p>
+
+
+
+<p><strong>To znamená, že nestačí už iba postaviť novú farmu, vybaviť ju modernou technológiou, dojárňou, ale postaviť k&nbsp;nej 4–5&nbsp;bytov?</strong></p>
+
+<p>Áno, aj toto je jedna z&nbsp;možností. Možno lacnejšou alternatívou je nákup starších domov či bytov v&nbsp;obciach. Dôležité je znížiť podiel ľudskej práce v&nbsp;chove, aby sme s&nbsp;minimálnym počtom ľudí urobili čo najviac prác. Preto investujeme do výkonnejšej techniky, prácu mechanizujeme, automatizujeme. Kľúčová je motivácia ľudí, musia byť primerane zaplatení, aby na farme zostali pracovať. Lenže utiahne to ekonomika fariem?</p>
+
+
+
+<p><strong>Nezaplatí to ani stúpajúca cena mlieka?</strong></p>
+
+<p>To iba teraz, po katastrofálnom suchu, dochádza k&nbsp;oživeniu cien mlieka. Ibaže za posledný štvrťrok nám cena mlieka v&nbsp;porovnaní s&nbsp;cenou od začiatku roka klesla. Nie slovenský, ale svetový trh tvorí ceny obilia, mäsa aj mlieka. Žiaľ na spoločnom trhu EÚ nesúťažíme za rovnakých podmienok.</p>
+
+
+
+<p><strong>Prečo?</strong></p>
+
+<p>Konkurenti nevyrábajú samotné mlieko lacnejšie ako my, ale zo strany štátu sa im dostáva omnoho väčšej pomoci. Dlhodobo tam fungujú mechanizmy, ktoré sa u&nbsp;nás len malými krokmi snažíme zavádzať do praxe. Otázka zamestnanosti sa rieši omnoho účinnejšie aj prostredníctvom rôznych daňovo-odvodových úľav, ktoré sa u&nbsp;nás neuplatňujú, a tak farmári nemusia platiť také vysoké odvody a dane ako my, a úspory môžu premietnuť do miezd pracovníkov.</p>
+
+
+
+<p><strong>Hovorí sa, že chytrosť nie sú žiadne čary.</strong></p>
+
+<p>Veď práve. Globálne klimatické zmeny budú nútiť všetky štáty k&nbsp;tomu, aby zvýšili svoju potravinovú bezpečnosť na maximálnu možnú mieru. Na Slovensku to vnímame, ale zďaleka nekonáme s&nbsp;takou razanciou, ako si situácia&nbsp;žiada.</p>
+
+
+
+<p><strong>V&nbsp;čom je problém? V&nbsp;komunikácii, v&nbsp;ochote politiky počúvať a zamýšľať sa nad problémami poľnohospodárstva?</strong></p>
+
+<p>Nepovedal by som, že nás nepočúvajú, myslím že problémy vieme pomenovať, ale veci sa riešia na poslednú chvíľu. Napríklad poľnohospodárska komora varovala, že bruselské zrušenie mliečnych kvót prinesie devastačný prebytok mlieka. Do toho prišlo ruské embargo a následná mliečna kríza ničila farmárov v&nbsp;celej Európe. Keď sa to dostalo do neúnosného štádia, vláda hodila farmárom záchranné lano v&nbsp;sume 30&nbsp;miliónov eur. Dovtedy však vypadli zo scény významné farmy. Keby to rozhodnutie bolo prišlo o&nbsp;pol či trištvrte roka skôr, nemuseli by sme teraz hovoriť o&nbsp;prudkom poklese stavov dojníc a klesajúcej mliečnej sebestačnosti Slovenska.</p>
+
+
+
+<p><strong>Platí kto včas dáva, dva razy dáva?</strong></p>
+
+<p>Pravdaže, aktuálne v&nbsp;Nemecku sucho ničí jednu farmu za druhou, ale farmári už dostali garancie od vlády, že im poskytne na sanáciu škôd jednu miliardu eur. Podotýkam, dva týždne po žatve. Pokiaľ by farmárom teraz nepomohli, následná obnova fariem by bola mnohonásobne drahšia. Preto pristupujú k&nbsp;riešeniu problémov rázne. Nemecko ukazuje, ako by sa veci mali riešiť aj u&nbsp;nás.</p>
+
+
+
+<p><strong>Je však Slovensko také bohaté ako Nemecko?</strong></p>
+
+<p>Samozrejme, platí, že sa môžeme prikryť len takou perinou, na akú máme, ale myslím si, že nastal čas prehodnotiť priority rozvoja krajiny. Súčasťou ekonomiky je aj poľnohospodárstvo. Aj ono dáva prácu, navyše rozhoduje o&nbsp;tom, ako sa krajina vyrovná s&nbsp;globálnou klimatickou zmenou. Máme podmienky, ktoré umožňujú vyrobiť si prakticky všetky potraviny mierneho pásma doma. V&nbsp;obchodoch je však 40-percentná ponuka slovenských potravín. Kam sme sa to dostali?</p>
+
+
+
+<p><strong>Čo navodilo súčasný stav, ktorý mnohí označujú dlhodobo za neudržateľný?</strong></p>
+
+<p>Je to na jednej strane výsledok transformácie poľnohospodárstva od roku 1990&nbsp;a na druhej aj podmienok Spoločnej poľnohospodárskej politiky EÚ, s&nbsp;pravidlami ktorej sme súhlasili. Nie sú dobré. Tým, že sme prijali systém zjednodušenej platby na plochu, ako keby sme dlhodobo užívali kvapky na spanie. Podpora v&nbsp;tejto podobe nenútila produkovať a hľadať spôsoby efektívnej výroby. Presadila sa tzv. údržba krajiny. Preto sú vo väčšine prípadov na tom ekonomicky lepšie tí, ktorí na poliach na úkor výroby a zamestnanosti pôdu mulčujú a poberajú na ňu dotácie. Je to jednoduchšia cesta, ale nedáva žiadnu pridanú hodnotu, nezamestnáva&nbsp;ľudí…</p>
+
+
+
+<p><strong>Tento systém dobieha. Hovorí sa však o&nbsp;stropovaní dotácií. Ministerstvo upokojuje, že veľkých podnikov so zamestnanosťou sa to nedotkne. Ako to bude u&nbsp;vás?</strong></p>
+
+<p>Máme 35&nbsp;stálych pracovníkov, plus niekoľko brigádnikov v&nbsp;sezóne, s&nbsp;ktorými obrábame 1¤050 hektárov pôdy. Nosným odvetvím je chov 800&nbsp;kusov dobytka. Bez živočíšnej výroby by sme vystačili na tisíchektárový chotár s&nbsp;výkonnejšou technikou so 7–8 ľuďmi. Nuž bola by to určite jednoduchšia cesta. Lenže my chceme naďalej robiť komplexnú poľnohospodársku výrobu, vidíme v&nbsp;nej do budúcnosti potenciál.</p>
+
+
+
+<p><strong>Prečo?</strong></p>
+
+<p>Poľnohospodárstvo je beh na dlhú trať, treba vždy vidieť za horizont. Dobytok prináša do krajiny život, je zárukou úrodnosti pôdy. Samozrejme, že nám nestačí 30&nbsp;centov za liter mlieka, veď to nepokrýva výrobné náklady. Odtiaľ je už pre niektorých farmárov len blízko k&nbsp;rozhodnutiu zatvoriť chov dojníc. Je to nezvratné rozhodnutie. Kto raz farmu zatvorí, už ju neobnoví. Ak raz ľudia prestanú chodiť na farmu, už ich tam naspäť chodiť nenaučíte. Ak im teraz hnoj nesmrdí a prestanú s&nbsp;ním pracovať, po mesiaci im už smrdieť začne. Je to rehoľa, ktorú treba vydržať najmä kvôli dosiahnutej úrovni&nbsp;chovu.</p>
+
+
+
+<p><strong>Sú slovenské chovy porovnateľné s&nbsp;poprednými európskymi chovmi?</strong></p>
+
+<p>Máme dobytok s&nbsp;genetikou, ktorá je veľmi dobrá až špičková aj v&nbsp;rámci Európy, chov slovenského strakatého dobytka je takmer na úrovni Nemecka a Rakúska. Keby sme tento dobytok mali vybiť a o&nbsp;pár rokov robiť jeho obnovu, určite to bude za mnohonásobne vyššie peniaze, a je otázne či by sme sa k&nbsp;takejto genetike vôbec dostali. To si musia uvedomiť nielen poľnohospodári, ale aj politici.</p>
+
+
+
+<p><strong>A&nbsp;uvedomujú si to?</strong></p>
+
+<p>Zrejme nie do všetkých dôsledkov, lebo inak by sme neboli tam, kde sme. Zdôrazňujem, uberajme sa svojou cestou. Budúci vývoj nie je v&nbsp;atomizácii fariem, ale v&nbsp;koncentrácii a s&nbsp;ňou spojenej vyššej efektivite živočíšnej výroby. Farmy sa zväčšujú aj na Západe. Farmár s&nbsp;desiatimi dojnicami, pokiaľ bude vyrábať len mlieko a nebude z&nbsp;neho robiť nejaké špeciálne výrobky, nemôže konkurovať väčšej a produktívnejšej farme. Preto nesúhlasím so stropovaním. Vnímam to ako túžbu západných krajín obrať Slovensko o&nbsp;jednu z&nbsp;posledných výhod, ktorá mu v&nbsp;súťaži medzi starými a novými členskými krajinami zostala. Či už obhospodarujete 10, 100, alebo 1¤000 ha je nutné rovnako kvalitne obrobiť každý hektár. Okrem toho nebadám, že by sa malí farmári na Slovensku hrnuli do chovu dobytka, respektíve živočíšnej výroby.</p>
+
+
+
+<p><strong>Opäť sme pri mladých ľuďoch. Na výstave Agrokomplex boli najobliehanejšie pavilóny s&nbsp;dobytkom a ošípanými. Tínedžeri si robili selfie so zvieratami. Čo urobiť pre to, aby toto očarenie vyústilo do štúdia a pracovného vzťahu?</strong></p>
+
+<p>Ak výstava nadchla deti a mládež, potom rodiacu sa lásku treba rozvíjať na farmách po celom slovenskom vidieku. V&nbsp;Kozárovciach robíme dni otvorených dverí na farme aj dva-tri razy do roka, vlastne je otvorená takmer celoročne. Máme tam akoby malú zoo s&nbsp;oslíkom, kozičkami, snažíme sa rodičom s&nbsp;deťmi výrobu priblížiť a ukázať krajšiu stránku práce chovateľa, nehovoríme iba o&nbsp;práci.</p>
+
+
+
+<p><strong>Je to dôležité?</strong></p>
+
+<p>Veľmi. Vari každé dieťa má rado pohár čerstvého mlieka, jogurt, syr, termix, tvaroh, maslo. Dnes deti potraviny vnímajú ako vec, za ktorou nie je práca. My im na farme otvárame oči: Pozrite sa, aby ste toto všetko dostali, čo všetko sa pre to musí urobiť. Práca poľnohospodára bude mať význam, aj do budúcnosti, pretože populácia vo svete rastie a nároky na kvalitu i&nbsp;množstvo výživy sa budú zvyšovať.</p>
+
+
+
+<p><strong>Je umenie prístupnou formou pripomenúť deťom, že za mliekom, jogurtom, syrom je práca farmára?</strong></p>
+
+<p>Zvykli sme si, že máme plné pulty potravín, že potraviny majú byť lacné, akoby nemali hodnotu. Tento prístup musíme zmeniť. Jednoducho ľuďom treba veci vysvetliť. Koľkí z&nbsp;nás si uvedomujú, že niekedy platia až nezmyselne veľa za mobilnú komunikáciu a iné veci, ktoré nie sú také nevyhnutné pre kvalitný život? Ľudia si musia zaplatiť aj za to, že budú mať kvalitnú potravinu, že budú vidieť okolo seba obrobenú zem, skultúrnenú krajinu, lebo to je prostredie, v&nbsp;ktorom všetci žijeme. To sú veci, ktoré nepadajú samy od seba len tak z&nbsp;neba, robia ich poľnohospodári.</p>
+
+
+
+<p><strong>Zdá sa, že nie je vôbec jednoduché rozlíšiť, čo v&nbsp;živote je viac a čo menej dôležité.</strong></p>
+
+<p>Súhlasím. Mladí ľudia, určite pod vplyvom médií, reklamy, ale aj rovesníkov, si potrpia viac na kvalitné topánky, oblečenie, telefón, ako na kvalitnú potravu. Väčšina ekonómov posudzuje životnú úroveň podľa HDP na jedného obyvateľa, ale málokto hovorí o&nbsp;kvalite života, a to je rozdiel. Keď jem kvalitnú potravinu, pijem čistú vodu, dýcham čistý vzduch, mám viac, ako keď mám najnovší iphone, najnovšie tenisky, drahý oblek, tie mi z&nbsp;dlhodobého hľadiska nedajú to, čo tieto „drobnosti“.</p>
+
+
+
+<p><strong>Prečo je dnes ťažké získať na farmu ľudí aj hlboko na vidieku, ktorý je ďaleko od miest? Prečo je taká averzia voči farmám už aj na dedinách?</strong></p>
+
+<p>Všetko má rub aj líce, aj farmy. V&nbsp;Kozárovciach je mliečny automat, ľudia ho využívajú, lenže rubom čerstvého mlieka je občas závan vzduchu z&nbsp;farmy. Keď dávame do pôdy hnojovicu, snažíme sa to urobiť čo najrýchlejšie, čo najmenej otravovať ľudí nepríjemným zápachom. Pravda, na dedine začína bývať čoraz viac ľudí z&nbsp;mesta, ktorí sa sťažujú, že ráno ich prebudí kikiríkanie susedovho kohúta. Kupovali si dom s&nbsp;tým, že budú žiť vo vysnívanom romantickom prostredí, a zabudli, že jeho súčasťou sú poľnohospodári a ľudia, čo ešte doma chovajú hydinu. Sú predsa na vidieku. Alebo ako si ho vlastne predstavovali?</p>
+
+
+
+<p><strong>Jedno je žiť na vidieku a druhé pracovať na farme. Ako urobiť prácu príťažlivejšou?</strong></p>
+
+<p>Ak neponúkneme mladým ľuďom adekvátnu mieru techniky a vybavenia fariem, tak ich tam nikdy neprilákame. Stará, opotrebovaná technológia ich odstraší. Mladých nadchne supertechnika, taká v&nbsp;poľnohospodárstve je, musíme o&nbsp;tom viac hovoriť, ukazovať ju a súčasne povedať, že riadiť kombajn je nie menej ako kamión, že špičkový chovateľ dobytka je ako športovec, ktorý dosahuje rekordné výsledky.</p>
+
+
+
+<p>Moderné farmy nie sú lacné, ich rozvoj všade vo vyspelom svete podporujú z&nbsp;verejných zdrojov. Na Slovensku si musíme povedať, či chceme, alebo nechceme mať potravinovú sebestačnosť, či budeme dovážať lacnejšiu produkciu na úkor slovenskej a či táto cesta je správna. Máme vari dosť skúseností s&nbsp;rôznymi nekvalitnými potravinami z&nbsp;dovozu, aby sme si vedeli odpovedať na to, ktorá cesta je lepšia.</p>
+
+
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

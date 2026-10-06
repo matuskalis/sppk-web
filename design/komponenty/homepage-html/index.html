@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPPK – Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #ffffff;
+      color: #000000;
+      font-weight: 500;
+      line-height: 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f0f0f0; }
+    ::-webkit-scrollbar-thumb { background: #009a44; border-radius: 4px; border: 2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background: #007a35; }
+    * { scrollbar-width: thin; scrollbar-color: #009a44 #f0f0f0; }
+
+    /* ── Upper Header ────────────────────────────────────────────────── */
+    .upper-header { background-color: #00a751; width: 100%; }
+    .upper-header-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: stretch; justify-content: space-between; min-height: 80px;
+    }
+    .upper-header-logo { display: flex; align-items: center; gap: 16px; padding: 14px 0; }
+    .logo-link { display: flex; align-items: center; flex-shrink: 0; text-decoration: none; }
+    .logo-link img { height: clamp(48px,7vw,80px); width: auto; max-width: 180px; display: block; object-fit: contain; border-radius: 12px; }
+    .header-name { color: #fff; font-family: 'DM Serif Display', serif; font-size: 26px; font-weight: 400; letter-spacing: 0.01em; line-height: 1.25; text-align: center; }
+    .upper-header-right { display: flex; flex-direction: column; justify-content: center; align-items: flex-end; gap: 10px; padding: 12px 0; }
+    .upper-search-row { display: flex; align-items: center; gap: 20px; }
+    .search-box { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 4px; padding: 6px 12px; }
+    .search-box input { background: none; border: none; outline: none; color: #fff; font-size: 13px; font-family: 'Inter', sans-serif; width: 180px; letter-spacing: 0.02em; }
+    .search-box input::placeholder { color: rgba(255,255,255,0.6); }
+    .lang-btns { display: flex; gap: 4px; align-items: center; }
+    .lang-btn { background: none; border: none; color: #fff; font-size: 11.5px; font-weight: 500; letter-spacing: 0.08em; cursor: pointer; padding: 2px 0; font-family: 'Inter', sans-serif; transition: opacity 0.2s; }
+    .lang-btn:hover { opacity: 0.7; }
+    .lang-sep { color: rgba(255,255,255,0.4); font-size: 12px; }
+    .upper-social-row { display: flex; align-items: center; justify-content: flex-end; }
+    .login-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.35); border-radius: 4px; color: #fff; cursor: pointer; height: 32px; padding: 0 12px; display: flex; align-items: center; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; font-family: 'Inter', sans-serif; white-space: nowrap; transition: background 0.2s; margin-right: 12px; }
+    .login-btn:hover { background: rgba(255,255,255,0.25); }
+    .social-icons { display: flex; align-items: center; gap: 8px; }
+    .social-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; color: #fff; cursor: pointer; height: 32px; width: 32px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+    .social-btn:hover { background: rgba(255,255,255,0.28); }
+
+    /* Login modal */
+    .login-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 9998; }
+    .login-backdrop.open { display: block; }
+    .login-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 9999; width: min(340px,92vw); background: #fff; border-radius: 12px; box-shadow: 0 24px 64px rgba(0,0,0,0.22),0 4px 16px rgba(0,0,0,0.10); border: 1px solid rgba(0,154,68,0.15); padding: 24px 22px 20px; }
+    .login-modal.open { display: block; }
+    .login-modal h3 { font-size: 16px; font-weight: 700; color: #000; margin-bottom: 4px; }
+    .login-subtitle { font-size: 12px; color: #888; margin-bottom: 20px; }
+    .login-label { display: block; font-size: 12px; font-weight: 600; color: #000; margin-bottom: 6px; letter-spacing: 0.02em; }
+    .login-input { width: 100%; height: 40px; border: 1px solid rgba(0,0,0,0.18); border-radius: 8px; padding: 0 12px; font-size: 13.5px; color: #000; font-family: 'Inter', sans-serif; outline: none; background: #fafafa; margin-bottom: 14px; transition: border-color 0.2s; }
+    .login-input:focus { border-color: #009a44; }
+    .login-util-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .login-util-row label { display: flex; align-items: center; gap: 7px; cursor: pointer; font-size: 12px; color: #444; }
+    .login-util-row a { font-size: 12px; color: #777; text-decoration: none; }
+    .login-util-row a:hover { color: #009a44; }
+    .login-submit { width: 100%; height: 42px; background: #009a44; border: none; border-radius: 8px; color: #fff; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.2s; }
+    .login-submit:hover { background: #007a35; }
+    .login-close-row { margin-top: 12px; text-align: center; }
+    .login-close-btn { background: none; border: none; font-size: 11.5px; color: #aaa; cursor: pointer; font-family: 'Inter', sans-serif; }
+
+    /* ── NavBar ──────────────────────────────────────────────────────── */
+    .navbar { background: #fff; border-bottom: 1px solid #009a44; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 12px rgba(0,154,68,0.06); }
+    .navbar-inner { max-width: 1200px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; }
+    .desktop-nav-links { display: flex; align-items: center; gap: 2px; justify-content: center; }
+    .nav-btn { background: none; border: none; color: #000; font-size: 13.5px; font-weight: 400; letter-spacing: 0.03em; cursor: pointer; padding: 16px 18px; font-family: 'Inter', sans-serif; transition: color 0.2s; position: relative; }
+    .nav-btn:hover { color: #009a44; }
+    .nav-btn.active { color: #009a44; font-weight: 600; }
+    .nav-btn.active::after { content: ''; position: absolute; bottom: 0; left: 18px; right: 18px; height: 2px; background: #009a44; border-radius: 1px 1px 0 0; }
+    .hamburger-btn { display: none; background: none; border: none; cursor: pointer; padding: 14px 8px; flex-direction: column; gap: 5px; align-items: center; justify-content: center; }
+    .hamburger-btn span { display: block; width: 24px; height: 2.5px; background: #000; border-radius: 2px; transition: transform 0.25s ease, opacity 0.2s ease; }
+    .hamburger-btn.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+    .hamburger-btn.open span:nth-child(2) { opacity: 0; }
+    .hamburger-btn.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+    .mobile-active-label { display: none; font-size: 14px; font-weight: 600; color: #009a44; padding: 16px 0; }
+    .mobile-drawer { display: none; flex-direction: column; border-top: 1px solid rgba(0,154,68,0.15); background: #fff; padding: 8px 0 12px; }
+    .mobile-drawer.open { display: flex; }
+    .drawer-btn { background: none; border: none; text-align: left; padding: 13px 24px; font-size: 15px; font-weight: 400; color: #000; cursor: pointer; font-family: 'Inter', sans-serif; border-left: 3px solid transparent; transition: color 0.15s, background 0.15s; }
+    .drawer-btn:hover { background: rgba(0,154,68,0.05); }
+    .drawer-btn.active { font-weight: 700; color: #009a44; border-left-color: #009a44; }
+
+    /* ── Hero Carousel ───────────────────────────────────────────────── */
+    .hero-carousel { position: relative; width: 100%; height: 520px; overflow: hidden; background: #1a2a1f; }
+    .carousel-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events: none; }
+    .carousel-slide.active { opacity: 1; pointer-events: auto; }
+    .carousel-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .carousel-overlay { position: absolute; inset: 0; background: linear-gradient(to right,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.2) 60%,transparent 100%); }
+    .carousel-caption { position: absolute; bottom: 72px; left: 64px; max-width: 560px; }
+    .carousel-caption h2 { font-family: 'DM Serif Display', serif; font-size: 38px; font-weight: 400; color: #fff; line-height: 1.2; margin-bottom: 12px; }
+    .carousel-caption p { font-size: 16px; color: rgba(255,255,255,0.85); line-height: 1.6; font-weight: 300; }
+    .carousel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; color: #fff; width: 44px; height: 44px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; backdrop-filter: blur(4px); }
+    .carousel-arrow:hover { background: rgba(0,154,68,0.7); }
+    .carousel-arrow.prev { left: 20px; }
+    .carousel-arrow.next { right: 20px; }
+    .carousel-dots { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+    .carousel-dot { height: 8px; border-radius: 4px; border: none; background: rgba(255,255,255,0.5); cursor: pointer; padding: 0; transition: all 0.3s; width: 8px; }
+    .carousel-dot.active { background: #009a44; width: 28px; }
+
+    /* ── Main content grid ───────────────────────────────────────────── */
+    .main-section { max-width: 1200px; margin: 0 auto; padding: 60px 24px 80px; }
+    .main-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 60px; align-items: start; }
+    .news-heading { margin: 0 0 32px; font-family: 'DM Serif Display', serif; font-size: 28px; font-weight: 400; color: #000; }
+
+    /* Featured article */
+    .featured-article { display: flex; flex-direction: column; padding-bottom: 36px; margin-bottom: 36px; border-bottom: 2px solid rgba(0,154,68,0.15); cursor: pointer; }
+    .featured-img { width: 100%; height: 340px; border-radius: 14px; overflow: hidden; background: #e6f5ed; margin-bottom: 22px; flex-shrink: 0; }
+    .featured-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .featured-article:hover .featured-img img { transform: scale(1.04); }
+    .article-date { font-size: 13px; font-weight: 600; color: #009a44; letter-spacing: 0.02em; margin-bottom: 12px; display: block; }
+    .featured-article h3 { margin: 0 0 14px; font-family: 'DM Serif Display', serif; font-size: 30px; font-weight: 400; color: #000; line-height: 1.2; transition: color 0.2s; }
+    .featured-article:hover h3 { color: #009a44; }
+    .featured-article p { margin: 0 0 16px; font-size: 16px; color: #444; line-height: 1.7; font-weight: 400; }
+    .read-more { background: none; border: none; color: #009a44; font-size: 14px; font-weight: 700; letter-spacing: 0.05em; cursor: pointer; padding: 0; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 4px; }
+
+    /* Compact article */
+    .article-row { display: flex; gap: 20px; padding-bottom: 28px; margin-bottom: 28px; border-bottom: 1px solid rgba(0,0,0,0.07); cursor: pointer; }
+    .article-row:last-child { border-bottom: none; }
+    .article-row-text { flex: 1; min-width: 0; }
+    .article-row-text .article-date { font-size: 12px; margin-bottom: 8px; }
+    .article-row h3 { margin: 0 0 8px; font-family: 'DM Serif Display', serif; font-size: 20px; font-weight: 400; color: #000; line-height: 1.3; transition: color 0.2s; }
+    .article-row:hover h3 { color: #009a44; }
+    .article-row p { margin: 0; font-size: 13.5px; color: #555; line-height: 1.6; font-weight: 300; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .article-row .read-more { margin-top: 10px; font-size: 12.5px; font-weight: 600; }
+    .article-thumb-wrap { width: 130px; height: 88px; border-radius: 12px; overflow: hidden; flex-shrink: 0; background: #e6f5ed; }
+    .article-thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .article-row:hover .article-thumb-wrap img { transform: scale(1.04); }
+
+    /* ── Sidebar ─────────────────────────────────────────────────────── */
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+    .card { background: #fff; border-radius: 12px; padding: 20px 18px; box-shadow: 0 2px 16px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.04); }
+
+    /* Calendar */
+    .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .cal-title { font-size: 21px; font-weight: 700; color: #000; }
+    .cal-nav { display: flex; align-items: center; gap: 4px; }
+    .cal-nav button { background: none; border: none; cursor: pointer; color: #009a44; font-size: 16px; line-height: 1; padding: 2px 5px; border-radius: 4px; }
+    .cal-nav button:hover { background: rgba(0,154,68,0.08); }
+    .cal-month { font-size: 11.5px; font-weight: 700; color: #009a44; white-space: nowrap; letter-spacing: 0.03em; }
+    .cal-dow { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; margin-bottom: 4px; }
+    .cal-dow span { text-align: center; font-size: 9.5px; font-weight: 700; color: #aaa; letter-spacing: 0.07em; padding: 2px 0; }
+    .cal-dow .sun { color: #009a44; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
+    .cal-day { text-align: center; font-size: 12px; font-weight: 500; color: #222; width: 28px; height: 28px; line-height: 28px; margin: 0 auto; border-radius: 50%; cursor: default; }
+    .cal-day.weekend { color: #bbb; }
+    .cal-day.event { background: #009a44; color: #fff; font-weight: 700; cursor: pointer; }
+    .cal-empty { width: 28px; height: 28px; }
+
+    /* Member / Arbitration cards */
+    .card-title { font-size: 21px; font-weight: 700; color: #000; margin-bottom: 6px; line-height: 1.3; }
+    .card-link { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: #009a44; text-decoration: none; letter-spacing: 0.04em; border-bottom: 1px solid rgba(0,154,68,0.3); padding-bottom: 1px; }
+    .card-link:hover { color: #007a35; border-bottom-color: #007a35; }
+
+    /* Weather */
+    .weather-title { font-size: 14px; font-weight: 700; color: #000; margin-bottom: 14px; letter-spacing: 0.02em; }
+    .radar-placeholder { width: 100%; border-radius: 12px; background: #f4f7f5; border: 1px solid rgba(0,154,68,0.18); height: 130px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; margin-bottom: 14px; }
+    .radar-placeholder span { font-size: 10.5px; color: #aaa; letter-spacing: 0.04em; font-style: italic; }
+    .weather-strip { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; text-align: center; }
+    .weather-day { padding: 8px 4px; border-radius: 8px; background: rgba(0,154,68,0.06); }
+    .weather-day .wi { font-size: 16px; line-height: 1.2; }
+    .weather-day .wd { font-size: 9.5px; font-weight: 600; color: #777; letter-spacing: 0.05em; margin-top: 2px; }
+    .weather-day .wt { font-size: 12px; font-weight: 700; color: #000; margin-top: 1px; }
+
+    /* Banners */
+    .banners { display: flex; flex-direction: column; gap: 10px; }
+    .banner-link { display: block; text-decoration: none; border-radius: 12px; overflow: hidden; }
+    .banner-link.green { border: 1px solid rgba(0,154,68,0.22); background: #fafefb; }
+    .banner-link.grey { border: 1px solid rgba(0,0,0,0.10); background: #fafafa; }
+    .banner-inner { height: 72px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 0 16px; }
+    .banner-inner span { font-size: 11px; color: #999; letter-spacing: 0.03em; font-style: italic; }
+
+    /* Commodity tracker */
+    .market-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .market-title { font-size: 21px; font-weight: 700; color: #000; }
+    .market-badge { font-size: 10px; font-weight: 600; color: #009a44; background: rgba(0,154,68,0.09); padding: 3px 8px; border-radius: 20px; letter-spacing: 0.05em; text-transform: uppercase; }
+    .commodity-row { padding: 11px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+    .commodity-row:last-child { border-bottom: none; }
+    .commodity-name { font-size: 13px; font-weight: 700; color: #000; margin-bottom: 4px; }
+    .commodity-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .commodity-exchange { font-size: 10.5px; color: #999; font-weight: 400; }
+    .commodity-price-row { display: flex; align-items: center; gap: 5px; }
+    .commodity-price { font-size: 13px; font-weight: 700; color: #000; }
+    .market-footer { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: space-between; }
+    .market-footer span { font-size: 10px; color: #bbb; }
+    .market-footer a { font-size: 10.5px; font-weight: 600; color: #009a44; text-decoration: none; letter-spacing: 0.04em; }
+    .market-footer a:hover { color: #007a35; }
+
+    /* ── Partners Footer ─────────────────────────────────────────────── */
+    .partners-section { background: #fff; padding: 64px 24px 56px; border-top: 1px solid rgba(0,0,0,0.08); }
+    .partners-inner { max-width: 1100px; margin: 0 auto; }
+    .partners-heading { text-align: center; margin-bottom: 44px; }
+    .partners-heading h2 { font-size: 26px; font-weight: 700; letter-spacing: 0.14em; color: #009a44; text-transform: uppercase; }
+    .partners-grid { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid rgba(0,0,0,0.07); border-radius: 16px; overflow: hidden; background: #fff; box-shadow: 0 4px 24px rgba(0,0,0,0.05); }
+    .sponsor-cell { display: flex; align-items: center; justify-content: center; padding: 24px 20px; min-height: 110px; text-decoration: none; transition: transform 0.25s; }
+    .sponsor-cell:hover { transform: translateY(-2px); }
+    .sponsor-cell.br { border-right: 1px solid rgba(0,0,0,0.06); }
+    .sponsor-cell.bb { border-bottom: 1px solid rgba(0,0,0,0.06); }
+    .sponsor-inner { width: 100%; height: 72px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.04); overflow: hidden; padding: 10px 16px; transition: box-shadow 0.25s; }
+    .sponsor-cell:hover .sponsor-inner { box-shadow: 0 6px 24px rgba(0,154,68,0.14),0 1px 4px rgba(0,0,0,0.06); }
+    .sponsor-inner img { max-width: 100%; max-height: 52px; object-fit: contain; display: block; }
+    .sponsor-inner .sponsor-name { font-size: 11px; font-weight: 600; color: #009a44; text-align: center; line-height: 1.3; padding: 0 8px; }
+    .sponsor-last { grid-column: 2; }
+
+    /* ── Legal Footer ────────────────────────────────────────────────── */
+    .legal-bar { background: #009a44; padding: 18px 24px; text-align: center; }
+    .legal-bar-inner { display: flex; align-items: center; justify-content: center; gap: 4px; flex-wrap: wrap; }
+    .legal-bar-inner a { color: #fff; font-size: 12.5px; font-weight: 400; letter-spacing: 0.03em; text-decoration: none; transition: opacity 0.2s; }
+    .legal-bar-inner a:hover { opacity: 0.7; }
+    .legal-sep { color: rgba(255,255,255,0.4); font-size: 12px; }
+
+    /* ── Mobile ──────────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .upper-header-inner { flex-direction: column; align-items: center; padding: 14px 16px; gap: 12px; min-height: unset; }
+      .upper-header-logo { justify-content: center; padding: 0; }
+      .upper-header-right { align-items: center; width: 100%; gap: 8px; }
+      .upper-search-row { justify-content: center; flex-wrap: wrap; gap: 8px; }
+      .search-box input { width: 140px; }
+      .upper-social-row { justify-content: center; }
+      .desktop-nav-links { display: none !important; }
+      .hamburger-btn { display: flex !important; }
+      .mobile-active-label { display: block !important; }
+      .main-grid { grid-template-columns: 1fr !important; gap: 40px; }
+      .featured-img { height: 220px; }
+      .hero-carousel { height: 260px; }
+      .carousel-caption { left: 24px; bottom: 48px; }
+      .carousel-caption h2 { font-size: 22px; }
+      .carousel-caption p { font-size: 13px; }
+      .main-section { padding: 32px 16px 48px; }
+      .partners-grid { grid-template-columns: repeat(2,1fr); }
+      .sponsor-last { grid-column: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  UPPER HEADER                                                      -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<header class="upper-header">
+  <div class="upper-header-inner">
+
+    <div class="upper-header-logo">
+      <a href="/" class="logo-link" title="SPPK – domovská stránka">
+        <img src="src/imports/sppk_logo_2__2_.png" alt="SPPK – domovská stránka" />
+      </a>
+      <div>
+        <div class="header-name">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Slovenská poľnohospodárska</div>
+        <div class="header-name">a potravinárska komora</div>
+      </div>
+    </div>
+
+    <div class="upper-header-right">
+      <div class="upper-search-row">
+        <div class="search-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" placeholder="Hľadať na sppk.sk..." />
+        </div>
+        <div class="lang-btns">
+          <button class="lang-btn">EN</button><span class="lang-sep">|</span>
+          <button class="lang-btn">DE</button><span class="lang-sep">|</span>
+          <button class="lang-btn">FR</button>
+        </div>
+      </div>
+      <div class="upper-social-row">
+        <button class="login-btn" onclick="toggleLogin()">Prihlásenie</button>
+        <div class="social-icons">
+          <button class="social-btn" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </button>
+          <button class="social-btn" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </button>
+          <button class="social-btn" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<!-- Login backdrop + modal -->
+<div class="login-backdrop" id="loginBackdrop" onclick="closeLogin()"></div>
+<div class="login-modal" id="loginModal">
+  <h3>Prihlásenie</h3>
+  <p class="login-subtitle">Prihláste sa do svojho účtu SPPK</p>
+  <label class="login-label">Prihlasovacie meno (E-mail):</label>
+  <input class="login-input" type="email" placeholder="vas@email.sk" />
+  <label class="login-label">Heslo:</label>
+  <input class="login-input" type="password" placeholder="••••••••" />
+  <div class="login-util-row">
+    <label><input type="checkbox" style="accent-color:#009a44;width:14px;height:14px;" /><span>Zapamätať si</span></label>
+    <a href="#">Zabudnuté heslo?</a>
+  </div>
+  <button class="login-submit">Prihlásiť sa</button>
+  <div class="login-close-row"><button class="login-close-btn" onclick="closeLogin()">Zavrieť ✕</button></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  NAVBAR                                                            -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="desktop-nav-links" id="desktopNav"></div>
+    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+    <span class="mobile-active-label" id="mobileLabel">Úvod</span>
+  </div>
+  <div class="mobile-drawer" id="mobileDrawer"></div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  HERO CAROUSEL                                                     -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="hero-carousel" id="heroCarousel">
+  <!-- slides injected by JS -->
+  <button class="carousel-arrow prev" onclick="carouselPrev()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <button class="carousel-arrow next" onclick="carouselNext()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <div class="carousel-dots" id="carouselDots"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  MAIN CONTENT                                                      -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<section class="main-section">
+  <div class="main-grid">
+
+    <!-- Article feed -->
+    <div>
+      <h2 class="news-heading">Najnovšie správy</h2>
+      <div id="articleFeed"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+      <!-- ① Calendar -->
+      <div class="card">
+        <div class="cal-header">
+          <span class="cal-title">Kalendár</span>
+          <div class="cal-nav">
+            <button>‹</button>
+            <span class="cal-month">September 2026</span>
+            <button>›</button>
+          </div>
+        </div>
+        <div class="cal-dow">
+          <span>Po</span><span>Ut</span><span>St</span><span>Št</span><span>Pi</span><span>So</span><span class="sun">Ne</span>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+
+      <!-- ② Member -->
+      <div class="card">
+        <div class="card-title">Staň sa členom SPPK</div>
+        <a href="#" class="card-link">Viac informácií o členstve →</a>
+      </div>
+
+      <!-- ③ Arbitration -->
+      <div class="card">
+        <div class="card-title">Rozhodcovský súd SPPK</div>
+        <a href="#" class="card-link">Zistiť viac o rozhodcovskom súde →</a>
+      </div>
+
+      <!-- ④ Agrometeo -->
+      <div class="card">
+        <div class="weather-title">Agrometeo / Počasie</div>
+        <div class="radar-placeholder">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#009a44" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.45">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+          </svg>
+          <span>images/weather-radar-map.png</span>
+        </div>
+        <div class="weather-strip">
+          <div class="weather-day"><div class="wi">☀️</div><div class="wd">Pi</div><div class="wt">27°</div></div>
+          <div class="weather-day"><div class="wi">⛅</div><div class="wd">So</div><div class="wt">23°</div></div>
+          <div class="weather-day"><div class="wi">🌧</div><div class="wd">Ne</div><div class="wt">19°</div></div>
+          <div class="weather-day"><div class="wi">☀️</div><div class="wd">Po</div><div class="wt">26°</div></div>
+          <div class="weather-day"><div class="wi">🌤</div><div class="wd">Ut</div><div class="wt">24°</div></div>
+        </div>
+      </div>
+
+      <!-- ⑤ Campaign banners -->
+      <div class="banners">
+        <a href="#" class="banner-link green">
+          <div class="banner-inner">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#009a44" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.55">
+              <rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18"/><circle cx="8" cy="15" r="2"/><path d="M14 13h4M14 17h4"/>
+            </svg>
+            <span>images/hovorme-o-jedle.png</span>
+          </div>
+        </a>
+        <a href="#" class="banner-link grey">
+          <div class="banner-inner">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.55">
+              <rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18"/><circle cx="8" cy="15" r="2"/><path d="M14 13h4M14 17h4"/>
+            </svg>
+            <span>images/podpor-svoj-odbor.png</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- ⑥ Commodity tracker -->
+      <div class="card">
+        <div class="market-header">
+          <span class="market-title">Trhové informácie</span>
+          <span class="market-badge">Poľnoinfo.sk</span>
+        </div>
+        <div id="commodities"></div>
+        <div class="market-footer">
+          <span>Aktualizované: 5. sep. 2026, 08:30</span>
+          <a href="#">Všetky ceny →</a>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  PARTNERS FOOTER                                                   -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="partners-section">
+  <div class="partners-inner">
+    <div class="partners-heading"><h2>Naši partneri</h2></div>
+    <div class="partners-grid" id="partnersGrid"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  LEGAL FOOTER                                                      -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<footer class="legal-bar">
+  <div class="legal-bar-inner">
+    <span style="display:flex;align-items:center;gap:4px;"><a href="#">Copyright ©2026 SPPK</a><span class="legal-sep">|</span></span>
+    <span style="display:flex;align-items:center;gap:4px;"><a href="#">Prevádzka: IZPI Nitra</a><span class="legal-sep">|</span></span>
+    <span><a href="#">Cookies</a></span>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  SCRIPTS                                                           -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<script>
+/* ── Login ── */
+function toggleLogin() {
+  document.getElementById("loginBackdrop").classList.toggle("open");
+  document.getElementById("loginModal").classList.toggle("open");
+}
+function closeLogin() {
+  document.getElementById("loginBackdrop").classList.remove("open");
+  document.getElementById("loginModal").classList.remove("open");
+}
+
+/* ── NavBar ── */
+const NAV_LINKS = ["Úvod","Tlačové správy","Dokumenty","Legislatíva","O nás","Kontakt"];
+let activeLink = "Úvod";
+let menuOpen = false;
+
+function setNavActive(link) {
+  activeLink = link;
+  document.getElementById("mobileLabel").textContent = link;
+  renderDesktopNav();
+  renderDrawer();
+  menuOpen = false;
+  document.getElementById("mobileDrawer").classList.remove("open");
+  document.getElementById("hamburgerBtn").classList.remove("open");
+}
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  document.getElementById("mobileDrawer").classList.toggle("open", menuOpen);
+  document.getElementById("hamburgerBtn").classList.toggle("open", menuOpen);
+}
+function renderDesktopNav() {
+  document.getElementById("desktopNav").innerHTML = NAV_LINKS.map(l =>
+    `<button class="nav-btn${l===activeLink?' active':''}" onclick="setNavActive('${l}')">${l}</button>`
+  ).join("");
+}
+function renderDrawer() {
+  document.getElementById("mobileDrawer").innerHTML = NAV_LINKS.map(l =>
+    `<button class="drawer-btn${l===activeLink?' active':''}" onclick="setNavActive('${l}')">${l}</button>`
+  ).join("");
+}
+renderDesktopNav();
+renderDrawer();
+
+/* ── Carousel ── */
+const SLIDES = [
+  { img:"https://images.unsplash.com/photo-1581377193405-19de7f09248f?w=1600&h=700&fit=crop&auto=format", title:"Slovenské poľnohospodárstvo v roku 2026", sub:"Komora zastupuje záujmy farmárov a potravinárskych podnikov na celom Slovensku" },
+  { img:"https://images.unsplash.com/photo-1560693225-b8507d6f3aa9?w=1600&h=700&fit=crop&auto=format", title:"Podpora udržateľného rozvoja vidieka", sub:"Strategické programy pre modernizáciu agrárneho sektora 2026–2030" },
+  { img:"https://images.unsplash.com/photo-1557844352-761f2565b576?w=1600&h=700&fit=crop&auto=format", title:"Kvalitné slovenské potraviny pre európske trhy", sub:"Certifikácia, kontrola kvality a medzinárodné zastúpenie slovenských výrobcov" },
+  { img:"https://images.unsplash.com/photo-1629708204327-b94ee06c2cf6?w=1600&h=700&fit=crop&auto=format", title:"Zelená budúcnosť slovenského vidieka", sub:"Inovatívne prístupy k ekologickému poľnohospodárstvu a ochrane pôdy" },
+];
+let current = 0;
+const carousel = document.getElementById("heroCarousel");
+const dotsEl = document.getElementById("carouselDots");
+
+// inject slides
+SLIDES.forEach((s, i) => {
+  const div = document.createElement("div");
+  div.className = "carousel-slide" + (i===0?" active":"");
+  div.innerHTML = `<img src="${s.img}" alt="${s.title}"><div class="carousel-overlay"></div><div class="carousel-caption"><h2>${s.title}</h2><p>${s.sub}</p></div>`;
+  carousel.insertBefore(div, carousel.querySelector(".carousel-arrow.prev"));
+});
+
+// dots
+function renderDots() {
+  dotsEl.innerHTML = SLIDES.map((_,i) =>
+    `<button class="carousel-dot${i===current?' active':''}" onclick="goSlide(${i})"></button>`
+  ).join("");
+}
+function goSlide(n) {
+  document.querySelectorAll(".carousel-slide")[current].classList.remove("active");
+  current = (n + SLIDES.length) % SLIDES.length;
+  document.querySelectorAll(".carousel-slide")[current].classList.add("active");
+  renderDots();
+}
+function carouselPrev() { goSlide(current - 1); }
+function carouselNext() { goSlide(current + 1); }
+renderDots();
+setInterval(() => goSlide(current + 1), 5000);
+
+/* ── Articles ── */
+const ARTICLES = [
+  { date:"14. augusta 2026", title:"SPPK víta schválenie nových podporných opatrení pre farmárov zo Slovenského parlamentu", snippet:"Slovenská poľnohospodárska a potravinárska komora pozitívne hodnotí prijatie balíka podporných opatrení, ktoré pomôžu malým a stredným podnikom v agrárnom sektore.", img:"https://images.unsplash.com/photo-1595976281013-8024ecc02575?w=200&h=160&fit=crop&auto=format" },
+  { date:"12. augusta 2026", title:"Výsledky agrárneho summitu v Bratislave: Nové partnerstvá pre export potravín do EÚ", snippet:"Na medzinárodnom summite v Bratislave boli podpísané kľúčové dohody, ktoré otvoria nové exportné koridory pre slovenských výrobcov potravín na európskych trhoch.", img:"https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=200&h=160&fit=crop&auto=format" },
+  { date:"9. augusta 2026", title:"SPPK upozorňuje na legislatívne zmeny v oblasti pesticídov platné od septembra 2026", snippet:"Nové nariadenia Európskej komisie výrazne obmedzia používanie určitých látok. Komora organizuje bezplatné konzultácie pre svojich členov v celej SR.", img:"https://images.unsplash.com/photo-1578853464641-ef3e6d47e16c?w=200&h=160&fit=crop&auto=format" },
+  { date:"7. augusta 2026", title:"Správa: Tehoročná úroda obilia prekonala priemery posledných piatich rokov", snippet:"Prvé výsledky žatevnej sezóny 2026 ukazujú nadpriemerné výnosy pšenice a kukurice. Komora zverejní komplexnú analýzu koncom mesiaca.", img:"https://images.unsplash.com/photo-1646684662890-a5076aef9010?w=200&h=160&fit=crop&auto=format" },
+  { date:"4. augusta 2026", title:"Pozvánka na výstavu AGROKOMPLEX 2026 – záštita SPPK", snippet:"Medzinárodná agrárna výstava AGROKOMPLEX v Nitre sa koná od 20. do 24. augusta. SPPK je generálnym partnerom podujatia a bude mať vlastný pavilón.", img:"https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=200&h=160&fit=crop&auto=format" },
+];
+
+const feed = document.getElementById("articleFeed");
+
+// Featured (first)
+(function() {
+  const a = ARTICLES[0];
+  feed.innerHTML = `
+    <article class="featured-article">
+      <div class="featured-img"><img src="${a.img.replace('w=200&h=160','w=900&h=400')}" alt="${a.title}" /></div>
+      <span class="article-date">${a.date}</span>
+      <h3>${a.title}</h3>
+      <p>${a.snippet}</p>
+      <button class="read-more">Čítať viac →</button>
+    </article>
+  `;
+})();
+
+// Compact rows
+ARTICLES.slice(1).forEach(a => {
+  const el = document.createElement("article");
+  el.className = "article-row";
+  el.innerHTML = `
+    <div class="article-row-text">
+      <span class="article-date">${a.date}</span>
+      <h3>${a.title}</h3>
+      <p>${a.snippet}</p>
+      <button class="read-more">Čítať viac →</button>
+    </div>
+    <div class="article-thumb-wrap"><img src="${a.img}" alt="${a.title}" /></div>
+  `;
+  feed.appendChild(el);
+});
+
+/* ── Calendar ── */
+(function() {
+  const SEP_OFFSET = 1;
+  const EVENT_DAYS = new Set([3,10]);
+  const grid = document.getElementById("calGrid");
+  for (let i = 0; i < SEP_OFFSET; i++) {
+    const b = document.createElement("div"); b.className = "cal-empty"; grid.appendChild(b);
+  }
+  for (let d = 1; d <= 30; d++) {
+    const col = (d + SEP_OFFSET - 1) % 7;
+    const el = document.createElement("div");
+    el.className = "cal-day" + (EVENT_DAYS.has(d) ? " event" : col >= 5 ? " weekend" : "");
+    el.textContent = d;
+    grid.appendChild(el);
+  }
+})();
+
+/* ── Commodities ── */
+(function() {
+  const data = [
+    { name:"Pšenica potravinárska", exchange:"Burza MATIF Paríž",          price:"215,50 € / t", up:true  },
+    { name:"Kukurica kŕmna",        exchange:"Burza MATIF Paríž",          price:"183,25 € / t", up:false },
+    { name:"Repka ozimná",          exchange:"Burza MATIF Paríž",          price:"442,00 € / t", up:true  },
+    { name:"Jačmeň kŕmny",          exchange:"Komoditná burza Bratislava", price:"168,80 € / t", up:false },
+    { name:"Slnečnica",             exchange:"Komoditná burza Bratislava", price:"394,50 € / t", up:true  },
+  ];
+  const up   = `<svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,1 9,9 1,9" fill="#009a44"/></svg>`;
+  const down = `<svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,9 9,1 1,1" fill="#e03434"/></svg>`;
+  const c = document.getElementById("commodities");
+  data.forEach(item => {
+    const r = document.createElement("div"); r.className = "commodity-row";
+    r.innerHTML = `<div class="commodity-name">${item.name}</div><div class="commodity-meta"><span class="commodity-exchange">${item.exchange}</span><div class="commodity-price-row"><span class="commodity-price">${item.price}</span>${item.up?up:down}</div></div>`;
+    c.appendChild(r);
+  });
+})();
+
+/* ── Partners grid ── */
+(function() {
+  const SPONSORS = [
+    { name:"Visegrad Fund",                                      img:"src/imports/visegrad_fund.png",                                    href:"https://www.visegradfund.org" },
+    { name:"UniCredit Bank",                                     img:"src/imports/unicredit_bank.jpg",                                   href:"https://www.unicreditbank.sk" },
+    { name:"ČSOB",                                               img:"src/imports/csob.png",                                             href:"https://www.csob.sk" },
+    { name:"Slovenský cukrovarnícky spolok",                     img:"src/imports/slovensky_cukrovarsky_spolok.png",                     href:"#" },
+    { name:"Združenie výrobcov liehu a liehovín na Slovensku",  img:"src/imports/zdruzenie-vyrobcov-liehu-a-liehovin-na-slovensku.gif", href:"#" },
+    { name:"Agrokomplex",                                        img:"src/imports/agrokomplex.png",                                      href:"https://www.agrokomplex.sk" },
+    { name:"Agropoistenie",                                      img:"src/imports/agropoistenie.png",                                    href:"#" },
+    { name:"Združenie pestovateľov obilnín",                     img:"src/imports/zpo.jpg",                                              href:"#" },
+    { name:"Poľnoinfo",                                          img:"src/imports/polnoinfo.png",                                        href:"https://www.polnoinfo.sk" },
+    { name:"CAC Finance",                                        img:"src/imports/cac_finance.jpg",                                      href:"#" },
+  ];
+  const grid = document.getElementById("partnersGrid");
+  SPONSORS.forEach((s, i) => {
+    const isLast = i === SPONSORS.length - 1;
+    const col = i % 3;
+    const isLastRow = i >= 9;
+    const a = document.createElement("a");
+    a.href = s.href; a.target = "_blank"; a.rel = "noopener noreferrer";
+    a.className = "sponsor-cell" + (!isLast && col < 2 ? " br" : "") + (!isLastRow ? " bb" : "") + (isLast ? " sponsor-last" : "");
+    const inner = document.createElement("div"); inner.className = "sponsor-inner";
+    const img = document.createElement("img");
+    img.src = s.img; img.alt = s.name; img.title = s.name;
+    img.onerror = function() {
+      this.style.display = "none";
+      const sp = document.createElement("span"); sp.className = "sponsor-name"; sp.textContent = s.name;
+      inner.appendChild(sp);
+    };
+    inner.appendChild(img); a.appendChild(inner); grid.appendChild(a);
+  });
+})();
+</script>
+
+</body>
+</html>
+

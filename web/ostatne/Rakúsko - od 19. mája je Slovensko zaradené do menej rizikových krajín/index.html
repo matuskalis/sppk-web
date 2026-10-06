@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rakúsko - od 19. mája je Slovensko zaradené do menej rizikových krajín — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../index.html">Úvod</a><span>/</span><a href="../index.html">ostatne</a><span>/</span>Rakúsko - od 19. mája je Slovensko zaradené do menej rizikových krajín</nav>
+
+  <article>
+    <h1 class="doc-title">Rakúsko - od 19. mája je Slovensko zaradené do menej rizikových krajín</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Ministerstvo vnútra</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">19. mája 2021</span></p>
+
+    <div class="doc-body">
+
+<h2 class="doc-subheading">Podmienky vstupu do Rakúska</h2>
+
+
+
+<p><strong>Dočasné sprísnené kontroly na slovensko-rakúskych hraničných priechodoch od 9. januára 2021 do odvolania</strong></p>
+
+
+
+<p>Vzhľadom na nepriaznivý vývoj pandemickej situácie COVID-19 v Českej Republike a na Slovensku pristúpilo Rakúsko od 9. januára 2021 k sprísneniu kontrol na svojich hraničných priechodoch s týmito susednými krajinami. Prekračovať hranicu bude možné výlučne na oficiálnych hraničných priechodoch pričom je možné dočasné uzatvorenie malých lokálnych priechodov. Už zavedené zdravotné hliadky vykonávané príslušníkmi rakúskej armády budú dočasne posilnené aj príslušníkmi rakúskej polície. Je preto potrebné pri plánovaní cesty počítať s možným väčším časovým zdržaním. Ostatné nižšie uvedené informácie o vstupe do Rakúska a výnimkách sú platné.</p>
+
+
+
+<p><strong>Jarovce – Kittsee&nbsp;</strong>(hraničný priechod malý) je počas znovuzavedenia hraničných kontrol zo strany rakúskych orgánov v prevádzke od 6.00 do 22.00 hod</p>
+
+
+
+<p><strong>Hraničný priechod Moravský Svätý Ján - Hohenau&nbsp;</strong>je otvorený od 5.00 do 24.00 hod.</p>
+
+
+
+<p><strong>Záhorská Ves - Angern an der March</strong>&nbsp;je otvorený v pondelok až piatok, od 08.00 - 11.00 hod a od&nbsp; 15.00. - 18.00 hod., a to iba pre výkon poľnohospodárskych a lesníckych prác</p>
+
+
+
+<p><strong>Dočasné uzatvorenie malých lokálnych hraničných priechodov od 14. januára 2021:</strong><br>
+&nbsp;</p>
+
+<ul>
+	<li>Devínska Nová Ves - Schloss Hof – cyklomost</li>
+	<li>Devín – Hainburg (riečna doprava)</li>
+</ul>
+
+
+
+<p><a href="https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&amp;Gesetzesnummer=20011303" class="external" target="_blank" rel="noopener noreferrer">Aktuálny text vyhlášky o vstupe do Rakúska počas COVID-19 - právny predpis v nemeckom jazyku</a><br>
+(platnosť od 19. mája 2021 predbežne do najbližšej novelizácie ustanovení)</p>
+
+
+
+<h2 class="doc-subheading">Od 19. mája 2021 je Slovensko zaradené z pohľadu Rakúska do menej rizikových krajín „skupiny A“</h2>
+
+
+
+<p><strong>Preradenie Slovenska do skupiny menej rizikových krajín</strong>&nbsp;z hľadiska rizika šírenia ochorenia COVID-19 znamená pre vstup do Rakúska (za podmienky, že daná osoba sa za posledných minimálne 10 dní nezdržiavala v žiadnej inej krajine, ako v SR alebo inej menej rizikovej krajine tak, ako sú aktuálne vymenované v prílohe/“Anlage A“ príslušnej spolkovej vyhlášky v jej platnom znení)&nbsp;<strong>upustenie od povinnosti povinnej karantény.</strong></p>
+
+
+
+<p><strong>V platnosti zostáva však i naďalej povinná registrácia („Pre-Travel-Clearance“) a súčasne splnenie tzv. podmienky 3G,</strong>&nbsp;ako je vysvetlené nižšie.</p>
+
+
+
+<h2 class="doc-subheading">Podmienka preukázania sa aspoň jedným z „3G“ (uzdravený/zaočkovaný/otestovaný)</h2>
+
+
+
+<p>Splnenie tejto podmienky (názov 3G je z nemeckého jazyka) spočíva v povinnosti pre každú osobu vstupujúcu do Rakúska s cieľom v krajine zotrvať (nie len tranzitovať) preukázať sa na hraničnom vstupe aspoň jedným z nasledovných písomných potvrdení:<br>
+&nbsp;</p>
+
+<ul>
+	<li><strong>zaočkovanie proti COVID-19&nbsp;</strong>(„Geimpft“) oficiálne EMA uznanou vakcínou, alebo vakcínou uznanou Svetovou zdravotníckou organizáciou na núdzové použitie, a to od 22. dňa po zaočkovaní prvou dávkou (na max. 3 mesiace s tým, že zaočkovanie aj druhou dávkou predlžuje lehotu na max. 9 mesiacov od prvej dávky). V prípade jednodávkových vakcín (napr. Johnson &amp; Johnson ) od 22. dňa po zaočkovaní a na max. 9 mesiacov. Pre osoby, ktoré minimálne 21 dní pred prvou dávkou očkovania mali pozitívny SARS-CoV-2 test alebo mali preukázané protilátky na ochorenie COVID-19 platí potvrdenie po dobu max. 9 mesiacov od zaočkovania;</li>
+	<li><strong>prekonanie ochorenia COVID-19</strong>&nbsp;(„Genesen“), a to do 6 mesiacov od potvrdenej infekcie alebo na základe pozitívneho protilátkového testu nie staršieho ako max. 3 mesiace;</li>
+	<li><strong>otestovanie na COVID-19</strong>&nbsp;(„Getestet“), a to PCR testom nie starším ako 72 hodín, AG testom nie starším ako 48 hodín;</li>
+</ul>
+
+
+
+<p><strong>Aké potvrdenie sa vyžaduje?</strong></p>
+
+<p>Potvrdenia v zmysle danej vyhlášky a vyššie uvedeného 3G musia byť vyhotovené&nbsp;<strong>v nemeckom alebo anglickom jazyku a potvrdené lekárom, resp. atestovaným zdravotníckym zariadením.</strong></p>
+
+
+
+<figure class="doc-figure"></figure><p>&nbsp;<a href="https://www.mzv.sk/documents/10182/4131445/210518-3G-Rakusko-vzor-potvrdenia-DE.pdf/def3475b-815c-4af0-9c54-0d2c8f91458a" class="external" target="_blank" rel="noopener noreferrer">Vzor potvrdenia v nemeckom jazyku</a>&nbsp;&nbsp;(pdf; 821.45 KB)</p>
+
+<figure class="doc-figure"></figure><p>&nbsp;<a href="https://www.mzv.sk/documents/10182/4131445/210518-3G-Rakusko-vzor-potvrdenia-EN.pdf/065e40a6-a6f9-4275-8fe0-6fb1025bda83" class="external" target="_blank" rel="noopener noreferrer">Vzor potvrdenia v anglickom jazyku</a>&nbsp;&nbsp;(pdf; 816.88 KB)</p>
+
+
+
+<h2 class="doc-subheading">Povinná registrácia (<em>Pre-Travel-Clearance</em>)</h2>
+
+<p><strong>Každá osoba, vstupujúca na územie Rakúska, sa pred začiatkom cesty musí elektronicky registrovať.</strong>&nbsp;</p>
+
+
+
+<p>Pri registrácii je potrebné uviesť nasledovné údaje: meno a priezvisko, dátum narodenia, adresa, dátum vstupu, dátum odchodu, krajina, z ktorej občan cestuje, pobyt počas posledných 10 dní pred vstupom, kontaktné údaje, lekárske potvrdenie.</p>
+
+
+
+<p>Registráciu je potrebné vykonať najskôr 72 hodín pred plánovaným vstupom do Rakúska.</p>
+
+
+
+<p><a href="https://entry.ptc.gv.at/" class="external" target="_blank" rel="noopener noreferrer">Online registračný formulár v nemčine</a></p>
+
+<p><a href="https://entry.ptc.gv.at/en.html" class="external" target="_blank" rel="noopener noreferrer">Online registračný formulár v angličtine</a></p>
+
+
+
+<p>Vygenerované potvrdenie o odoslaní elektronickej registrácie musí predložiť občan pri kontrole. Po 28 dňoch sú potvrdenia a formuláre orgánmi nenávratne vymazané.</p>
+
+
+
+<p>Povinná registrácia sa týka všetkých kategórií osôb vstupujúcich do Rakúska, t.j. aj výnimiek ako pendleri a ďalšie (nižšie vymenované kategórie cestujúcich).</p>
+
+
+
+<p><strong>V prípade, že nie je možná online registrácia,</strong>&nbsp;je stále možné vytlačiť si a vyplniť nasledovný formulár, ktorý predložíte počas kontroly na hraniciach.</p>
+
+
+
+<p><a href="https://www.ris.bka.gv.at/Dokumente/BgblAuth/BGBLA_2021_II_68/COO_2026_100_2_1833846.html" class="external" target="_blank" rel="noopener noreferrer">Registračný formulár na stiahnutie v nemčine</a></p>
+
+<p><a href="https://www.ris.bka.gv.at/Dokumente/BgblAuth/BGBLA_2021_II_52/COO_2026_100_2_1833005.html" class="external" target="_blank" rel="noopener noreferrer">Registračný formulár na stiahnutie v angličtine</a></p>
+
+
+
+<p><strong>Všeobecnou výnimkou je tranzit (nepodlieha ani on-line registrácii).&nbsp;</strong>Viac informácií o podmienkach tranzitu si prečítajte v texte nižšie.</p>
+
+
+
+<p><strong>Povinnosť vyplniť povinnú registráciu</strong>&nbsp;<em>Pre-Travel-Clearance</em>&nbsp;a preukázať sa pri vstupe do Rakúska potvrdením o splnení aspoň jednej z podmienok „3G" majú naďalej&nbsp;<strong>aj napríklad nasledovné kategórie osôb:</strong></p>
+
+
+
+<ul>
+	<li>opatrovateľky/-telia pracujúci 24-hodinových v turnusoch v rodinách (t.j. nie pendlujúcich za prácou v zariadeniach, kde sú zamestnaní, pravidelne sem dochádzajú na dennej báze a kde sú pravidelne automaticky testovaní),</li>
+	<li>sezónni pracovníci a výkon osobitných pracovných činností (v zmysle inštrukcií rakúskeho objednávateľa),</li>
+	<li>osoby vstupujúce do Rakúska z dôvodu neodkladných medicínskych výkonov a ošetrenia + 1 sprevádzajúca osoba (<figure class="doc-figure"></figure>&nbsp;<a href="https://www.mzv.sk/documents/10182/4131445/210215-Anlage-H-Confirmation-of-absolute-medical-necessity-to-use-medical-service.pdf/4d6f187c-1d38-4d61-aac7-3aef68b9915e" class="external" target="_blank" rel="noopener noreferrer">Vzor tlačiva - medical certificate)</a>&nbsp;&nbsp;(pdf; 719.81 KB)&nbsp;V týchto prípadoch je potrebné postupovať v zmysle inštrukcií daného medicínskeho zariadenia/lekára.</li>
+</ul>
+
+
+
+<p><strong>Z ustanovenia o povinnej karanténe a zároveň aj z povinnosti povinnej registrácie (Pre-Travel-Clearance) a preukázania sa potvrdením o splnení aspoň jednej z podmienok „3G“&nbsp;</strong>sú úplne&nbsp;<strong>vyňaté nasledovné kategórie osôb:</strong></p>
+
+
+
+<ul>
+	<li><strong>osobný tranzit cez Rakúsko</strong>&nbsp;(vrátane tranzitu na/z letiska Schwechat) pod podmienkou, že bude cesta uskutočnená bez zbytočných zastavení, t.j. musí byť v maximálnej možnej miere minimalizované riziko infekcie,</li>
+	<li><strong>organizovaný tranzit osôb aj tovarov s cieľovou krajinou inou ako je Rakúsko,</strong></li>
+	<li><strong>vycestovanie z Rakúska</strong>&nbsp;definitívne pod podmienkou, že pri vycestovaní bude v čo možno najväčšej miere minimalizované riziko infekcie,</li>
+	<li>potvrdený osobitný záujem Rakúskej republiky,</li>
+	<li>nariadená úradná repatriácia osôb, vrátane úradného sprievodu,</li>
+	<li>posádky vozidiel záchranných zložiek.</li>
+	<li>príslušníci jednotiek humanitárnej pomoci,</li>
+</ul>
+
+
+
+<p>Podľa novej právnej úpravy, sú od 19. mája 2021 povinní preukázať sa&nbsp;<strong>potvrdením splnenia jednej z podmienok „3G“</strong>&nbsp;(ako je vysvetlené vyššie) aj nasledovné kategórie osôb:</p>
+
+
+
+<ul>
+	<li><strong>vstupujúci do krajiny za účelom splnenia súdne alebo úradne nariadenej povinnosti</strong>. V takýchto prípadoch informuje o podmienkach vstupu do Rakúska úrad, ktorý predvolanie vystavil (napr. predvolania pred súd a pod.);</li>
+	<li>(§7)&nbsp;<strong>vstupujúci do krajiny z náhlych neočakávaných obzvlášť závažných a vopred nenaplánovateľných rodinných dôvodov&nbsp;</strong>(úmrtie, ochorenie, opatera v núdzovej situácii).</li>
+</ul>
+
+
+
+<p>Ak daná osoba nebude mať pri vstupe do Rakúska negatívny test, bude do Rakúska vpustená, avšak test si musí na jeho území dať vyhotoviť najneskôr do 24 hodín.</p>
+
+
+
+<h2 class="doc-subheading">Podmienky vstupu pre pendlerov</h2>
+
+
+
+<p>Ako pendler je v platnej spolkovej vyhláške definovaná&nbsp;<strong>osoba pravidelne cestujúca do Rakúska z dôvodov zamestnania, vzdelávania alebo z rodinných dôvodov či z titulu návštevy životného partnera. </strong>Osobitné zvýhodnenia pre pendlerov zostali zachované aj v novelizovanom znení danej spolkovej vyhlášky. V platnosti zostala povinnosť preukázať sa potvrdením o splnení aspoň jednej z podmienok „3G“ len raz za 7 dní, ako aj interval povinnej online registrácie (Pre-Travel-Clearance) najmenej raz za 28 dní alebo (ako doteraz) pri každej zmene údajov zadávaných pri registrácii (vrátane nového potvrdenia o splnení „3G“).</p>
+
+<p><br>
+Vzor potvrdenia v zmysle danej vyhlášky a princípu splnenia a aspoň jedného z „3G“</p>
+
+<figure class="doc-figure"></figure><p>&nbsp;<a href="https://www.mzv.sk/documents/10182/4131445/210518-3G-Rakusko-vzor-potvrdenia-DE.pdf/def3475b-815c-4af0-9c54-0d2c8f91458a" class="external" target="_blank" rel="noopener noreferrer">Vzor potvrdenia v nemeckom jazyku</a>&nbsp;&nbsp;(pdf; 821.45 KB)</p>
+
+<figure class="doc-figure"></figure><p>&nbsp;<a href="https://www.mzv.sk/documents/10182/4131445/210518-3G-Rakusko-vzor-potvrdenia-EN.pdf/065e40a6-a6f9-4275-8fe0-6fb1025bda83" class="external" target="_blank" rel="noopener noreferrer">Vzor potvrdenia v anglickom jazyku</a>&nbsp;&nbsp;(pdf; 816.88 KB)</p>
+
+
+
+<h2 class="doc-subheading">Užitočné odkazy k cestovaniu</h2>
+
+<p><a href="https://www.bmeia.gv.at/reise-aufenthalt/reisewarnungen/" class="external" target="_blank" rel="noopener noreferrer">Aktuálne cestovné odporúčania na webovej stránke Spolkového ministerstva zahraničných Rakúska</a></p>
+
+<p><a href="https://www.sozialministerium.at/Informationen-zum-Coronavirus/Coronavirus---Haeufig-gestellte-Fragen/FAQ--Reisen-und-Tourismus.html" class="external" target="_blank" rel="noopener noreferrer">Aktuálne informácie vrátane často kladených otázok pre osoby cestujúce do a cez Rakúsko, ako aj pre turistov v nemeckom jazyku</a></p>
+
+<p><a href="https://www.iatatravelcentre.com/world.php" class="external" target="_blank" rel="noopener noreferrer">Aktuálne podmienky vstupu – všetky krajiny sveta (anglický jazyk)</a></p>
+
+<p><a href="https://reopen.europa.eu/en" class="external" target="_blank" rel="noopener noreferrer">Aktuálny zoznam štátov na webovej stránke Re-open EU</a></p>
+
+
+
+<p><strong>Pripomíname, že pri cestovaní do Rakúska je potrebné naďalej mať na zreteli aj&nbsp;</strong><a href="https://www.mzv.sk/cestovanie/covid19/karantena-podmienky-navratu-do-sr" class="external" target="_blank" rel="noopener noreferrer">aktuálne podmienky vstupu/návratu do SR</a></p>
+
+
+
+<h2 class="doc-subheading">Doprava a tranzit cez územie Rakúska</h2>
+
+<p><strong>Vnútroštátna vlaková a autobusová doprava</strong>&nbsp;premáva v rámci Rakúska podľa platných grafikonov. Medzinárodná hromadná doprava medzi Slovenskom a Rakúskom naďalej premáva.</p>
+
+
+
+<p><a href="https://www.cestovny-poriadok.sk/" class="external" target="_blank" rel="noopener noreferrer">Vyhľadávanie cestovného spojenia medzi Slovenskom a Rakúskom</a></p>
+
+<p><a href="https://fahrplan.oebb.at/bin/query.exe/dn" class="external" target="_blank" rel="noopener noreferrer">Vyhľadávanie vlakového alebo autobusového spojenia na webovej stránke OBB</a></p>
+
+
+
+<p>Pre všetky osoby<strong>&nbsp;platí povolenie voľného tranzitu cez Rakúsko bez povinosti&nbsp;online registrácie karantény alebo predloženia negatívneho PCR či antigénového testu, s tým, že je nariadené prejsť cez Rakúsko bez zbytočného zastavovania&nbsp;</strong>(o čom rakúska polícia/úrady môžu vyžadovať prehlásenie ústne alebo písomné).</p>
+
+<p>Na stiahnutie:&nbsp;<a href="https://www.mzv.sk/documents/10182/4131445/200824+Entry+and+transit+declaration_EN.pdf/58857357-1ad4-4fcd-a953-106ae9b28007" class="external" target="_blank" rel="noopener noreferrer">Prehlásenie o tranzite</a></p>
+
+
+
+<h2 class="doc-subheading">Letisko Schwechat a letecký tranzit</h2>
+
+<p>Vzhľadom k pretrvávajúcej pandémii COVID-19 a súvisiacim obmedzeniam dôrazne&nbsp;<strong>odporúčame priebežne sledovať informácie a</strong><strong>&nbsp;komunikovať vždy s príslušnou leteckou spoločnosťou alebo cestovnou kanceláriou</strong>&nbsp;(poznámka: pri väčšine letov sa predpokladá povinnosť mať nasadené rúško na palube počas celého letu) a pred odletom sa riadiť aktuálnymi informáciami letiska Schwechat.&nbsp;<strong>Poskytnúť podrobné informácie o podmienkach CHECK-IN a BOARDINGu je predovšetkým povinná daná letecká spoločnosť alebo prípadne cestovná kancelária, ktorá obstarala letenku alebo danú cestu.&nbsp;</strong>Na vstupe do budovy letiska Viedeň – Schwechat prebieha plošné kontrolné meranie teploty.</p>
+
+
+
+<p><strong>Naďalej je možná obojstranná preprava zo SR na letisko, príp. odvoz pasažierov z letiska&nbsp;<em>Flughafen Wien Schwechat</em>, resp. aj na/z viedenskej Hlavnej stanice (<em>Hauptbahnhof Wien</em>), ale len vtedy, ak cestujúci, resp. ich doprovod hneď po dovoze/odvoze opustí územie Rakúska bez zbytočných nevyhnutných zastávok</strong>&nbsp;(v zásade iba potreba WC, a to aj na samotnom letisku). Rakúske úrady definitívne potvrdili, že táto možnosť spadá pod kategóriu výnimky: TRANZIT. Odporúča sa však na rodinného príslušníka čakať v aute, čo najrýchlejšie opustiť letisko/stanicu a mať určite pri sebe (kópie) letenky alebo iného cestovného dokladu.&nbsp;Pre návrat na Slovensko je potrebné riadiť sa platnou vyhláškou Úradu verejného zdravotníctva SR.&nbsp;Konkrétne informácie pre návrat na Slovensko sú uvedené aj v texte nižšie v časti Podmienky návratu do SR.</p>
+
+
+
+<p>V zmysle&nbsp;<a href="http://www.mzv.sk/documents/10182/4131445/BMKUEMIT_Entry-requirements-EN_do+31122020.pdf/996cca47-fe30-490b-83f9-c67aa7725d0e" class="external" target="_blank" rel="noopener noreferrer">platného usmernenia spolkového ministerstva pre klímu, životné prostredie, energetiku, mobilitu, inovácie a technológie</a>&nbsp;platí:&nbsp;<strong>„všeobecná výnimka bez ohľadu na krajinu pôvodu, (bez testu na COVID-19 a bez povinnosti karantény v Rakúsku) pre všetkých tranzitných pasažierov, ktorí pristáli na letiskách v Rakúsku a dôveryhodne preukážu okamžité vycestovanie/pokračovanie cesty z Rakúska&nbsp;</strong>(bod 6, písmeno e&nbsp;<strong>citovaného usmernenia</strong>).</p>
+
+
+
+<p>Za dôveryhodné preukázanie sa považuje platný cestovný lístok do SR, potvrdenie o objednanom taxi vozidle a v prípade odvozu súkromným vozidlom z letiska do SR podľa rakúskej cudzineckej polície bude stačiť v prípade kontroly čestné prehlásenie o bezodkladnom pokračovaní do SR (aj ústnou formou).</p>
+
+
+
+<p><strong>Pre prípad, že letecká spoločnosť bude mať odlišný postoj k platnej vyššie uvedenej rakúskej legislatíve&nbsp;</strong>(poznámka: stretávame sa s tým, že v pravidlách IATA sú nepresne uvedené údaje a letecké spoločnosti podľa nich neoprávnene postupujú) a pri check-in a boardingu bude od cestujúcich na Schwechat požadovať negatívny test na COVID-19, odporúčame predložiť vyššie spomenuté usmernenie Spolkového ministerstva pre klímu, životné prostredie, energetiku, mobilitu, inovácie a technológie Rakúska v anglickom jazyku, ktoré potvrdzuje, že tranzit cez letisko Schwechat priamo ďalej do cieľovej krajiny je povolený pre všetkých. Najnovšie je však povinnosť predložiť,&nbsp; pri vstupe do Rakúska prehlásenie o tranzite (je možné, že niektoré letecké spoločnosti ho budú vyžadovať u liniek do Rakúska už pri check-in v mieste odletu)</p>
+
+
+
+<figure class="doc-figure"></figure><p>Na stiahnutie:&nbsp;&nbsp;<a href="https://www.mzv.sk/documents/10182/4131445/200824+Entry+and+transit+declaration_EN.pdf/58857357-1ad4-4fcd-a953-106ae9b28007" class="external" target="_blank" rel="noopener noreferrer">Prehlásenie o tranzite</a>&nbsp;&nbsp;(pdf; 348.03 KB)</p>
+
+<p>&nbsp;<br>
+Platený test na COVID-19 je možné absolvovať aj po prílete priamo na letisku Schwechat</p>
+
+
+
+<p><a href="https://www.viennaairport.com/en/coronatest" class="external" target="_blank" rel="noopener noreferrer">Informácie o testovaní na COVID-19 na letisku Schwechat</a></p>
+
+
+
+<p><a href="https://www.austrian.com/us/en/travel-coronatimes" class="external" target="_blank" rel="noopener noreferrer">Informácie na webovej stránke spoločnosti Austrian Airlines</a></p>
+
+
+
+<h2 class="doc-subheading">Opatrenia v Rakúsku</h2>
+
+<p><a href="https://www.sozialministerium.at/Informationen-zum-Coronavirus/Coronavirus---Aktuelle-Ma%C3%9Fnahmen.html" class="external" target="_blank" rel="noopener noreferrer">Aktuálne informácie k platným opatreniam proti šíreniu COVID-19 na území Rakúska</a></p>
+
+
+
+<p>Vláda Rakúska vyzýva všetkých občanov chovať sa naďalej maximálne zodpovedne a zvážiť potrebu cestovať (t.j. necestovať, resp. nepresúvať sa zbytočne).</p>
+
+
+
+<h2 class="doc-subheading">UPOZORNENIA</h2>
+
+<p><strong>V platnosti zatiaľ zostávajú obmedzenia (platné od 31. marca 2021) pri opustení Tirolska.</strong>&nbsp;Aktuálne je možné opustiť túto spolkovú krajinu aj naďalej len s p<strong>latným negatívnym COVID-19 testom, pričom táto povinnosť platí po novom už aj pre východné Tirolsko.&nbsp;</strong>Testy sú potrebné aj pri cestách medzi východným a severným Tirolskom. Zrušená bola testovacia povinnosť pri cestách z tirolského okresu Kufstein do iných častí Tirolska. Negatívne testy sú platné max. 72 hodín (PCR) alebo 48 hodín (AG). Opatrenie platí predbežne do 24. apríla. Bližšie informácie, ako aj v tejto súvislosti často kladené otázky (napr. tranzit, povinnosti pre pendlerov, krátke návštevy v Tirolsku) nájdete na&nbsp;<a href="https://corona-ampel.gv.at/aktuelle-massnahmen/regionale-zusaetzliche-massnahmen/tirol/" class="external" target="_blank" rel="noopener noreferrer">webovej stránke Corona Ampel</a>. Rovnako tu nájdete aj zoznam obcí, pri opustení ktorých je povinný test aj v rámci Tirolska.</p>
+
+
+
+<p><strong>Naďalej zostáva zachovaná povinnosť nosiť ochranu úst a nosa (rúško), ako aj povinnosť odstupu 2 metre.&nbsp;</strong>Týka sa to všetkých verejných priestranstiev vonku aj vo vnútri a pokiaľ ide o osoby nežijúce v jednej spoločnej domácnosti. Ochrana úst a nosa sa nariaďuje najmenej typu FFP2, pokiaľ nie je vyslovene určené inak. Zakázané bolo používanie nepriliehavých priesvitných plastových rúšok a štítov.</p>
+
+
+
+<p>Od 25. januára 2021 v uzatvorených priestoroch platí povinnosť</p>
+
+<ul>
+	<li>nosiť ochranné masky typu FFP2 (pre sociálne slabé skupiny obyvateľov budú poskytované zadarmo),</li>
+	<li>dodržiavať odstup osôb minimálne dva metre</li>
+	<li>odporúčanie práce z domu (<em>HomeOffice</em>) všade tam, kde je to charakter pracovnej činnosti umožňuje.</li>
+</ul>
+
+<p>&nbsp;<br>
+Povinnosť nosiť priliehavú ochranu úst a nosa (rúško) platí predovšetkým:</p>
+
+<ul>
+	<li>v uzatvorených prostriedkoch hromadnej prepravy osôb (mesto i mimo mesto, diaľkové i výletné spoje a lanovky) + povinnosť odstupu jeden meter, vo vozidlách taxi a podobných služieb + max. 2 osoby v jednom rade sedadiel, v lekárňach, v zdravotníckych a opatrovateľských zariadeniach, na poštách, na úradoch, v školách, v bankách, v obchodoch a prípadne pri využívaní iných povolených služieb (pokuta za tento priestupok je vo výške 3 600 eur),</li>
+	<li><strong>na všetkých pracoviskách s viac ako jednou osobou v jednej miestnosti;</strong></li>
+	<li>v produkčných podnikoch a výrobných prevádzkach je rozhodnutie o nosení rúška na zamestnávateľovi (vzhľadom na špecifiká výrobného procesu).</li>
+</ul>
+
+
+
+<p><a href="https://www.integrationsfonds.at/coronainfo/" class="external" target="_blank" rel="noopener noreferrer">Detailné informácie ku COVID-19 pre Rakúsko, vrátane ochranných opatrení a podrobných informácií k priebehu plošného testovania</a></p>
+
+
+
+<p>Pre niektoré profesijné skupiny je povinné pravidelné testovanie (napr. učitelia, poskytovatelia služieb ako maséri, kaderníci a pod.). Zároveň sa bude testovať aj v miestach kde vzniknú ohniská nákazy. V súvislosti s pandémiou vypomáha armáda.</p>
+
+
+
+<h2 class="doc-subheading">Základné pravidlo „3G“ pre uvoľnenie od 19. mája 2021</h2>
+
+
+
+<p>Základné pravidlo spočíva v princípe „3G“ (v nemeckom jazyku), t.j. najvoľnejší režim majú osoby s nízkym epidemickým rizikom spĺňajúce aspoň jedno z nasledovných kritérií:</p>
+
+<ul>
+	<li><strong>po zaočkovaní („Geimpft“) oficiálne EMA uznanou vakcínou</strong>,&nbsp;alebo vakcínou uznanou Svetovou zdravotníckou organizáciou na núdzové použitie, a to od 22. dňa po zaočkovaní prvou dávkou (na max. 3 mesiace s tým, že zaočkovanie aj druhou dávkou predlžuje lehotu na max. 9 mesiacov od prvej dávky). V prípade jednodávkových vakcín (napr. Johnson &amp; Johnson ). Pre zaočkované osoby, ktoré ochorenie COVID-19 už prekonali platí pravidlo max. uvoľnenia pravidiel od 22. dňa po zaočkovaní na dobu max. 9 mesiacov,</li>
+	<li><strong>po prekonaní COVID-19 („Genesen“)</strong>, a to do 180 dní po ochorení preukázanom aj testom a na základe lekárskeho potvrdenia alebo na základe predloženia protilátkového testu nie staršieho ako max. 3 mesiace,&nbsp; Pre tieto osoby navyše platí výnimka s povinnosti testovania na max. 6 mesiacov,</li>
+	<li><strong>po testovaní („Getestet“)</strong>, a to PCR testom nie starším ako 72 hodín, AG testom od atestovaného miesta nie starším ako 48 hodín alebo AG-samotest s výsledkom zaregistrovaným v úradnej databáze nie starší ako 24h.</li>
+</ul>
+
+
+
+
+
+<h2 class="doc-subheading">Prehľad základných antiepidemických opatrení po uvoľnení od 19. mája 2021:</h2>
+
+<ul>
+	<li>žiadne obmedzenie vychádzania,</li>
+	<li>dodržiavanie odstupu minimálne 2 metre (okrem sedenia v reštauráciách a na podujatiach s vyhradenými miestami),</li>
+	<li>všeobecná záverečná od 22.00 hod platná pre prevádzky, podujatia a športové zariadenia,</li>
+	<li>medzi 22.00 -&nbsp;5.00 hod. sú v interiéri povolené výlučne stretnutia max. 4 osôb + 6 maloletých,</li>
+	<li>povinnosť nosiť ochranu úst a nosa / FFP2 zostáva nezmenená,</li>
+	<li>registračná povinnosť pri návšteve: gastro, hotelov, podujatí, voľnočasových indoor zariadení (okrem tých s malým rizikom šírenia COVID-19 ako ZOO a kúpalísk a pod. – tu platí 20 m<sup>2</sup>&nbsp;na návštevníka),&nbsp;</li>
+	<li>pri kolotočoch a podobných prevádzkach platí: sedenie obmiesto ( 1 miesto vždy voľné),</li>
+	<li>vstup do gastro prevádzok iba osoby spĺňajúce „3G“ pravidlo. Za stolom max. 4 osoby + 6 maloletých (výnimka: spoločná domácnosť),</li>
+	<li>vonku max. 10 osôb + 10 maloletých spolu na jednom mieste,</li>
+	<li>medzi 22.00 - 5.00 hod je povolené vyzdvihnutie jedla aj stánky s rýchlobčerstvením (bez povinnosti testu)</li>
+	<li>obchody: neplatí pravidlo „3G“ ale pravidlo 20 m<sup>2</sup>&nbsp;na zákazníka,</li>
+	<li>služby s telesným kontaktom: platí pravidlo „3G“ + 10 m<sup>2</sup>&nbsp;na zákazníka,</li>
+</ul>
+
+
+
+<h2 class="doc-subheading">Semaforový systém a lokálne opatrenia</h2>
+
+
+
+<p><strong>UPOZORŇUJEME</strong>, že aktuálne sa aj v Rakúsku rozširujú rôzne nebezpečnejšie a často infekčnejšie mutácie koronavírusu, čo môže spôsobiť&nbsp;<strong>nepredvídateľné situácie</strong>&nbsp;(napr. aj typu<strong>&nbsp;dočasných špeciálnych obmedzení v určitých regiónoch</strong>&nbsp;Rakúska či ich úplných dočasných<strong>&nbsp;karanténnych uzáver)</strong>.</p>
+
+
+
+<p>Pre celú krajinu platí&nbsp;tzv. semaforový monitorovací a informačný systém pre občanov. Tento systém zobrazuje na&nbsp;<a href="https://vis.csh.ac.at/corona-ampel/" class="external" target="_blank" rel="noopener noreferrer">interaktívnej mape Rakúska</a>&nbsp;jednotlivé okresy vo farbách semaforu, kde zelenou sú zobrazené oblasti s najmenším a červenou s najvyšším výskytom nových prípadov COVID-19.</p>
+
+
+
+<p><strong>Upozorňujeme,</strong>&nbsp;že v červene vyznačených okresoch môžu lokálne byť prísnejšie nastavené povinnosti nosiť ochranu úst a nosa (rúško) i prípadne ďalšie opatrenia, ako vo zvyšku Rakúska. Odporúčame preto všetkým pri plánovaní akejkoľvek cesty do Rakúska pozrieť sa, akou farbou je aktuálne vyznačený cieľ alebo ciele cesty v krajine a zohľadniť to pri svojom správaní v mieste pobytu.</p>
+
+
+
+<h2 class="doc-subheading">Podmienky návratu do SR</h2>
+
+<p><a href="http://www.mzv.sk/cestovanie/covid19/karantena-podmienky-navratu-do-sr" class="external" target="_blank" rel="noopener noreferrer">Informácie o postupe pri návrate do SR</a></p>
+
+
+
+<h2 class="doc-subheading">Výnimka pri preprave osôb na letisko</h2>
+
+<p>Od 18. decembra 2020 sú umožnené krátkodobé výjazdy na najbližšie letiská v susedných štátoch EÚ bez povinnosti karantény po návrate.</p>
+
+
+
+<p><strong>Osoby, zabezpečujúce prepravu iných osôb na medzinárodné letiská na území Českej republiky, Poľska, Maďarska alebo Rakúska&nbsp;</strong>sú však podľa vyhlášky Úradu verejného zdravotníctva povinné najneskôr pred prechodom štátnej hranice zo Slovenskej republiky</p>
+
+<ul>
+	<li>zaregistrovať sa cez formulár&nbsp;<a href="https://naletisko.mzv.sk/" class="external" target="_blank" rel="noopener noreferrer">naletisko.mzv.sk</a>&nbsp;a</li>
+	<li>preukázať sa na požiadanie príslušníkom Policajného zboru SR vytlačeným alebo elektronickým potvrdením o splnení tejto povinnosti a letenkou prepravovanej osoby alebo jej elektronickou kópiou.</li>
+</ul>
+
+
+
+<p>Osoby zabezpečujúce prepravu sú povinné vykonať cestu výhradne cez územie členských štátov EÚ, a to&nbsp;<strong>bez zastavenia, okrem zastavenia na nevyhnutné tankovanie pohonných hmôt a nástup prepravovanej osoby.&nbsp;</strong>Upozorňujeme, že vyplnený formulár nezakladá právny či iný nárok na vstup na územie susedného štátu a rozhodnutie v prípade kontroly na hraniciach prijímajú príslušné policajné orgány susedných štátov.&nbsp;</p>
+
+
+
+<h2 class="doc-subheading">Osoby pravidelne prekračujúce hranice SR</h2>
+
+
+
+<p>Pendleri majú na hraniciach povinnosť&nbsp;<strong>preukázať sa negatívnym antigénovým alebo PCR testom na ochorenie COVID-19.</strong>&nbsp;</p>
+
+
+
+<p>Osoby, ktoré pravidelne prekračujú hranice Slovenska a majú výnimku z domácej izolácie a následného testovania, sa musia preukázať:</p>
+
+<ul>
+	<li>buď negatívnym výsledkom RT-PCR testu nie starším ako 7 dní vykonaným aj mimo územia SR, alebo</li>
+	<li>výsledkom&nbsp;<strong>antigénového testu nie starším ako 7 dní s tým, že bude akceptovaný aj výsledok antigénového testu certifikovaného v krajinách Európskej únie.&nbsp;</strong></li>
+</ul>
+
+
+
+<p>Na stiahnutie:&nbsp;<a href="https://www.mzv.sk/documents/10182/4369283/201203_vyhlaska_hranice_potvrdenie_pendleri.pdf/73d0709a-38b1-4ea9-8835-a46039121f54" class="external" target="_blank" rel="noopener noreferrer">Potvrdenie pre cezhraničných pracovníkov o výkone zamestnania</a></p>
+
+
+
+<p><a href="http://www.mzv.sk/cestovanie/covid19/karantena-podmienky-navratu-do-sr" class="external" target="_blank" rel="noopener noreferrer">Informácie o postupe pri návrate do SR</a></p>
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

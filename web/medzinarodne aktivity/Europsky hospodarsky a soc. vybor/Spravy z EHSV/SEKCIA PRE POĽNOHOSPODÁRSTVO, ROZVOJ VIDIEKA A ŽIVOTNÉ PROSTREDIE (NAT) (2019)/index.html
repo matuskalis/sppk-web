@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEKCIA PRE POĽNOHOSPODÁRSTVO, ROZVOJ VIDIEKA A ŽIVOTNÉ PROSTREDIE (NAT) — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../../index.html">Úvod</a><span>/</span><a href="../../../index.html">medzinarodne aktivity</a><span>/</span><a href="../../index.html">Europsky hospodarsky a soc. vybor</a><span>/</span><a href="../index.html">Spravy z EHSV</a><span>/</span>SEKCIA PRE POĽNOHOSPODÁRSTVO, ROZVOJ VIDIEKA A ŽIVOTNÉ PROSTREDIE (NAT) (2019)</nav>
+
+  <article>
+    <h1 class="doc-title">SEKCIA PRE POĽNOHOSPODÁRSTVO, ROZVOJ VIDIEKA A ŽIVOTNÉ PROSTREDIE (NAT)</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Jarmila Dubravská, zástupkyňa SPPK v EHSV</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">4. marca 2019</span></p>
+
+    <div class="doc-body">
+<p>Vo štvrtok 31. januára 2019 sa uskutočnilo 181. zasadnutie Sekcie pre poľnohospodárstvo, rozvoj vidieka a&nbsp;životné prostredie v&nbsp;budove EHSV v&nbsp;Bruseli. &nbsp;Program rokovania sekcie bol schválený bez pripomienok. &nbsp;</p>
+
+
+
+<p>Schválený program rokovania sekcie:</p>
+
+<ol>
+	<li>Schválenie zápisnice zo 180. schôdze, ktorá sa konala 27. novembra 2018 EESC-2018-0564700-00-PV-TRA</li>
+	<li>Príhovor predsedu sekcie</li>
+	<li>NAT/755 – Podpora zdravého a udržateľného stravovania v EÚ stanovisko z vlastnej iniciatívy EESC-2018-04568-00-00-PA-TRA</li>
+</ol>
+
+<p>Spravodajca: Peter Schmidt</p>
+
+
+
+<p>4. Tematická diskusia na tému „Zdravé a udržateľné stravovanie“</p>
+
+<p>Prezentácie:</p>
+
+<ul>
+	<li>
+	<p>Olav Kjørven, hlavný referent pre stratégie, komisia EAT-Lancet pre potraviny, planétu, zdravie (EAT-Lancet Commission on Food, Planet and Health)</p>
+	</li>
+</ul>
+
+<p>-Fatima Hachem, vysoká úradníčka na oddelení pre výživu a potravinové systémy, FAO</p>
+
+<p>- Stephanie Bodenbach, vedúca sektora Všeobecné potravinové právo a výživa, Európska komisia, GR SANTE</p>
+
+
+
+
+
+<p>5. Diskusia o stanovisku ECO/481 – Ročný prieskum rastu na<br>
+rok 2019 (oznámenie) – spravodajkyňa: Anne Demelenne</p>
+
+
+
+<p>6. Orientačná diskusia o stanovisku NAT/763 – Podpora krátkych a alternatívnych potravinových dodávateľských reťazcov v EÚ: úloha agroekológie (stanovisko z vlastnej iniciatívy)</p>
+
+
+
+<p>7. Rôzne</p>
+
+<p>182. schôdza sekcie sa uskutoční 27. februára 2019 od 10.00 do 17.00 hod. s týmto predbežným programom:</p>
+
+<ul>
+	<li>NAT/754 – Tvorba komplexného rámca Európskej únie v oblasti endokrinných disruptorov</li>
+	<li>Orientačná diskusia o práci EHSV v súvislosti s hodnotením SPP – dokument o politike generačnej výmeny</li>
+	<li>Verejné vypočutie o stanovisku NAT/760 – Diskusný dokument „Smerom k udržateľnej Európe do roku 2030“</li>
+</ul>
+
+
+
+<p>Krátky zápis:</p>
+
+
+
+<p>Bod 1</p>
+
+<p>Zápis z predchádzajúceho rokovania bol schválený bez pripomienok.</p>
+
+
+
+<p>Bod 2</p>
+
+<p>Predseda sekcie zhodnotil rok 2018 a&nbsp;upozornil na systém práce v&nbsp;roku 2019.</p>
+
+
+
+<p>Bod 3</p>
+
+<p>Spravodajca stanoviska predstavil dôvody, prečo bolo pripravené stanovisko zamerané na stravovanie a&nbsp;čo sa očakáva v&nbsp;najbližšom programovacom období.</p>
+
+
+
+<p>Závery a&nbsp;odporúčania:</p>
+
+<p>1.1 Európsky hospodársky a sociálny výbor (EHSV) vo svojom stanovisku na tému <em>Komplexná potravinová politika EÚ</em>, ktoré bolo prijaté v decembri 2017, obhajoval integrovanejší prístup k potravinám v Európskej únii (EÚ). Zdravé a udržateľné stravovanie predstavuje kľúčový pilier takejto potravinovej politiky, pretože naše stravovanie je nevyhnutné orientovať na zlepšovanie – nie poškodzovanie – zdravia ekosystémov a obyvateľov a vitality vidieckych území.</p>
+
+
+
+<p>1.2 &nbsp;Nastal čas na zmenu paradigmy, o čom existujú aj presvedčivé dôkazy. EHSV zdôrazňuje, že Desaťročie opatrení OSN v oblasti výživy, plnenie cieľov OSN v oblasti trvalo udržateľného rozvoja, Parížska dohoda o zmene klímy a nové návrhy o budúcej spoločnej poľnohospodárskej politike tiež prinášajú politický impulz. Pribúdajú aj vedecké dôkazy o naliehavej potrebe transformácie európskych a globálnych potravinových systémov, napríklad v správach Medzivládneho panelu o zmene klímy (IPCC), komisie EAT-Lancet pre potraviny, planétu, zdravie (<em>EAT-Lancet Commission on Food, Planet, Health</em>), Výboru pre svetovú potravinovú bezpečnosť a celosvetovej siete akadémií vied <em>InterAcademies Partnership</em>. V neposlednom rade existuje významný dopyt občianskej spoločnosti (napr. zo strany koalície, ktorú spojil proces Medzinárodného panelu odborníkov na udržateľné potravinové systémy), podniky uznávajú svoje záväzky prispievať k dosiahnutiu zmien (napr. plytvanie potravinami, obehové hospodárstvo, znižovanie obezity, ochrana biodiverzity, rozvoj kultúry atď.) a na regionálnej a miestnej úrovni sa prijímajú opatrenia napríklad prostredníctvom Milánskeho paktu o potravinovej politike miest, miestnych a regionálnych potravinových projektov vo Francúzsku (<em>Projets Alimentaires Territoriaux</em>) a vedúceho postavenia miest sveta zo skupiny C40.</p>
+
+
+
+<p>1.3 EHSV uznáva a podporuje existujúce iniciatívy Komisie na podporu zdravého a udržateľného stravovania, ako je napríklad iniciatíva, aby sa do najnovšieho návrhu reformy SPP začlenili ustanovenia s cieľom „zlepšiť reakcie poľnohospodárstva EÚ na požiadavky spoločnosti týkajúce sa potravín a zdravia vrátane bezpečnosti, výživnosti a udržateľnosti potravín, ako aj dobrých životných podmienok zvierat“. Chýba však koordinovaný prístup k týmto iniciatívam.</p>
+
+
+
+<p>1.4 Zložitosť prepojenia medzi potravinami, zdravím, životným prostredím a spoločnosťou si vyžaduje komplexnejší prístup k stravovaniu, nielen v súvislosti so správaním spotrebiteľov. V snahe zabezpečiť súdržnosť a spoločný cieľ EHSV vyzýva na vypracovanie nových usmernení o udržateľnom stravovaní, v ktorých sa zohľadnia kultúrne a geografické rozdiely medzi členskými štátmi a v rámci nich. Ak sa len zníži využívanie zdrojov vo výrobe a zmenia prísady, nepovedie to k lepším ani zdravším stravovacím návykom.</p>
+
+
+
+<p>1.5 Nové usmernenia o udržateľnom stravovaní by poľnohospodárskym podnikom, spracovateľom, maloobchodníkom a stravovacím službám pomohli k jasnejšiemu smerovaniu. Nový „rámec“ pre výrobu, spracovanie, distribúciu a predaj zdravších a udržateľnejších potravín so spravodlivejšou cenou by bol pre agropotravinársky systém prínosom.</p>
+
+
+
+<p>1.6 EHSV žiada, aby sa vytvorila expertná skupina, ktorá do dvoch rokov zostaví celoeurópske usmernenia o udržateľnom stravovaní. V skupine by mali byť zastúpené aj príslušné profesijné a vedecké subjekty z oblasti výživy, verejného zdravia, životného prostredia a spoločenských vied. EHSV je pripravený podieľať sa na práci takejto expertnej skupiny a sprostredkovať príspevky organizácií občianskej spoločnosti, a to najmä prostredníctvom svojej dočasnej študijnej skupiny Udržateľné potravinové systémy.</p>
+
+
+
+<p>1.7 EHSV opakovane zdôrazňuje, že je dôležité investovať do vzdelávania o udržateľnom stravovaní už od útleho veku s cieľom pomôcť mladým ľuďom oceniť hodnotu potravín. Osobitná pozornosť sa musí venovať zraniteľným skupinám, najmä ľuďom s nízkymi príjmami.</p>
+
+
+
+<p>1.8 EHSV zdôrazňuje, že spoločný európsky prístup pri označovaní potravín, ktorý by zohľadňoval usmernenia o udržateľnom stravovaní, by zlepšil transparentnosť a odradil od používania zbytočne lacných surovín, ktoré nie sú ani zdravé ani udržateľné (napr. transformované tuky, palmový olej a nadmerný obsah cukru). Rozšírenie označovania potravín aj na environmentálne a sociálne aspekty by bolo prínosom pre spotrebiteľov. Pomohlo by im vyberať si zdravšie a udržateľnejšie možnosti.</p>
+
+
+
+<p>1.9 Usmernenia o udržateľnom stravovaní by nielen podporili komerčný sektor, ale vytvorili by aj spoločné a jasné kritériá, ktoré by sa používali vo verejnom obstarávaní. Európa musí postupovať tak, aby boli potraviny v centre záujmu zeleného verejného obstarávania. V tejto súvislosti EHSV naliehavo žiada, aby sa urýchlene prijala revízia kritérií EÚ v oblasti zeleného verejného obstarávania pre potraviny a stravovacie služby.</p>
+
+
+
+<p>1.10 Právne predpisy v oblasti hospodárskej súťaže by nemali byť prekážkou pri vypracúvaní usmernení o udržateľnom stravovaní. Pravidlá by sa mali prispôsobiť tak, aby pomáhali miestnemu hospodárstvu a nebránili udržateľnosti. V záujme zabezpečenia lepšieho rozdelenia pridanej hodnoty medzi zainteresované subjekty v celom potravinovom dodávateľskom reťazci EHSV víta možnosť, ktorá sa v rámci reformy nariadenia o spoločnej organizácii trhov z roku 2013 zaviedla pre všetky odvetvia. Touto reformou sa medziodvetvovým organizáciám umožňuje oznamovať Európskej komisii svoje dohody zamerané na zvýšenie noriem udržateľnosti výrobkov s cieľom ich povolenia podľa pravidiel hospodárskej súťaže. Vďaka výrobkom, ktoré sa vyrábajú udržateľnejším spôsobom z hľadiska noriem v oblasti životného prostredia, zdravia zvierat a kvality, môžu prevádzkovatelia v potravinovom dodávateľskom reťazci získať lepšie ceny. Prednotifikačné rozhovory s Komisiou môžu medziodvetvovým organizáciám pomôcť pri formulovaní možných budúcich oznámení.</p>
+
+
+
+<p>1.11 EHSV zdôrazňuje, že by sa mal zvážiť kompletný súbor nástrojov verejnej správy ako politický nástroj na odrádzanie od výroby a spotreby nezdravých potravín a na podporu zdravých stravovacích návykov. Externalizované náklady na neudržateľné stravovanie sú „skrytou“ záťažou pre spoločnosť, hospodárstvo a životné prostredie a musia sa obmedziť alebo internalizovať. EHSV apeluje na to, aby sa v záujme vykonávania usmernení o udržateľnom stravovaní prijali náležité politické stratégie, najmä s dôrazom na spoločné prínosy pre poľnohospodárov a podniky.</p>
+
+
+
+<p>1.12 Európa presadzuje právo spotrebiteľov na presné informácie. Ak chceme, aby bol výber zdravých a udržateľných potravín normou a najľahšou voľbou, Európa potrebuje otvorený súbor kritérií založených na dôkazoch, napríklad prostredníctvom spoločných usmernení o udržateľnom stravovaní.</p>
+
+
+
+<p>Diskusia:</p>
+
+<p>K&nbsp;uvedenému stanovisku bola dlhá diskusia. Z&nbsp;diskusných príspevkov je možné vybrať:</p>
+
+<ul>
+	<li>sú potrebné harmonizované pravidlá a&nbsp;kontroly v&nbsp;oblasti produkcie potravín, aby bola zabezpečená potravinová bezpečnosť, zdravotná nezávadnosť, trvalá udržateľnosť produkcie, ale aj produkcia vysoko kvalitných potravín,</li>
+	<li>potrebné brať do úvahy produkciu vzhľadom na spotrebu vody, ale aj na výšku emisií CO<sub>2, </sub></li>
+	<li>Európa produkuje potraviny udržateľným spôsobom, upozornenie na biodiverzitu a&nbsp;spotrebu,</li>
+	<li>dôležité, aby sa nebrala do úvahy len produkcia potravín a&nbsp;ich spotreba, ale aj životný štýl,</li>
+	<li>spotrebitelia musia mať na výber z&nbsp;viacerých možností, musí byť lepšia informovanosť spotrebiteľov,</li>
+	<li>otázka využitia zeleného obstarávania v&nbsp;poľnohospodárstve a&nbsp;potravinárstve,</li>
+</ul>
+
+<p>K stanovisku boli predstavené aj návrhy na zmeny a doplnenia.</p>
+
+
+
+<p>Bod 4</p>
+
+<p>Informácie z&nbsp;prezentácií.</p>
+
+<p>Olav Kjørven:</p>
+
+<ul>
+	<li>predstavenie organizácie,&nbsp; ktorú zastupovala,</li>
+	<li>obavy z&nbsp;narastajúceho negatívneho vplyvu produkcie potravín na životné prostredie,</li>
+	<li>na jednej strane produkcia dostatku potravín, na strane druhej je to plytvanie s&nbsp;potravinami, ale aj chudoba, či hlad, existuje veľká nerovnováha,&nbsp;</li>
+	<li>organizácia má záujem o&nbsp;definovanie zdravých potravín, zdravého systému produkovania,</li>
+	<li>výhľady na rok 2050 – výroba a&nbsp;spotreba potravín,</li>
+	<li>predstavila správu, ktorá je k&nbsp;dispozícii v&nbsp;elektronickej verzii – hlavným cieľom bolo zdravé stravovanie a&nbsp;tradičný spôsob stravovania, druhým cieľom bola trvalá udržateľnosť pri výrobe,</li>
+	<li>navrhli stratégie, ktoré by mali pomáhať k&nbsp;dosiahnutiu stanovených cieľov, upozornila aj na Agendu 2030.</li>
+</ul>
+
+
+
+<p>Fatima Hachem</p>
+
+<p>Prezentovala prácu organizácie FAO, jej návrhy pre oblasť zdravého stravovania, ale aj životného prostredia.</p>
+
+<ul>
+	<li>upozornenie na rozdiely na úrovni regiónov, štátov,</li>
+	<li>vplyv výživy na zdravie obyvateľov, upozornenie na zhoršujúci sa stav populácie (zdravie, fyzická kondícia, ale aj psychika),</li>
+	<li>nerovnomerné rozdelenie potravín vo svete a&nbsp;v&nbsp;jednotlivých regiónoch,</li>
+	<li>príprava konzultácií pre oblasť výživy, ciele a&nbsp;výstupy,</li>
+	<li>FAO spracovalo 5 dokumentov, ktoré boli zamerané na oblasť výživy, trvalej udržateľnosti, ale aj potravinovej bezpečnosti,</li>
+	<li>uviedla spoluprácu so zahraničnými univerzitami.</li>
+</ul>
+
+
+
+<p>Stephanie Bodenbach</p>
+
+<p>Zástupkyňa Komisie zdôraznila význam výživy.</p>
+
+<ul>
+	<li>informácie o&nbsp;platnej legislatíve v&nbsp;oblasti,</li>
+	<li>poskytovanie vhodných a&nbsp;potrebných informácií pre spotrebiteľov,</li>
+	<li>hľadajú sa lepšie spôsoby, aby informácie spĺňali očakávania a&nbsp;aby boli dostatočne prehľadné pre spotrebiteľov,</li>
+	<li>aktivity na zníženie spotreby tuku a&nbsp;cukru,</li>
+	<li>stratégia výživy pre EÚ, obezita, zdravotné problémy – už v&nbsp;roku 2007 Komisia predstavila dokument, v&nbsp;ktorom boli navrhované riešenia.</li>
+	<li>vytvorenie pracovných skupín zameraných na oblasti výživy, zdravia,</li>
+	<li>aktivity členských krajín v&nbsp;oblasti výživy a&nbsp;zdravia a&nbsp;podpora aktivít,</li>
+	<li>občianska spoločnosť – tvorí platformu EU pre aktivity v&nbsp;oblasti výživy, fyzickej aktivite a&nbsp;zdraví,</li>
+	<li>od júla 2018 vznikla poradná skupina na prevenciu a&nbsp;propagáciu, zaoberá sa SDGs (trvaloudržateľným cieľmi stanovenými v&nbsp;Agende 2030),</li>
+	<li>výživa a&nbsp;fyzická námaha/aktivita je dôležitá,</li>
+	<li>význam médií.</li>
+</ul>
+
+
+
+<p>V diskusii sa vyjadrilo viacero členov. Za SPPK bolo vystúpenie zámerné na požiadavky a reálne náklady, ktoré sú v konvenčnom systéme hospodárenia, ale aj na už fungujúci systém trvalej udržateľnosti produkcie potravín (príklad chovu hospodárskych zvierat na pastve, hnojenie pôdy, návrat organickej hmoty – kolobeh živín). Upozornenie na finančnú náročnosť systému produkcie potravín, nerovnovážne postavenie v&nbsp;dodávateľskom reťazci (slabá vyjednávacia pozícia poľnohospodárov), neprimerané rozdelenie ziskov.</p>
+
+
+
+<p>Ďalšími témami v&nbsp;diskusii bola pridaná hodnota potravín, zamestnanosť na vidieku, zdravý životný štýl, zmeny v&nbsp;systéme práce, nízke ceny potravín, ktoré nezodpovedajú reálnym nákladom.</p>
+
+
+
+<p>Bod 5</p>
+
+<p>Krátka diskusia &nbsp;o&nbsp;stanovisku ECO/481 – Ročný prieskum rastu na rok 2019.</p>
+
+
+
+<p>Bod 6</p>
+
+<p>V&nbsp;diskusii k stanovisku NAT/763&nbsp; Podpora krátkych a alternatívnych potravinových dodávateľských reťazcov v EÚ: úloha agroekológie vystúpilo viacero členov. &nbsp;Bol prezentovaný príklad krátkych potravinových reťazcov v&nbsp;Litve, kedy družstvá&nbsp; a&nbsp;malí poľnohospodári organizujú rôzne regionálne trhy, na ktorých predávajú svoju produkciu. Do týchto aktivít sa zapájajú aj mladí poľnohospodári. Nevýhodou je, že cena takýchto potravín je vyššia, ako je cena potravín predávaných v&nbsp;obchodných reťazcoch a&nbsp;mnohí obyvatelia si nemôžu nákup týchto potravín dovoliť z&nbsp;dôvodu nedostatku financií. V&nbsp;stanovisku by mal byť zaradený model krátkych agro-enviromentálnych reťazcov. Bola zdôraznená úloha žien a&nbsp;ich postavenie v&nbsp;prípade malých hospodárstiev.</p>
+
+
+
+<p>Diskutujúci zdôraznili, že poľnohospodári sa starajú o&nbsp;krajinu a&nbsp;životné prostredie, pretože je to ich základný výrobný prostriedok. Je potrebná podpora spotrebiteľov a&nbsp;verejnosti.</p>
+
+
+
+<p>Je potrebné zdôrazniť, že krátke potravinové reťazce nemôžu vyriešiť všetky problémy a&nbsp;nie je možné, aby boli všetky druhý potravín predávané prostredníctvom takéhoto systému. Je potrebné upozorniť aj na potenciálne zdravotné riziká pri niektorých potravinách, ktoré sú produkované takýmto systémom.</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

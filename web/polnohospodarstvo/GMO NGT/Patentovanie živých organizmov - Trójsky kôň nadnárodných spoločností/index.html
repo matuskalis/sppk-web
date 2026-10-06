@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patentovanie živých organizmov - Trójsky kôň nadnárodných spoločností — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">polnohospodarstvo</a><span>/</span><a href="../index.html">GMO NGT</a><span>/</span>Patentovanie živých organizmov - Trójsky kôň nadnárodných spoločností</nav>
+
+  <article>
+    <h1 class="doc-title">Patentovanie živých organizmov - Trójsky kôň nadnárodných spoločností</h1>
+    <p class="doc-meta"><span class="doc-meta-item">23. októbra 2014</span></p>
+
+    <div class="doc-body">
+<p>V&nbsp;súvislosti s&nbsp;GMO je patentovanie živých organizmov uvádzané ako jeden z&nbsp;najkontroverznejších aspektov šírenia pestovania geneticky modifikovaných plodín vo svete. Pre širokú verejnosť je to trochu prekvapujúce, ale je to z&nbsp;dôvodu, že podstata a&nbsp;dôsledky patentovania sú väčšinou známe iba úzkemu okruhu odborníkov a&nbsp;podnikateľských kruhov. Ak niekto nezainteresovaný sleduje diskusiu o&nbsp;GMO, predsa len je skôr prirodzene citlivý na argumenty týkajúce sa rizík pre ľudské zdravie, prípadne životné prostredie, pričom právne aspekty daného fenoménu, medzi ktoré patrí i&nbsp;patentovanie, si väčšinou uvedomujú iba osoby, ktorých sa to priamo týka, to znamená výrobcovia GM sadív a&nbsp;poľnohospodári na jednej strane a&nbsp;politici na strane druhej, pretože, ako to uvidíme, patentovanie má priamy dopad na kompetencie štátov v&nbsp;niektorých oblastiach. Vzhľadom na závažnosť dôsledkoch patentovania živých organizmov považujem za užitočné urobiť syntézu základných faktov týkajúcich sa jeho histórie a&nbsp;podstaty.</p>
+
+<h2 class="doc-subheading">História</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Až do konca sedemdesiatych rokov 20. storočia bolo absolútne nemysliteľné predložiť žiadosť na patentovanie nejakej rastlinnej odrody. Vrátane USA, kde zákon o&nbsp;patentoch z&nbsp;roku 1951 jasne stanovoval, že patenty sa môžu vzťahovať iba na stroje a&nbsp;priemyselné postupy. Podľa pôvodného konceptu, úlohou patentov bolo stimulovať technické inovácie tým, že vynálezcovi bol uznaný monopol na výrobu a&nbsp;predaj jeho výrobku počas obdobia 20 rokov. Patentovanie predpokladalo splnenie troch kritérií:</p>
+
+<ol>
+	<li>Novosť výrobku – to znamená, že výrobok neexistoval pred jeho vytvorením vynálezcom.</li>
+	<li>Invenčnosť (Vynachádzavosť) jeho koncepcie.</li>
+	<li>Priemyselný potenciál jeho využitia.</li>
+</ol>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Do roku 1980 zákonodarca vylúčil z&nbsp;patentovania živé organizmy, pretože podľa neho v&nbsp;žiadnom prípade nemohli spĺňať prvé kritérium: dokonca i&nbsp;keď človek môže zasiahnuť do ich vývoja, živé organizmy existujú už pred touto intervenciou a&nbsp;okrem toho sa samé rozmnožujú (bez toho, aby do toho musel človek vstúpiť).</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Na druhej strane je skutočnosťou, že i&nbsp;pred rokom 1980 sa šľachtitelia snažili dosiahnuť určitú ochranu svojich produktov. Výsledkom bol tzv. „certifikát získania plodiny“ (v USA „Plant variety protection“), ktorý šľachtiteľom umožňoval predávať veľkoobchodníkom užívateľské licencie alebo zahrnúť do ceny sadív niečo na spôsob poplatku. Tento systém dostal v&nbsp;roku 1973 medzinárodný charakter, pretože sa k&nbsp;nemu svojim podpisom prihlásilo 37 krajín. Certifikát získania plodiny bol ale iba veľmi vzdialený príbuzný patentu, pretože nezakazoval poľnohospodárom uchovať si časť úrody na založenie novej, ani vedeckým pracovníkom použiť príslušnú odrodu na vytvorenie novej.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Všetko sa zmenilo v&nbsp;roku 1980, keď Najvyšší súd v&nbsp;USA rozhodol, že je možné patentovať transgénne mikroorganizmy. Podľa tohto súdu: „Všetko pod slnkom, čoho sa dotkol človek, môže byť patentované“. Toto rozhodnutie malo závažné dôsledky. Vychádzajúc z&nbsp;americkej judikatúry, Európsky úrad pre patenty v&nbsp;Mníchove začal udeľovať patenty vzťahujúce sa k&nbsp;mikroorganizmom, potom k&nbsp;rastlinám (1985), zvieratám (1988) a&nbsp;ľudským embryám (2000). Teoreticky sa tieto patenty udeľujú iba v&nbsp;prípade ak organizmy boli manipulované technikami génového inžinierstva; ale v&nbsp;skutočnosti sú patenty udeľované i&nbsp;pre rastliny, ktoré neboli geneticky modifikované!</p>
+
+
+
+<h2 class="doc-subheading">Podstata a&nbsp;dôsledky patentovania živých organizmov</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Patentovanie živých organizmov má v&nbsp;prvom rade závažné dôsledky na oblasť vlastníckych práv. Znamená to, že kúpou patentovaného produktu sa nákupca nestáva jeho majiteľom v&nbsp;tom zmysle, že si s&nbsp;ním môže robiť čo chce, ale môže ho použiť iba na presne stanovený účel, v&nbsp;prípade sadív GMO je to dopestovanie jednej úrody a&nbsp;nič viac. Monsanto zvykne porovnávať transgénne sadivá prenajatému autu: keď ho použijete, musíte ho vrátiť majiteľovi. Inými slovami, firma nepredáva sadivá, ona ich iba prenajíma na jednu sezónu a&nbsp;zostáva natrvalo majiteľom genetickej informácie obsiahnutej v&nbsp;semene, ktoré je zbavené svojho štatútu živého organizmu a&nbsp;stáva sa iba obyčajným produktom. V&nbsp;konečnom dôsledku sa farmári stávajú vykonávateľmi duševného vlastníctva Monsanta. Predovšetkým nemôžu použiť časť úrody z&nbsp;nakúpených patentovaných sadív na založenie novej.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Úrad pre patenty vo Washingtone udeľuje každý rok viac ako 70&nbsp;000 patentov, z&nbsp;čoho približne 20% sa vzťahuje na živé organizmy. Napríklad Monsanto získalo medzi rokmi 1983 a&nbsp;2005 647 patentov vzťahujúcich sa k&nbsp;rastlinám.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Po získaní patentu (napr. za vytvorenie „genetickej kazety“, ktorá umožnila sóji a&nbsp;potom i&nbsp;celom rade ďalších produktov nadobudnúť rezistenciu na herbicíd Roundup) sa firma sústredila na hľadanie prostriedkov na rešpektovanie tzv. „práv duševného vlastníctva“, najmä obyčajnými poľnohospodármi. Všetci americkí farmári (ale i&nbsp;veľkoobchodníci) boli od polovice deväťdesiatych rokov donútení podpisovať pri nákupe Sóje RR (Roundup ready) tzv „<em>technology use agreement</em>“. Podľa neho museli okrem ceny sadiva zaplatiť tzv. technologický poplatok, stanovený zo začiatku na 5 a&nbsp;potom na 6,50 $ na jeden aker (0,4 ha) sóje, ale predovšetkým sa museli zaviazať, že nevyužijú časť úrody na založenie novej. K&nbsp;tomu sa museli zaviazať, že budú nakupovať iba Roundup od Monsanto a&nbsp;nie mnohé jeho generiká , ktorými bol zaplavený trh po vypršaní patentu na Roundup v&nbsp;roku 2000.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ešte i&nbsp;dnes je znenie tejto zmluvy, ktorá sa musí povinne podpísať, drakonické. Farmári, ktorý ju porušia, musia zaplatiť veľkú pokutu, v&nbsp;opačnom prípade nasleduje súdna žaloba, vždy na súde v&nbsp;St. Louis (sídlo Monsanta), čo predstavuje pre firmu viacero nezanedbateľných výhod. Okrem iného si Monsanto vyhradzuje právo prelúskať účty svojich zákazníkov tri roky dozadu, tak ako i&nbsp;v&nbsp;prípade najmenšieho podozrenia vykonať inšpekciu ich polí.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Na vynútenie si svojich práv, Monsanto využíva služby detektívov Pinkertonovej agentúry, ktorí vykonávajú kontrolu polí. Firma zaviedla i&nbsp;tzv. zelené telefónne číslo, kde hocikto môže udať svojho suseda (čo sa deje často, pretože poľnohospodári sú medzi sebou konkurenti).</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ešte závažnejšie a&nbsp;v&nbsp;podstate absurdné dôsledky má patentovania na organizmy, ktoré nie sú produktov biotechnológií. Podľa šéfa Mníchovskej inštitúcie TestBiotech Christoph Thena, „po príchode biotechnológií dochádza k&nbsp;závažným odchýlkam systému spoločného práva patentov. Na získanie patentu, <strong>už nie je nevyhnutné predložiť skutočný vynález</strong>, ale často stačí <strong>obyčajný objav</strong>: dôjde k&nbsp;objaveniu terapeutickej funkcie nejakej rastliny, táto funkcia sa popíše a&nbsp;izoluje od prirodzeného kontextu. Rozhodujúce je, aby sa popis uskutočnil v&nbsp;laboratóriu a&nbsp;<strong>neprihliada sa k&nbsp;skutočnosti, že rastlina i&nbsp;jej liečivé účinky môžu byť inde známe už tisíce rokov</strong>“.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tento aspekt sa dramaticky dotýka najmä rozvojových krajín, kde, napr. v&nbsp;Indii, existuje obrovská biodiverzita a&nbsp;blahodarné účinky mnohých živých organizmov sú dlhodobo známe. Keďže ale ide „iba“ o „experimetálne“ a&nbsp;nie „teoretické“ poznanie, nestačí to na prelomenie patentovej logiky (a práva) a&nbsp;ľudia by tak mali platiť autorské poplatky za využitie napr. rastliny, ktorá je v&nbsp;ich kraji dlhodobo známa!</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Podľa známej indickej intelektuálky a&nbsp;spisovateľky Vandana Shiva, „patentovanie živých organizmov predstavuje pokračovanie prvej kolonizácie. Samotné slovo „patent“ pochádza z&nbsp;obdobia dobývania kolónií. Práve prostredníctvom „patentného listu“, to znamená oficiálneho a&nbsp;verejného dokumentu – v&nbsp;latinčine slovo patens znamená „otvorený“ alebo „evidentný“ – na ktorom bola pečať nejakého európskeho panovníka, králi udeľovali exkluzívne právo dobrodruhom alebo pirátom, aby títo dobyli zahraničné teritóriá v&nbsp;ich mene. V&nbsp;čase keď Európa kolonizovala svet, zmyslom patentov bolo dobytie území, zatiaľ čo patenty dneška sú zamerané na ekonomické dobývanie prostredníctvom privatizácie živých organizmov novými vládcami ako je Monsanto. V&nbsp;obidvoch prípadoch ide o&nbsp;ten istý princíp, to znamená, že patenty dnešnej i&nbsp;minulej doby spočívajú na poprení existencie života pred príchodom belochov. Keď Európania kolonizovali Ameriku, teritóriá nového sveta boli deklarované za <em>terra nullius </em>to znamená za „prázdnu zem“ pod čím sa rozumie „zem bez belochov“. Takým istým spôsobom, patentovanie živých organizmov a&nbsp;biopirátstvo sa odvolávajú na „prázdny život“, pretože kým zo živých organizmov nie sú v&nbsp;laboratóriu identifikované a&nbsp;odobrané gény, sa tieto organizmy považované za bezcenné. Je to poprenie práce a&nbsp;know how miliónov ľudských bytostí ktorí už tisícročia udržiavajú biodiverzitu a&nbsp;ktorí z&nbsp;nej navyše žijú.“</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pokiaľ ide o&nbsp;krajiny akou je India, nie je ešte vyššie uvedené realitou, ale „iba“ vážnou hrozbou. Americký systém patentov zatiaľ nie je našťastie medzinárodne uznaný (v Indii je patentovanie sadív zakázané), hoci vláda USA vyvíja v&nbsp;tomto smere na Indiu dlhodobý tlak. Popri bilaterálnemu nátlaku, existujú seriózne aktivity i&nbsp;na multilaterálnej úrovni.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Zakladajúca zmluva Svetovej obchodnej organizácie (WTO), ktorá sa skladá s&nbsp;29 sektorových dohôd umožňujúcich podriadiť zákonom trhu všetky aktivity, produkty alebo služby a&nbsp;teda ich previesť na súkromné firmy, nad ktorými vlády a&nbsp;občania nemajú žiadnu kontrolu, oblasti, ktoré tradične spadajú pod verejnú politiku. Prepojenie týchto sektorov s&nbsp;obchodom je tak málo evidentné, že autori týchto dohôd museli problém obísť dodaním zvratu „ktoré súvisia s&nbsp;obchodom“ (<em>trade-related</em>).</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;Je to hlavne prípad APDVO (Aspekty práv duševného vlastníctva, ktoré sa týkajú obchodu), čo je dohoda, ktorá bola principiálne inšpirovaná Koalíciou pre duševné vlastníctvo (<em>Intellectual Property Committee</em>) do ktorého patria hlavní aktéri biotechnológií na čele s&nbsp;Monsantom. Jej hlavným zámerom bolo a&nbsp;je rozšíriť americký koncept patentovania živých organizmov na celý svet. Inkriminovaným odsekom, ktorý sa týka biotechnológií, je&nbsp;článok 27.3(b) týkajúceho sa „patentovateľných objektov“.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Napriek kolektívnemu a&nbsp;majstrovsky vedenému lobingu, práve tento aspekt pretláčaný Monsantom spôsobuje od roku 1995 zaseknutie bezchybne fungujúceho stroja WTO, ktorý sa dlhodobo nedarí odblokovať.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Podstatou problému je to, že „ochrana“ (rozumej patentovanie) sadív má za následok „ochranu“ potravín, ktoré z&nbsp;nich vyplývajú a preto mnohé krajiny Juhu (na čele s Afrikou, Indiou a Brazília) žiadali revíziu článku 27.3(b). Patentovanie znamená automaticky platenie autorských poplatkov a&nbsp;preto by malo za následok zvýšenie cien, čo je pre chudobné vrstvy obyvateľstva neakceptovateľné. Krajiny juhu sa tiež znepokojujú dôsledkami patentovania mikroorganizmov, medzi ktoré patria a&nbsp;priori i&nbsp;gény, pretože by to mohlo podporovať biopirátstvo, to znamená krádež genetických zdrojov a&nbsp;tradičného s&nbsp;nimi spojeného know how na úkor domorodých a&nbsp;vidieckych komunít, ktoré ich uchovávajú a&nbsp;využívajú už tisícročia.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Cieľom dohody APDVO, ktorá, ako to už bolo povedané, našťastie zatiaľ nie je účinná, je to, aby patent získaný v&nbsp;USA, napr. spoločnosťou Monsanto, bol automaticky uplatniteľný všade na svete. Na základe dohody APDVO budú všetky krajiny nútené nasledovať vzor USA, v&nbsp;opačnom prípade budú na ne uvalené ťažké obchodné sankcie. Keďže ide i&nbsp;o vlastníctvo genetických zdrojov planéty, mnohí odborníci i&nbsp;politici krajín Juhu hovoria, že WTO sa nemôže týkať živých organizmov, pretože na túto oblasť sa vzťahuje dohoda o&nbsp;biodiverzite podpísaná v&nbsp;Rio de Janeiro v&nbsp;roku 1992 pod patronátom OSN. Jej signatármi bolo 200 krajín (ale nie USA!) a&nbsp;hovorí, že genetické zdroje sú výlučným vlastníctvom štátov, ktoré sa musia zaviazať, že ich budú chrániť. Táto dohoda je ale v&nbsp;úplnom rozpore s&nbsp;WTO.</p>
+
+
+
+<h2 class="doc-subheading">Záver</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Myslím, že vyššie uvedené riadky dostatočne poukazujú na to, v&nbsp;čom spočívajú riziká patentovania živých organizmov a&nbsp;neprijateľnosť rozšírenia amerického systému patentového práva do celého sveta. Keď ale nad celou záležitosťou kriticky rozmýšľam, domnievam sa, že predsa len je treba zvážiť pozitíva a&nbsp;negatíva, oddeliť zrno od plevelu.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Na jednej strane si myslím, že patentovanie novovytvorených sadív GMO je napriek všetkému do určitej miery oprávnené. Je skutočnosťou, že vytvorenie geneticky modifikovanej plodiny je výsledkom vysokého stupňa vedeckého poznania i&nbsp;invencie a&nbsp;okrem toho je spojené s&nbsp;nemalými investíciami. Na tom nič nemenia ani legitímne úvahy o&nbsp;spoločenskej užitočnosti a&nbsp;rizikách dnes komercializovaných geneticky modifikovaných plodín. Napokon, farmárov v&nbsp;USA nik nenúti, aby podpísali s&nbsp;Monsantom predmetnú drakonickú „zmluvu o&nbsp;užívaní“, hoci sú značne zavádzaní propagandou a&nbsp;reklamou firmy.</p>
+
+<p>Neprijateľné sú iné skutočnosti.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V&nbsp;prvom rade je absolútne neakceptovateľné, aby zo strany Monsanta boli perzekuovaní farmári, ktorí s&nbsp;touto firmou nepodpísali žiadnu dohodu, GMO nikdy nepestovali a ani nepestujú, ale ktorých polia boli kontaminované z&nbsp;okolitých parciel. V&nbsp;tomto ohľade je známy prípad kanadského farmára menom Percy Schmeiser. Výrok súdu, podľa ktorého je relevantné (na inkasovanie autorských práv a&nbsp;na zaplatenie pokuty), či sa GM plodina na príslušnej parcele vyskytuje a&nbsp;nie to ako sa tam dostala (čo sa dá zistiť [<sup>1</sup>] ), je absurdný.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Po druhé je úplne neprijateľné patentovanie živých organizmov, ktoré nie sú GMO, pretože izolovanie príslušného génu a&nbsp;preukázanie jeho priaznivého účinku sa nijako nedá považovať za vynález. O&nbsp;to viac, že rastlina a&nbsp;jej účinok sú väčšinou dlhodobo známe.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Po tretie je neakceptovateľné nanucovanie amerického systému patentového práva na medzinárodnej úrovni. Pokiaľ sme vyššie priznali, že farmári v&nbsp;USA podpisujú dohodu s&nbsp;Monsantom v&nbsp;plnom vedomí dôsledkov, ktoré to pre nich z&nbsp;toho vyplývajú, potom Monsanto prišlo do Argentíny alebo do Indie s&nbsp;vedomím, že v&nbsp;týchto krajinách nie je patentovanie živých organizmov možné a&nbsp;v&nbsp;prvé roky expanzie sa spoločnosť tvárila, že jej to nevadí. Vyžadovať platenie autorských práv po tom ako firma plne ovládla poľnohospodárstvo v&nbsp;danej krajine (Argentína) je vydieraním. A&nbsp;predmetná multilterálna dohoda v&nbsp;rámci WTO sa už javí ako akt neokolonializmu, pretože Svetová obchodná organizácia je predovšetkým nástroj nadnárodných spoločností.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A&nbsp;napokon, je neprijateľné, aby expanzia pestovania (patentovaných) geneticky modifikovaných plodín vo svete viedla k&nbsp;monopolizácii, so všetkými dôsledkami, ktoré z&nbsp;tejto skutočnosti vyplývajú. Nie je to nijako prehnané, pretože vo viacerých krajinách Južnej Ameriky (vrátane Argentíny a&nbsp;Brazílie) má Monsanto prakticky monopolné postavenie na dodávky sadív sóje. A&nbsp;tak sa stalo (a došlo k&nbsp;tomu i&nbsp;v&nbsp;USA), že keď mali farmári záujem o „konvenčné“ sadivo, v&nbsp;ponuke bola iba GM sója a&nbsp;tú museli brať, pretože nič iné nebolo. Toto je už dokonalé popretie trhu, pretože za tejto situácie nerozhoduje farmár, o&nbsp;tom čo bude pestovať, ale dodávateľ! Tento stav v&nbsp;podstate znamená, že jedna firma rozhoduje, čo a&nbsp;za akú cenu sa bude v&nbsp;krajine pestovať a, že farmári sú nútení nakupovať jej patentované osivá. A&nbsp;to už je tá „kontrola výživy ľudstva“, o&nbsp;ktorej sa hovorí v&nbsp;nadpise tohto príspevku.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Patentovanie GMO je ale paradoxné ešte z&nbsp;jedného hľadiska. Na jednej strane, biotechnologické firmy tvrdia, že nie je potrebné testovať transgénne rastliny (a označovať produkty z&nbsp;nich vyrobené), pretože sa striktne podobajú konvenčným plodinám tej istej kategórie; na druhej strane žiadajú patentovanie pod zámienkou, že GMO sú jedinečný výtvor.</p>
+
+
+
+<p>RNDr. Igor Šarmír, PhD</p>
+
+<h2 class="doc-subheading">Zdroj:</h2>
+
+<p>Marie-Monique Robin, „Le monde selon Monsanto“, La Découverte a&nbsp;Arte 2009</p>
+
+
+
+<p><br>
+___________________________________________________</p>
+
+<p>[<sup>1</sup>] Percy Schmiesser preukázal, že Roundup ani glyphosat nikdy nekupoval a&nbsp;preto by používanie plodiny rezistentnej na Roundup nemalo z&nbsp;jeho strany žiadne opodstatnenie</p>
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

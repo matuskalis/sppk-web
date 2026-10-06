@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Správa predstavenstva o činnosti SPPK od XXXI. Valného zhromaždenia — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../index.html">Úvod</a><span>/</span><a href="../index.html">ostatne</a><span>/</span>Správa predstavenstva o činnosti SPPK od XXXI. Valného zhromaždenia</nav>
+
+  <article>
+    <h1 class="doc-title">Správa predstavenstva o činnosti SPPK od XXXI. Valného zhromaždenia</h1>
+    <p class="doc-meta"><span class="doc-meta-item">SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">30. mája 2019</span></p>
+
+    <div class="doc-body">
+<p>Vážení delegáti,</p>
+
+<p>vážení hostia,</p>
+
+<p>vážené dámy, vážení&nbsp;páni, kolegyne a&nbsp;kolegovia,</p>
+
+
+
+<p>schádzame sa na 32. valnom zhromaždení najväčšej samosprávnej organizácie v&nbsp;agropotravinárskom komplexe Slovenskej republiky v&nbsp;Nitre, centre nášho poľnohospodárstva a potravinárstva a významnej produkčnej oblasti Slovenska.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/5BNhQJP.jpg"></figure><p></p>
+
+
+
+<p>Dovoľujem si Vás všetkých privítať a&nbsp;rovnako srdečne privítať aj všetkých vzácnych hostí, ktorí prijali naše pozvanie.</p>
+
+
+
+<p>Prehľad aktivít nášho Úradu SPPK, ako aj &nbsp;návrh hlavných úloh na nasledujúce obdobie, je uvedený v&nbsp;Spravodaji SPPK pre delegátov dnešného valného zhromaždenia. V&nbsp;správe sa preto zmienime len o&nbsp;kľúčových momentoch a&nbsp;postojoch, ktoré charakterizovali činnosť Slovenskej poľnohospodárskej a&nbsp;potravinárskej komory v&nbsp;období od jej 31. valného zhromaždenia.</p>
+
+
+
+<h2 class="doc-subheading">ČASŤ A: AKÝ BOL ROK 2018 A&nbsp;AKO SME VSTÚPILI DO ROKU 2019 </h2>
+
+
+
+<p>Za kľúčový moment roka 2018, ktorý zásadným spôsobom ovplyvnil vývoj agropotravinárstva a aj jeho obraz, považujeme vraždu novinára Jána Kuciaka a jeho partnerky. Po spáchaní tohto ohavného činu&nbsp; investigatívni novinári odkývali pozadie netransparentného prideľovania dotácií. V súvislosti s korupciou začali poukazovať na problémy malých poľnohospodárov z východného Slovenska, ktorí sa nemôžu dostať k svojej pôde a sú údajne utláčaní veľkými poľnohospodárskymi firmami.</p>
+
+
+
+<p>Slovenská poľnohospodárska a potravinárska komora preto v prvej polovici rok 2018 sústredila veľkú časť svojej odbornej a mediálnej pozornosti práve na obhajobu všetkých slušne podnikajúcich poľnohospodárov. Snažila sa verejnosti vysvetľovať, prečo nie je správne umelo vytvárať obraz o zlých veľkých a dobrých malých poľnohospodároch.</p>
+
+
+
+<p>Celospoločenské dianie ojedinelé svojim pôvodom a významom malo preto automaticky výrazný vplyv aj na väčší záujem spoločnosti, politikov a médií o dianie v agropotravinárskom sektore. Oprávnene preto hovoríme, že sa v roku 2018 začala celospoločenská diskusia na tému agropotravinárstva a jeho stavu.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/bxakHhP.jpg"></figure><p></p>
+
+
+
+<h2 class="doc-subheading">Bilancia roka z&nbsp;pohľadu poľnohospodárskej prvovýroby</h2>
+
+
+
+<h2 class="doc-subheading">Rastlinná výroba</h2>
+
+
+
+<p>Rok 2018 bol v&nbsp;rastlinnej výrobe poznačený výkyvmi počasia. Neboli však natoľko vypuklé ako v&nbsp;roku 2017. Následky sucha a&nbsp;vysokých teplôt sa prejavili najmä v&nbsp;západoeurópskych krajinách. Dopestovali sme viac ako 4 mil. ton obilnín, 480 tisíc ton repky, 795tisíc ton olejnín.</p>
+
+
+
+<h2 class="doc-subheading">Živočíšna výroba</h2>
+
+
+
+<p>Slovensko chovalo ku koncu minulého roka takmer 440 tisíc kusov hovädzieho dobytka. V sektore prvovýroby mlieka vlani ešte stále doznievali následky ostatnej masívnej mliečnej krízy. V&nbsp;porovnaní s&nbsp;predchádzajúcimi rokmi sa však situácia o&nbsp;niečo zlepšila. Rok 2018 priniesol do sektoru výroby mlieka pre chovateľov-producentov miernu stabilizáciu, čo sa odrazilo hlavne v oblasti vývoja cien surového kravského mlieka, ktoré oscilovalo počas roka okolo ceny 31 centov/liter mlieka v tolerancii +-7%. Aj napriek tomu však musíme skonštatovať, že nákupné ceny stále nepokrývajú náklady prvovýrobcov mlieka. A tento fakt sa zrejme podpíše na pokračujúcom znižovaní stavov dojníc na Slovensku. SPPK preto považuje za nevyhnutné prijať systémové opatrenia na podporu mliečneho sektora a&nbsp;ich dôsledné plnenie.</p>
+
+
+
+<p>Koncom minulého roka sme chovali takmer 630tisíc kusov ošípaných. Na chovy ošípaných mali vlani vplyv viaceré faktory. Extrémne negatívne zapôsobil výskyt afrického moru ošípaných v rámci Európy. Nastal pretlak jatočných ošípaných v krajinách s&nbsp;jeho výskytom. Z tohto dôvodu na jednej strane ponuka rapídne stúpla a na druhej strane cena jatočných ošípaných poklesla na tak nízku cenu, že viacerí chovatelia sa rozhodli znížiť výrobu, respektíve&nbsp; až zrušiť chov ošípaných.</p>
+
+
+
+<p>Produkciu bravčového mäsa tak vlani ovplyvňovala aj realizačná cena jatočných ošípaných. Tretím faktorom, ktorý vlani výrazne ovplyvňoval ekonomiku chovov ošípaných, je dovoz bravčového mäsa a&nbsp;výrobkov z&nbsp;neho v nízkej&nbsp;kvalite. Potvrdzuje to aj rozbor Výskumného ústavu živočíšnej výroby v&nbsp;Nitre, ktorý poukázal na nedostatky dovozového mäsa. Rozborom sa potvrdilo, že naše domáce mäso bolo najkvalitnejšie. V&nbsp;tejto situácii vyznieva veľmi optimisticky aj informácia, že slovenskí chovatelia vlani zlepšili parametre úžitkovosti zvierat.</p>
+
+
+
+<p>Koncom roka 2018 sme mali na Slovensku viac ako 14 mil. kusov hydiny vrátane vodnej. Sektor hydiny naďalej bojuje s&nbsp;dovozmi lacnej a&nbsp;žiaľ, aj potravinovými škandálmi poznačenej hydiny či vajec do nadnárodných supermarketov a&nbsp;stravovacích zariadení. A tak hoci domáci hydinári svojimi kapacitami sú schopní zabezpečiť 66 percentnú sebestačnosť,&nbsp;v predajnej sieti je podiel domácej hydiny iba niečo nad 50 percent a to je rámci EÚ i v porovnaní s okolitými krajinami žalostne málo.</p>
+
+
+
+<p>Podobne je to aj s vajcami, pri ktorých sa sebestačnosť pohybuje na úrovni 90 percent. Viac ako 20 percent však musia veľkoproducenti vyvážať, keďže domáci trh je obsadený vajcami, ktoré precestovali stovky kilometrov a častokrát majú tesne pred dátumom spotreby. Rapídny pokles realizačnej ceny aj v&nbsp;prípade vajec a&nbsp;aj v&nbsp;prípade hydiny za posledné roky a&nbsp;markantný náraz dovozov lacnej hydiny z&nbsp;Ukrajiny len naznačujú, že sektoru hydiny treba pomôcť systémovo.&nbsp;</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/wOu3mMo.jpg"></figure><p></p>
+
+
+
+<h2 class="doc-subheading">Zeleninárstvo a&nbsp;ovocinárstvo </h2>
+
+
+
+<p>S&nbsp;poľutovaním musíme konštatovať, že pokračoval úpadok zeleninárstva, čoho hlavnou príčinou bol chýbajúci spracovateľský priemysel, aj možnosti odbytu za ceny nepodliezajúce výrobné náklady. Bude preto veľmi dôležité, aby bola v&nbsp;budúcom období podpora produkcie zeleniny a&nbsp;ovocia zo strany štátu natoľko motivačná, aby pestovateľov pribúdalo.</p>
+
+
+
+<p>Prepad a&nbsp;dlhodobo nízka úroveň cien na trhu boli vlani príznačné aj pre sektor cukor - cukrová repa. Dôvodom sú zrušené kvóty na cukor a následný obrovský pretlak lacného cukru na európskom a&nbsp;svetovom trhu. Táto situácia priviedla sektor produkcie cukru do celoeurópskej krízy. Je preto mimoriadne dôležité, aby štát dostatočne podporil pestovateľov cukrovej repy systémovými opatreniami na záchranu cukrovarníckeho priemyslu tak, aby boli poľnohospodári aj naďalej motivovaní pestovať základnú surovinu na produkciu cukru. Ako nemenej dôležité sa ukazuje podporiť aj spracovateľov, aby sme udržali na Slovensku domácu výrobu cukru ako komplexnú vertikálu zamestnávajúcu viac ako 3000 ľudí. Strategické odvetvie cukor – cukrová repa je jedným z&nbsp;posledných odvetví, v&nbsp;ktorom Slovenská republika ešte &nbsp;dosahuje sebestačnosť.</p>
+
+
+
+<p>Za najvážnejší problém minulého roka označujú ovocinári nedostatok pracovných síl. Aj preto vlani nedokázali pozbierať slušnú úrodu ovocia, ktorú nezničili jarné mrazy také charakteristické pre predchádzajúce roky.</p>
+
+
+
+
+
+<h2 class="doc-subheading">Škody zverou</h2>
+
+
+
+<p>Slovenská poľnohospodárska a&nbsp;potravinárska komora aj v&nbsp;minulom roku monitorovala situáciu ohľadom premnoženej poľovnej zveri. Z&nbsp;prieskumu, do ktorého sa zapojili naše regióny, vyplýva, že straty sa oproti roku 2017 zvýšili. Za rok 2018 podľa oficiálneho monitoringu evidujeme škody v sume 19,8 milióna eur. V roku 2017 boli na úrovni 18 mil. eur. Medzi najviac zničené plodiny patrila vlani kukurica, pšenica ozimná, repka, slnečnica a jačmeň jarný. K&nbsp;najviac postihnutým regiónom patrí Veľký Krtíš, Levice, Krupina, Lučenec a&nbsp;Prešov. Tu sa žiada, aby MPRV SR razantnejšie vstúpilo do tohto procesu, aby začalo zabraňovať škodám na plodinách, lesných porastoch a&nbsp;majetku a&nbsp;zdraví občanov.</p>
+
+
+
+<p>Musím podotknúť, že uvedené čísla nie sú konečné. Monitoringu sa totiž zúčastnili len naše regióny a&nbsp;aj to nie od všetkých sme získali relevantné dáta.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/Z5RpXYA.jpg"></figure><p></p>
+
+
+
+<p>V&nbsp;tejto súvislosti mi nedá nespomenúť, že memorandum, ktoré sme podpísali s&nbsp;predstaviteľmi lesníkov a&nbsp;poľovníkov, sa nenapĺňa. Zveri na poliach pribúda a&nbsp;s&nbsp;nimi aj výška škôd. Nádeje sme vkladali do legislatívneho riešenia v&nbsp;podobe nového zákona o&nbsp;poľovníctve. Jeho predložená podoba nás sklamala, a&nbsp;aj preto Predstavenstvo SPPK v&nbsp;máji odhlasovalo, že ho ako celok nepodporí.</p>
+
+
+
+<h2 class="doc-subheading">Monitoringy SPPK</h2>
+
+
+
+<p>Vlani sme sa podieľali aj na ďalších monitoringoch medzi našimi členmi a regiónmi, či už pravidelných alebo príležitostných, podľa závažnosti danej témy. V&nbsp;týždenných intervaloch sme zisťovali stav poľných prác počas jari, robili sme žatevný monitoring a&nbsp;monitoring zberu jesenných plodín. Výsledné informácie slúžili pre našu internú potrebu, zasielali sme ich rezortnému ministerstvo a&nbsp;pripravovali z&nbsp;nich tlačové správy pre médiá. Monitoringom sme zisťovali aj následky škôd v&nbsp;regiónoch spôsobených suchom. Z&nbsp;neho vyplýva, že vlaňajšie škody – výpadok na tržbách v&nbsp;objeme takmer 21,8mil. eur - boli o&nbsp;poznanie nižšie ako škody suchom za rok 2017, kedy výpadok na tržbách predstavoval takmer 41 mil. eur.</p>
+
+
+
+<h2 class="doc-subheading">Klimatické zmeny</h2>
+
+
+
+<p>Samostatnou témou, žiaľ, už pravidelne sa opakujúcou, sú následky klimatických zmien. Už niekoľko rokov sa snaží aj naše poľnohospodárstvo vysporiadať s&nbsp;týmto novodobým fenoménom. Žiaľ, zatiaľ sme s&nbsp;prevenciou proti následkom zmien počasia nepokročili tak, aby sme mohli byť spokojní. V&nbsp;porovnaní s&nbsp;okolitými krajinami zaostávame v&nbsp;systéme riadenia rizík, ktorý by mal byť dvojpilierový. Prvý pilier má tvoriť refundácia časti ročného poistenia a&nbsp;druhý pilier má predstavovať rizikový fond.</p>
+
+
+
+<p>S&nbsp;touto témou sa musíme pohnúť vpred. Nemôžeme neustále žiadať finančné prostriedky na kompenzáciu škôd spôsobených klimatickými zmenami. Nie je to ani koncepčné a&nbsp;ani imidžové. Chceme mať konečne systém, na ktorom fungujú okolité krajiny.</p>
+
+
+
+<p>Pri zmienke o&nbsp;otepľovaní a&nbsp;nedostatku zrážok však musím vysloviť kritiku aj do našich radov. Dlhé obdobie sme čakali na výzvu na závlahy. Nakoniec, keď sme sa jej dočkali, tak sa do nej zapojilo podľa môjho názoru stále málo poľnohospodárov. Buďme predvídaví a&nbsp;odvážni. Počasie nás dobieha. Musíme byť na zmeny pripravení a&nbsp;mať väčšie percento poľnohospodárskej pôdy pod závlahami.</p>
+
+
+
+<h2 class="doc-subheading">Bilancia roka 2018 z&nbsp;pohľadu potravinárskeho sektora:</h2>
+
+
+
+<p>Potravinársky priemysel je v rámci priemyselnej výroby EÚ jedným z najväčších spracovateľských priemyslov a najväčším zamestnávateľom. Na Slovensku sme v objeme hrubej potravinárskej produkcie na chvoste európskych krajín.</p>
+
+
+
+<h2 class="doc-subheading">Nárast vstupov</h2>
+
+
+
+<p>Minulý rok priniesol pre potravinárov rast cien energií, vstupných surovín a mzdových nákladov súvisiacich so zvyšovaním minimálnej mzdy, príplatkami za prácu cez víkendy, počas sviatkov a za prácu nadčas. Všetky tieto skutočnosti odrážajú zložitú situáciu v odvetví výroby potravín na Slovensku, podpisujú sa pod zvyšujúce náklady potravinárov a ohrozujú potravinársky priemysel ako celok.&nbsp;</p>
+
+
+
+<h2 class="doc-subheading">Zahraničný obchod</h2>
+
+
+
+<p>Pomaly ako je už zvykom, tak aj v&nbsp;minulom roku sme prepisovali historické tabuľky z&nbsp;pohľadu zahraničného obchodu s&nbsp;agropotravinárskymi komoditami. Potvrdzujú to údaje Štatistického úradu. Podľa nich bolo saldo zahraničného obchodu s poľnohospodárskymi a potravinárskymi výrobkami v roku 2018 pasívne v objeme – 1 648,1 mil. eur. Slovensko sa otriasa v návale dovozov zahraničných agropotravinárskych výrobkov. Taký masívny pretlak komodít s cudziny sme tu ešte nemali. Je žalostné, že veľkú časť z&nbsp;dovozových produktov predstavujú tie, ktoré si vieme vypestovať aj my sami doma. Dominancia zahraničných komodít len podčiarkuje fakt o&nbsp;40% potravinovej sebestačnosti našej krajiny.</p>
+
+
+
+<h2 class="doc-subheading">Postavenie dodávateľa a&nbsp;marže</h2>
+
+
+
+<p>Slovenský výrobca potravín bol aj v&nbsp;minulom roku účastníkom neférového prístupu niektorých veľkých obchodných systémov v&nbsp;okovaniach o&nbsp;cenách a&nbsp;podmienkach dodania ich výrobkov. Rozdielne marže obchodu, zneužívanie ekonomickej sily a&nbsp;uplatňovanie neférových praktík aj vlani deformovali potravinovú vertikálu a&nbsp;odsúvali našich potravinárov na druhú koľaj. Nezdravá dominancia zahraničných výrobkov a&nbsp;dravý marketing nadnárodných obchodných systémov boli témy, ktorým sa SPPK venovala počas roka aj prostredníctvom pravidelných stretnutí v&nbsp;rámci Únie potravinárov Slovenska.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/fTdPP2B.jpg"></figure><p></p>
+
+
+
+<h2 class="doc-subheading">Podpora </h2>
+
+
+
+<p>Je dávno 5 minút po 12tej. Pokiaľ neprijmeme relevantný plán na podporu spracovateľského priemyslu, na úvahy o zvýšení potravinovej sebestačnosti na úroveň 60% môžeme zabudnúť. Slovensko má potenciál dopestovať viac zeleniny, ovocia, vychovať viac zvierat. Preto sa z neho nesmie stať krajina, kde budeme chovať lesnú zver na poliach, míňať na spôsobené straty financie a odkiaľ budeme poľnohospodársku surovinu len vyvážať a naspäť dovážať už hotové výrobky. Surovinu musíme spracovávať doma, v našich regiónoch a s našimi ľuďmi tak, aby sa pridaná hodnota tvorila na území SR. Preto očakávame, že avizovaný zámer systémového opatrenia tzv. „zelenej nafty pre potravinárstvo“ sa naozaj počas tohto roka podarí zrealizovať.</p>
+
+
+
+<p>Všetky doterajšie potravinové škandály jednoznačne preukázali, ako je z hľadiska bezpečnosti slovenských spotrebiteľov dôležité podporovať domácu potravinársku výrobu. Podporujeme preto návrh, aby sa v rámci rozdelenia prostriedkov vnútroštátnej pomoci vyčlenili zdroje aj na technologickú obnovu potravinárskych podnikov, propagáciu a vzdelávanie spotrebiteľov o slovenských potravinách.&nbsp;</p>
+
+
+
+<h2 class="doc-subheading">Bilancia roka 2018 z&nbsp;pohľadu legislatívy: </h2>
+
+
+
+<p>Aj v roku 2018 sa Slovenská poľnohospodárska a&nbsp;potravinárska komora intenzívne zapájala do legislatívneho procesu. V záujme členov komory sme pripomienkovali 28 návrhov&nbsp; najmä z oblasti pozemkového práva, práva upravujúceho podmienky poskytovania podpôr, štátnej pomoci či finančného rámca budúcej Spoločnej poľnohospodárskej politiky po roku 2020, ale aj pracovného práva, práva životného prostredia, európskeho práva, daňového práva, práva na ochranu proti neprimeraným podmienkam v obchodných vzťahoch, či práva upravujúceho problematiku poľovníctva atď.</p>
+
+
+
+<h2 class="doc-subheading">Pozemkové právo</h2>
+
+
+
+<p>Medzi rozhodujúce legislatívne materiály, ku ktorým zaujala komora stanovisko nielen v&nbsp;rámci pripomienkového konania, ale aj prostredníctvom médií, patrili zákony týkajúce sa pozemkového práva. Išlo najmä o&nbsp;zákony upravujúce nájom poľnohospodárskych pozemkov či zámer naštartovať proces komplexných pozemkových úprav. Výrazná minuloročná iniciatíva komory o rozšírenie Rady Slovenského pozemkového fondu o svojho zástupcu vyústila až do prijatia novely zákona č. 330/1991 o&nbsp;pozemkových úpravách, usporiadaní pozemkového vlastníctva, pozemkových úradoch, pozemkovom fonde a&nbsp;pozemkových spoločenstvách. Od 1. júna tak budeme mať vlastného zástupcu v&nbsp;Rade slovenského pozemkového fondu. Na túto zmenu sme pritom čakali roky. Oceňujeme preto aktivity všetkých politikov, ktorí sa pričinili o&nbsp;schválenie tejto novely. Pôda je pre nás, poľnohospodárov, základným výrobným prostriedkom slúžiacim na výrobu potravín, ktorý chráni aj Ústava SR. Aj preto je mimoriadne dôležité, že po novom už bude môcť aj zástupca poľnohospodárov priniesť konštruktívne podnety priamo z&nbsp;praxe, ktoré sa budú týkať napríklad pozemkových úprav alebo nájomných vzťahov. &nbsp;&nbsp;</p>
+
+
+
+<p>Komora sa vlani venovala aj návrhu nového zákona o&nbsp;poľovníctve.</p>
+
+
+
+<h2 class="doc-subheading">Potravinárska legislatíva</h2>
+
+
+
+<p>V&nbsp;rámci potravinárskej legislatívy sme sa zapojili do celospoločenskej diskusie o&nbsp;uzákonení špeciálneho odvodu pre obchodné reťazce, ktorý však nakoniec pre hrozbu sankcií z&nbsp;Bruselu parlament v&nbsp;tomto roku zrušil. Silne sme sa zasadzovali za zrušenie legalizácie súkromných páleníc a&nbsp;za zlepšenie postavenia slovenských dodávateľov v&nbsp;potravinovom reťazci napríklad prostredníctvom zákona o&nbsp;neprimeraných podmienkach v&nbsp;obchodných vzťahoch. Podľa vyjadrenia popredného predstaviteľa organizácie COPA sa na Slovensku uplatňujú neprimerané podmienky v obchodných vzťahoch, ktorých predmetom sú potraviny, najviac v&nbsp;celej EÚ.</p>
+
+
+
+<p>Oceňujeme, že sa vlani začalo intenzívnejšie poukazovať na problém neférovosti a zneužívania ekonomickej sily veľkými nadnárodnými obchodnými systémami. Zákony, následne prijaté aj v&nbsp;prvej polovici roka 2019, majú veľkú ambíciu zlepšiť postavenie slovenských výrobcov potravín.</p>
+
+
+
+<h2 class="doc-subheading">ČASŤ B: EKONOMICKÝ VÝVOJ POĽNOHOSPODÁRSTVA A&nbsp;POTRAVINÁRSTVA</h2>
+
+
+
+<p>V&nbsp;roku 2018 pokračoval stagnujúci ekonomický vývoj podielu pôdohospodárstva a potravinárstva na makroekonomických ukazovateľoch hospodárstva SR. &nbsp;</p>
+
+
+
+<p>V&nbsp;produkcii potravín, z&nbsp;dôvodu pokračujúceho poklesu živočíšnej výroby, nedostatočne vyvinutého spracovateľského priemyslu a&nbsp;nerovnováhy v&nbsp;potravinovom reťazci je Slovensko hlboko pod kritickou hranicou potravinovej bezpečnosti štátu. Obchodné reťazce síce verejne deklarujú záujem o&nbsp;rozšírenie ich ponuky o&nbsp; potravinárske výrobky vyrobené na Slovensku, ale v&nbsp;praxi nevychádzajú domácim dodávateľom v&nbsp;ústrety.</p>
+
+
+
+<h2 class="doc-subheading">Zastúpenie slovenských potravín v obchodoch</h2>
+
+
+
+<p>SPPK v&nbsp;polovici novembra už po ôsmy raz uskutočnila prieskum v&nbsp;najväčších obchodných reťazcoch pôsobiacich na území SR s&nbsp;cieľom zistiť, akú časť z&nbsp;celkovej ponuky potravín predstavujú agropotravinárske výrobky vyrobené v SR. Výsledky monitoringu už niekoľko rokov ukazujú, že zastúpenie agropotravinárskych výrobkov vyrobených na Slovensku na pultoch obchodov je približne 40 % a tento fakt platil aj pre vlaňajší rok 2018 s&nbsp;konkrétnym číslom 40,18%.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/P8skjsy.jpg"></figure><p></p>
+
+
+
+<h2 class="doc-subheading">ČASŤ C: ZAHRANIČNÁ ČINNOSŤ SPPK </h2>
+
+
+
+<h2 class="doc-subheading">Spoločná poľnohospodárska politika</h2>
+
+
+
+<p>Vážené dámy, vážení&nbsp;páni,</p>
+
+
+
+<p>Jednou z&nbsp;najdôležitejších činností komory počas minulého roka bola zahraničná činnosť. V&nbsp;rámci nej najmä aktivita súvisiaca s&nbsp;prípravou novej Spoločnej poľnohospodárskej politiky po roku 2020. Agenda, ktorá si vyžaduje neskutočne veľa času na prípravu, cestovanie do Bruselu, vzájomné diskusie v&nbsp;anglickom jazyku a&nbsp;najmä lobing, tak podstatný v&nbsp;európskom agropotravinárstve.</p>
+
+
+
+<p>Na Slovensku sme v minulosti nevyužili dva Programy rozvoja vidieka. Teraz musí byť našim cieľom efektívne využiť možnosti pre rozvoj slovenského vidieka, ktoré nám ponúkne práve pripravovaná Spoločná poľnohospodárska politika na roky 2021-2027.</p>
+
+
+
+<p>Do prípravy budúcej Spoločnej poľnohospodárskej politiky sme zahrnuli aj členov Predstavenstva SPPK. Vlani sme vytvorili pracovnú skupinu k&nbsp;SPP. Na našich stretnutiach sme napríklad rozoberali otázku dôsledkov presunu finančných zdrojov medzi piliermi, dopady stropovania či dotazník k&nbsp;SPP. Naše názory na reformu SPP sme osobnou účasťou vyjadrili aj na proteste v&nbsp;Bruseli.</p>
+
+
+
+<p>Slovenskí potravinári podporujú nastavenie férových a rovnocenných podmienok novej Spoločnej poľnohospodárskej politiky Európskej Únie po roku 2020. Ide totiž o riešenie vstupov do potravinárskej výroby a zabezpečenie väčšej pridanej hodnoty z domácej produkcie za účelom zníženia negatívneho obchodného salda zahraničného obchodu.</p>
+
+
+
+<p>Naďalej nám chýba národná pozícia k&nbsp;SPP 2020+, strategický plán k SPP. Sme pripravení na konštruktívnu diskusiu s&nbsp;vedením ministerstva pôdohospodárstva k&nbsp;tejto téme, aby sme mali aj s&nbsp;prispením hlasov zdola, od samotných poľnohospodárov a&nbsp;potravinárov dôkladne vypracovaný materiál o&nbsp;dopadoch a&nbsp;prínosoch budúcich poľnohospodárskych pravidiel. &nbsp;</p>
+
+
+
+<p>Sme tri dni po eurovoľbách. Ich výsledky a&nbsp;budúce zloženie Európskeho parlamentu a&nbsp;Európskej komisie ukážu, či začne platiť prechodné obdobie a&nbsp;kedy vlastne európske štruktúry odsúhlasia záverečnú podobu novej Spoločnej poľnohospodárskej politiky.</p>
+
+
+
+<h2 class="doc-subheading">Zahraničný lobing</h2>
+
+
+
+<p>Naše priority sme v&nbsp;Bruseli presadzovali prostredníctvom viacerých platforiem: Konzorcia s&nbsp;českými samosprávnymi organizáciami, agropotravinárskych samospráv krajín V4, Krajín troch morí a&nbsp;európskej organizácie COPA COGECA, v&nbsp;ktorej sme vlani na jeseň obnovili členstvo. Už aj našim hlasom budeme môcť ovplyvňovať tvorbu rozhodujúcich európskych predpisov či politík. Aktívna účasť v&nbsp;pracovných skupinách je však rozhodujúca pre úspech nášho rokovania. Vyzývam vás preto na ňu!</p>
+
+
+
+<p>V&nbsp;októbri pricestoval na naše pozvanie do Bratislavy generálny tajomník organizácie COPA COGECA Pekka Pesonen, ktorý sa zúčastnil rokovania Predstavenstva SPPK.</p>
+
+
+
+<p>V&nbsp;marci sme zorganizovali rokovanie krajín V4, rozšírené o&nbsp;Litvu, Rumunsko a Bulharsko. V&nbsp;júni česko-slovenské rokovanie k&nbsp;SPP, ktorého sa zúčastnili rezortní ministri, predsedovia poľnohospodárskych výborov a&nbsp;predsedovia samospráv, teda Agrárnej komory ČR a SPPK.</p>
+
+
+
+<p>Veľký prínos pre presadzovanie našich priorít v&nbsp;rámci budúcej SPP mali diskusie s&nbsp;podpredsedom Európskej komisie pre energetickú úniu Marošom Šefčovičom. Iniciatívni v&nbsp;európskych témach sme aj prostredníctvom Európskeho hospodárskeho a&nbsp;sociálneho výboru, v&nbsp;ktorom má SPPK svojho zástupcu.</p>
+
+
+
+<h2 class="doc-subheading">Poskytovanie priamych podpôr</h2>
+
+
+
+<p>Rok 2018 poznačili problémy v oblasti priamych platieb v&nbsp;poľnohospodárstve. Regióny nás informovali napríklad o&nbsp;nekvalitných alebo neaktuálnych ortofotosnímkach, aktualizácii registra pôdnych blokov po podaní žiadosti. V prípade nezrovnalostí&nbsp; bola blokovaná celá výmera žiadateľa, nielen výmera, ktorá je predmetom nezrovnalosti.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/puisYAa.jpg"></figure><p></p>
+
+
+
+<p>V decembri 2018 neboli vyplatení všetci žiadatelia o priame platby. SPPK sa pýtala Pôdohospodárskej platobnej agentúry v januári 2019 na podiel vyplatených poľnohospodárov a podiel vyplatených podpôr za rok 2018. Podľa už medializovaných informácií k 15. aprílu 2019 boli vydané rozhodnutia za rok 2018 na podiel 85% finančných prostriedkov na platbu SAPS /jednotná platba na plochu/. Rozhodnutia boli doručené pre 91% žiadateľov.</p>
+
+
+
+<p>Vlani sme zorganizovali školenia ku GSAA. Dôvod bol ten, aby sme mali viac poľnohospodárov na Slovensku, ktorí budú vedieť bez výraznejších problémov pracovať v tomto systéme a podávať žiadosti bez chýb.“</p>
+
+
+
+
+
+<h2 class="doc-subheading">ČASŤ D: ŠTÁTNA POMOC</h2>
+
+
+
+<h2 class="doc-subheading">RPPS a&nbsp;štátna pomoc</h2>
+
+
+
+<p>Pamätáme si, ako sa pre rok 2018 odsúhlasila výška štátnej pomoci pre poľnohospodárstvo a&nbsp;potravinárstvo vo výške 1 milióna eur. A práve to bol jeden z impulzov pre spojenie agropotravinárskych samospráv na Slovensku a&nbsp;vznik Rady poľnohospodárskych a&nbsp;potravinárskych samospráv SR, ktorá spoločne vyjadrila veľký nesúhlas s prístupom k strategickému odvetviu národného hospodárstva Slovenskej republiky.</p>
+
+
+
+<p>Počas svojho pôsobenia rada iniciovala stretnutia s najvyššími ústavnými činiteľmi vrátane prezidenta republiky, predsedu vlády, predsedu parlamentu i podpredsedníčky vlády a ministerky pôdohospodárstva.</p>
+
+
+
+<p>Dodatočná pomoc v roku 2018 vo výške 33 miliónov eur, za zber dát, bola impulzom na podporu domácej výroby. Notifikovaná štátna pomoc formou zelenej nafty vo výške 30 mil. eur pre citlivé komodity je tým správnym a najmä spravodlivým spôsobom, ako pomôcť poľnohospodárom, ktorí prinášajú pridanú hodnotu pre našu krajinu.</p>
+
+
+
+<p>Zároveň sa v štátnom rozpočte pre rok 2019 pre podporu v oblasti poľnohospodárstva a potravinárstva nachádzajú ďalšie finančné prostriedky vo výške 50 mil eur. Pred finalizáciou je odškodnenie štátu za sucho z&nbsp;roku 2017.</p>
+
+
+
+
+
+<h2 class="doc-subheading">ČASŤ E – ĎALŠIE AKTIVITY SPPK</h2>
+
+
+
+<h2 class="doc-subheading">Odborné vzdelávanie</h2>
+
+<p>Aj v&nbsp;roku 2018 sa komora&nbsp; aktívne zapájala do systému duálneho vzdelávania v stredných odborných školách najmä prostredníctvom certifikácie podnikateľských subjektov, ktoré prejavili záujem vstúpiť do systému duálneho vzdelávania. SPPK k&nbsp;2. máju 2019 vydala osvedčenia 73 zamestnávateľom: 37 poľnohospodárskym, 35 potravinárskym podnikom a&nbsp;jednému podniku, ktorý bude vzdelávať aj v&nbsp;oblasti poľnohospodárskych a&nbsp;aj v&nbsp;oblasti potravinárskych odborov.</p>
+
+
+
+<h2 class="doc-subheading">Hovorme o jedle</h2>
+
+
+
+<p>Týždeň od 15. do 19. októbra 2018 bol venovaný práci s&nbsp;najmladším spotrebiteľom, a to prostredníctvom aktivít VI. ročníka týždňa HOVORME O JEDLE. Záštitu nad HOVORME O&nbsp;JEDLE prevzalo MPRV SR a Ministerstvo školstva, vedy, výskumu a športu SR. Do súťaže sa zapojilo 456 základných škôl približne so 70 - tisíc žiakmi. Vlani sme pre veľký úspech projektu pridali k&nbsp;pôvodným trom súťažným kategóriám ešte jednu, v&nbsp;ktorej mali deti urobiť fotografiu s&nbsp;tematikou jedla a&nbsp;stravovania.</p>
+
+
+
+<h2 class="doc-subheading">Výstavy</h2>
+
+
+
+<p>SPPK sa v roku 2018 spolupodieľala na prezentácii potravinárskych výrobcov a&nbsp;ich produkcie na&nbsp; medzinárodnom veľtrhu <strong>Danubius Gastro</strong>, ktorý sa konal v Bratislave od 25. do 28. januára. Spoločná expozícia SPPK a&nbsp;Slovenského mliekarenského zväzu ponúkla na prezentáciu 120 m2 pre 13 podnikateľských subjektov. Druhou výstavou bola medzinárodná poľnohospodárska a potravinárska <strong>výstava Agrokomplex 2018 v Nitre</strong>, ktorá sa konala v&nbsp;auguste. V expozícii SPPK sa na ploche 150 m2 odprezentovalo 35 členských podnikateľských subjektov, zväzov a združení.</p>
+
+
+
+<h2 class="doc-subheading">Mediálne aktivity</h2>
+
+
+
+<p>Vlani, vplyvom politických a&nbsp;celospoločenských udalostí, sme zamerali podstatnú časť našich mediálnych aktivít na obhajobu všetkých slušne pracujúcich poľnohospodárov. V&nbsp;potravinárskych témach sme propagovali zdravé slovenské potraviny v&nbsp;kontexte masívnych zahraničných potravinových škandálov. Zvýšili sme počet mediálnych výstupov na 1613, oproti 1508-mim z&nbsp;roku 2017. Zintenzívnili sme propagáciu aj na sociálnych sieťach.</p>
+
+
+
+<p>Vydávame Vestník MPRV SR, prostredníctvom ktorého&nbsp; prinášame dôležité informácie pre odbornú verejnosť.</p>
+
+
+
+
+
+<h2 class="doc-subheading">ČASŤ F: PLNENIE ÚLOH XXXI. VZ SPPK</h2>
+
+
+
+<p>Na základe uznesení prijatých na Valnom zhromaždení&nbsp; SPPK, ktoré sa konalo 3. mája 2018, sme rokovali s&nbsp;ministerstvom pôdohospodárstva o&nbsp;navýšení štátnej pomoci pre agropotravinárstvo v&nbsp;tohtoročnom štátnom rozpočte.</p>
+
+
+
+<p>Rokovali sme na viacerých úrovniach s&nbsp;mnohými predstaviteľmi či už rezortného ministerstva, politických strán, Výboru NR SR pre pôdohospodárstvo a&nbsp;životné prostredie, štátnej a&nbsp;verejnej správy a&nbsp;navrhovali systémové zmeny v&nbsp;oblasti živočíšnej výroby a&nbsp;špeciálnej rastlinnej výroby. Presadzovali sme riešenie problematiky sucha a&nbsp;následkov klimatických zmien alebo riadenie rizík. Zasadzovali sme sa za rôzne zmeny v&nbsp;legislatíve tak, aby bolo vytvorené lepšie podnikateľské prostredie pre poľnohospodárov a&nbsp;potravinárov. Veľa úsilia nás stála diskusia o&nbsp;špeciálnom odvode pre obchodné reťazce a&nbsp;iniciovanie zmien vedúcich k&nbsp;férovejším vzťahom medzi dodávateľmi a&nbsp;obchodom. Tlak SPPK a&nbsp;ďalších poľnohospodárskych a&nbsp;potravinárskych samospráv priniesol viaceré výsledky.</p>
+
+
+
+<p>Spokojnejší by sme však boli dnes najmä vtedy, ak by sme už vyrokované témy reálne pocítili v zlepšení ukazovateľov v&nbsp;živočíšnej výrobe, v&nbsp;špeciálnej rastlinnej výrobe a&nbsp;ďalších problémových oblastiach.&nbsp; Za ďalší rozvoj odvetvia musíme ešte bojovať a&nbsp;musíme sa aj poučiť z&nbsp;chýb, ktorých sme sa pri presadzovaní našich oprávnených požiadaviek dopustili.</p>
+
+
+
+<p>Našimi prioritami zostávajú riešenie Spoločnej poľnohospodárskej politiky EÚ v&nbsp;prospech slovenských poľnohospodárov a&nbsp;potravinárov, zvyšovanie potravinovej sebestačnosti SR, udržanie a&nbsp;rast zamestnanosti na vidieku, k&nbsp;čomu bude smerovať všetko naše úsilie.</p>
+
+
+
+<h2 class="doc-subheading">ČASŤ G: ČO ĎALEJ</h2>
+
+
+
+<p>Našou prioritou pre rok 2019 bude práca súvisiaca s&nbsp;vyššou štátnou pomocou pre rok 2020, príprava novej SPP po roku 2020 a&nbsp;ďalšia propagácia slovenských potravín v&nbsp;kontexte so vzdelávaním spotrebiteľa.</p>
+
+
+
+<p>Viaceré kroky smerujeme k&nbsp;tomu, aby boli čím skôr vyplatené priame platby za minulý rok a&nbsp;rok 2017, &nbsp;zelená nafta a odškodnenie za sucho 2017. Potrebujeme sa dozvedieť definitívne podmienky a&nbsp;časový rámec implementácie štátnej pomoci pre tento rok vo výške 50 mil. eur. Nemenej podstatná je aj tvorba dvojpilierového riadenia rizík v&nbsp;poľnohospodárstve. Samostatnou kapitolou je ozdravenie potravinárskeho sektora. Chceme prispieť k potlačeniu trvalo negatívne pôsobiacich neprimeraných podmienok v&nbsp;obchodných vzťahoch v&nbsp;potravinovom reťazci. Medzi ďalšie priority v&nbsp;oblasti potravinárstva bude patriť podpora predaja slovenských poľnohospodárskych a&nbsp;potravinárskych výrobkov na domácom trhu, a to formou mediálnych výstupov zameraných na podporu propagácie slovenského potravinárstva a&nbsp;na informovanie spotrebiteľa o&nbsp;slovenských potravinách.</p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/CXvwcj9.jpg"></figure><p></p>
+
+
+
+<p>Je nevyhnutné nastaviť a realizovať systémové riešenia na zvýšenie podielu dodávok slovenských potravín do všetkých verejných inštitúcií, školských a zdravotníckych zariadení. Sme pripravení v&nbsp;tejto téme aktívne spolupracovať.&nbsp;&nbsp;</p>
+
+
+
+<p>Slovenská spoločnosť si musí nevyhnutne uvedomiť skutočnosť, že potraviny nie sú tovar ako každý iný. Potraviny majú významný vplyv na zdravie a zdravý vývoj každého jedného spotrebiteľa, preto by len nízka cena nemala byť marketingovou politikou a konkurenčným bojom medzi obchodnými reťazcami v snahe získať zákazníka akciovými cenami. Preto by&nbsp;&nbsp; nízka cena pre spotrebiteľa nemala byť výhodou, ale skôr dôvodom na zamyslenie sa.</p>
+
+
+
+<p>Po voľbách do Európskeho parlamentu budeme pozorne sledovať, či budeme mať vo výbore pre poľnohospodárstvo a&nbsp;rozvoj vidieka svojho zástupcu. Pokiaľ áno, sme pripravení s&nbsp;ním intenzívne spolupracovať, rovnako aj s&nbsp;ďalšími, pre agropotravinárstvo kľúčovými poslancami Európskeho parlamentu.</p>
+
+
+
+<p>Veľkou zmenou však potrebuje prejsť aj samotná SPPK. Aj preto pokračujeme v&nbsp;diskusiách o&nbsp;finančnom posilnení úradu SPPK, vďaka čomu sa budeme môcť v&nbsp;budúcom období ešte intenzívnejšie zapájať do tvorby domácej a&nbsp;európskej legislatívy a&nbsp;vďaka čomu budeme môcť byť silnejším a&nbsp;odborne zdatnejším partnerom v&nbsp;rokovaniach na mnohých úrovniach.</p>
+
+
+
+<p>Je isté, že nás nečaká ľahké obdobie, a&nbsp;práve preto bude dôležité, aby SPPK sústavne zvyšovala svoju autoritu a&nbsp;vplyv voči štátnym autoritám aj v&nbsp;spoločnosti. Ak má naša komora úspešne plniť svoje úlohy, musí byť vnútorne jednotná dobre organizovaná a&nbsp;postupovať podľa svojich dohodnutých&nbsp; priorít.</p>
+
+
+
+<p>Veľmi dôležitá bude tiež súčinnosť a&nbsp;lepší prenos informácií medzi úradmi Slovenskej poľnohospodárskej a&nbsp;potravinárskej komory, regionálnych komôr a&nbsp;členskej základne.</p>
+
+
+
+
+
+<h2 class="doc-subheading">ČASŤ H: POĎAKOVANIE ZA SPOLUPRÁCU</h2>
+
+
+
+<p>Dámy a páni,</p>
+
+
+
+<p>významnou udalosťou pre mňa osobne, ale aj pre našu organizáciu ako takú boli v minulom roku voľby do orgánov SPPK. Dovoľte mi z tejto pozície poďakovať bývalému vedeniu komory, predstavenstvu a&nbsp;dozornej rade za aktivity, ktoré vykonávali v prospech slovenského agropotravinárstva. Ďakujem už súčasnému zloženiu &nbsp;predstavenstva za veľmi plodné a zmysluplné diskusie a návrhy. Z&nbsp;predstavenstva odchádza Imrich Alaxa, do ďalších rokov Ti prajem veľa zdravia a úspechov.</p>
+
+
+
+<p>Poďakovanie patrí dozornej rade za aktívny prístup a smelé návrhy riešenia financovania Úradu SPPK. Rovnako mi dovoľte poďakovať Rade poľnohospodárskych a potravinárskych samospráv za boj o prinavrátenie postavenia slovenským poľnohospodárom a potravinárom, ktoré im právom patrí.</p>
+
+
+
+<p>Ďakujem tiež Únii potravinárov Slovenska, predsedom, podpredsedom a riaditeľom RPPK, členom SPPK, rezortným inštitúciám, Asociácii zamestnávateľských zväzov a&nbsp;združení, akademickej obci, Agrárnej komore Českej republiky a ďalším spriateleným organizáciám, zväzom a združeniam za aktívnu spoluprácu a&nbsp;pomoc.</p>
+
+
+
+<p>Ďakujem za pozornosť.</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

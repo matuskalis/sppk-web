@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Záhradníctvo — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../index.html">Úvod</a><span>/</span><a href="../index.html">polnohospodarstvo</a><span>/</span>Záhradníctvo</nav>
+
+  <article>
+    <h1 class="doc-title">Záhradníctvo</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Mgr. Tatiana Belová</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">13. februára 2015</span></p>
+
+    <div class="doc-body">
+<h3>Stredná odborná škola záhradnícka, Brezová 2, 921 77 Piešťany</h3>
+
+
+<h2 class="doc-subheading">História školy</h2>
+
+<p>Stredná odborná škola záhradnícka bola založená 1. septembra 1968 v novovybudovanom objekte v Piešťanoch. Škola vznikla premiestnením technických škôl záhradníckeho smeru z Malinova a Rakovíc. Vyučovanie začalo 19. septembra praktickým vyučovaním a od 1. októbra aj teoretickým vyučovaním. Žiaci pod vedením pedagógov postupne budovali školský park a areál praxe.</p>
+
+<p>V roku 1985 sa mení pôvodný názov Stredná poľnohospodárska technická škola odbor záhradníctvo na Stredná poľnohospodárska škola odbor záhradníctvo. Vyučuje sa komplexné záhradníctvo a dve alternatívne zamerania kvetinárstvo – sadovníctvo a zeleninárstvo a ovocinárstvo. V rokoch 1969 – 1975 bolo na škole nadstavbové štúdium absolventov záhradníckych učilíšť zamerané na ovocinárstvo – včelárstvo. V roku 1993, v roku 25. výročia, škola zmenila názov na Stredná záhradnícka škola.</p>
+
+<p>V roku 1991 sa škola stala pilotnou školou projektu Phare – reforma odborného vzdelávania. Projekt umožňoval štúdium žiakov rozličnej dĺžky 3. ročné, 4.ročné, 2.ročné nadstavbové, 2. ročné pomaturitné kvalifikačné, špecializačné a 3. ročné vyššie odborné štúdium. Cieľom projektu bolo pripraviť Základné pedagogické dokumenty študijného odboru 4228 6 záhradnícka výroba a služby, odskúšať modulové vzdelávanie v jednotlivých predmetoch a certifikáciu modulov odborného vzdelávania. V tomto období je prebudovaný školský park na vzdelávaciu a relaxačnú plochu, dopĺňané sú zbierky trvaliek, vybudované je jazierko a rozárium. Budova školy mení svoj vzhľad vytvorením nadstavby striech, vznikla spoločenská miestnosť s kapacitou 100 osôb, ktorá umožňuje organizovať konferencie a prednášky.</p>
+
+<p>V roku 2008 pri príležitosti 40. výročia školy sa opäť mení názov školy na Stredná odborná škola záhradnícka Piešťany.</p>
+
+<p>Od 15.12.2011 pôsobí Stredná odborná škola záhradnícka v Piešťanoch ako centrum odborného vzdelávania a prípravy v záhradníctve.</p>
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=495" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=496" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=497" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=498" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=499" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=500" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=501" title=""></figure><p></p>
+
+
+
+<h2 class="doc-subheading">Vzdelávanie a materiálno-technické vybavenie</h2>
+
+<p>Škola vzdeláva žiakov v odboroch 4228 6 záhradnícka výroba a služby, 3916 6 životné prostredie – 4 ročné maturitné štúdium, 4211 6, 4211 7 záhradníctvo - pomaturitné štúdium a 4221 7 vidiecka turistika – 3-ročné vyššie odborné štúdium. Škola má od založenia celoslovenskú pôsobnosť pre záhradníctvo. Podiel žiakov študujúcich z iných samosprávnych krajov je každoročne nad 50 % V školskom roku 2010/2011 je 57,6 % žiakov mimo Trnavského samosprávneho kraja. Svojim 40. ročným pôsobením si vybudovala tradíciu záhradníckeho školstva v Piešťanoch.&nbsp;<br>
+<br>
+&nbsp;</p>
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=502" title=""></figure><p></p>
+
+
+
+<p>Okrem plôch a zariadení stanovených normatívom študijného odboru – skleníky, fóliovník, demonštračné plochy, zbierky – pomologický sad, botanická záhrada, rozárium, ovocná a okrasná škôlka, je v škole vybudované meristémové laboratórium, v ktorom sa žiaci oboznamujú s novými technológiami pri pestovaní rastlín.</p>
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=503" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=504" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=505" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=506" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=507" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=508" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=509" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=510" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=511" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=512" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=513" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=514" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=515" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=516" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=517" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=518" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=519" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=520" title=""></figure><p></p>
+
+
+
+<p>Súčasťou školy je i školský internát, jedáleň, knižnica, telocvičňa, športový areál, posilňovňa, tenisové kurty, multimediálna učebňa, E-Beamová učebňa, knižnica, internet, ktoré sa nachádzajú priamo v školskom areáli. Škola má učebne štandardne vybavené pre vyučovanie žiakov, žiaci sa presúvajú na vyučovanie jednotlivých predmetov do učební vybavených učebnými pomôckami a technikou. Zariadenie a vybavenie je prispôsobené na jednotlivé predmety. Kapacita školy umožňuje zavedenie nových technológií.</p>
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=521" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=522" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=523" title=""></figure><p></p>
+
+
+
+<h2 class="doc-subheading">Ubytovanie&nbsp;</h2>
+
+<p>Ubytovanie a stravovanie žiakov zabezpečuje škola vo vlastných zariadeniach. Kapacita školského internátu je 220 osôb. Školská jedáleň zabezpečuje celodenné stravovanie ubytovaných žiakov. Škola má veľkú spoločenskú miestnosť s kapacitou 100 stoličiek, ktorú využíva n organizovanie odborných seminárov a podujatí. Túto ako i 2 menšie auly (z ktorých každá má kapacitu 35 ľudí) je možné poskytnúť na prenájom - na konferencie rozličného zamerania. Priestory sú pravidelne kontrolované a vyhovujú hygienickým požiadavkám a požiadavkám BOZP.</p>
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=524" title=""></figure><p></p>
+
+
+
+
+
+<figure class="doc-figure"><img src="http://sppk.sk/img.php?iid=525" title=""></figure><p></p>
+
+
+
+<h2 class="doc-subheading">Hodnotenie školy</h2>
+
+<p>Od roku 2003 je škola hodnotená ratingovou inštitúciou IES hodnotou BBB – vysoko erudovaná a profesionálne vedená inštitúcia. K všetkým vzdelávacím programom môže absolvent získať aj medzinárodný certifikát IES, ktorý ich oprávňuje uchádzať sa o zamestnanie v ktorejkoľvek z krajín EU.</p>
+
+<h2 class="doc-subheading">Spájanie teórie s praxou&nbsp;</h2>
+
+<p>Škola je členom profesijných zväzov - Ovocinárska únia Slovenska, Slovenská zeleninárska únia, Zväz záhradníkov Slovenska, ISA Slovensko, EKOTREND, ZABOZAS, spolupracuje so Spoločnosťou pre záhradnú a krajinnú tvorbu, Zväzom záhradníkov a kvetinárov Českej republiky.</p>
+
+<p>Spolupráca so strategickými zamestnávateľmi - žiaci školy v 3. ročníku absolvujú individuálnu prax v podnikoch PD Flora Trenčianska Teplá, Záhradné centrum Trenčín, Slovenské liečebné kúpele Piešťany, a.s., Počas letných prázdnin absolvujú 2-týždennú prax v záhradníckych podnikoch.&nbsp;<br>
+Zahraničné praxe a spolupráca so zahraničnými školami rovnakého zamerania:<br>
+&nbsp;</p>
+
+<p>- pokračuje dlhoročná spolupráca so školami: Gartenbaufaschule Langenlois Rakúsko (1993), SZáŠ Děčín, SZáŠ Ostrava, SZáŠ Rajhrad, Brno – Bohunice (Česko všetky od roku 1990), Magyar Gyula Budapest (od roku 1998), aj záhradnícka škola v Szombathely Maďarsko<br>
+- od roku 2004 sa rozvinula spolupráca so SZaŠ Litomyšl a odbornou školou v SZn.3 Ostrzeszow (Poľsko) – spolupráca pri výstavách, spoločná prezentácia v jednotlivých krajinách, výmenné praxe študentov a odborné exkurzie učiteľov&nbsp;<br>
+- V roku 2009 sme nadviazali spoluprácu so školou na Ukrajine a zo záhradníckou školou vo Francúzsku</p>
+
+<p>Zahraničné praxe žiakov školy prebiehajú v spolupráci s partnerskými školami a inštitúciami. Rakúsko – záhradnícke firmy, Gartenbaufaschule Langenlois,&nbsp;<br>
+Česká republika – SzáŠ Litomyšl, Okrasné škôlky Litomyšl,&nbsp;<br>
+Poľsko- SZn.3 Ostrzeszow&nbsp;<br>
+Španielsko, Malorka – prax v hotelových komplexoch – údržba a starostlivosť o sadovnícke a kvetinové úpravy.</p>
+
+<p>Škola spolupracuje s vysokými školami Mendlova zemědelská a lesnícka univerzita Brno, Záhradnícka fakulta Lednice na Morave a Slovenská poľnohospodárska univerzita v Nitre. V rokoch 1996 - 1998 škola bola detašovaným pracoviskom pre bakalárske odbory Záhradníckej fakulty SPU Nitra. Škola pôsobí ako cvičná škola pre študentov DPŠ. Študenti STU Bratislava, Fakulty architektúry využívajú botanickú záhradu ako študijnú plochu – spracovali návrhy na jej rekonštrukciu a širšie využitie.<br>
+&nbsp;</p>
+
+<p>Škola má schválenú podnikateľskú činnosť v nasledovných oblastiach:<br>
+&nbsp;&nbsp;Sadovnícke a aranžérske služby<br>
+&nbsp;&nbsp;Rekvalifikačné kurzy<br>
+&nbsp;&nbsp;Poradenská činnosť v oblasti záhradníctva<br>
+&nbsp;&nbsp;Predaj poľnohospodárskych a záhradníckych produktov a materiálov<br>
+&nbsp;&nbsp;Poskytovanie stravovania<br>
+&nbsp;&nbsp;Poskytovanie ubytovania<br>
+&nbsp;&nbsp;Prevádzkovanie bufetu<br>
+&nbsp;&nbsp;Kopírovanie<br>
+&nbsp;&nbsp;Celoživotné vzdelávanie<br>
+&nbsp;&nbsp;Prevádzkovanie botanickej záhrady</p>
+
+<p>Všetky novinky z praxe nové technológie a poznatky odborní učitelia starostlivo sledujú a zapracúvajú do tematických plánov jednotlivých predmetov, V poslednom období sme zapracovali tému obnoviteľných zdrojov energie do tematických plánov predmetu stroje a zariadenia, časť biomasa aj do predmetu základy záhradníctva. Integrovaná produkcia – zásady pestovania sa vyučujú v predmetoch zeleninárstvo aj ovocinárstvo. Zároveň študentom ponúkame voliteľné predmety zamerané na ochranu a tvorbu životného prostredia.</p>
+
+<h2 class="doc-subheading">Pedagogické zabezpečenie</h2>
+
+<p>Kolektív pedagogických zamestnancov tvorí 22 učiteľov, z toho 17 žien a 5 mužov. Všeobecne vzdelávacie predmety vyučuje 11 učiteľov a odborné predmety 11 učiteľov. Pedagogickí zamestnanci školy spĺňajú všetky kvalifikačné predpoklady na vyučovanie jednotlivých predmetov školského vzdelávacieho programu. Pravidelne sa vzdelávajú, zúčastňujú odborných seminárov a exkurzií. Doplňujú si vzdelanie aj pre tvorbu vzdelávacích programov.</p>
+
+<h2 class="doc-subheading">Celoživotné vzdelávanie</h2>
+
+<p>Škola ponúka nasledovné rekvalifikačné kurzy akreditované MŠ SR číslo protokolu 145/2008/1-6&nbsp;<br>
+&nbsp;</p>
+
+<p>- Viazač kvetov – 150 hod.<br>
+- Arboristika – biotechnika drevín v mestskom prostredí – 270 hod.<br>
+- Záhradník- škôlkar – 120 hod.<br>
+- Záhradník – zakladanie a údržba zelene – 150 hod.<br>
+- Záhradník pestovateľ bioproduktov – 90 hod.<br>
+- Záhradník – pestovateľ liečivých rastlín – 90 hod.<br>
+- Záhradník – množiteľ in vitro – 270 hod.</p>
+
+<h2 class="doc-subheading">Propagácia a prezentácia školy</h2>
+
+<p>Škola sa vo svojich projektoch zameriava na propagáciu odboru medzi žiakmi ZŠ. Od roku 1993 sa stala každoročným vyhlasovateľom a organizátorom národnej súťaže vo viazaní a aranžovaní kvetov „Victoria Regia“ – majstrovstvá Slovenska vo floristike. Taktiež spolupracuje so SZZ pri organizovaní vedomostnej súťaže Mladý záhradkár, Klasici v komikse. Pripravuje dni v Botanickej záhrade s vedomostnými a zručnostnými úlohami určenými pre žiakov MŠ a ZŠ, „dni otvorených dverí“, pri ktorých žiaci školy pripravujú ukážky z floristiky a otvorené vyučovacie hodiny. Dni otvorených dverí umožňujú záujemcom navštíviť nielen priestory teoretického, ale aj praktického vyučovania – skleníky, zbierky, meristémové laboratórium. Súčasťou bývajú i aranžérske tvorivé dielne. Žiaci školy prezentujú svoje koníčky a odborné práce napr. pestovanie bonsajov, pestovanie orchideí, skameneliny, liečivé čaje a pod.</p>
+
+<p>Škola umožňuje žiakom zúčastniť sa rozličných odborných a všeobecno-vzdelávacích súťažiach:&nbsp;<br>
+a) vo floristike: na Slovensku Victoria Regia, Flora cup, v Čechách - Dečínska Kotva, Brňenská Ruža, Zelený svet, Vianočné aranžovanie v Litomyšli<br>
+b) v oblasti ovocinárskych zručností Súťaž v reze ovocných drevín, Súťaž v reze viniča – o zlaté nožnice<br>
+c) v oblasti záhradníckych zručností – Kopidlenský kvítek, IUVENSIS HORTULANUS – mladý záhradník,<br>
+d) medzinárodné súťaže - Europa Skills (konané každé dva roky), Europäischen Berufswettbewerb für junge Gärtnerinnen und Gärtner (konané každé dva roky)<br>
+e) matematické súťaže: Genius Logicus, Praktická matematika, MAKS, Matematický klokan.<br>
+f) olympiády v cudzom jazyku.</p>
+
+<p>SOŠ záhradnícka každoročne pripravuje programy na propagáciu odboru a aktivity umožňujúce využívať areál školy aj pre deti materských škôl, či žiakov základných škôl s cieľom budovať ich vzťah k prírode a k ochrane a tvorbe životného prostredia.</p>
+
+<p><strong>Prezentácia školy:</strong>&nbsp;<br>
+&nbsp;</p>
+
+<p>Flora Bratislava, YUVIR, Záhradkár Trenčín, Dni ruží - Dolná Krupá, Kvetinové korzo podujatie v rámci súťaže Victoria Regia, Jablko roka, Otvorenie kúpeľnej sezóny v Piešťanoch.</p>
+
+<h2 class="doc-subheading">Mimoškolská činnosť</h2>
+
+<p>Škola ponúka žiakom bohatú mimoškolskú činnosť – ponúka odborné krúžky – viazania a aranžovania kvetín, bonsajový, meristémové množenie rastlín, mladých ovocinárov, ale aj florbalový, krúžok nádejných novinárov, jazykolamy a jazykokazy, počítačový i krúžok šikovných rúk. Žiaci z krúžku nádejných novinárov pod vedením učiteľa vydávajú školský časopis mladých záhradníkov – KAKTUS.</p>
+
+<h2 class="doc-subheading">Uplatnenie absolventov</h2>
+
+<p>Komfort, príjemná atmosféra a pekné prostredie nie sú jediné devízy, ktoré SOŠ poskytuje svojim študentom. Najväčším plusom SOŠ záhradníckej v Piešťanoch zostáva kvalitné vzdelanie v odbore záhradnícka výroba a služby alebo v odbore životné prostredie. Napriek tomu, že každoročne opúšťa brány školy približne 70 absolventov, na trhu práce je o týchto odborníkov stále veľký záujem. Nie všetky z ponúkaných pracovných miest sa podarí obsadiť absolventmi školy, pretože veľké množstvo žiakov pokračuje v štúdiu na vysokých školách (najčastejšie sú to školy zamerané na záhradnú architektúru, poľnohospodárstvo, lesníctvo, ale i žurnalistiku, teológiu či pedagogiku) a iní sa rozhodli pre založenie vlastnej sadovníckej či kvetinárskej firmy.</p>
+
+<h2 class="doc-subheading">Kontaktné údaje:&nbsp;</h2>
+
+<p>Riaditeľka školy:&nbsp;<br>
+Ing. Eva Stručková&nbsp;<br>
+e-mail: <a href="mailto:struckova@szaspn.sk">struckova@szaspn.sk</a></p>
+
+<p>Adresa školy:<br>
+Brezová 2, 921 77 Piešťany</p>
+
+<p>Telefón:<br>
++421 33 7525695 - sekretariát<br>
++421 33 7725511 - informátor<br>
++421 48 7725635 – informátor<br>
+<br>
+Webová adresa: http://www.szaspn.sk<br>
+Email školy: <a href="mailto:szaspn@svspn.sk">szaspn@svspn.sk</a>, <a href="mailto:szaspn@szaspn.sk">szaspn@szaspn.sk</a></p>
+
+
+
+<p><em>Zdroj: Ing. Eva Stručková, Stredná odborná škola záhradnícka, Brezová 2, Piešťany&nbsp;<br>
+V Bratislave dňa: 16.12.2011</em></p>
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

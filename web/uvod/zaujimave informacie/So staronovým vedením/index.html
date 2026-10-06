@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>So staronovým vedením — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>So staronovým vedením</nav>
+
+  <article>
+    <h1 class="doc-title">So staronovým vedením</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Jana Holéciová, hovorkyňa SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">18. marca 2024</span></p>
+
+    <div class="doc-body">
+<p><span>Levická regionálna poľnohospodárska a&nbsp;potravinárska komora si zvolila nové vedenie. Na čele tejto aktívnej komory bude aj v&nbsp;ďalšom období Milan Halmeš.</span></p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/pVszL1g.jpeg"></figure><p></p>
+
+<p>V&nbsp;Predstavenstve Regionálnej poľnohospodárskej a&nbsp;potravinárskej komory Levice bude pracovať 11 zástupcov tamojších podnikateľských subjektov vrátane predsedu a&nbsp;dvoch podpredsedov. Za podpredsedu regionálnej komory pre potravinárstvo a&nbsp;služby bol zvolený Vladimír Tamaškovič. Druhým podpredsedom RPPK za prvovýrobu je Peter Repiský.</p>
+
+<h2 class="doc-subheading">Ukázala sa sila komory</h2>
+
+<p>Valné zhromaždenie Levičanov sa uskutočnilo týždeň po veľkom celoslovenskom proteste, ktorý zorganizovala Slovenská poľnohospodárska a&nbsp;potravinárska komora a&nbsp;do ktorého sa príkladne zapojili aj levickí poľnohospodári. Staronový predseda levickej komory Milan Halmeš pred delegátmi vyzdvihol silu komory.</p>
+
+<p>„Počas protestu sme naplno ukázali, aká je komora. Ukázalo sa v&nbsp;priamom prenose, že komora nie je len veľké predstavenstvo, ale najmä regióny a&nbsp;v&nbsp;nich členovia. Na tom by sme mali stavať v&nbsp;najbližšom období. Preto je tu namieste diskusia o&nbsp;jednotnosti nielen komory, ale aj ďalších samosprávnych organizácií,“ uviedol Milan Halmeš po zvolení do funkcie predsedu.</p>
+
+<p>Levickí delegáti sa počas diskusie vyjadrili k&nbsp;aktuálnym témam vrátane salda zahraničného obchodu. To bolo za obdobie január až november 2023 pasívne a&nbsp;prekročilo kritické dve miliardy eur. Hodnota 2,043 mld. eur je červeným výkričníkom pre celý agropotravinársky sektor, dokonca v&nbsp;porovnaní s&nbsp;rovnakým obdobím roku 2022 sa saldo zvýšilo o&nbsp;355,5 mil. eur, teda o&nbsp;21%.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/rnqiN4f.jpeg"></figure><p></p>
+
+<p>„Aj pod zvyšujúcim sa tlakom dovozových produktov na naše územie je obzvlášť kľúčové, aby na rovnakej úrovni bol ako poľnohospodársky, tak aj potravinársky priemysel. To, čo si doma vyrobíme, musíme v&nbsp;prvom rade spracovať doma, aby sme znížili závislosť krajiny na cudzích potravinách,“ dodal Milan Halmeš.</p>
+
+<p>Vedenie levickej komory bude v&nbsp;aktuálnom zložení pracovať najbližšie tri roky. Keďže niektorí členovia predstavenstva majú za sebou už niekoľko funkčných volebných období, predseda RPPK Levice sa vo svojom príhovore dotkol aj tejto témy – mimoriadne podstatnej generačnej obnovy. Omladenie, nový vietor, inovatívne riešenia z&nbsp;pohľadu mladých ľudí na vývoj slovenského poľnohospodárstva a&nbsp;potravinárstva sú žiaduce v&nbsp;každej jednej regionálnej komore. O&nbsp;to podstatnejšie bude, ako sa s&nbsp;touto náročnou témou popasujú aj samotní delegáti valného zhromaždenia celoslovenskej komory. Volebné valné zhromaždenie bude v&nbsp;máji a&nbsp;ani na tejto platforme sa prítomní nevyhnú diskusii o&nbsp;generačnej obmene.</p>
+
+<h2 class="doc-subheading">Škody</h2>
+
+<p>Zástupcovia regionálnej levickej komory počas XXXIV. valného zhromaždenia okrem zvolenia nového predstavenstva zhodnotili predchádzajúci rok nielen vrátane výšky úrod rozhodujúcich agrárnych komodít pestovaných v&nbsp;levickom regióne, ale aj výšky škôd na týchto plodinách. Najväčšie odhadované straty na úrode, ktoré spôsobila poľovná zver v&nbsp;okrese Levice v&nbsp;roku 2023, boli na ozimnej pšenici za takmer 1,4 mil. eur. Išlo o&nbsp;poškodenú výmeru cca. 10 tisíc ha. Odhadované straty viac než 1,1 mil. eur zaznamenali aj pestovatelia repky ozimnej na ploche 6000 ha.&nbsp;</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/zHtj9dj.jpeg"></figure><p></p>
+
+<p>V&nbsp;rámci škôd na poľných plodinách zbierala centrálna Slovenská poľnohospodárska a&nbsp;potravinárska komora (SPPK) údaje nielen o&nbsp;škodách na plodinách za minulý rok, ale sumarizovala aj škody spôsobené silným dažďom na prelome rokov 2023/2024. Členovia levickej komory odhadujú škody na zaplavených plochách na úrovni cca. 860 tisíc eur. Problémová podmáčaná plocha s&nbsp;poškodenými porastami má výmeru takmer 1100 ha.</p>
+
+<h2 class="doc-subheading">Dozvuky protestu </h2>
+
+<p>Jedna z&nbsp;najdôležitejších častí levického valného zhromaždenia sa týkala aktuálnych odborných tém súvisiacich s&nbsp;priamymi platbami. Medzi delegátov totiž zavítal generálny riaditeľ Pôdohospodárskej platobnej agentúry Marek Čepko spolu so štátnym tajomník Ministerstva pôdohospodárstva a&nbsp;rozvoja vidieka SR Vladimírom Vnukom.</p>
+
+<p>Prítomných členov komory informovali o&nbsp;záveroch Rady ministrov EÚ, ktorí diskutovali 26. februára v&nbsp;Bruseli o&nbsp;ústupkoch komisie práve pod tlakom európskych poľnohospodárov. Slovenský minister pôdohospodárstva na bruselskom rokovaní tlmočil požiadavky SPPK ohľadom zmiernenia byrokratickej záťaže poľnohospodárov, s&nbsp;ktorými sa plne stotožňuje. Naše predstavy sa počas Rady ministrov stretli s&nbsp;pozitívnym ohlasom delegácií najmä z Estónska, Bulharska, Rumunska a Poľska.</p>
+
+<p>Medzi návrhmi SPPK na zmiernenie byrokracie sa nachádza napríklad požiadavka skvalitnenia AMS systému a&nbsp;zníženia počtu kontrol zo strany PPA na polovicu. Pri ekoschémach navrhujeme zjednodušiť podmienky (obhospodarovanie a termíny, vynechať 30 dňovú lehotu medzi riadnym a oneskoreným kosením - nemá to žiadny význam na krajinu ani ochranu životného prostredia a zároveň vynechať nutnosť riadneho kosenia pri pasení). Súčasťou diskusie sú aj výnimky z&nbsp;GAEC 7 a&nbsp;8. Základom všetkého je najmä včasná a&nbsp;ústretová komunikácia so žiadateľmi a&nbsp;SPPK.</p>
+
+<p>Súbežne s&nbsp;ústupkami pre poľnohospodárov na európskej pôde sa na domácej diskutuje o&nbsp;rovnako zásadnej problematike – o&nbsp;2. modifikácii Strategického plánu Spoločnej poľnohospodárskej politiky. Ministerstvo pre tento účel zriadilo šesť pracovných skupín, v&nbsp;ktorých názory praxe tlmočia aj zástupcovia komory.</p>
+
+<p><strong>Niekto to zabudol oznámiť ...</strong></p>
+
+<p>Ľudsky vysvetlené a&nbsp;úprimné priznanie chýb, ktoré súvisia so zle nastavenými procesmi v&nbsp;minulosti vo vnútri organizácie – aj o&nbsp;tom bola diskusia s&nbsp;novým generálnym riaditeľom Pôdohospodárskej platobnej agentúry Marekom Čepkom. Ten na konci februára pred delegátmi levickej komory potvrdil, že niektoré schémy nevie PPA ani dnes zadministrovať, a&nbsp;to chybou predchádzajúcich vedení agentúry. „Keby ste mali informácie, viete sa podľa nich zariadiť, nanovo si nastaviť finančné toky a zariadiť sa aj v&nbsp;prípade osevov a&nbsp;iných vecí. Niekto to však zabudol poľnohospodárom oznámiť – to je kľúčové.“</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/8Oa5z9t.jpeg"></figure><p></p>
+
+<p>Podľa generálneho riaditeľa PPA prijala opatrenia na lepšiu komunikáciu na regionálnych pracoviskách PPA.</p>
+
+<p>„Prechádzame na častejšie krížové kontroly na 2-týždňovej báze, možno prejdeme aj na týždennú bázu. Pracovníci pracujú na nadčasy. Kontroly na mieste robíme všade tam, kde vieme. Chceme, aby ste mali čo najskôr vyplatené finančné prostriedky. No áno, táto kampaň je kritická. Tú ďalšiu nastavíme tak, aby sme si zobrali z&nbsp;okolitých krajinách príklady toho, čo funguje,“ dodal M. Čepko.</p>
+
+<p>Následné otázky a&nbsp;konštatovania z&nbsp;publika boli vecné a&nbsp;konkrétne: „Kde je tá zodpovednosť predchádzajúcich vedení agentúry a&nbsp;ministerstva? Odoberáte nám chuť o&nbsp;prácu na poli. Sme kontrolovaní až tak, že už nemáme chuť robiť. Ale máme dať pôdu zahraničným firmám? No nedáme ju, aj keď verím, že niektorí z&nbsp;nás, poľnohospodárov, to skôr či neskôr takto ukončia.“</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

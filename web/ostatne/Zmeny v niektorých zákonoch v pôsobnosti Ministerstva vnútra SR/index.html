@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zmeny v niektorých zákonoch v pôsobnosti Ministerstva vnútra SR — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../index.html">Úvod</a><span>/</span><a href="../index.html">ostatne</a><span>/</span>Zmeny v niektorých zákonoch v pôsobnosti Ministerstva vnútra SR</nav>
+
+  <article>
+    <h1 class="doc-title">Zmeny v niektorých zákonoch v pôsobnosti Ministerstva vnútra SR</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Miroslava Kosibová, Legislatívny odbor</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">17. apríla 2020</span></p>
+
+    <div class="doc-body">
+<p>Národná rada SR dňa 7.4. 2020 schválila&nbsp; vládny návrh zákona o&nbsp;niektorých opatreniach v&nbsp;pôsobnosti Ministerstva vnútra SR v&nbsp;súvislosti s&nbsp;ochorením COVID – 19. Zákon bol vyhlásený v&nbsp;Zbierke zákonov SR ako <strong>zákon č. 73/2020 Z. z., </strong><strong>ktorým sa menia a dopĺňajú niektoré zákony v pôsobnosti Ministerstva vnútra Slovenskej republiky </strong>v súvislosti s ochorením COVID-19, dňa 9.4.2020, kedy nadobudol účinnosť.</p>
+
+
+
+<p>Úplné znenie zákona je dostupné na:</p>
+
+<p><a href="https://www.slov-lex.sk/static/pdf/2020/73/ZZ_2020_73.pdf" class="external" target="_blank" rel="noopener noreferrer"><strong>https://www.slov-lex.sk/static/pdf/2020/73/ZZ_2020_73.pdf</strong></a></p>
+
+
+
+<p><strong>Zákon predstavuje súbor noviel vybraných zákonov v pôsobnosti ministerstva vnútra</strong>, a&nbsp;to novelu zákona o&nbsp;obecnom zriadení, zákona o hlavnom meste Slovenskej republiky Bratislave, zákona o meste Košice,&nbsp; zákona o samospráve vyšších územných celkov (zákon o samosprávnych krajoch) zákona o&nbsp;živnostenskom podnikaní (živnostenský zákon), zákona o civilnej ochrane obyvateľstva, zákona o štátnej službe príslušníkov Policajného zboru, Slovenskej informačnej služby, Zboru väzenskej a justičnej stráže Slovenskej republiky a Železničnej polície, zákona o&nbsp;ochrane pred požiarmi, zákona o Hasičskom a záchrannom zbore, zákona o Horskej záchrannej službe, zákona o strelných zbraniach a&nbsp;strelive, zákona o politických stranách a politických hnutiach, zákona o poskytovaní služieb v oblasti súkromnej bezpečnosti, zákona o cestovných dokladoch, zákona o cestnej premávke, zákona o pobyte cudzincov a zákona o občianskych preukazoch.</p>
+
+
+
+<p><strong>V&nbsp;oblasti živnostenského podnikania sa skráti minimálna lehota na pozastavenie živnosti.</strong> <strong>Novela upravuje, že pri pozastavení prevádzkovania živnosti počas trvania mimoriadnej situácie, núdzového stavu alebo výnimočného stavu vyhláseného v súvislosti s ochorením COVID-19 sa neuplatňuje podmienka, že pozastavenie živnosti nemôže trvať kratšie ako šesť mesiacov. Živnosť bude možné pozastaviť najmenej na jeden mesiac.</strong></p>
+
+
+
+<p><strong>V&nbsp;zmysle novely zákona o&nbsp;cestnej premávke bude možné požiadať o dočasné vyradenie vozidla z evidencie aj prostredníctvom elektronickej služby zavedenej na tento účel. </strong>Orgán Policajného zboru vyradí vozidlo dočasne z evidencie a žiadateľovi automatizovane oznámi vyradenie, ak tomu nebránia iné zákonné dôvody.</p>
+
+
+
+<p>Ministerstvo vnútra môže počas mimoriadnej situácie, núdzového alebo výnimočného stavu vyhláseného v súvislosti s ochorením COVID-19 (ďalej len „krízová situácia“) v nevyhnutnom rozsahu <strong>obmedziť prijímanie žiadostí o vydanie vodičských preukazov</strong>, medzinárodných vodičských preukazov a žiadostí súvisiacich s evidenciou vozidiel.</p>
+
+
+
+<p>Platnosť potvrdenia o výsledku lekárskej prehliadky na žiadosti o udelenie vodičského oprávnenia, dokladu o zdravotnej spôsobilosti, dokladu o psychickej spôsobilosti, vodičského preukazu vrátane jeho platnosti pre skupinu vodičského oprávnenia, tabuľky so zvláštnym evidenčným číslom a dokladu vydaného k tabuľke so zvláštnym evidenčným číslom, ktorá uplynula alebo uplynie počas krízovej situácie <strong>sa predlžuje až do uplynutia zákonom stanoveného obdobia od odvolania krízovej situácie</strong>.</p>
+
+
+
+<p>Lehoty súvisiace so skúškou z odbornej spôsobilosti alebo osobitnou skúškou, lehoty určené v rozhodnutiach podľa § 91, t. j. preskúšanie odbornej spôsobilosti, preskúmanie zdravotnej spôsobilosti a psychickej spôsobilosti a lehota podľa § 91 ods. 4 tretej vety („Držiteľ vodičského oprávnenia je povinný podrobiť sa preskúmaniu zdravotnej spôsobilosti osobitne vo vzťahu k závislosti od alkoholu, inej návykovej látky alebo liečiva do 30 dní odo dňa doručenia rozhodnutia“) <strong>počas krízovej situácie neplynú</strong>.</p>
+
+
+
+<p>Počas krízovej situácie <strong>neplatí</strong> pre držiteľa vodičského oprávnenia povinnosť porobiť sa pravidelným lekárskym prehliadkam každých päť rokov, ak dovŕšili vek 65 rokov a pre držiteľa vodičského preukazu vydaného v štáte dohovoru povinnosť do 60 dní po uplynutí 185 dní od udelenia alebo registrovania pobytu požiadať orgán Policajného zboru príslušný podľa miesta pobytu o výmenu vodičského preukazu. Ten, kto si nesplnil povinnosť podľa predchádzajúcej vety, <strong>je povinný si ju splniť do zákonom stanoveného obdobia po odvolaní krízovej situácie.</strong></p>
+
+
+
+<p>Počas krízovej situácie <strong>neplatia</strong> pre vlastníka vozidla, držiteľa vozidla a osoby, na ktorú sa držba vozidla previedla, povinnosti podľa šiestej časti druhej hlavy <strong>EVIDOVANIE VOZIDIEL</strong> (Prihlasovanie vozidiel do evidencie, Zmeny v evidencii vozidiel oznamované osobne na orgáne Policajného zboru a prostredníctvom elektronickej služby, Zápis vlastníka vozidla a držiteľa vozidla, Odhlásenie vozidla do cudziny, Dočasné vyradenie vozidla z&nbsp;evidencie a&nbsp;vyraďovanie vozidiel z&nbsp;evidencie) a&nbsp;povinnosť pre držiteľa vozidla so zvláštnym evidenčným číslom obsahujúcim písmeno M, S alebo C, osvedčenie o pridelení zvláštneho evidenčného čísla alebo osvedčenie o evidencii časť I alebo časť II, tabuľku s EČ vrátiť do 30 dní od skončenia ich platnosti. Vlastník vozidla, držiteľ vozidla alebo osoba, na ktorú sa držba vozidla previedla, ktorý si nesplnil povinnosť podľa predchádzajúcej vety, <strong>je povinný si ju splniť do zákonom ustanoveného obdobia po odvolaní krízovej situácie.</strong></p>
+
+
+
+<p>Vlastník vozidla alebo držiteľ vozidla <strong>nie je povinný</strong> odovzdať vydané osvedčenie o evidencii časť I a osvedčenie o evidencii časť II pri dočasnom vyradení vozidla z evidencie prostredníctvom elektronickej služby zavedenej na tento účel počas krízovej situácie. Ak bolo vozidlo dočasne vyradené z evidencie počas krízovej situácie, opätovné zaradenie vozidla do evidencie vozidiel pred ukončením lehoty dočasného vyradenia vozidla je <strong>oslobodené od správneho poplatku</strong>.</p>
+
+
+
+<p>Ministerstvo môže počas krízovej situácie v nevyhnutnom rozsahu <strong>obmedziť prijímanie žiadostí</strong> <strong>o vydanie zbrojného preukazu, nového zbrojného preukazu, nákupného povolenia, zbrojného sprievodného listu, európskeho zbrojného pasu, zbrojnej licencie, povolenia na prevádzkovanie strelnice, potvrdenia o vypožičaní alebo prenájme zbrane alebo výnimky na nadobudnutie vlastníctva a na držanie zbrane kategórie A</strong>; počas krízovej situácie môže v nevyhnutnom rozsahu obmedziť prijímanie žiadostí o vydanie zbrojného sprievodného listu aj zastupiteľský úrad Slovenskej republiky.</p>
+
+
+
+<p>Platnosť zbrojného preukazu, ktorá uplynula alebo uplynie počas krízovej situácie <strong>sa predlžuje do zákonom ustanoveného obdobia po odvolaní krízovej situácie. To neplatí,</strong> ak táto lehota uplynula pred vyhlásením krízovej situácie.</p>
+
+
+
+<p>Platnosť zbrojného sprievodného listu, nákupného povolenia a európskeho zbrojného pasu, ktorá uplynula alebo uplynie od vyhlásenia krízovej situácie do dvoch mesiacov od jej odvolania, sa predlžuje o čas trvania krízovej situácie.</p>
+
+
+
+<p><strong>Do lehoty troch mesiacov pri dokladoch</strong>, ktorými sú napr.:</p>
+
+<p>- lekársky posudok o zdravotnej spôsobilosti a psychologický posudok o psychickej spôsobilosti držať alebo nosiť zbraň a strelivo,</p>
+
+<p>- potvrdenie orgánu štátnej správy, že má oprávnenie<strong> podľa zákona o&nbsp;poľovníctve, vodného zákona, zákona o hospodárení v lesoch a štátnej správe lesného hospodárstva, zákona o poľnej stráži alebo zákona o ochrane prírody a&nbsp;krajiny, </strong>ak žiada o vydanie zbrojného preukazu na výkon tohto oprávnenia,</p>
+
+<p>- úradne osvedčenú kópiu<strong> platného poľovného lístka, </strong>ak žiada o vydanie skupiny D zbrojného preukazu,</p>
+
+
+
+<p><strong>sa nezapočítava čas trvania krízovej situácie.</strong></p>
+
+
+
+<p>Ak od vyhlásenia krízovej situácie do dvoch mesiacov od jej odvolania uplynie desať rokov od vydania dokladu o psychickej spôsobilosti držať alebo nosiť napr. zbraň, ktorá využíva elektrické napätie alebo elektrický prúd na zasiahnutie človeka alebo <strong>zvieraťa</strong>, a strelivo, považuje sa tento doklad do uplynutia dvoch mesiacov od odvolania krízovej situácie za doklad o psychickej spôsobilosti držať alebo nosiť zbraň a strelivo.</p>
+
+
+
+<p>Zákon ustanovuje, v&nbsp;ktorých ďalších prípadoch lehoty počas krízovej situácie neplynú.</p>
+
+
+
+<p>Ministerstvo môže počas krízovej situácie v nevyhnutnom rozsahu <strong>obmedziť prijímanie žiadostí</strong> <strong>o</strong> <strong>udelenie licencie na prevádzkovanie bezpečnostnej služby, udelenie licencie na prevádzkovanie technickej služby, udelenie akreditácie, prihlásenie na skúšku, vykonanie kvalifikačnej skúšky a vydanie preukazu</strong>.</p>
+
+
+
+<p>Platnosť preukazu, licencie na prevádzkovanie bezpečnostnej služby, licencie na prevádzkovanie technickej služby alebo akreditácie, ktorá uplynula alebo uplynie od vyhlásenia krízovej situácie do dvoch mesiacov od jej odvolania, <strong>sa predlžuje až do uplynutia troch mesiacov od odvolania krízovej situácie</strong>. Zákon ďalej ustanovuje pri ktorých dokladoch sa do lehoty nezapočítava čas trvania krízovej situácie, ako aj ďalšie prípady, kedy lehoty počas krízovej situácie neplynú. Počas krízovej situácie môže akreditovaná osoba vykonávať odbornú prípravu prostredníctvom elektronických prostriedkov.</p>
+
+
+
+<p>Ministerstvo vnútra alebo zastupiteľský úrad môže počas krízovej situácie v nevyhnutnom rozsahu <strong>obmedziť prijímanie žiadostí</strong> <strong>o vydanie cestovných pasov.</strong></p>
+
+
+
+<p>Ministerstvo alebo zastupiteľský úrad môže počas krízovej situácie v nevyhnutnom rozsahu <strong>obmedziť prijímanie žiadostí</strong> <strong>o vydávanie občianskych preukazov</strong>. Platnosť občianskeho preukazu, ktorá uplynie počas krízovej situácie, <strong>sa predlžuje až do uplynutia zákonom stanoveného obdobia od odvolania krízovej situácie.</strong> Počas krízovej situácie je doručenie občianskeho preukazu na adresu na území Slovenskej republiky službou zriadenou na tento účel oslobodené od správneho poplatku.</p>
+
+
+
+<p>Platnosť osvedčenia o odbornej spôsobilosť <strong>na úseku ochrany pred požiarmi</strong> sa predlžuje do uplynutia štyroch mesiacov od odvolania krízovej situácie. Lehoty na overovanie odbornej spôsobilosti na úseku ochrany pred požiarmi na základe žiadostí podaných pred vyhlásením krízovej situácie počas krízovej situácie neplynú. Bez absolvovanej odbornej prípravy a overenia môžu závodný hasičský útvar, závodný hasičský zbor a dobrovoľný hasičský zbor obce vykonávať práce pri zdolávaní požiarov a pri vykonávaní záchranných prác do 31. decembra 2020.</p>
+
+
+
+<p><strong>V oblasti územnej samosprávy</strong> sa umožnia počas krízovej situácie alternatívne spôsoby rokovania obecného (mestského) zastupiteľstva a zastupiteľstva samosprávneho kraja a&nbsp;preruší sa plynutie niektorých lehôt.</p>
+
+<p>Obecné i&nbsp;krajské zastupiteľstvá budú môcť zasadať počas krízovej situácie aj prostredníctvom videokonferencie. Vo výnimočných prípadoch budú môcť zastupiteľstvá obcí hlasovať formou per rollam. V&nbsp;prípade rokovania zastupiteľstiev prostredníctvom videokonferencií či inými prostriedkami komunikačnej technológie bude musieť samospráva zverejniť zvukový alebo audiovizuálny záznam do 48&nbsp;hodín na webovom sídle, písomný prepis budú musieť obce zverejniť na úradnej tabuli alebo webovom sídle do piatich dní od ukončenia rokovania.</p>
+
+<p>Vo výnimočných prípadoch a&nbsp;len pre vážne dôvody bude môcť obecné zastupiteľstvo prijať uznesenie aj spôsobom per rollam, a to buď korešpondenčným hlasovaním v&nbsp;listinnej podobe, alebo e-mailom. Má ísť o&nbsp;prípady, keď nebude môcť rokovať zastupiteľstvo štandardne ani cez videokonferenciu.</p>
+
+<p>Nová legislatíva tiež obmedzuje prípady, v&nbsp;ktorých hlasovanie per rollam nie je možné použiť. Ide napríklad o&nbsp;uznesenia vo veciach koncesnej zmluvy na uskutočnenie stavebných prác, priameho predaja, prevodu majetku obce alebo nájmu majetku obce, kúpy majetku či prijatia investičného&nbsp;úveru.</p>
+
+
+
+<p>Pri hlasovaní per rollam sa má okrem iného predĺžiť lehota na zverejnenie návrhov uznesení na päť dní pred hlasovaním, zákon tiež spresňuje ďalšie konkrétne pravidlá pri tomto spôsobe hlasovania, aby tak umožnil napríklad aj verejnosti doručiť svoje pripomienky: „obec na úradnej tabuli obce a na webovom sídle obce, ak ho má zriadené, zverejní a doručí poslancom aj všetky pripomienky verejnosti k návrhu uznesenia, ktoré jej boli doručené.“</p>
+
+
+
+<p>Počas krízovej situácie nemajú podľa zákona plynúť ani lehoty týkajúce sa voľby hlavného kontrolóra.</p>
+
+
+
+<p>Zákon mení aj ustanovenia <strong>zákona o&nbsp;hlavnom meste SR Bratislave a&nbsp;zákona o&nbsp;meste Košice</strong>, v&nbsp;zmysle ktorých počas trvania krízovej situácie lehoty na schádzanie sa a zasadnutie mestskej a&nbsp;miestnej rady neplynú.</p>
+
+
+
+<p><strong>Zvýši sa pokuta v blokovom konaní za priestupky na úseku civilnej ochrany v čase mimoriadnej situácie na 1000 eur </strong>a umožňuje sa, aby niektoré z týchto priestupkov mohli v blokovom konaní ukladať aj orgány Policajného zboru a obecné (mestské) polície. Konkrétne sa to týka priestupkov spáchaných neuposlúchnutím varovných signálov, pokynov a výziev orgánov verejnej moci, právnických osôb a fyzických osôb v súvislosti s plnením úloh podľa zákona o civilnej ochrane obyvateľstva.</p>
+
+
+
+<p>Zákon upravuje aj problematiku plynutia lehoty na doručenie <strong>výročných správ politických strán</strong> počas a&nbsp;po skončení krízovej situácie.</p>
+
+
+
+<p>Zákon upravuje aj služobné voľno a&nbsp;nárok na služobný plat <strong>policajtov a&nbsp;príslušníkov</strong><strong> hasičského a záchranného zboru</strong>, ktorí sú počas krízovej situácie v&nbsp;nariadenej karanténe alebo sa starajú o&nbsp;dieťa, manžela či manželku.</p>
+
+
+
+<p>Ďalej sa upravuje <strong>zákon o pobyte cudzincov</strong> tak, aby cudzinci, ktorí nemôžu z dôvodu krízovej situácie vycestovať a uplynie im lehota na pobyt na území Slovenskej republiky, boli chránení pred dôsledkami, ktoré by inak ich neoprávnený pobyt vyvolal. &nbsp;</p>
+
+
+
+
+
+<p>ZDROJ:</p>
+
+<p><a href="https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2020/73/20200409" class="external" target="_blank" rel="noopener noreferrer">https://www.slov-lex.sk/pravne-predpisy/SK/ZZ/2020/73/20200409</a></p>
+
+<p><a href="https://www.nrsr.sk/web/Default.aspx?sid=zakony/cpt&amp;ZakZborID=13&amp;CisObdobia=8&amp;ID=38" class="external" target="_blank" rel="noopener noreferrer">https://www.nrsr.sk/web/Default.aspx?sid=zakony/cpt&amp;ZakZborID=13&amp;CisObdobia=8&amp;ID=38</a></p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

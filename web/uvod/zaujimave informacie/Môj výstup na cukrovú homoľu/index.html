@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Môj výstup na cukrovú homoľu — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Môj výstup na cukrovú homoľu</nav>
+
+  <article>
+    <h1 class="doc-title">Môj výstup na cukrovú homoľu</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Jana Holéciová, hovorkyňa SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">10. mája 2023</span></p>
+
+    <div class="doc-body">
+<p><span>Dušan Janíček. Niekdajší podpredseda Slovenskej poľnohospodárskej a&nbsp;potravinárskej komory, predseda Únie potravinárov Slovenska či člen Dozornej rady AZZZ SR. No najmä nestor slovenského cukrovarníctva. Upísal sa mu na celý život a&nbsp;svoje už dávne rozhodnutie nepokračovať v&nbsp;snahe o&nbsp;štúdium medicíny, ale vymeniť ho za vzdelávanie na Chemicko-technologickej fakulte Slovenskej technickej univerzity v&nbsp;Bratislave nikdy neoľutoval. Navyše, jeho životom ho láska k cukru nesprevádzala len v&nbsp;rámci jeho profesijnej dráhy. Počas štúdia na vysokej škole si okrem lásky k&nbsp;sacharidom totiž našiel aj svoju životnú lásku - spolužiačku z&nbsp;krúžku Štefániu. Spoločný život odštartovali v&nbsp;roku 1977 manželstvom a&nbsp;spoločnou prácou pre rovnakého zamestnávateľa v&nbsp;štátnom podniku&nbsp;Cukrovar a&nbsp;konzerváreň v Sládkovičove. Doslova cukor na celý život doma i&nbsp;v práci. Ani dnes, už ako aktívny dôchodca, od cukru nebočí. Sladí rád, no s&nbsp;mierou a neprejedol sa ho ani náhodou. A za všetkým treba hľadať deda...</span></p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/JuA5zkD.jpg"></figure><p></p>
+
+<p><span><small>prehliadka cukrovaru v Seredi s médiami&nbsp;</small></span></p>
+
+<p>Pripomenutie si aktívnej a&nbsp;záslužnej profesijnej dráhy Ing. Dušana Janíčka, ktorý bol navyše v&nbsp;rokoch 2004 - 2018 podpredseda Slovenskej poľnohospodárskej a&nbsp;potravinárskej komory, bol preto impulzom k&nbsp;rozhovoru s&nbsp;ním.</p>
+
+
+
+<ul>
+	<li><strong>Staré známe „jablko ďaleko od stromu nepadá“ platí aj vo Vašom prípade, keďže vlastne Vašu celoživotnú kariéru s&nbsp;bielym zlatom odštartoval Váš starý otec. Ako vyzeral teda tento Váš cukrový príbeh v&nbsp;samotných počiatkoch?</strong></li>
+</ul>
+
+<p>Môj dedo Jozef Ďurica pracoval v š.p. &nbsp;Figaro Bratislava, takže prirodzene počas celého môjho detstva som počúval jeho príhody a&nbsp;zážitky z&nbsp;práce v&nbsp;podniku. Pôvodne som chcel síce študovať medicínu, ale keďže v&nbsp;tom čase bol veľký pretlak záujemcov o&nbsp;štúdium na lekárskej fakulte, tak som sa na medicínu nedostal. Nejako prirodzene a to aj vďaka podnetom&nbsp;z&nbsp;rodiny a&nbsp;od môjho starého otca som si následne zvolil Chemicko-technologickú fakultu STU v&nbsp;Bratislave. Štúdium som &nbsp;ukončil na Katedre chémie a technológie sacharidov a potravín. Po promócii v roku&nbsp;1977 som sa oženil so spolužiačkou z&nbsp;krúžku so Štefániou. Ako mladí absolventi a&nbsp;ešte k&nbsp;tomu aj mladomanželia sme v&nbsp;spoločnej dráhe pokračovali aj v&nbsp;rámci nášho prvého zamestnania. Začali sme pracovať v štátnom podniku Cukrovar a konzerváreň Štefana Majora Sládkovičovo š.p., ja konkrétne ako prevádzkový technik cukrovaru, vedúci zmeny a&nbsp;manželka ako laborantka v konzervárni.</p>
+
+
+
+<ul>
+	<li><strong>Boli ste čerstvo po skončení vysokej školy a&nbsp;ako sa hovorí - plný odhodlania zmeniť svet. Ako sa spätne po rokoch pozeráte na Vaše pracovné začiatky v&nbsp;oblasti cukrovarníctva v&nbsp;období plánovaného hospodárstva?</strong></li>
+</ul>
+
+<p>Národné hospodárstvo fungovalo na princípe plánovaného hospodárstva. Ako štátny &nbsp;podnik sme dostali rozpis úloh, ktoré sa museli plniť. Poľnohospodári dostali nadiktované, koľko majú dodať repy do cukrovarov. Preto nikdy nebol výraznejší problém so surovinou, jednoducho vždy sme ju mali zabezpečenú. Československo bolo v&nbsp;tom čase cukrovarnícka veľmoc, no stroje a&nbsp;zariadenia boli zastarané. Jediné strojné zariadenie, ktoré sme mali a&nbsp;bolo zo &nbsp;zahraničnej výroby, bola difúzia. Väčšina strojov sa často kazila, popritom sa mnohé činnosti robili ručne, prácne a&nbsp;aj odhadom fungovania procesov. Začiatky boli ťažké. S&nbsp;produkciou cukru sa nám ale darilo, cukor sa vyrábal, aj keď od dnešnej kvality mal ďaleko, o&nbsp;čom svedčia hlavné parametre vyprodukovaného cukru a&nbsp;aj jeho výsledná žltá farba. Spoločnosť to ale vtedy neriešila, pretože verila mýtu, že žltý cukor je zdravší, pretože neobsahuje vápno... už vtedy sa zrodili „zaručené informácie“ o&nbsp;cukre...</p>
+
+<p>Paradoxy tej &nbsp;doby podčiarkovala aj skutočnosť, že lepší hospodársky výsledok sme dosiahli vtedy, keď sme mali cukrovú repu nižšej cukornatosti, ako keď sme dosiahli vyššiu výrobu cukru pri vyššej cukornatosti. Dnes sa nad tým len pousmejem.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/MFszQf4.jpg"></figure><p></p>
+
+<p><span>medzi žiakmi základnej školy počas projektu Hovorme o jedle</span></p>
+
+<ul>
+	<li><strong>Ako si spomínate na ďalšie historické míľniky, ktoré sa významne dotkli aj cukrovarníckeho priemyslu a&nbsp;poznačili jeho ďalšie smerovanie?</strong></li>
+</ul>
+
+<p>Počas socializmu fungovalo na Slovensku 10 cukrovarov. Riadilo ich Generálne riaditeľstvo Cukor - cukrovinky so sídlom v&nbsp;Bratislave. Cukrovary dostávali v&nbsp;detailoch zadelené úlohy, koľko presne majú vyrobiť cukru, dodať cukru do cukrovinkárskych podnikov a&nbsp;aj distribúcia cukru bola riadená z&nbsp;centrály generálneho riaditeľstva. Presné dispozície, kde, koľko a&nbsp;ako sa prísne dodržiavali a sledovali prakticky až do revolúcie. Spomínam si aj na závažné nedostatky tohto obdobia: málo účinné čistiarne odpadových vôd, nízka alebo žiadna ochrana ovzdušia. Cukrovary používali uholné kotolne, kde unikalo do ovzdušia veľa emisií a aj filtrácia vody cez čističky odpadových vôd bola ešte ďaleko od toho, ako pracujú dnes. Zaostávali sme aj čo sa týka automatizácie výroby. Cukrovarnícky priemysel na Slovensku v&nbsp;tom období postupne zaostával a strácal na konkurencieschopnosti. Vyvrcholilo to počas revolúcie v&nbsp;roku 1989, kedy sa Generálne riaditeľstvo Cukor-cukrovinky zrušilo a&nbsp;dostali sme sa priamo pod správu rezortného ministerstva. Vznikli štátne akciové spoločnosti, uskutočnila sa kupónová privatizácia, kde si občania mohli nakúpiť akcie jednotlivých podnikov. Bola to turbulentná doba.</p>
+
+<p>Od roku 1987 som si dal na pár rokov od výroby cukru prestávku. Vrátil som sa späť na vysokú školu, kde som na Katedre chémie a technológie sacharidov a potravín CHTF STU v Bratislave pôsobil ako asistent a&nbsp;učiteľ až do roku 1989. Po revolúcii ma moji niekdajší kolegovia zavolali späť do praxe a&nbsp;zvolili ma za riaditeľa štátneho podniku Cukrovar a konzerváreň Sládkovičovo. Spolu s&nbsp;niekoľkými kolegami z&nbsp;vedenia podniku sme sa rozhodli pre privatizáciu podniku, a&nbsp;tak vznikol CUKOS s.r.o. Sládkovičovo. V&nbsp;roku 1997 nás však prevzala iná spoločnosť. Bola to veľmi nepríjemná doba, pretože pod taktovkou ľudí blízkych HZDS sme museli odovzdať podnik iným „podnikateľom“.</p>
+
+<p>Samostatnou kapitolou v ďalších rokoch je vstup zahraničného kapitálu, ozdravný proces cukrovarníckeho priemyslu a&nbsp;spolu s&nbsp;ním aj rozsiahle investície napríklad aj do ekologizácie a efektivity výroby. Nastúpili sme na cestu postupného približovania sa štandardom vyspelých krajín.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/WZWgfVo.jpg"></figure><p></p>
+
+<p><small><span>porada riaditeľov v Banskej Bystrici&nbsp;</span></small></p>
+
+<ul>
+	<li><strong>Ako hodnotíte vstup Slovenska do EÚ a&nbsp;jeho dopad na vývoj cukrovarníctva?</strong></li>
+</ul>
+
+<p>Hodnotím to veľmi pozitívne, lebo po vstupe Slovenska do EU stále platil trhových poriadok s&nbsp;cukrom a&nbsp;cukrovou repou a&nbsp;rovnako platili aj štandardné ceny cukrovej repy a&nbsp;cukru. Pre jednotlivé európske krajiny sa stanovili delegované kvóty, aké množstvo cukru môže daná krajina vyprodukovať. Nastal určitý poriadok, aj keď ho sprevádzal silný boj o&nbsp;pridelenie čo najvýhodnejších kvót. Na jeseň v&nbsp;roku 2017 sa kvótový režim v&nbsp;únii zrušil. Európska výroba cukru poklesla z&nbsp;19 mil. ton na 17 mil. ton. Prirodzene tak museli byť zrušené niektoré cukrovary. Boli to turbulentné časy aj vzhľadom na to, že pestovatelia boli motivovaní európskymi prostriedkami k tomu, aby skončili s&nbsp;pestovaním cukrovej repy a aj samotné podniky dostávali kompenzácie, pokiaľ zrušili výrobu. V&nbsp;rámci Slovenska sa týmito rozhodnutiami a&nbsp;kompenzáciami znížila výroba cukru až o&nbsp;73-tisíc ton cukru.</p>
+
+
+
+<ul>
+	<li><strong>Poďme preskočiť o&nbsp;pár rokov a&nbsp;pozrieť sa do budúcna. Čo ďalej, čo z&nbsp;Vášho pohľadu treba zmeniť, zlepšiť v&nbsp;rámci rozvoja cukrovarníctva?</strong></li>
+</ul>
+
+<p>Pozitívne hodnotím to, ako sa nám za roky spolupráce podarilo vybudovať dôveru medzi pestovateľmi cukrovej repy a jej&nbsp;spracovateľmi. Spolupráca medzi Zväzom pestovateľov cukrovej repy Slovenska a&nbsp;Slovenským cukrovarníckym spolkom je na veľmi dobrej úrovni. Vždy sme sa snažili hľadať kompromisy a&nbsp;tým, že sa nám podarilo nájsť synergiu, tak sme výrazne posunuli&nbsp; pestovanie cukrovej repy a&nbsp;aj cukrovarníctva na Slovensku na slušnú a&nbsp;konkurencieschopnú úroveň.</p>
+
+<p>Z&nbsp;pohľadu budúcnosti vidím riziká v&nbsp;rámci debaty na pôde EÚ o&nbsp;plánovanom zákaze používania neonikotínoidov, prostriedkov na ochranu cukrovej repy. Vytvára sa ďalší vážny problém, s&nbsp;ktorým sa vertikála cukor - cukrová repa bude musieť vysporiadať. Dá sa očakávať, že náklady na pestovanie repy, pokiaľ vstúpi do platnosti tento zákaz, sa podstatne zvýšia.</p>
+
+<p>V&nbsp;rámci cukrovarníckeho priemyslu na Slovensku sme technicky a aj technologicky veľmi dobre pripravení. Pomohli nám realizované výzvy z&nbsp;európskych fondov, do ktorých sa oba podniky aj v&nbsp;Trenčianskej Teplej a&nbsp;aj v&nbsp;Seredi zapojili. Výroba sa zmodernizovala, urobili sme veľký posun aj v&nbsp;oblasti ekológie a&nbsp;aj ekonomiky výroby. Výrazné inovácie sa urobili aj vo vzťahu k&nbsp;životnému prostrediu. Môžem preto smelo povedať, že sme v&nbsp;rámci sektora výroby cukru v EÚ konkurencieschopní.</p>
+
+<p>V&nbsp;budúcnosti potrebujú oba podniky zapracovať ešte na zväčšení skladovacích kapacít. Prevážanie komodity zo skladu do skladu je veľmi nákladná záležitosť a&nbsp;bolo by dobré vybudovať v&nbsp;oboch podnikoch veľkokapacitné silá na cukor. Vzhľadom na sortiment výroby cukrovarov si myslím, že pokrývame všetko, čo ľudia potrebujú pre svoj život. Oba podniky ponúkajú dostatočný sortiment a&nbsp; v&nbsp;tomto sme na úrovni vyspelých západných štátov.</p>
+
+
+
+<ul>
+	<li><strong>Ako sa pozeráte na výzvy, ktoré stoja pred Úniou potravinárov Slovenska a&nbsp;Slovenskou poľnohospodárskou a&nbsp;potravinárskou komorou? Pár rokov dozadu ste ešte aktívne pracovali v&nbsp;ich vedení. Energetická kríza, vojna na Ukrajine, zelená výroba potravín, náklady na ľudskú prácu a&nbsp;celkovo výrobné náklady, ale aj nutnosť, aby samotná komora bola vo vnútri súdržnejšia, silnejšia a&nbsp;aj aktívnejšia navonok. Ako vnímate z&nbsp;hľadiska Vami prežitého tieto aktuálne a dobou vynútené ciele a témy?</strong></li>
+</ul>
+
+<p>Ja som veľmi spokojný s tým, ako dnes komora funguje, aj keď ma mrzí, že na Slovensku neťaháme za jeden povraz v&nbsp;rámci samosprávnych organizácií a&nbsp;že nemáme len jednu veľkú komoru. Vedenie SPPK robí maximum pre zlepšenie podnikateľského prostredia pre poľnohospodárov aj potravinárov. Len problém je v&nbsp;tom, že na pultoch obchodov je vždy dostatok potravín, čo je na jednej strane v&nbsp;poriadku, ale na strane druhej to dostatočne nemotivuje politických lídrov našej krajiny k&nbsp;tomu, aby skutočne podnikli systémové kroky pre zlepšenie agropotravinárstva a&nbsp;jeho konkurencieschopnosti na trhu v&nbsp;EÚ. A&nbsp;očividne to až tak niektorých kompetentných a ani vládu netrápi.</p>
+
+<p>Čo chýba komore? Asi politická práca. Je skutočne potrebné, aby sme mali zastúpenie v&nbsp;parlamente, aby tam boli ľudia, ktorí tému agropotravinárstva budú dávať na stôl poslancom každý deň. O&nbsp;agropotravinárstve sa totiž výraznejšie hovorí len vtedy, ak vypukne nejaká kauza. A&nbsp;tá sa následne sčasti spolitizuje a&nbsp;už sa nehľadajú skutočne odborné riešenia. Preto by sme mali v&nbsp;tomto zmysle zapracovať viac aj na tom, aby zo samosprávy vzišli aj budúci politickí lídri, aby domáce agropotravinárstvo išlo v&nbsp;kontexte s&nbsp;vývojom v&nbsp;západných krajinách.</p>
+
+
+
+<ul>
+	<li><strong>Čo považujete za&nbsp;Vaše najlepšie profesijné rozhodnutie v&nbsp;živote?</strong></li>
+</ul>
+
+<p>Hoci som sníval o&nbsp;medicíne, myslím si, že ísť študovať na chemicko-technologickú fakultu bolo správne rozhodnutie. Upísať sa potravinám, angažovanie sa v&nbsp;rámci komorových záležitostí ma posunulo mentálne na vyššiu úroveň. S&nbsp;pokorou vnímam svoje profesijné pôsobenie pozitívne, aj keď nie vždy sa mi podarilo dosiahnuť to, čo som chcel.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/WLYowT8.jpg"></figure><p></p>
+
+<p><span><small>rozlúčka po rokovaní Únie potravinárov Slovenska /s dnes už bývalým vedením ÚPS/</small></span></p>
+
+<ul>
+	<li><strong>Nedávno ste mi prezradili, že sa chystáte splniť si ešte ďalší profesijný sen: vybudovať na Slovensku múzeum cukru. Ako sa tento sen pretavuje do konkrétnej podoby?</strong></li>
+</ul>
+
+<p>Hoci som od 1. marca aktívnym dôchodcom, chcem, aby sa na pohnuté časy a&nbsp;historický vývoj cukrovarníctva na Slovensku nezabudlo. Cukrovarníctvo tu na Slovensku bolo, a je to súčasť našej vyše &nbsp;200-ročnej histórie. Nesmieme zabudnúť na to , ako sa tento zaujímavý príbeh vlastne začal, aký bol trend, akí ľudia pôsobili v&nbsp;tomto odvetví a&nbsp;aké boli ich osudy. Cukrovarníctvo je dôležitá súčasť potravinárskeho priemyslu. V&nbsp;prvom rade by som chcel založiť expozíciu cukrovarníckeho priemyslu. Vytipovali sme lokalitu v&nbsp;Sládkovičove a&nbsp;ja verím, že v&nbsp;spolupráci s&nbsp;odborníkmi a&nbsp;ľuďmi s&nbsp;cukrovarníckej a&nbsp;umeleckej brandže sa nám snáď do 5-6 rokov podarí tento zámer úspešne dokončiť.</p>
+
+
+
+<ul>
+	<li><strong>Máte obrovské skúsenosti, okolie Vás vníma ako rozhľadeného, múdreho, pokojného a&nbsp;pokorného človeka. Čo by ste odkázali mladým ľuďom, ktorí sa pohrávajú s&nbsp;myšlienkou začať pracovať v&nbsp;agropotravinárstve?&nbsp;</strong></li>
+</ul>
+
+<p>Aby sa ničoho nebáli. Každá prekážka sa dá zdolať a&nbsp;je vždy impulzom k&nbsp;nejakej zmene. Treba vždy hľadieť dopredu,&nbsp;a aj zlé veci nás posúvajú. Mali by sme vždy kráčať dopredu, plniť si svoje ciele a&nbsp;sny.</p>
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/K8UpgHn.jpg"></figure><p></p>
+
+<ul>
+	<li><strong>Na otázka na odľahčenie - nedá mi neformálne sa opýtať: niektorí ľudia zbierajú rôzne artefakty z&nbsp;dovoleniek, niektorí dokonca majú aj vlastné mini zbierky cukrových balení z&nbsp;rôznych krajín. &nbsp;Čo Vy cukrové zbierate, tiež máte doma v&nbsp;poličkách nazhromaždené vzorky z&nbsp;cukrov z&nbsp;rôznych svetových kaviarní?</strong></li>
+</ul>
+
+<p>/smiech/ Cukor nezbieram, skôr porovnávam v&nbsp;zahraničí etikety, balenia, ceny cukru. Mám nejakú zbierku cukrových homolí, no nie na konzumáciu, ide skôr o&nbsp;formu prezentov. Postupom času, tým, že múzeum bude vznikať, sa môžu tieto exponáty stať súčasťou výstavy. A&nbsp;spolu s&nbsp;nimi aj zaujímavé informácie o&nbsp;tom, aké rituály konzumácie cukru sú známe vo svete.</p>
+
+
+
+<ul>
+	<li><strong>A&nbsp;na úplný záver otázka, keď ste spomenuli cukrovú homoľu. V&nbsp;Brazílii je jednou z&nbsp;dominánt Cukrová homoľa v&nbsp;Riu de Janiero. Čo je Vaša osobná životná cukrová homoľa?</strong></li>
+</ul>
+
+<p>Zavŕšiť svoje fungovanie tým, že sa mi podarí vytvoriť múzeum cukru a&nbsp;že sa snáď stane pripomienkou toho, že to bol a&nbsp;je priemysel, kde pracovalo veľa schopných ľudí, manažérov, technikov, pracovníkov, ktorí zásobovali obyvateľstvo touto sladkou potravinou nevyhnutou pre ľudský život.</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

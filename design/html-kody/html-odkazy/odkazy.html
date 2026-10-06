@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aktuálne informácie a správy – SPPK</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; overflow-x: hidden; background: #ffffff; }
+    body { font-family: 'Inter', sans-serif; color: #000; }
+
+    /* ── Card ──────────────────────────────────────────────────────── */
+    .ncard {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      background: #ffffff;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.065), 0 1px 4px rgba(0,0,0,0.03);
+      transition: box-shadow 0.22s ease, transform 0.2s ease;
+    }
+    .ncard:hover {
+      box-shadow: 0 12px 40px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.05);
+      transform: translateY(-2px);
+    }
+
+    /* ── Card thumbnail column ─────────────────────────────────────── */
+    .ncard-img-wrap {
+      width: 164px;
+      min-width: 164px;
+      position: relative;
+      background: #c8e4d2;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .ncard-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .ncard:hover .ncard-img { transform: scale(1.07); }
+
+    /* ── Card content ──────────────────────────────────────────────── */
+    .ncard-body {
+      flex: 1;
+      min-width: 0;
+      padding: 26px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .ncard-title {
+      margin: 0 0 11px;
+      font-size: 19px;
+      font-weight: 700;
+      color: #000;
+      line-height: 1.33;
+      letter-spacing: -0.022em;
+      transition: color 0.18s ease;
+    }
+    .ncard:hover .ncard-title { color: #009a44; }
+    .ncard-cta {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #009a44;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      transition: opacity 0.18s ease;
+    }
+    .ncard:hover .ncard-cta { opacity: 1; }
+
+    /* ── Mobile: stack card vertically ────────────────────────────── */
+    @media (max-width: 539px) {
+      .ncard { flex-direction: column; }
+      .ncard-img-wrap {
+        width: 100%;
+        min-width: unset;
+        height: 176px;
+      }
+      .ncard-body { padding: 18px 16px; }
+      .ncard-title { font-size: 16px; }
+    }
+
+    /* ── Filter buttons ────────────────────────────────────────────── */
+    .filter-btn {
+      background: none;
+      border: none;
+      padding: 0 0 10px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 13.5px;
+      font-weight: 400;
+      color: #000;
+      letter-spacing: 0.01em;
+      position: relative;
+      line-height: 1;
+      transition: color 0.15s ease;
+      white-space: nowrap;
+    }
+    .filter-btn:hover { color: #009a44; }
+    .filter-btn.is-active {
+      font-weight: 600;
+      color: #009a44;
+    }
+    .filter-indicator {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 28px;
+      height: 2px;
+      border-radius: 1px;
+      background: #009a44;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+    .filter-btn.is-active .filter-indicator { opacity: 1; }
+
+    /* ── Pagination ────────────────────────────────────────────────── */
+    .pager-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #000;
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.13);
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      letter-spacing: 0.01em;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .pager-btn.is-num {
+      font-size: 14px;
+      min-width: 44px;
+      padding-left: 0;
+      padding-right: 0;
+      text-align: center;
+    }
+    .pager-btn:hover:not(:disabled):not(.is-active) {
+      color: #009a44;
+      background: rgba(0,154,68,0.05);
+      border-color: rgba(0,154,68,0.4);
+    }
+    .pager-btn.is-active {
+      font-weight: 700;
+      color: #fff;
+      background: #009a44;
+      border-color: #009a44;
+    }
+    .pager-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+
+<main style="
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 60px 24px 80px;
+">
+
+  <!-- ── 1 · Page title ──────────────────────────────────────────────── -->
+  <h1 style="
+    margin: 0 0 38px;
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(26px, 3.4vw, 38px);
+    font-weight: 800;
+    color: #009a44;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+  ">
+    Aktuálne informácie<br>a správy SPPK
+  </h1>
+
+  <!-- ── 2 · Category filter ─────────────────────────────────────────── -->
+  <div id="filter-bar"
+       role="tablist"
+       aria-label="Kategórie správ"
+       style="
+         display: flex;
+         align-items: flex-end;
+         gap: 32px;
+         margin-bottom: 44px;
+         flex-wrap: wrap;
+       ">
+    <!-- JS-rendered -->
+  </div>
+
+  <!-- ── 3 · Feed ────────────────────────────────────────────────────── -->
+  <div id="feed"></div>
+
+  <p id="empty-state" style="
+    display: none;
+    color: #9ca3af;
+    font-size: 15px;
+    padding: 48px 0;
+    text-align: center;
+  ">Žiadne správy v tejto kategórii.</p>
+
+  <!-- ── 4 · Pagination ──────────────────────────────────────────────── -->
+  <div id="pagination"
+       style="
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         flex-wrap: wrap;
+         gap: 8px;
+         margin-top: 56px;
+         padding-top: 32px;
+         border-top: 1px solid rgba(0,0,0,0.07);
+       ">
+    <!-- JS-rendered -->
+  </div>
+
+</main>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     DATA
+════════════════════════════════════════════════════════════════ -->
+<script>
+const CATEGORIES = ['Všetky správy', 'Tlačové správy', 'Usmernenia a analýzy', 'Regióny'];
+const PER_PAGE   = 5;
+
+const ARTICLES = [
+  {
+    date:     '26. AUGUST 2026',
+    dateRaw:  '2026-08-26',
+    title:    'Zvýšenie podpory pre slovenských potravinárov: Výkonný výbor schválil nové podmienky',
+    snippet:  'Na zasadnutí Výkonného výboru SPPK boli prijaté nové podmienky pre čerpanie dotácií z programu Rozvoja vidieka. Opatrenia sa dotknú viac ako 3 200 potravinárskych podnikov na celom Slovensku.',
+    category: 'Tlačové správy',
+    img:      'https://images.unsplash.com/photo-1595976281013-8024ecc02575?w=480&h=320&fit=crop&auto=format',
+    alt:      'Zasadnutie Výkonného výboru SPPK',
+  },
+  {
+    date:     '22. AUGUST 2026',
+    dateRaw:  '2026-08-22',
+    title:    'AGROKOMPLEX 2026 – záverečná správa: Rekordná účasť 42 000 návštevníkov',
+    snippet:  'Medzinárodná agrárna výstava AGROKOMPLEX v Nitre sa uzavrela s rekordnou návštevnosťou. Stánok SPPK zaznamenal zvýšený záujem o informácie k CAP dotáciám na roky 2026–2030.',
+    category: 'Tlačové správy',
+    img:      'https://images.unsplash.com/photo-1667063134166-5a9a68fd8e0c?w=480&h=320&fit=crop&auto=format',
+    alt:      'AGROKOMPLEX 2026 výstava Nitra',
+  },
+  {
+    date:     '19. AUGUST 2026',
+    dateRaw:  '2026-08-19',
+    title:    'Analýza: Dopad nových pesticídnych nariadení EÚ na slovenské poľnohospodárstvo 2026',
+    snippet:  'SPPK zverejňuje komplexnú analýzu dopadov nariadenia (EÚ) 2023/1115 na výrobné náklady slovenských farmárov. Dokument je k dispozícii bezplatne pre všetkých členov komory.',
+    category: 'Usmernenia a analýzy',
+    img:      'https://images.unsplash.com/photo-1578853464641-ef3e6d47e16c?w=480&h=320&fit=crop&auto=format',
+    alt:      'Analýza pesticídnych nariadení',
+  },
+  {
+    date:     '15. AUGUST 2026',
+    dateRaw:  '2026-08-15',
+    title:    'Regionálna komora Nitrianskeho kraja: Výsledky žatvy 2026 prekračujú plánované výnosy',
+    snippet:  'Farmári v Nitrianskom kraji zaznamenali nadpriemerné výnosy pšenice 6,8 t/ha, čo je o 12 % nad celoslovenským priemerom. Komora koordinuje logistiku skladovania prebytkov.',
+    category: 'Regióny',
+    img:      'https://images.unsplash.com/photo-1646684662890-a5076aef9010?w=480&h=320&fit=crop&auto=format',
+    alt:      'Žatva obilia na Slovensku',
+  },
+  {
+    date:     '11. AUGUST 2026',
+    dateRaw:  '2026-08-11',
+    title:    'SPPK a COPA-COGECA podpísali memorandum o posilnení pozície slovenských exportérov v EÚ',
+    snippet:  'Podpisom memoranda v Bruseli SPPK posilnila zastúpenie slovenského agrárneho sektora v európskych rokovaniach. Dohoda sa zameriava na exportné koridory do Nemecka, Rakúska a Francúzska.',
+    category: 'Tlačové správy',
+    img:      'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=480&h=320&fit=crop&auto=format',
+    alt:      'Podpis memoranda COPA-COGECA',
+  },
+  {
+    date:     '7. AUGUST 2026',
+    dateRaw:  '2026-08-07',
+    title:    'Usmernenie pre žiadateľov o dotáciu z Programu rozvoja vidieka – aktualizácia podmienok',
+    snippet:  'Pôdohospodárska platobná agentúra aktualizovala podmienky prideľovania priamych platieb. SPPK pripravila prehľadné usmernenie s chronológiou podania žiadostí do 15. septembra 2026.',
+    category: 'Usmernenia a analýzy',
+    img:      'https://images.unsplash.com/photo-1560693225-b8507d6f3aa9?w=480&h=320&fit=crop&auto=format',
+    alt:      'Dokumenty a usmernenia SPPK',
+  },
+  {
+    date:     '4. AUGUST 2026',
+    dateRaw:  '2026-08-04',
+    title:    'Trnavský kraj: Prvé výsledky pilotného projektu precízneho poľnohospodárstva',
+    snippet:  'Projekt digitálneho monitoringu poľnohospodárskych plôch v Trnavskom kraji vstúpil do druhej fázy. Zapojených je 18 fariem s celkovou výmerou 4 200 hektárov.',
+    category: 'Regióny',
+    img:      'https://images.unsplash.com/photo-1557844352-761f2565b576?w=480&h=320&fit=crop&auto=format',
+    alt:      'Precízne poľnohospodárstvo Trnavský kraj',
+  },
+];
+
+let activeCat  = 'Všetky správy';
+let activePage = 1;
+
+function getFiltered() {
+  return activeCat === 'Všetky správy'
+    ? ARTICLES
+    : ARTICLES.filter(a => a.category === activeCat);
+}
+function getTotalPages() {
+  return Math.max(1, Math.ceil(getFiltered().length / PER_PAGE));
+}
+function getVisible() {
+  const f = getFiltered();
+  return f.slice((activePage - 1) * PER_PAGE, activePage * PER_PAGE);
+}
+
+/* ── Filter bar ──────────────────────────────────────────────────────── */
+function renderFilterBar() {
+  const bar = document.getElementById('filter-bar');
+  bar.innerHTML = '';
+  CATEGORIES.forEach(cat => {
+    const on  = cat === activeCat;
+    const btn = document.createElement('button');
+    btn.type      = 'button';
+    btn.className = 'filter-btn' + (on ? ' is-active' : '');
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-selected', on ? 'true' : 'false');
+    btn.textContent = cat;
+
+    const ind = document.createElement('span');
+    ind.className = 'filter-indicator';
+    btn.appendChild(ind);
+
+    btn.addEventListener('click', () => {
+      activeCat  = cat;
+      activePage = 1;
+      render();
+    });
+    bar.appendChild(btn);
+  });
+}
+
+/* ── Article card ────────────────────────────────────────────────────── */
+function buildCard(article) {
+  const card = document.createElement('article');
+  card.className = 'ncard';
+
+  // Image column
+  const imgWrap = document.createElement('div');
+  imgWrap.className = 'ncard-img-wrap';
+  const img = document.createElement('img');
+  img.className = 'ncard-img';
+  img.src = article.img;
+  img.alt = article.alt;
+  img.onerror = () => { img.style.opacity = '0'; };
+  imgWrap.appendChild(img);
+  card.appendChild(imgWrap);
+
+  // Content column
+  const body = document.createElement('div');
+  body.className = 'ncard-body';
+
+  // Meta row: date · category
+  const meta = document.createElement('div');
+  meta.style.cssText = 'display:flex;align-items:center;gap:12px;margin-bottom:11px;';
+  meta.innerHTML =
+    `<time datetime="${article.dateRaw}" style="font-size:11px;font-weight:800;color:#009a44;letter-spacing:0.13em;text-transform:uppercase;line-height:1;">${article.date}</time>` +
+    `<span style="width:3px;height:3px;border-radius:50%;background:rgba(0,0,0,0.22);flex-shrink:0;"></span>` +
+    `<span style="font-size:10.5px;font-weight:500;color:#909aa3;letter-spacing:0.06em;text-transform:uppercase;line-height:1;">${article.category}</span>`;
+  body.appendChild(meta);
+
+  // Title
+  const title = document.createElement('h2');
+  title.className = 'ncard-title';
+  title.textContent = article.title;
+  body.appendChild(title);
+
+  // Excerpt
+  const excerpt = document.createElement('p');
+  excerpt.style.cssText = 'margin:0 0 14px;font-size:14px;font-weight:400;color:#3c3c3c;line-height:1.72;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;';
+  excerpt.textContent = article.snippet;
+  body.appendChild(excerpt);
+
+  // CTA
+  const cta = document.createElement('span');
+  cta.className = 'ncard-cta';
+  cta.textContent = 'Čítať viac →';
+  body.appendChild(cta);
+
+  card.appendChild(body);
+  return card;
+}
+
+/* ── Feed ────────────────────────────────────────────────────────────── */
+function renderFeed() {
+  const feed  = document.getElementById('feed');
+  const empty = document.getElementById('empty-state');
+  const items = getVisible();
+  feed.innerHTML = '';
+  if (items.length === 0) {
+    empty.style.display = 'block';
+  } else {
+    empty.style.display = 'none';
+    items.forEach(a => feed.appendChild(buildCard(a)));
+  }
+}
+
+/* ── Pagination ──────────────────────────────────────────────────────── */
+function renderPagination() {
+  const nav   = document.getElementById('pagination');
+  const total = getTotalPages();
+  nav.innerHTML = '';
+
+  function makeBtn(text, extraClass, disabled, onClick) {
+    const btn     = document.createElement('button');
+    btn.type      = 'button';
+    btn.className = 'pager-btn' + (extraClass ? ' ' + extraClass : '');
+    btn.textContent = text;
+    btn.disabled    = disabled;
+    if (!disabled) btn.addEventListener('click', onClick);
+    return btn;
+  }
+
+  nav.appendChild(makeBtn('← Predchádzajúca', '', activePage <= 1, () => {
+    if (activePage > 1) { activePage--; render(); }
+  }));
+
+  for (let n = 1; n <= total; n++) {
+    const isActive = n === activePage;
+    const btn = makeBtn(String(n), 'is-num' + (isActive ? ' is-active' : ''), false, () => {
+      activePage = n; render();
+    });
+    if (isActive) btn.setAttribute('aria-current', 'page');
+    nav.appendChild(btn);
+  }
+
+  nav.appendChild(makeBtn('Nasledujúca strana →', '', activePage >= total, () => {
+    if (activePage < getTotalPages()) { activePage++; render(); }
+  }));
+}
+
+/* ── Full render ─────────────────────────────────────────────────────── */
+function render() {
+  renderFilterBar();
+  renderFeed();
+  renderPagination();
+}
+
+render();
+</script>
+</body>
+</html>

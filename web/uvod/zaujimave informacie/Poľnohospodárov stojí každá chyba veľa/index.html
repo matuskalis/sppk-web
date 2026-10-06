@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Poľnohospodárov stojí každá chyba veľa — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Poľnohospodárov stojí každá chyba veľa</nav>
+
+  <article>
+    <h1 class="doc-title">Poľnohospodárov stojí každá chyba veľa</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Štefan Koči, POKROK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">19. júna 2020</span></p>
+
+    <div class="doc-body">
+<p><em><span>Článok bol uverejnený v regionálnych novinách Pokrok vo Veľkom Krtíši 16. júna 2020.</span></em></p>
+
+
+
+<p>Na konci mája sme písali o&nbsp;tom, že polia v&nbsp;našom okrese vykvitli pestrými farbami. Vo veľkej miere za to mohli najmä žiarivo žlté kvety repky olejnej. Práve tejto plodine sa niekoľko týždňov vedú búrlivé debaty o&nbsp;výhodách a&nbsp;nevýhodách jej pestovania. K&nbsp;téme sa pred časom v&nbsp;krátkosti vyjadril aj Ing. Boris Hrdlička, predseda predstavenstva AGD Senné. Ten nám odpovedal najmä na otázky týkajúce sa nedostatku vlahy, no ako povedal, sucho v&nbsp;súčasnosti nie je najväčší problém poľnohospodárov.</p>
+
+
+
+<p>Na nasledujúcich riadkoch vám prinášame reakciu Ing. B. Hrdličku na súčasnú situáciu v&nbsp;poľnohospodárstve. „V médiách, ale aj v najvyšších kruhoch sa začína boj proti súčasným poľnohospodárom a spôsobom ich hospodárenia. Problémom je veľkosť podnikov, výber pestovaných plodín, zníženie veľkosti pestovania monokultúr na maximálne 30 hektárov, vznik rodinných fariem a&nbsp;pod. Mám obavy, že toto sme už raz prežili a trvalo nám tridsať rokov, kým sme sa z toho spamätali,“ naznačil problémy predseda AGD Senné v&nbsp;máji. Verí, že kompetentní nespravia druhýkrát rovnakú chybu, a preto&nbsp;napísal otvorený list.</p>
+
+
+
+<p>„A dosť. Už ma to prestáva baviť. Tridsať rokov sa pohybujem medzi poľnohospodármi. Za tie roky som prešiel postupným vývojom od zamestnanca v končiacom socialistickom družstve, cez člena bez vplyvu na fungovanie, až po vlastníka s konečným rozhodovaním, ale stále je to o tom istom - o boji s&nbsp;niečím, čo v podstate ani nesúvisí s prácou poľnohospodára.</p>
+
+
+
+<p>Keď niečo skazí príroda, to beriem, časom to iste vynahradí späť. Naučil som sa neriešiť veci, ktoré neviem ovplyvniť. Keď si ma neváži môj obchodný partner, zmením obchodníka. Ak to nepomôže, zmením produkt. Všetko má však svoje hranice. Myslím si, že po toľkých rokoch - aj lepších aj horších – viem, a možno mám aj morálne právo hodnotiť vznikajúcu situáciu v poľnohospodárstve. Robiť chyby je ľudské, ale dvakrát tú istú? Rušiť niečo, čo funguje len preto, že sused má inú predstavu? To čo sa momentálne deje, je pokus o návrat do minulého storočia.</p>
+
+
+
+<p>Z jednej strany hovoríme o voľnom trhu, na druhej strane nie sme ochotní&nbsp;akceptovať, keď je niekto v niečom úspešný. Začať robiť zmenu v tíme s&nbsp;tým, že vymením najlepšieho hráča, asi nie je to pravé. Na Slovensku je to tak, že do poľnohospodárstva sa rozumie každý a každý vie, ako to má fungovať. Všetko na svete podlieha vývoju. Tak prečo nie sme ochotný akceptovať, že hospodárenie na pásoch pôdy ako sa hospodárilo pred osemdesiatimi rokmi je za nami? Pred 100 rokmi sa na Slovensku nevyrábali autá a dnes sme najväčší výrobcovia na svete. Prečo automobilkám štát nediktuje, aké autá má vyrábať a aký počet, veď mnohonásobne prekračujeme našu sebestačnosť. Repka je pre poľnohospodára plodina, ktorá mu zabezpečuje fungovanie aj v&nbsp;období, keď sa štát správa macošsky. Je pravda, že repka je nosnou plodinou veľkých, ale zároveň aj úspešných, lebo repka sa nepestuje so založenými rukami, práve naopak. Repku môže pestovať len ten, kto je ochotný investovať peniaze a svoj čas. Na druhej strane je to jedna z mála plodín, kde nefunguje čierny trh, čím má štát istotu zdanenia celej produkcie.</p>
+
+
+
+<p>Hospodárime v ťažkých podmienkach, ale jedno, čo sme sa naučili je, že bez pôdy to nepôjde a každá chyba nás stojí veľa. Keby som bol presvedčený, že repka nepatrí na naše polia, už dávno ju nepestujeme. Každý, kto chodil do školy (a nemusí to byť poľnohospodár) sa učil, že základom pestovania plodín je osevný postup založený na striedaní plodín. Pestovať akúkoľvek plodinu v monokultúre bez striedania je hazard s pôdou. Žiaden dobrý hospodár to nerobí. Až na „malých“, ktorí to majú zlegalizované dokonca aj Európskou úniou.</p>
+
+
+
+<p>Pri osevnom postupe existuje dobrá a zlá predplodina. Repka je jednoznačne dobrá. Zaraďuje sa medzi dve obilniny a hlavne je plodinou, ktorá obohacuje pôdu o ubúdajúci uhlík, ktorý je základ humusu, ktorý je nositeľom úrodnosti pôd. Pre našu firmu je repka riešenie ťažkej poľnohospodárskej situácie. Je to plodina, ktorú nie je problém po zbere úrody predať a&nbsp;ktorá sa nikdy nepredáva za ceny pod naše výrobné náklady, napr. na rozdiel od mlieka, mäsa a mnohokrát aj pšenice. Pestujeme ju na výmere 100 ha. Nechápem vyjadrenia, ktoré sa objavujú v tlači, lebo u nás sa repka už roky teší veľkej pozornosti včelárov. Každoročne prisúvajú včelstvá ku kvitnúcim porastom.</p>
+
+
+
+<p>Ďalším problémom tejto doby sú veľkosti polí. Nás sa to až tak netýka, pretože v našom kraji veľkosť parciel málokedy presahuje deklarovaných 30 ha, ale aj tak je to nezmysel striktne určiť veľkosť parciel. Pred 80 rokmi bol priemer obrábaných polí 1500 m2, teraz EÚ určuje minimálnu výmeru 1 ha (10 000 m<sup>2</sup>). Kde asi budeme o dvadsať rokov? Ale to asi súčasné vedenie nezaujíma.</p>
+
+
+
+<p>Pokus o zmenu&nbsp;spôsobu hospodárenia na Slovensku sa konal po roku 1990, a&nbsp;to s minimálnym úspechom. Dotačne boli zvýhodnený SHR ale drvivá väčšina hospodárov to postupne zabalila. Už vtedy bol ten problém, že o hospodárenie sa nezaujímali mladí ľudia. V tejto dobe je málokto ochotný pracovať dennodenne bez možnosti voľna. Zamestnanec má nárok na dovolenku a nie je problém ho nahradiť. Ale čo spraví malý farmár? Smola – bude pracovať. Jediná zmena, ktorá je pre poľnohospodárov dobrá, je zmena vo vedení na PPA a pripustenie toho, čo sme už tvrdili dlhé roky - že korupcia odčerpáva z poľnohospodárstva veľké peniaze. Ale čaká nás ešte dlhá cesta, kým na obidvoch stranách budú odborníci, ktorým rovnako záleží na budúcnosti poľnohospodárstva. Ale jedno viem, že bez diskusie to nepôjde.“</p>
+
+
+
+<p>Minister pôdohospodárstva a&nbsp;rozvoja vidieka SR Ján Mičovský pred takmer mesiacom uviedol, že produkcia repky olejnej 2,5-násobne presahuje potrebu Slovenska. „Je to plodina, ktorá podporuje niečo, čo s výživou, tobôž so zdravou výživou obyvateľstva, nemá vôbec, ale vôbec nič spoločné. Preto ja osobne, ale nejde o môj osobný názor - ide o potrebu všetkých obyvateľov Slovenska, som presvedčený, že produkcia tejto plodiny je symbolom doby, ktorá musí odísť do minulosti,“&nbsp;podčiarkol. Minister by chcel podporiť mladých, malých či stredných producentov, ktorí budú pestovať plodiny, ktoré by sa mali dostávať na stoly občanov. Emil Macho, predseda Slovenskej poľnohospodárskej a&nbsp;potravinárskej komory má na túto tému iný názor. „Sme v roku 2020 a návrat k extenzívnej forme pestovania nie je síce nereálny, ale v takom prípade si pripravme ako republika poriadne veľký balík peňazí, aby na vidieku ešte vôbec niekto ostal hospodáriť a podnikať. Nedokážeme konkurovať v rámci samotnej Európskej únie, nie to ešte konkurovať Južnej Amerike, Číne atď. A pokiaľ si niekto mysli, že zahraničný obchodný reťazec bude kupovať dvoj či trojnásobne drahšie naše produkty, sme na veľkom omyle. Slovenské potravinárske subjekty by o tom vedeli dlho rozpráva,“ hovorí predseda SPPK.</p>
+
+
+
+<h2 class="doc-subheading">Repka olejná</h2>
+
+<p>Kapusta repková pravá (iným názvom repka olejná) sa pestuje pre svoje olejnaté semená využívané najmä na výrobu olejov, používaných v&nbsp;potravinárstve aj technike alebo ako krmivo. V osevnom postupe má repka olejná svoje nezastupiteľné miesto, v zdravom osevnom postupe by jej malo byť 12,5 až 15 %. Podľa Eurostatu sa repka na Slovensku pestuje na 8 % poľnohospodárskej pôdy, podobne to je aj v&nbsp;okolitých krajinách. Slovenská produkcia tejto plodiny tvorila len 2,5 % podielu jej produkcie v&nbsp;celej EÚ.</p>
+
+
+
+<p>Podľa poľnohospodárov je to jedna z&nbsp;najlepších predplodín, má významné protierózne účinky a&nbsp;je významná medonosná plodina. Úhyn včiel pri pestovaní repky často spôsobuje absencia komunikácie medzi poľnohospodárom a miestnym včelárom. Na rovnakej ploche sa táto plodine pestuje raz za tri-štyri roky. Na jej pestovanie sa neposkytujú viazané platby a&nbsp;na jej pestovanie nie je poskytovaná ani štátna pomoc (napr. zelená nafta). Na základe prísnej legislatívy sa geneticky modifikovaná repka v&nbsp;EÚ nepestuje.</p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

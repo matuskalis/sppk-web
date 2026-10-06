@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Úrad komory – SPPK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: #000000;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+
+    /* ═════════════════════════════════════════
+       MOBILE  (default, up to 767px)
+    ═════════════════════════════════════════ */
+    .page {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #000000;
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .section { margin-bottom: 40px; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+
+    /* ═════════════════════════════════════════
+       DESKTOP  (768px and wider)
+    ═════════════════════════════════════════ */
+    @media (min-width: 768px) {
+
+      .page {
+        max-width: 900px;
+        padding: 60px 48px 80px;
+      }
+
+      .page-title {
+        font-size: 36px;
+        text-align: left;
+        margin-bottom: 52px;
+      }
+
+      .section { margin-bottom: 52px; }
+      .section-heading h2 { font-size: 22px; }
+
+      .card { padding: 28px 32px; margin-bottom: 14px; }
+
+      /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+      .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+      .portrait-initials { font-size: 36px; }
+
+      .card-body { flex: 1; min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="page">
+
+    <!-- Page title -->
+    <h1 class="page-title">
+      Úrad Slovenskej poľnohospodárskej
+      a potravinárskej komory
+    </h1>
+
+    <!-- ════════════════════════════════════
+         SECTION 1 · Vedenie úradu
+    ════════════════════════════════════ -->
+    <section class="section" aria-labelledby="heading-vedenie">
+
+      <div class="section-heading">
+        <h2 id="heading-vedenie">Vedenie úradu</h2>
+        <div class="rule"></div>
+      </div>
+
+      <!-- Card · Riaditeľ úradu -->
+      <article class="card card-portrait">
+        <div class="portrait size-portrait">
+          <img
+            src="../images/artim-jozef.jpg"
+            alt="Ing. Jozef Artim, CSc."
+            onerror="this.style.display='none'; this.parentElement.querySelector('.portrait-initials').style.display='flex';"
+          />
+          <span class="portrait-initials" style="display:none">JA</span>
+        </div>
+        <div class="card-body">
+          <p class="role-label">Riaditeľ úradu</p>
+          <p class="person-name">Ing. Jozef Artim, CSc.</p>
+          <p class="person-title">riaditeľ úradu</p>
+          <div class="contact-stack">
+            <div class="contact-row">
+              <span class="contact-label">Mob.:</span>
+              <span class="contact-value">+421 903 588 106</span>
+            </div>
+            <div class="contact-row">
+              <span class="contact-label">E-mail:</span>
+              <a href="mailto:artim@sppk.sk" class="contact-email">artim@sppk.sk</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card · Sekretariát & Podateľňa -->
+      <article class="card">
+        <p class="role-label">Sekretariát &amp; Podateľňa</p>
+        <p class="person-name">Sekretariát SPPK</p>
+        <p class="person-title">príjem dokumentov a korešpondencie</p>
+        <div class="contact-stack">
+          <div class="contact-row">
+            <span class="contact-label">Mob.:</span>
+            <span class="contact-value">+421 903 588 106</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">E-mail:</span>
+            <a href="mailto:sppk@sppk.sk" class="contact-email">sppk@sppk.sk</a>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ════════════════════════════════════
+         SECTION 2 · Hovorca a médiá
+    ════════════════════════════════════ -->
+    <section class="section" aria-labelledby="heading-hovorca">
+
+      <div class="section-heading">
+        <h2 id="heading-hovorca">Hovorca a médiá</h2>
+        <div class="rule"></div>
+      </div>
+
+      <article class="card card-portrait">
+        <div class="portrait size-portrait">
+          <img
+            src="../images/holeciova-jana.jpg"
+            alt="Jana Holéciová"
+            onerror="this.style.display='none'; this.parentElement.querySelector('.portrait-initials').style.display='flex';"
+          />
+          <span class="portrait-initials" style="display:none">JH</span>
+        </div>
+        <div class="card-body">
+          <p class="role-label">Tlačový odbor</p>
+          <p class="person-name">Jana Holéciová</p>
+          <p class="person-title">hovorkyňa SPPK</p>
+          <div class="contact-stack">
+            <div class="contact-row">
+              <span class="contact-label">Mob.:</span>
+              <span class="contact-value">+421 911 123 456</span>
+            </div>
+            <div class="contact-row">
+              <span class="contact-label">E-mail:</span>
+              <a href="mailto:holeciova@sppk.sk" class="contact-email">holeciova@sppk.sk</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ════════════════════════════════════
+         SECTION 3 · Odbory úradu
+    ════════════════════════════════════ -->
+    <section aria-labelledby="heading-odbory">
+
+      <div class="section-heading">
+        <h2 id="heading-odbory">Odbory úradu</h2>
+        <div class="rule"></div>
+      </div>
+
+      <!-- Dept 1 · Poľnohospodárstvo a služby -->
+      <article class="card">
+        <p class="role-label">Odbor poľnohospodárstva a služieb</p>
+        <p class="person-name">Ing. Ján Baršváry</p>
+        <p class="person-title">riaditeľ odboru</p>
+        <div class="contact-stack" style="margin-bottom:20px">
+          <div class="contact-row">
+            <span class="contact-label">Mob.:</span>
+            <span class="contact-value">+421 914 330 001</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">E-mail:</span>
+            <a href="mailto:barsvary@sppk.sk" class="contact-email">barsvary@sppk.sk</a>
+          </div>
+        </div>
+        <div class="duty-divider">
+          <p class="duty-heading">Pôsobnosť odboru</p>
+          <ul class="duty-list">
+            <li><span class="duty-dash">–</span><span class="duty-text">koordinácia činnosti odboru poľnohospodárstva</span></li>
+            <li><span class="duty-dash">–</span><span class="duty-text">projektové podpory a štátna pomoc</span></li>
+            <li><span class="duty-dash">–</span><span class="duty-text">spolupráca v rámci V4 a krajín 3 morí</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Dept 2 · Potravinárstvo a obchod -->
+      <article class="card">
+        <p class="role-label">Odbor potravinárstva a obchodu</p>
+        <p class="person-name">Meno Riaditeľa Odboru</p>
+        <p class="person-title">riaditeľ odboru</p>
+        <div class="contact-stack">
+          <div class="contact-row">
+            <span class="contact-label">Mob.:</span>
+            <span class="contact-value">+421 905 XXX XXX</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">E-mail:</span>
+            <a href="mailto:potravinarstvo@sppk.sk" class="contact-email">potravinarstvo@sppk.sk</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Dept 3 · Ekonomický odbor -->
+      <article class="card">
+        <p class="role-label">Ekonomický odbor</p>
+        <p class="person-name">Meno Vedúceho Odboru</p>
+        <p class="person-title">vedúci odboru</p>
+        <div class="contact-stack">
+          <div class="contact-row">
+            <span class="contact-label">Mob.:</span>
+            <span class="contact-value">+421 905 XXX XXX</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">E-mail:</span>
+            <a href="mailto:ekonomicke@sppk.sk" class="contact-email">ekonomicke@sppk.sk</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Dept 4 · Právny odbor -->
+      <article class="card">
+        <p class="role-label">Právny odbor</p>
+        <p class="person-name">Meno Právnika Odboru</p>
+        <p class="person-title">vedúci právneho odboru</p>
+        <div class="contact-stack">
+          <div class="contact-row">
+            <span class="contact-label">Mob.:</span>
+            <span class="contact-value">+421 905 XXX XXX</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-label">E-mail:</span>
+            <a href="mailto:pravne@sppk.sk" class="contact-email">pravne@sppk.sk</a>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spoločná poľnohospodárska politika — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">polnohospodarstvo</a><span>/</span><a href="../index.html">spolocna polnohospodarska politika</a><span>/</span>Spoločná poľnohospodárska politika</nav>
+
+  <article>
+    <h1 class="doc-title">Spoločná poľnohospodárska politika</h1>
+    <p class="doc-meta"><span class="doc-meta-item">22. januára 2015</span></p>
+
+    <div class="doc-body">
+<h3>Spoločná poľnohospodárska politika</h3>
+
+<p><strong>Spoločná poľnohospodárska politika</strong> obsahuje množstvo ustanovení a mechanizmov, ktoré riadia výrobu a spracovanie poľnohospodárskych výrobkov a obchodovanie s nimi. V súčasnosti sa vidiecky rozvoj stáva ťažiskom SPP.</p>
+
+<p><a href="http://www.europskaunia.sk/spolocna_polnohospodarska" id="a215" class="external" target="_blank" rel="noopener noreferrer">Spoločná poľnohospodárska politika</a> je jedna zo supranacionálnych politických oblasti EÚ. Patrí k najdôležitejším politickým oblastiam EÚ a pohlcuje najväčšiu časť jeho rozpočtu.</p>
+
+<p>Spoločná poľnohospodárska politika má aj veľký symbolický význam, lebo bola prvá oblasť, kde sa najviac právomoci prenieslo na EÚ. Navyše, je veľmi úzko spojená s dvoma kľúčovými oblastiami EÚ: Vnútorný trh a hospodárska a menová únia.</p>
+
+<h2 class="doc-subheading">Ciele SPP</h2>
+
+<p>Rímska zmluva (zmluva o ES) zakotvuje v článku č.39 druhej hlavy nasledujúce ciele SPP:</p>
+
+<ul>
+	<li>zvýšiť produktivitu poľnohospodárstva podporou technického pokroku a zabezpečovaním racionálneho rozvoja poľnohospodárskej výroby a optimálneho využívania výrobných faktorov, najmä pracovnej sily,</li>
+	<li>zabezpečiť týmto spôsobom primeranú životnú úroveň poľnohospodárov, najmä zvýšením individuálnych príjmov jednotlivcov pracujúcich v poľnohospodárstve,</li>
+	<li>stabilizovať trhy,</li>
+	<li>zabezpečiť riadne zásobovanie,</li>
+	<li>zabezpečiť dodávky spotrebiteľom za primerané ceny.</li>
+</ul>
+
+<h2 class="doc-subheading">Zásady</h2>
+
+<p>V roku 1962 sa signatárske štáty dohodli na troch zásadách, ktoré platia doteraz:</p>
+
+<ul>
+	<li>Zjednotený trh: Organizácia poľnohospodárskeho trhu je pre každého rovnaká. Každý výrobok sa môže voľne pohybovať vo vnútri spoločenstiev.</li>
+	<li>Finančná solidarita: náklady, ktoré kvôli organizácii poľnohospodárskeho trhu vznikajú, sú financované spoločným rozpočtom, respektíve Európskym poľnohospodárskym poradným a záručným fondom.</li>
+	<li>Priorita spoločenstva: Ochrana európskeho poľnohospodárstva clami na dovoz poľnohospodárskych výrobkov z tretích krajín.</li>
+</ul>
+
+<p>Na dosiahnutie týchto cieľov sa zaviedla spoločná organizácia poľnohospodárskych trhov.</p>
+
+<p>V závislosti od daných výrobkov sa táto organizácia uskutočňuje niektorou z nasledujúcich foriem:</p>
+
+<ul>
+	<li>spoločnými pravidlami hospodárskej súťaže,</li>
+	<li>povinnou koordináciou vnútroštátnych trhových systémov,</li>
+	<li>európskou organizáciou trhu.</li>
+</ul>
+
+<p>K spoločnej organizácii poľnohospodárskych trhov sú k dispozícii viaceré nástroje. Skladajú sa z dvoch pilierov:</p>
+
+<ul>
+	<li>Prvý pilier obsahuje trhové mechanizmy, príspevky k príjmu a priame platby. Tieto nástroje existujú už od začiatku SPP:
+	<ul>
+		<li>dovozná prirážka - je to poplatok, ktorý sa vyberá pri dovoze výrobkov, aby sa cena výrobku zvýšila na úroveň ceny EÚ</li>
+		<li>spoločné zahraničné clo</li>
+		<li>intervenčné ceny - sú to garantované minimálne ceny s garanciou odbytu. Ak padne cena jedného druhu výrobku, kupuje EÚ prebytok, až kým sa znova dosiahne minimálnu cenu</li>
+		<li>Priame príspevky - sú príspevky na výrobky, ktoré sú v EÚ vyrobené len v malom množstve</li>
+		<li>Príspevky k&nbsp;príjmu - tento príspevok bol na začiatok zakotvený s rozsahom výroby, potom bol viac a viac odpojený od výroby a prišlo k vyrovnávacej platbe pre zmenšenú produkciu.</li>
+	</ul>
+	</li>
+	<li>Druhý pilier vznikol s Agendou 2000 a s reformou z roku 2003 a obsahuje intenzívnu podporu vidieku:</li>
+	<li>Cross-compliance - ukotvuje výšku priamych platieb s istými štandardmi životného prostredia. Je fakultatívnym nástrojom jednotlivých členských krajín.</li>
+	<li>Zakotvenie priamych platieb na počet zamestnancov za podnik. Je to tiež fakultatívnym nástrojom.</li>
+	<li>Modulácia - skrátenie priamych platieb o 3% (2005), 4% (2006) a 5% v nasledujúcich rokoch. Ušetrená suma sa rozdelí na členské krajiny a používa sa na opatrenia na rozvoj vidieku.</li>
+</ul>
+
+<h2 class="doc-subheading">Rozvoj SPP</h2>
+
+<p>Motívy na založenie spoločnej poľnohospodárskej politiky boli spomienky na hlad v a po druhej svetovej vojne. Liberalizácia poľnohospodárskeho trhu bola preto od začiatku vylúčená a jednotlivé nacionálne intervenčné riadenia sa museli previesť na spoločného európskeho menovateľa.</p>
+
+<p>Zásady SPP boli určené na konferencii v Strese 1958. Prvým poľnohospodárskym komisárom sa stal Sicco Mansholt. V roku 1960 schválili signatárske štáty zmluvy o EHS a mechanizmy SPP. V 1962 sa rada EÚ dohodla na prvej organizácii poľnohospodárskeho trhu a SPP vstúpila do platnosti. Zároveň sa založil Európsky poľnohospodársky a garančný fond (EAGGF) na financovanie SPP.</p>
+
+<p>Cieľ zaistenia zásobovania bol rýchlo dosiahnutý, predčený a hnal financovanie v&nbsp;80tych rokoch do veľkej krízy. Finančné príspevky pre poľnohospodárov sa zameriavali na rozsah výroby. Čím viac vyrobili, tým vyššie príspevky dostali. Vytvorilo sa viac väčších poľnohospodárskych podnikov, produkcia silno stúpla a tým vznikli veľké „hory masla“, „hory obilia“, „mliečne jazerá“ atď. EÚ garantovala vysokú úroveň ceny skupovaním nadprodukcie (intervenčné ceny). Nadprodukcia sa skladovala a vyvážala sa za ceny pod cenou svetového trhu. To škodilo rozvojovým krajinám a viedlo k sporom so Spojenými štátmi. Potraviny, ktoré sa dokonca nepredávali ani za dumpingové ceny, sa zničili.</p>
+
+<p>Pretože tento systém škodil zahraničným vzťahom, ekologickej rovnováhe a bol finančne neznesiteľný, došlo v 1988 a 1992 k prvým reformám.</p>
+
+<p>Na konferencii v Bruseli 1988 sa obmedzili výdavky pre poľnohospodárstvo (78% HNP) a&nbsp;bol pokus o obmedzenie produkciu prémiami pre zastavanie ornej pôdy a preddôchodok. V&nbsp;r. 1992 sa drasticky znížili intervenčné ceny a&nbsp;etabloval sa systém priamych príspevkov k príjmu.</p>
+
+<p>V rámci Agendy 2000 reformy v SPP pokračovali:</p>
+
+<ul>
+	<li>Intervenčné ceny sa v&nbsp;ďalej znižovali v prospech priamych príspevkov k&nbsp;príjmu</li>
+	<li>Podpora alternatívnych možnosti príjmu a činnosti (napríklad dovolenky na gazdovstve)</li>
+	<li>Ekologické aspekty sa stanú súčasťou cieľov SPP</li>
+	<li>Zlepšenie kvality potravín</li>
+</ul>
+
+<p>V roku 2003 prišlo k ďalšej veľkej reforme, ktorá zásadne zmenila intervenčný systém v&nbsp;SPP:</p>
+
+<ul>
+	<li>Úplné odstránenie väzby medzi podporou farmárov a výškou ich produkcie (decoupling). Vyrovnanie platby sa malo uskutočniť prémiami pre ekologické štandardy, zdravie zvierat a rastlín, ochrana zvierat a bezpečnosť práce. Poľnohospodári sa mali naivac zaviazať udržiavať ich pôdu v dobrom agronomickom stave.</li>
+	<li>Príspevok k opatreniam, ktoré smerujú na dodržiavanie vysokých európskych štandardov.</li>
+	<li>Skrátenie priamych platieb pre veľkopodniky</li>
+	<li>Ďalšie zmenšenie intervenčných cien</li>
+</ul>
+
+<p>Nová SPP sa teda orientuje viac podľa spotrebiteľov, dovoľuje poľnohospodárom viac slobôd a zabezpečí ekologickú a trvalú poľnohospodársku politiku.</p>
+
+<h2 class="doc-subheading">Financovanie</h2>
+
+<p>Momentálne je SPP financovaná Európskym poľnohospodárskym a garančným fondom. Ten bol záložený v&nbsp;r. 1962 a od roku 1964 sa skladá z dvoch častí:</p>
+
+<ol>
+	<li>usmerňovacia sekcia: je jeden zo štruktúrnych fondov a podporuje vidiecky vývoj a štruktúrnu reformu v poľnohospodárstve.</li>
+	<li>záručná sekcia: intervenčné kúpy, aby sa zaručil odbyt (výklady pre organizáciu trhu)</li>
+</ol>
+
+<p>Na základe reformy SPP sa má od roku 2007 zrealizovať financovanie SPP v novom právnom rámci. Pretvorenie rámca financovania bolo potrebný, pretože koncept financovania sa po mnohých reformách týkajúcích sa úloh, nástrojov a cieľov, stal netransparentný.</p>
+
+<p>Pre nový finančný koncept sa zariadili dva fondy:</p>
+
+<ul>
+	<li>Európsky záručný fond pre poľnohospodárstvo - priame platby a výklady pre organizáciu trhu.</li>
+	<li>Európsky poľnohospodársky fond pre rozvoj vidieku - podporuje programy na rozvoj vidieku.</li>
+</ul>
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

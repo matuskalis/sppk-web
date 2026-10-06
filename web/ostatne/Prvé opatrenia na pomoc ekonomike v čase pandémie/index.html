@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prvé opatrenia na pomoc ekonomike v čase pandémie — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../index.html">Úvod</a><span>/</span><a href="../index.html">ostatne</a><span>/</span>Prvé opatrenia na pomoc ekonomike v čase pandémie</nav>
+
+  <article>
+    <h1 class="doc-title">Prvé opatrenia na pomoc ekonomike v čase pandémie</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Ministerstvo hospodárstva SR</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">30. marca 2020</span></p>
+
+    <div class="doc-body">
+<p><span><strong>Ministerstvo hospodárstva SR v spolupráci s vecne príslušnými rezortami vypracovalo prvých 7 základných opatrení na pomoc slovenskému hospodárstvu v čase koronakrízy. </strong></span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/eLMayLr.jpg"></figure><p></p>
+
+
+
+<p>Upravia sa napríklad podmienky preplácania miezd zamestnancov vo firmách, ktoré sú povinne zatvorené, a to až do výšky 80 % platu zamestnanca. Vyplácať sa tiež budú príspevky pre živnostníkov a zamestnancov vo firmách, ktoré zaznamenali pokles tržieb. Zamestnanci v karanténe a na OČR dostanú 55 % z ich hrubej mzdy. Upravujú sa aj pravidlá odkladu platenia odvodov a preddavkov dane z príjmu pri poklese tržieb o viac ako 40 %. Podnikatelia budú mať tiež možnosť započítať si doteraz neuplatnenú stratu od roku 2014.&nbsp;<em>„Ide o prvú pomoc, s ktorou som veľmi spokojný. Sú to rozumné, presne zamerané opatrenia,“</em>&nbsp;zdôraznil minister hospodárstva Richard Sulík. Ubezpečil, že&nbsp;<em>„sa postupne bude robiť niekoľko desiatok sektorovo zameraných opatrení, ale o to presnejšie cielených.“</em></p>
+
+
+
+<p>Minister hospodárstva Richard Sulík zároveň odkázal zamestnávateľom, že&nbsp;<em>„ich nenecháme padnúť na dno".</em>&nbsp; Poprosil ich, aby veľmi dobre zvážili každú jednu výpoveď. Pomoc sa totiž nebude vzťahovať na zamestnancov vo výpovednej dobe. Podmienkou teda bude zachovanie pracovného miesta.&nbsp;<em>„Opatrenia podnikateľom nenahradia zisky. V čase krízy všetci utrpia, ale spoločnými silami ju bude možné prekonať,"</em>&nbsp;vyhlásil šéf rezortu hospodárstva. Podľa ministra financií Eduarda Hegera ide o naozaj masívnu pomoc.&nbsp;<em>„Rozsah tejto pomoci bude pri priamej pomoci vo výške 1 miliardy eur mesačne a v bankových zárukách vo výške pol miliardy eur mesačne,"</em>&nbsp;uviedol minister financií. Časť opatrení bude financovaných z eurofondov, na časť si bude musieť Slovensko požičať.</p>
+
+
+
+<h2 class="doc-subheading">Podrobnejšie:&nbsp;</h2>
+
+
+
+<p>Vláda sa predovšetkým zaviazala k&nbsp;dotácií miezd sumou okolo jednej miliardy eur mesačne na obdobie minimálne najbližších troch mesiacov a&nbsp;taktiež k mesačným garanciám na úvery podnikateľom v&nbsp;objeme pol miliardy eur. Ide o&nbsp;jadro fiškálnych opatrení ako pokračovanie už prijatých (zmeny v&nbsp;PN, OČR a&nbsp;posun daňových termínov).</p>
+
+
+
+<p>Opatrenia sú nasmerované predovšetkým na malé a&nbsp;stredné podniky, ktorým klesli tržby v&nbsp;dôsledku prijatých bezpečnostných opatrení. Nárok firiem, ktoré zamestnávajú viac ako 250 zamestnancov, bude obmedzený v&nbsp;dôsledku nastaveného limitu 200-tisíc eur na jednu spoločnosť – čo už sprevádzajú protesty. Otázne je, nakoľko je v&nbsp;našich podmienkach delenie na malé a&nbsp;veľké firmy relevantné – súvisí to s otázkami previazania veľkých a&nbsp;malých firiem v&nbsp;dodávateľskom reťazci či schopnosť tvoriť rezervy. Veľké spoločnosti očakávajú na základe ďalších rokovaní s&nbsp;vládou vytvorenie balíka opatrení aj na podporu veľkých podnikov. Volkswagen a&nbsp;iní volajú napríklad po inštitúte tzv. „kurzarbeit“, ktorý sa už v&nbsp;minulosti osvedčil a&nbsp;aktuálne ho uplatňujú viaceré európske krajiny. Kurzarbeit znamená skrátenie pracovného, pričom na nákladoch na mzdy sa podieľa aj štát</p>
+
+
+
+<p>Balík opatrení znamená príspevok na mzdy zamestnancov a&nbsp;živnostníkov; odvodová povinnosť zostáva zachovaná. Pri prepade tržieb o&nbsp;viac ako 40% je možné dostať odklad platieb odvodov a&nbsp;preddavkov na daň z&nbsp;príjmu.&nbsp;</p>
+
+
+
+<p>Denník E uviedol, že pracovná verzia návrhu opatrení obsahovala aj pomoc firmám s&nbsp;úhradou nájomného. Po tej volajú napríklad zástupcovia maloobchodu odvolávajúc sa na podobné opatrenia v&nbsp;iných krajinách. S&nbsp;uvedeným súvisí aj legislatívne zrovnoprávnenie postavenia nájomcov a&nbsp;prenajímateľov. V&nbsp;každom prípade budú podniky na zachovanie cash flow potrebovať – okrem kompenzácie miezd – aj pomoc s&nbsp;fixnými prevádzkovými nákladmi. Najväčšou pomocou zo strany štátu je v&nbsp;tomto ohľade nateraz posunutie termínu podania daňového priznania a odloženie platieb odvodov</p>
+
+
+
+<p>Kompenzácia miezd sa dotkne podľa ministra Krajniaka zhruba 800 tisíc zamestnancov a&nbsp;200 tisíc SZČO – čo je zhruba polovica zamestnancov v&nbsp;súkromnom sektore.</p>
+
+
+
+<p>Kompenzácia 80% hrubej mzdy zamestnancov sa vzťahuje na firmy, ktoré boli zatvorené nariadením vlády a v&nbsp;praxi znamená, že 80% pôvodnej hrubej mzdy uhradí firme štát, pričom zamestnávateľovi neodpadá odvodová povinnosť z&nbsp;tejto čiastky – môže však platbu odvodov odložiť v&nbsp;prípade prepadu tržieb o&nbsp;viac ako 40%. Kompenzácia v&nbsp;plnej miere sa bude vzťahovať na pôvodné hrubé mzdy do výšky 1375 eur, keďže je limitovaná na 1100 eur mesačne.</p>
+
+
+
+<p>Výška kompenzácie miezd v&nbsp;prípade firiem, ktoré neboli nariadením vlády zatvorené, závisí od veľkosti prepadu tržieb – od 180 eur na zamestnanca alebo živnostníka pri prepade tržieb o&nbsp;minimálne 20% po 540 eur pri prepade o&nbsp;najmenej 80%. Ani tu sa neodpúšťajú odvody; môžu sa však odložiť.</p>
+
+
+
+<p>Čo sa týka mesačnej bankovej záruky vo výške 500 miliónov eur – tá by mala viesť k&nbsp;poskytovaniu úverov za výhodných podmienok. Opatrenia tiež zahŕňajú preplatenie karanténnej nemocenskej a ošetrovného pre zamestnancov (55% hrubej mzdy).</p>
+
+
+
+<p>Odkiaľ budú opatrenia financované? Jedným z&nbsp;možných zdrojov príjmov sú nevyčerpané eurofondy aktuálneho programovacieho obdobia. Európska komisia tak už presmerovala 37 miliárd eur zo štrukturálnych fondov, čo pre Slovensko znamená 2,5 miliardy (celkovo sme z&nbsp;eurofondov nevyčerpali 4,7 miliardy). Druhým zdrojom sú finančné trhy, ktoré už zažívajú pretlak štátnych dlhopisov. Vládny dlh sa bude v&nbsp;každom prípade výrazne navyšovať a&nbsp;zdrojov sme mohli mať podstatne viac, keby sme v&nbsp;minulých „tučných“ rokoch dlh znižovali.&nbsp;</p>
+
+
+
+
+
+
+<h2 class="doc-subheading">Opatrenia v zahraničí</h2>
+
+
+
+<p>Krajiny sveta vo veľkom predstavujú fiškálne opatrenia na boj s&nbsp;koronavírusom. Medzinárodný menový fond začal tieto opatrenia sumarizovať. Z&nbsp;dát vyplýva, že výška rozpočtovej podpory sa značne medzi krajinami líši.</p>
+
+
+
+<p>Naši susedia v&nbsp;Česku dosiahli tretí najväčší objem vládnej pomoci v&nbsp;rámci krajín EÚ (18% HDP). Najnovším opatrením navrhnutým tento týždeň je zmrazenie splátok úverov na pol roka (2,8 bilióna českých korún) – so súvisiacim vypnutím regulačných mechanizmov (banky by na úvery nevytvárali rezervy a&nbsp;opatrenie by nenarušilo úverovú reputáciu dlžníka). Ministerka financií tiež navrhuje zníženie úrokov počas moratória na symbolickú výšku. Bankový sektor by mal pri rozumnom nastavení túto záťaž uniesť – české banky patria medzi finančne najzdravšie v&nbsp;Európe a&nbsp;v&nbsp;posledných rokoch dosahovali stabilné zisky. Očakáva sa, že banky sa ohradia voči plošnému zavedeniu a&nbsp;budú požadovať moratórium len pre skutočné zasiahnutých. Banky už v&nbsp;súčasnosti ponúkajú odklad splátok na základe individuálneho posúdenia situácie – čo má dopad na platobnú disciplínu dlžníka. Zmrazenie splátok by sa malo týkať aj nebankových subjektov. V&nbsp;porovnaní s&nbsp;už prijatými opatreniami by išlo o&nbsp;najrozsiahlejšie opatrenie. Ďalším navrhnutým opatrením je zrušenie 4%-nej dane z&nbsp;nadobudnutia nehnuteľnosti. Vláda tiež pripravuje novelu insolvenčného zákona. Dnes má česká ministerka financií predložiť návrh, podľa ktorého by štát vyplácal SZČO, ktorých postihli vládne opatrenia, 15 tisíc českých korún mesačne. Ministerka práce bude k&nbsp;uvedenému požadovať rozšírenie aj pre ľudí pracujúcich na dohodu. Z&nbsp;prieskumu medzi živnostníkmi a&nbsp;firmami vyplýva, že dve pätiny zamestnávateľov sa chystajú využiť kurzarbeit v&nbsp;dôsledku poklesu odbytu. Banková rada českej národnej banky opätovne znížila minulý týždeň základnú úrokovú sadzbu – tentokrát o&nbsp;0,75 percentuálneho bodu na 1%. Česká vláda ešte 20. marca schválila program ochrany zamestnanosti „Antivirus“ s&nbsp;cieľom chrániť zamestnancov a&nbsp;zamestnávateľov pred prepúšťaním. Tento program poskytuje zamestnávateľom príspevok na plnú či čiastočnú náhradu miezd – z&nbsp;dôvodu na strane zamestnanca (nariadenie karantény) alebo zamestnávateľa (nariadenie zatvoriť prevádzku). Program je postupne rozširovaný a má viacero režimov. V&nbsp;rámci režimu A&nbsp;je zamestnancom, ktorým bola nariadená karanténa, vyplácaná náhrada mzdy vo výške 60% (plne krytá štátom). V&nbsp;rámci režimu B je zamestnancov zamestnávateľa, ktorý musel uzavrieť prevádzku, nahrádzaná mzda vo výške 100% (80%-né krytie štátom). V&nbsp;rámci tohto režimu nie je zavedené obmedzenie na veľkosť podniku. V&nbsp;rámci režimu C – nemožnosť prideľovať prácu z&nbsp;dôvodu karantény či starostlivosti o&nbsp;dieťa u&nbsp;najmenej 30% zamestnancov – je vyplácaná náhrada mzdy vo výške 100% (príspevok vlády vo výške 80%). V&nbsp;rámci režimu D – obmedzenie dostupnosti výrobných vstupov – bude vyplácaná náhrada mzdy vo výške 80% (príspevok vlády vo výške 50%). V&nbsp;rámci režimu D – obmedzenie dopytu po službách a&nbsp;výrobkoch v&nbsp;dôsledku karanténnych opatrení – bude vyplácaná náhrada mzdy vo výške 60% (príspevok vlády vo výške 50% náhrady mzdy). Podobne ako na Slovensku náhrada mzdy zahŕňa odvody zamestnanca, ale nie zamestnávateľa. Česká vláda tiež schválila a&nbsp;neustále rozširuje program „Úver COVID“ – ide o&nbsp;bezúročný úver podnikateľom s&nbsp;ročným odkladom splátok. Program pripravila Českomoravská záruční a rozvojová banka v&nbsp;spolupráci ministerstvom priemyslu a&nbsp;obchodu s&nbsp;cieľom uľahčiť prístup malých a&nbsp;stredných podnikateľov k&nbsp;prevádzkovému financovaniu. Zdroje sú čerpané z&nbsp;operačných programov EÚ. Program sa vzťahuje aj na živnostníkov. Vláda by mala celkovo poskytnúť na podporu podnikateľov a&nbsp;firiem až jeden bilión korún (priama pomoc vo výške 100 miliárd korún a záruky vo výške 900 miliárd).</p>
+
+
+
+<p>Suverénne najväčší záchranný balík v&nbsp;Európe tvoria opatrenia nemeckej vlády. Nemecko – na rozdiel od iných krajín – využilo predchádzajúce roky prosperity na generovanie rozpočtového prebytku, čo mu teraz značne pomôže. Rozsah balíka je dobrou správou aj pre Česko a&nbsp;iné európske ekonomiky, s&nbsp;ktorými je tá nemecká prepojená. Celkový objem pomoci je 750 miliárd eur a&nbsp;zahŕňa napríklad nasledovné opatrenia: priama dotácia 15 tisíc eur malým spoločnostiam a&nbsp;slobodným povolaniam (50 miliárd eur), stabilizácia väčších spoločností zo stabilizačného fondu – v prípade potreby sa štát môže stať spoločníkom (100 miliárd na priame investície a&nbsp;400 miliárd na záruky), špecifický úverový program na pomoc s&nbsp;likviditou (100 miliárd), právna úprava vzťahov medzi nájomcami a&nbsp;prenajímateľmi (zákaz vysťahovania), sociálne opatrenia na pomoc domácnostiam, ktoré stratili príjem (7,7 miliardy), zvýšená dotácia na kurzarbeit, podpora nemocníc (3 miliardy), úprava pravidiel úpadku firiem.</p>
+
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/2v3Fgsq.jpg"></figure><p></p>
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

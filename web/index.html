@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPPK – Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════ HERO CAROUSEL -->
+<div class="hero-carousel" style="position:relative;width:100%;height:520px;overflow:hidden;background:#1a2a1f;">
+  <div class="carousel-slide active" style="position:absolute;inset:0;">
+    <img src="https://images.unsplash.com/photo-1581377193405-19de7f09248f?w=1600&h=700&fit=crop&auto=format" alt="" class="article-thumb" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.2) 60%,transparent 100%);"></div>
+  </div>
+  <div class="carousel-slide" style="position:absolute;inset:0;">
+    <img src="https://images.unsplash.com/photo-1560693225-b8507d6f3aa9?w=1600&h=700&fit=crop&auto=format" alt="" class="article-thumb" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.2) 60%,transparent 100%);"></div>
+  </div>
+  <div class="carousel-slide" style="position:absolute;inset:0;">
+    <img src="https://images.unsplash.com/photo-1557844352-761f2565b576?w=1600&h=700&fit=crop&auto=format" alt="" class="article-thumb" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.2) 60%,transparent 100%);"></div>
+  </div>
+  <div class="carousel-slide" style="position:absolute;inset:0;">
+    <img src="https://images.unsplash.com/photo-1629708204327-b94ee06c2cf6?w=1600&h=700&fit=crop&auto=format" alt="" class="article-thumb" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.2) 60%,transparent 100%);"></div>
+  </div>
+  <button onclick="carouselPrev()" style="position:absolute;top:50%;left:20px;transform:translateY(-50%);background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.2);border-radius:50%;color:#fff;width:44px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s ease;backdrop-filter:blur(4px);" onmouseenter="this.style.background='rgba(0,154,68,0.7)'" onmouseleave="this.style.background='rgba(0,0,0,0.35)'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <button onclick="carouselNext()" style="position:absolute;top:50%;right:20px;transform:translateY(-50%);background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.2);border-radius:50%;color:#fff;width:44px;height:44px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s ease;backdrop-filter:blur(4px);" onmouseenter="this.style.background='rgba(0,154,68,0.7)'" onmouseleave="this.style.background='rgba(0,0,0,0.35)'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <div style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;" id="car-dots">
+    <button onclick="carouselGo(0)" class="car-dot" style="width:28px;height:8px;border-radius:4px;border:none;background:#009a44;cursor:pointer;padding:0;transition:all 0.3s ease;"></button>
+    <button onclick="carouselGo(1)" class="car-dot" style="width:8px;height:8px;border-radius:4px;border:none;background:rgba(255,255,255,0.5);cursor:pointer;padding:0;transition:all 0.3s ease;"></button>
+    <button onclick="carouselGo(2)" class="car-dot" style="width:8px;height:8px;border-radius:4px;border:none;background:rgba(255,255,255,0.5);cursor:pointer;padding:0;transition:all 0.3s ease;"></button>
+    <button onclick="carouselGo(3)" class="car-dot" style="width:8px;height:8px;border-radius:4px;border:none;background:rgba(255,255,255,0.5);cursor:pointer;padding:0;transition:all 0.3s ease;"></button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ MAIN CONTENT -->
+<section class="main-section" style="max-width:1200px;margin:0 auto;padding:60px 24px 80px;">
+  <div class="main-grid" style="display:grid;grid-template-columns:2fr 1fr;gap:60px;align-items:start;">
+
+    <!-- Article feed -->
+    <div>
+      <h2 style="margin:0 0 32px;font-family:'DM Serif Display',serif;font-size:28px;font-weight:400;color:#000;">Najnovšie správy</h2>
+
+      <!-- Featured article -->
+      <article class="article-card" style="display:flex;flex-direction:column;padding-bottom:36px;margin-bottom:36px;border-bottom:2px solid rgba(0,154,68,0.15);">
+        <div class="featured-img" style="width:100%;height:340px;border-radius:14px;overflow:hidden;background:#e6f5ed;margin-bottom:22px;flex-shrink:0;">
+          <img src="https://images.unsplash.com/photo-1595976281013-8024ecc02575?w=900&h=400&fit=crop&auto=format" alt="SPPK víta" class="article-thumb" />
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:#009a44;letter-spacing:0.02em;margin-bottom:12px;">14. augusta 2026</div>
+          <h3 class="article-title" style="margin:0 0 14px;font-family:'DM Serif Display',serif;font-size:30px;font-weight:400;color:#000;line-height:1.2;transition:color 0.2s ease;">SPPK víta schválenie nových podporných opatrení pre farmárov zo Slovenského parlamentu</h3>
+          <p style="margin:0 0 16px;font-size:16px;color:#444;line-height:1.7;font-weight:400;">Slovenská poľnohospodárska a potravinárska komora pozitívne hodnotí prijatie balíka podporných opatrení, ktoré pomôžu malým a stredným podnikom v agrárnom sektore.</p>
+          <button style="background:none;border:none;color:#009a44;font-size:14px;font-weight:700;letter-spacing:0.05em;cursor:pointer;padding:0;font-family:'Inter',sans-serif;">Čítať viac →</button>
+        </div>
+      </article>
+
+      <!-- Article 2 -->
+      <article class="article-card" style="display:flex;gap:20px;padding-bottom:28px;margin-bottom:28px;border-bottom:1px solid rgba(0,0,0,0.07);">
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:12px;font-weight:600;color:#009a44;letter-spacing:0.02em;margin-bottom:8px;">12. augusta 2026</div>
+          <h3 class="article-title" style="margin:0 0 8px;font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;color:#000;line-height:1.3;transition:color 0.2s ease;">Výsledky agrárneho summitu v Bratislave: Nové partnerstvá pre export potravín do EÚ</h3>
+          <p style="margin:0;font-size:13.5px;color:#555;line-height:1.6;font-weight:300;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Na medzinárodnom summite v Bratislave boli podpísané kľúčové dohody.</p>
+          <button style="margin-top:10px;background:none;border:none;color:#009a44;font-size:12.5px;font-weight:600;letter-spacing:0.05em;cursor:pointer;padding:0;font-family:'Inter',sans-serif;">Čítať viac →</button>
+        </div>
+        <div style="width:130px;height:88px;border-radius:12px;overflow:hidden;flex-shrink:0;background:#e6f5ed;">
+          <img src="https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=200&h=160&fit=crop&auto=format" alt="" class="article-thumb" />
+        </div>
+      </article>
+
+      <!-- Article 3 -->
+      <article class="article-card" style="display:flex;gap:20px;padding-bottom:28px;margin-bottom:28px;border-bottom:1px solid rgba(0,0,0,0.07);">
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:12px;font-weight:600;color:#009a44;letter-spacing:0.02em;margin-bottom:8px;">9. augusta 2026</div>
+          <h3 class="article-title" style="margin:0 0 8px;font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;color:#000;line-height:1.3;transition:color 0.2s ease;">SPPK upozorňuje na legislatívne zmeny v oblasti pesticídov platné od septembra 2026</h3>
+          <p style="margin:0;font-size:13.5px;color:#555;line-height:1.6;font-weight:300;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Nové nariadenia EK výrazne obmedzia používanie určitých látok.</p>
+          <button style="margin-top:10px;background:none;border:none;color:#009a44;font-size:12.5px;font-weight:600;letter-spacing:0.05em;cursor:pointer;padding:0;font-family:'Inter',sans-serif;">Čítať viac →</button>
+        </div>
+        <div style="width:130px;height:88px;border-radius:12px;overflow:hidden;flex-shrink:0;background:#e6f5ed;">
+          <img src="https://images.unsplash.com/photo-1578853464641-ef3e6d47e16c?w=200&h=160&fit=crop&auto=format" alt="" class="article-thumb" />
+        </div>
+      </article>
+
+      <!-- Article 4 -->
+      <article class="article-card" style="display:flex;gap:20px;padding-bottom:28px;margin-bottom:28px;border-bottom:1px solid rgba(0,0,0,0.07);">
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:12px;font-weight:600;color:#009a44;letter-spacing:0.02em;margin-bottom:8px;">7. augusta 2026</div>
+          <h3 class="article-title" style="margin:0 0 8px;font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;color:#000;line-height:1.3;transition:color 0.2s ease;">Správa: Tehoročná úroda obilia prekonala priemery posledných piatich rokov</h3>
+          <p style="margin:0;font-size:13.5px;color:#555;line-height:1.6;font-weight:300;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Nadpriemerné výnosy pšenice a kukurice v sezóne 2026.</p>
+          <button style="margin-top:10px;background:none;border:none;color:#009a44;font-size:12.5px;font-weight:600;letter-spacing:0.05em;cursor:pointer;padding:0;font-family:'Inter',sans-serif;">Čítať viac →</button>
+        </div>
+        <div style="width:130px;height:88px;border-radius:12px;overflow:hidden;flex-shrink:0;background:#e6f5ed;">
+          <img src="https://images.unsplash.com/photo-1646684662890-a5076aef9010?w=200&h=160&fit=crop&auto=format" alt="" class="article-thumb" />
+        </div>
+      </article>
+
+      <!-- Article 5 -->
+      <article class="article-card" style="display:flex;gap:20px;padding-bottom:28px;border-bottom:1px solid rgba(0,0,0,0.07);">
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:12px;font-weight:600;color:#009a44;letter-spacing:0.02em;margin-bottom:8px;">4. augusta 2026</div>
+          <h3 class="article-title" style="margin:0 0 8px;font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;color:#000;line-height:1.3;transition:color 0.2s ease;">Pozvánka na výstavu AGROKOMPLEX 2026 – záštita SPPK</h3>
+          <p style="margin:0;font-size:13.5px;color:#555;line-height:1.6;font-weight:300;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Medzinárodná agrárna výstava v Nitre, 20.–24. augusta 2026.</p>
+          <button style="margin-top:10px;background:none;border:none;color:#009a44;font-size:12.5px;font-weight:600;letter-spacing:0.05em;cursor:pointer;padding:0;font-family:'Inter',sans-serif;">Čítať viac →</button>
+        </div>
+        <div style="width:130px;height:88px;border-radius:12px;overflow:hidden;flex-shrink:0;background:#e6f5ed;">
+          <img src="https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=200&h=160&fit=crop&auto=format" alt="" class="article-thumb" />
+        </div>
+      </article>
+    </div>
+
+    <!-- Sidebar -->
+    <aside style="display:flex;flex-direction:column;gap:20px;">
+
+      <!-- ① Calendar -->
+      <div style="background:#fff;border-radius:12px;padding:20px 18px;box-shadow:0 2px 16px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.04);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <span style="font-size:21px;font-weight:700;color:#000;">Kalendár</span>
+          <div style="display:flex;align-items:center;gap:4px;">
+            <button style="background:none;border:none;cursor:pointer;color:#009a44;font-size:16px;line-height:1;padding:2px 5px;border-radius:4px;font-family:'Inter',sans-serif;">‹</button>
+            <span style="font-size:11.5px;font-weight:700;color:#009a44;white-space:nowrap;letter-spacing:0.03em;">September 2026</span>
+            <button style="background:none;border:none;cursor:pointer;color:#009a44;font-size:16px;line-height:1;padding:2px 5px;border-radius:4px;font-family:'Inter',sans-serif;">›</button>
+          </div>
+        </div>
+        <!-- Day labels -->
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px;">
+          <div style="text-align:center;font-size:9.5px;font-weight:700;color:#aaa;letter-spacing:0.07em;padding:2px 0;">Po</div>
+          <div style="text-align:center;font-size:9.5px;font-weight:700;color:#aaa;letter-spacing:0.07em;padding:2px 0;">Ut</div>
+          <div style="text-align:center;font-size:9.5px;font-weight:700;color:#aaa;letter-spacing:0.07em;padding:2px 0;">St</div>
+          <div style="text-align:center;font-size:9.5px;font-weight:700;color:#aaa;letter-spacing:0.07em;padding:2px 0;">Št</div>
+          <div style="text-align:center;font-size:9.5px;font-weight:700;color:#aaa;letter-spacing:0.07em;padding:2px 0;">Pi</div>
+          <div style="text-align:center;font-size:9.5px;font-weight:700;color:#aaa;letter-spacing:0.07em;padding:2px 0;">So</div>
+          <div style="text-align:center;font-size:9.5px;font-weight:700;color:#009a44;letter-spacing:0.07em;padding:2px 0;">Ne</div>
+        </div>
+        <!-- Day cells — September 2026 starts Tuesday (offset 1 blank Monday) -->
+        <div id="cal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;"></div>
+      </div>
+
+      <!-- ② Become a member -->
+      <div style="background:#fff;border-radius:12px;padding:22px 20px;box-shadow:0 2px 16px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.04);">
+        <div style="font-size:21px;font-weight:700;color:#000;margin-bottom:10px;line-height:1.3;">Staň sa členom SPPK</div>
+        <a href="#" style="display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:#009a44;text-decoration:none;letter-spacing:0.04em;border-bottom:1px solid rgba(0,154,68,0.3);padding-bottom:1px;">Viac informácií o členstve →</a>
+      </div>
+
+      <!-- ③ Arbitration court -->
+      <div style="background:#fff;border-radius:12px;padding:22px 20px;box-shadow:0 2px 16px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.04);">
+        <div style="font-size:21px;font-weight:700;color:#000;margin-bottom:10px;line-height:1.3;">Rozhodcovský súd SPPK</div>
+        <a href="#" style="display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:#009a44;text-decoration:none;letter-spacing:0.04em;border-bottom:1px solid rgba(0,154,68,0.3);padding-bottom:1px;">Zistiť viac o rozhodcovskom súde →</a>
+      </div>
+
+      <!-- ④ Agrometeo / Weather -->
+      <div style="background:#fff;border-radius:12px;padding:20px 18px;box-shadow:0 2px 16px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.04);">
+        <div style="font-size:14px;font-weight:700;color:#000;margin-bottom:14px;letter-spacing:0.02em;">Agrometeo / Počasie</div>
+        <div style="width:100%;border-radius:12px;background:#f4f7f5;border:1px solid rgba(0,154,68,0.18);overflow:hidden;margin-bottom:14px;">
+          <div style="height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#009a44" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.45;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <span style="font-size:10.5px;color:#aaa;font-family:'Inter',sans-serif;letter-spacing:0.04em;font-style:italic;">images/weather-radar-map.png</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;text-align:center;">
+          <div style="padding:8px 4px;border-radius:8px;background:rgba(0,154,68,0.06);"><div style="font-size:16px;line-height:1.2;">☀️</div><div style="font-size:9.5px;font-weight:600;color:#777;letter-spacing:0.05em;margin-top:2px;">Pi</div><div style="font-size:12px;font-weight:700;color:#000;margin-top:1px;">27°</div></div>
+          <div style="padding:8px 4px;border-radius:8px;background:rgba(0,154,68,0.06);"><div style="font-size:16px;line-height:1.2;">⛅</div><div style="font-size:9.5px;font-weight:600;color:#777;letter-spacing:0.05em;margin-top:2px;">So</div><div style="font-size:12px;font-weight:700;color:#000;margin-top:1px;">23°</div></div>
+          <div style="padding:8px 4px;border-radius:8px;background:rgba(0,154,68,0.06);"><div style="font-size:16px;line-height:1.2;">🌧</div><div style="font-size:9.5px;font-weight:600;color:#777;letter-spacing:0.05em;margin-top:2px;">Ne</div><div style="font-size:12px;font-weight:700;color:#000;margin-top:1px;">19°</div></div>
+          <div style="padding:8px 4px;border-radius:8px;background:rgba(0,154,68,0.06);"><div style="font-size:16px;line-height:1.2;">☀️</div><div style="font-size:9.5px;font-weight:600;color:#777;letter-spacing:0.05em;margin-top:2px;">Po</div><div style="font-size:12px;font-weight:700;color:#000;margin-top:1px;">26°</div></div>
+          <div style="padding:8px 4px;border-radius:8px;background:rgba(0,154,68,0.06);"><div style="font-size:16px;line-height:1.2;">🌤</div><div style="font-size:9.5px;font-weight:600;color:#777;letter-spacing:0.05em;margin-top:2px;">Ut</div><div style="font-size:12px;font-weight:700;color:#000;margin-top:1px;">24°</div></div>
+        </div>
+      </div>
+
+      <!-- ⑤ Campaign banners -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <a href="#" style="display:block;text-decoration:none;border-radius:12px;border:1px solid rgba(0,154,68,0.22);overflow:hidden;background:#fafefb;">
+          <div style="height:72px;display:flex;align-items:center;justify-content:center;gap:10px;padding:0 16px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#009a44" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:.55;"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18"/><circle cx="8" cy="15" r="2"/><path d="M14 13h4M14 17h4"/></svg>
+            <span style="font-size:11px;color:#999;font-family:'Inter',sans-serif;letter-spacing:0.03em;font-style:italic;">images/hovorme-o-jedle.png</span>
+          </div>
+        </a>
+        <a href="#" style="display:block;text-decoration:none;border-radius:12px;border:1px solid rgba(0,0,0,0.10);overflow:hidden;background:#fafafa;">
+          <div style="height:72px;display:flex;align-items:center;justify-content:center;gap:10px;padding:0 16px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:.55;"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18"/><circle cx="8" cy="15" r="2"/><path d="M14 13h4M14 17h4"/></svg>
+            <span style="font-size:11px;color:#999;font-family:'Inter',sans-serif;letter-spacing:0.03em;font-style:italic;">images/podpor-svoj-odbor.png</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- ⑥ Market tracker -->
+      <div style="background:#fff;border-radius:12px;padding:20px 18px;box-shadow:0 2px 16px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.04);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <span style="font-size:21px;font-weight:700;color:#000;">Trhové informácie</span>
+          <span style="font-size:10px;font-weight:600;color:#009a44;background:rgba(0,154,68,0.09);padding:3px 8px;border-radius:20px;letter-spacing:0.05em;text-transform:uppercase;">Poľnoinfo.sk</span>
+        </div>
+        <div>
+          <div style="padding:11px 0;border-bottom:1px solid rgba(0,0,0,0.06);">
+            <div style="font-size:13px;font-weight:700;color:#000;margin-bottom:4px;">Pšenica potravinárska</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;"><span style="font-size:10.5px;color:#999;">Burza MATIF Paríž</span><div style="display:flex;align-items:center;gap:5px;"><span style="font-size:13px;font-weight:700;color:#000;">215,50 € / t</span><svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,1 9,9 1,9" fill="#009a44"/></svg></div></div>
+          </div>
+          <div style="padding:11px 0;border-bottom:1px solid rgba(0,0,0,0.06);">
+            <div style="font-size:13px;font-weight:700;color:#000;margin-bottom:4px;">Kukurica kŕmna</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;"><span style="font-size:10.5px;color:#999;">Burza MATIF Paríž</span><div style="display:flex;align-items:center;gap:5px;"><span style="font-size:13px;font-weight:700;color:#000;">183,25 € / t</span><svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,9 9,1 1,1" fill="#e03434"/></svg></div></div>
+          </div>
+          <div style="padding:11px 0;border-bottom:1px solid rgba(0,0,0,0.06);">
+            <div style="font-size:13px;font-weight:700;color:#000;margin-bottom:4px;">Repka ozimná</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;"><span style="font-size:10.5px;color:#999;">Burza MATIF Paríž</span><div style="display:flex;align-items:center;gap:5px;"><span style="font-size:13px;font-weight:700;color:#000;">442,00 € / t</span><svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,1 9,9 1,9" fill="#009a44"/></svg></div></div>
+          </div>
+          <div style="padding:11px 0;border-bottom:1px solid rgba(0,0,0,0.06);">
+            <div style="font-size:13px;font-weight:700;color:#000;margin-bottom:4px;">Jačmeň kŕmny</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;"><span style="font-size:10.5px;color:#999;">Komoditná burza Bratislava</span><div style="display:flex;align-items:center;gap:5px;"><span style="font-size:13px;font-weight:700;color:#000;">168,80 € / t</span><svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,9 9,1 1,1" fill="#e03434"/></svg></div></div>
+          </div>
+          <div style="padding:11px 0;">
+            <div style="font-size:13px;font-weight:700;color:#000;margin-bottom:4px;">Slnečnica</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;"><span style="font-size:10.5px;color:#999;">Komoditná burza Bratislava</span><div style="display:flex;align-items:center;gap:5px;"><span style="font-size:13px;font-weight:700;color:#000;">394,50 € / t</span><svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,1 9,9 1,9" fill="#009a44"/></svg></div></div>
+          </div>
+        </div>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:10px;color:#bbb;">Aktualizované: 5. sep. 2026, 08:30</span>
+          <a href="#" style="font-size:10.5px;font-weight:600;color:#009a44;text-decoration:none;letter-spacing:0.04em;">Všetky ceny →</a>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</section>
+

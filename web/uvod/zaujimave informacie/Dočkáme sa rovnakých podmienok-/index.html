@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dočkáme sa rovnakých podmienok? — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">uvod</a><span>/</span><a href="../index.html">zaujimave informacie</a><span>/</span>Dočkáme sa rovnakých podmienok-</nav>
+
+  <article>
+    <h1 class="doc-title">Dočkáme sa rovnakých podmienok?</h1>
+    <p class="doc-meta"><span class="doc-meta-item">SPPK</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">22. mája 2019</span></p>
+
+    <div class="doc-body">
+<p><span><strong>Máte skúsenosti z&nbsp;činnosti štátnej správy aj samosprávy. Pôsobili ste na Ministerstve pôdohospodárstva ako riaditeľ odboru poľnohospodárstva aj ako štátny tajomník. Vyskúšali ste si aj robotu v&nbsp;samosprávne SPPK ako riaditeľ odboru poľnohospodárstva a&nbsp;služieb. Nejaký čas ste strávili aj v&nbsp;Bruseli ako prvý tajomník v Stálom zastúpení SR pri EÚ a&nbsp;z&nbsp;pozície riaditeľa VÚEPP kandidujete na poslanca Európskeho parlamentu. Čo vás k&nbsp;tomu vedie?</strong></span></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/F3exRhK.jpg"></figure><p></p>
+
+
+
+<p>Je veľmi dôležité, aby Slovensko malo svoje priame zastúpenie pri vytváraní nových pravidiel pre ďalšie smerovanie Európskej únie. Európsky parlament (EP) hrá v&nbsp;týchto procesoch nezastupiteľnú úlohu.</p>
+
+
+
+<p>Keďže celý život pracujem v&nbsp;poľnohospodárstve, v prípade môjho zvolenia za poslanca EP chcem pracovať vo Výbore pre poľnohospodárstvo a rozvoj vidieka. Skúsenosti nadobudnuté v&nbsp;štátnej správe, samospráve aj výskume chcem využiť na obhajobu a presadzovanie záujmov slovenských poľnohospodárov, potravinárov a&nbsp;lesníkov. Už dve volebné obdobia nemalo Slovensko zástupcu vo výbore. Bez neho zaznievajú na pôde výboru oprávnené požiadavky našich pôdohospodárov iba sprostredkovane a v&nbsp;prospech Slovenska sa dá presadiť len veľmi málo, alebo takmer nič. A&nbsp;vôbec, prečo by nemeckí, francúzski, či rakúski europoslanci mali hájiť záujmy Slovenska?</p>
+
+
+
+<p>Pochádzam z&nbsp;vidieka, ktorého nedeliteľnou súčasťou je poľnohospodárstvo. Po zvolení za europoslanca chcem obhajovať aj&nbsp; oprávnené požiadavky ľudí žijúcich na vidieku. U&nbsp;nás sú regióny a&nbsp;vidiek dlhodobo na okraji záujmu, a&nbsp;to aj napriek tomu, že Slovensko je svojim charakterom vidieckou krajinou, a&nbsp;dokonca aj podľa kritérií EÚ žije 88% jeho obyvateľov vo vidieckych a prevažne vidieckych regiónoch. Nemôžeme si viac dovoliť prehliadať záujmy poľnohospodárov, či obyvateľov žijúcich mimo veľkých miest.</p>
+
+
+
+<p><strong>Slovenskí poľnohospodári prakticky od nášho vstupu do Európskej únie volajú po zrovnoprávnení podmienok s&nbsp;kolegami iných krajín. Najmä s&nbsp;tými, ktoré majú k&nbsp;dispozícii staré krajiny únie. Myslíte si, že môžete svojim pričinením upokojiť ich túžby?</strong></p>
+
+
+
+<p>O&nbsp;zrovnoprávnení podmienok je možné hovoriť z&nbsp;viacerých uhlov pohľadu. Možno diskutovať napríklad o&nbsp;výške štátnej pomoci v&nbsp;jednotlivých členských štátoch EÚ, ale zrejme &nbsp;máte na mysli priame platby, ktoré sú jedným z&nbsp;ústredných prvkov spoločnej poľnohospodárskej politiky. K&nbsp;ich vyrovnaniu medzi starými a&nbsp;novými členskými krajinami EÚ malo dôjsť už v&nbsp;tomto programovom období 2014-2020. Nestalo sa tak.</p>
+
+
+
+<p>Teraz sa však otvára nová kapitola spoločnej poľnohospodárskej politiky. Intenzívne sa rokuje o&nbsp;legislatívnej podobe budúcej Spoločnej poľnohospodárskej politiky pre obdobie 2021-2027 a&nbsp;zároveň aj o&nbsp;Viacročnom finančnom rámci EÚ (rozpočte EÚ na obdobie 2021-2027). Existuje preto priestor aj na otvorenie legitímnej otázky ohľadom zrovnoprávnenia podmienok medzi starými a&nbsp;novými členskými krajinami. Rokovací priestor nám znenazdajky začali vytvárať doposiaľ dve najsilnejšie frakcie Európskeho parlamentu (EP), ľudovci a&nbsp;socialisti. Tí začali vysielať pred voľbami do EP signály, že súčasný návrh SPP je potrebné prepracovať. Navyše začali hovoriť aj o&nbsp;potrebe prijatia dlhodobej vízie pre poľnohospodárstvo EÚ. Taký, aby sa nemusela každých 7 rokov meniť poľnohospodárska politika Únie. S&nbsp;veľkou pravdepodobnosťou novozvolení poslanci EP odmietnu správu, ktorú schválil v&nbsp;apríli predchádzajúci Výbor pre poľnohospodárstvo (COMAGRI). Platí totiž, že &nbsp;<strong><em>pokiaľ nie je dorokované všetko, nie je dorokované nič</em></strong>. Ak budem mať možnosť na základe výsledku volieb do EP stať sa členom Výboru pre poľnohospodárstvo, budem jednoznačne presadzovať čo najrýchlejšie vyrovnanie agrárnych podpôr medzi starými a&nbsp;novými členskými krajinami EÚ. Z&nbsp;pohľadu celkového rozpočtu EÚ vo výške viac ako 1&nbsp;279 mld. eur sú na vyrovnanie potrebné necelé štyri tisíciny percenta!</p>
+
+
+
+<p><strong>Môže sa to podariť?&nbsp; </strong></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/39lram9.png"></figure><p></p>
+
+
+
+<p>Aj za toho jedného vlastného poslanca by sme mali byť vďační, je to predsa len viac, ako vo výbore nemať nikoho. Ak ho mať nebudeme, bude to znova rozhodovanie o&nbsp;nás bez nás. Pre Slovensko je mimoriadne dôležité, aby malo priame zastúpenie v&nbsp;tomto kľúčovom výbore Európskeho parlamentu, ktorý v&nbsp;rozhodujúcej miere v&nbsp;konečnom dôsledku ovplyvní postoje celej tejto inštitúcie. Slovensko tak na parlamentnej pôde získa priamy vplyv na finančné toky a&nbsp;pravidlá ich usmerňovania. Spoločná poľnohospodárska politika predstavuje najväčšiu časť rozpočtových výdavkov Európskej únie. Je to 365 mld. eur (obdobie 2021-2027), z&nbsp;ktorých Slovensku prináleží 4,4 mld. eur. A&nbsp;to sú už významné finančné zdroje pre slovenské pôdohospodárstvo.</p>
+
+
+
+<p><strong>Váš záber by bol v&nbsp;EP najmä v&nbsp;oblasti poľnohospodárstva a&nbsp;potravinárstva. Ale sú to práve poľnohospodári, ktorí veľmi nedôverujú európskym rozhodnutiam. Možno preto, že doteraz sa považujú len za chudobných príbuzných. Ako chcete prispieť k&nbsp;tomu, aby nielen poľnohospodári a&nbsp;potravinári, ale všetci slovenskí občania dôverovali únii?</strong></p>
+
+
+
+<p>Najväčším problémom je to, že naši občania sa nestotožnili s&nbsp;Úniou. Platí to však aj všeobecne, my Európania vieme o sebe príliš málo. Ľudia z Laponska netušia, čím sa zaoberajú napríklad takí Sicílčania. Chýba nám pocit identity alebo európskej príslušnosti. EÚ potrebuje spoločné pravidlá pre všetkých. Sama v&nbsp;tom však zlyháva a&nbsp;nedokáže sa priblížiť k&nbsp;ľuďom v&nbsp;jednotlivých členských krajinách. Tento rozpor sa z&nbsp;krátkodobého hľadiska dá odstrániť iba priamou komunikáciou a&nbsp;stretávaním sa s&nbsp;ľuďmi. A vysvetľovaním. Treba poukazovať najmä na to, že Únia popri svojich negatívnych stránkach a&nbsp;problémoch, má aj svoje pozitíva. Z dlhodobejšieho hľadiska možno posilniť dôveru občanov v&nbsp;EÚ prostredníctvom vzdelávacieho systému. Európska únia nie je zlý projekt.</p>
+
+
+
+<p>V&nbsp;prípade poľnohospodárstva platí, že detailné podmienky a pravidlá pre rozdeľovanie podpôr má na starosti EÚ. Ak &nbsp;nastanú problémy stalo sa doslova módou vyhovárať sa na Brusel. To sa často deje aj vtedy, keď EÚ nemá s&nbsp;danými problémami nič spoločné. Aj preto chce teraz Európska komisia upraviť svoj prístup a&nbsp;plánuje preniesť väčšiu zodpovednosť na členské štáty. Budú mať možnosť navrhnúť programy vo svojich strategických plánoch, ktoré budú lepšie reagovať na problémy miestnych poľnohospodárov. Komisia bude následne iba dohliadať na to, aby boli v súlade s&nbsp;pravidlami vnútorného trhu a&nbsp;zodpovedali celoúnijným prioritám. Každoročne bude hodnotiť ich plnenie s&nbsp;možnosťou uloženia primeranej sankcie. Implementácia zostane v&nbsp;našich rukách. Sami si teda budeme strojcami svojho šťastia.</p>
+
+
+
+<p><strong>Ako hodnotíte nastavenie či systém čerpania eurofondov v&nbsp;slovenskom &nbsp;pôdohospodárstve? </strong></p>
+
+
+
+<p>Pozitívny efekt je nespochybniteľný. Finančné prostriedky, ktoré v&nbsp;uplynulých rokoch smerovali do poľnohospodárstva z&nbsp;programov SPP priniesli veľa pozitív. &nbsp;Od modernizácie fariem, prílevu novej poľnohospodárskej techniky, či investícií do budov. Podporí to dlhodobú udržateľnosť poľnohospodárskej produkcie na Slovensku. Mnohé opatrenia, často v&nbsp;synergickom efekte, viedli k zlepšeniu vplyvu poľnohospodárstva na životné prostredie a klímu. Implementované opatrenia mali výrazný pozitívny vplyv na zvrátenie poklesu biodiverzity, prispeli k&nbsp;zlepšeniu stavu lokalít s vysokou prírodnou hodnotou a biotopov na podporovaných plochách. Zlepšilo sa poskytovanie verejných statkov, zvýšila sa produkcia zeleniny aj živočíšnych produktov z ekologickej produkcie. Podpora priameho predaja umožnila diverzifikovať príjmy poľnohospodárov a znížiť tak riziko podnikania v&nbsp;poľnohospodárstve. Ekologické poľnohospodárstvo a&nbsp;zatrávnenie TTP mali najväčší dosah na obmedzenie hnojenia, pesticídov a&nbsp;erózie. Poľnohospodári podstatne znížili dusíkaté hnojivá na podporených plochách, pričom zmeny v obsahu dusičnanov v pôde mali následne pozitívny vplyv na zmeny úrovne dusičnanov v podzemných a povrchových vodách.</p>
+
+
+
+<p>Obrovský problém však máme so systémom prerozdeľovania eurofondov na národnej úrovni. Chýba nám dohľad nad spravodlivým prerozdeľovaním dotácií, jasné následky, či postihy, ktoré by vyplývali z&nbsp;ich zneužívania. Pokiaľ nebudeme schopní dôsledne kontrolovať rozdeľovanie eurofondov, bude toto slovo naďalej vyvolávať negatívne reakcie.</p>
+
+
+
+<p><strong>V&nbsp;novom programovacom období chce Slovensko väčšiu slobodu pri rozhodovaní o&nbsp;využití dotácií – súhlasíte s&nbsp;väčšou flexibilitou v&nbsp;eurofondoch po roku 2020?</strong></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/aArFHQU.jpg"></figure><p></p>
+
+
+
+<p>Určite áno. Národný štát má vždy lepší prehľad ako Únia o&nbsp;tom, ako a&nbsp;kam &nbsp;potrebuje financie nasmerovať. Lepšie vie, aká je štruktúra poberateľov dotácií a&nbsp; pozná ich potreby. Na druhej strane sa však práve štát nespráva spravodlivo pri ich rozdeľovaní. Nie je v&nbsp;moci Únie priamo rozdeľovať dotácie ich adresátom, no môže sa domáhať väčšej kontroly s&nbsp;ich nakladaním. Môže využívať systém vymáhania spravodlivého rozdeľovania dotácií.</p>
+
+
+
+<p><strong>Ako vidíte budúcnosť Európskej únie a&nbsp;miesto Slovenska v&nbsp;nej?</strong></p>
+
+
+
+<p>Rozhodne nepatrím medzi euroskeptikov. Som presvedčený, že Európska únia má predpoklady na to, aby súčasné problémy prekonala a&nbsp;stanovila si také vnútorné pravidlá, ktoré zabezpečia jej napredovanie. Myslím si, že Únia môže v&nbsp;konečnom dôsledku z&nbsp;tohto procesu vyjsť posilnená. Európa potrebuje ďalšiu integráciu v&nbsp;zahraničnej politike, diplomacii, obrane alebo riešení bezpečnostných otázok, a rovnako potrebuje ďalej pracovať na vyrovnávaní rozdielov medzi bohatšími a&nbsp;chudobnejšími krajinami, medzi svojimi staršími a&nbsp;novšími členmi.</p>
+
+
+
+<p>Význam Slovenska v&nbsp;Únii sa nemeria iba jeho geografickou rozlohou, či počtom obyvateľov. Slovensko dokáže byť významným, sebavedomým a&nbsp;suverénnym členom Európy. Aby naši partneri vnímali Slovensko ako seberovného člena - musíme začať so zmenami doma. Rozvíjať fungovanie regiónov, domáce poľnohospodárstvo, vedu a výskum, vzdelávací systém a&nbsp;ostatné oblasti, v&nbsp;ktorých dnes za Európou zaostávame, no v&nbsp;ktorých môžeme dosahovať vynikajúce výsledky.</p>
+
+
+
+<p><strong>Načrime aj do iných tém, ktorým sa v&nbsp;prípade zvolenia za poslanca europarlamentu budete musieť tiež venovať. Aký je váš postoj k prerozdeľovaniu migrantov?</strong></p>
+
+
+
+<p>V&nbsp;otázke migrácie Spoločenstvo zjavne zlyhalo a&nbsp;táto otázka stále nie je vyriešená. Myslím si, že táto záležitosť bude hlavnou témou budúceho lídra EÚ aj členov novozvoleného EP. Únia si už takéto zlyhania nemôže dovoliť a&nbsp;ochranou svojich vonkajších hraníc musí celkom jednoznačne zamedziť nelegálnej migrácii. Tá má totiž v&nbsp;prevažnej miere ekonomický charakter a&nbsp;pokiaľ by k&nbsp;nej dochádzalo aj naďalej masovo, negatívne by to poznamenalo celú Európsku úniu. Najúčinnejšou prevenciou je prispievať k&nbsp;vytváraniu podmienok na zlepšenie života ľudí v&nbsp;krajinách, z&nbsp;ktorých ľudia vo veľkom prichádzajú do Európy. Aj preto sa stále častejšie na pôde EÚ začína hovoriť o&nbsp;tzv. Marshallovom pláne pre Afriku. Na takéto aktivity má podľa mňa Spoločenstvo dostatok možností a&nbsp;prostriedkov, len ich musí efektívne a&nbsp;cielene využívať.</p>
+
+
+
+<p><strong>Takmer 80 percent Slovákov si podľa nedávneho prieskumu myslí, že by Európska únia mala vytvárať spoločné ozbrojené sily na ochranu pred vonkajším ohrozením krajiny.&nbsp;Súhlasíte s&nbsp;myšlienkou budovania spoločnej európskej obrany? </strong></p>
+
+
+
+<figure class="doc-figure"><img alt="" src="https://i.imgur.com/jOzaWoS.jpg"></figure><p></p>
+
+
+
+<p>Súhlasím, ale s&nbsp;podmienkou, že budovanie spoločnej európskej obrany sa nebude diať na úkor ďalšieho oslabovania objemu finančných prostriedkov určených na Spoločnú poľnohospodársku politiku. Návrh Viacročného finančného rámca na roky 2021-2027 je koncipovaný týmto spôsobom. V&nbsp;percentuálnom vyjadrení by objem financií na SPP mal voči celkovému rozpočtu Spoločenstva klesnúť z&nbsp;36,1% na 28,5%.</p>
+
+
+
+<p>Myšlienka vytvorenia spoločnej európskej obrany nie je nová a má svoje racio. Únia musí začať viac prihliadať na to, aby systémy jednotlivých členských štátov boli navzájom kompatibilnejšie. Celý proces budovania európskej obrany tiež vnímam aj v&nbsp;kontexte zvýšenia vzájomnej spolupráce členských štátov EÚ, aby sa nestali objektom geopolitických hier väčších štátov. Otázkou však potom zostáva ďalšia budúcnosť NATO, aby jeho existencia nebola akousi duplicitou prípadne vybudovaného systému spoločnej európskej obrany.</p>
+
+
+
+<p><strong>O&nbsp;podobe hospodárskych vzťahov so Spojenými štátmi,&nbsp;tradičným spojencom Európskej únie, sa v&nbsp;poslednom období intenzívne diskutuje. Aký je váš názor na obchodnú spoluprácu EÚ s&nbsp;USA?</strong></p>
+
+
+
+<p>Obojstranná hospodárska spolupráca je nevyhnutná, hoci nie bezproblémová. Či už ide o&nbsp;oceľ, automobily, alebo hoci aj poľnohospodárske a&nbsp;potravinárske výrobky. EÚ i&nbsp;USA majú svoje priority a&nbsp;záujmy, ktoré sa neraz ani zďaleka neprekrývajú. Súdiac z&nbsp;ostatného vývoja rokovaní medzi EÚ a&nbsp;USA, hľadá sa dohoda na niektorých kľúčových bodoch, avšak tieto rokovania nespejú k&nbsp;uzavretiu komplexnej obchodnej dohody typu TTIP II. EÚ na hrozbu zo strany USA ohľadom uvalenia represívnych ciel na dovoz európskych automobilov odpovedala zvýšením dovozu skvapalneného zemného plynu, ktorý vzrástol o 272 percent a dovozom sóje, ktorý vzrástol o 122 percent. Plní teda sľuby, ktoré dala Donaldovi Trumpovi. Ten sa snaží do pripravovanej dohody zahrnúť aj poľnohospodárske produkty, ale EÚ sa zatiaľ úspešne bráni.</p>
+
+
+
+<p><strong>Viaceré štáty, najmä zo západu, vyzývajú na ekonomickú opatrnosť vo vzťahu k&nbsp;Číne. V&nbsp;ktorých oblastiach vidíte potenciál rozvoja spolupráce a&nbsp;v&nbsp;ktorých možné úskalia? </strong></p>
+
+
+
+<p>Európa je pod obrovským globálnym tlakom.&nbsp;Svetové mocnosti, ako USA a Čína technologicky napredujú. Digitalizácia a umelá inteligencia ohrozujú EÚ stratou kontaktu.&nbsp;Iba mocná a vnútorne súdržná EÚ sa dokáže lepšie vyrovnať s obrovskými výzvami, ktoré predstavujú nové technológie a medzinárodná konkurencia. Stále viac európskych krajín sa zapája do projektu budovania hodvábnej cesty. Čínsky trh je zaujímavý pre celý svet, a teda aj pre Európsku úniu. Spolupráca s&nbsp;Čínou má svoje ekonomické výhody, no má aj veľa rizík. Treba ju vnímať ako významného obchodného partnera, no myslím si, že Čína by nemala získavať priestor v&nbsp;strategických odvetviach, akými sú napr. energetika, či informačné zdroje na území EÚ. Čínsky trh je určite zaujímavý aj pre naše potravinárske produkty, na ktorý už teraz vyvážame víno, mliečne produkty a niektoré ďalšie výrobky. Naopak pri dovoze potravín by sme mali klásť veľký dôraz na vystopovateľnosť produktov, teda vedieť, odkiaľ tieto výrobky pochádzajú, ako boli spracované, ako boli skladované. Sú to všetko atribúty, na ktoré kladieme v&nbsp;Európe vysoký dôraz. Pri dovozoch produktov z&nbsp;Číny je tiež potrebné prihliadať na to, či a&nbsp;ako bolo pri výrobe týchto produktov chránené životné prostredie. Čína je z&nbsp;tohto pohľadu ekologickou hrozbou, pretože výrazne znečisťuje rieky a&nbsp;je zároveň veľkým producentom skleníkových plynov.</p>
+
+<p>(slu)</p>
+
+
+
+
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

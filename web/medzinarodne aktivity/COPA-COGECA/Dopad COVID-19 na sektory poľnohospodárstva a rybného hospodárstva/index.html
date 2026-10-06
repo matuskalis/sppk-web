@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dopad COVID-19 na sektory poľnohospodárstva a rybného hospodárstva — Slovenská poľnohospodárska a potravinárska komora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; }
+    body { background:#fff; color:#000; font-weight:500; line-height:20px; -webkit-font-smoothing:antialiased; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#f0f0f0; }
+    ::-webkit-scrollbar-thumb { background:#009a44; border-radius:4px; border:2px solid #f0f0f0; }
+    ::-webkit-scrollbar-thumb:hover { background:#007a35; }
+    * { scrollbar-width:thin; scrollbar-color:#009a44 #f0f0f0; }
+
+    /* Carousel */
+    .carousel-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .carousel-slide.active { opacity:1; pointer-events:auto; }
+
+    /* Article hover */
+    .article-card { cursor:pointer; }
+    .article-card:hover .article-title { color:#009a44; }
+    .article-thumb { transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); display:block; width:100%; height:100%; object-fit:cover; }
+    .article-card:hover .article-thumb { transform:scale(1.04); }
+
+    /* Nav link */
+    .nav-link { position:relative; transition:color 0.2s ease; }
+    .nav-link::after { content:''; position:absolute; bottom:0; left:18px; right:18px; height:2px; background:#009a44; border-radius:1px 1px 0 0; transform:scaleX(0); transition:transform 0.25s ease; }
+    .nav-link.active::after, .nav-link:hover::after { transform:scaleX(1); }
+    .nav-link.active { color:#009a44 !important; font-weight:600 !important; }
+    .nav-link:hover { color:#009a44 !important; }
+
+    /* Partner hover */
+    .partner-logo { filter:grayscale(100%) opacity(0.55); transition:filter 0.3s ease, transform 0.3s ease; cursor:pointer; }
+    .partner-logo:hover { filter:grayscale(0%) opacity(1); transform:scale(1.04); }
+
+    /* Cal row hover */
+    .cal-row:hover { background:rgba(0,154,68,0.09) !important; }
+    .notice-item:hover { color:#009a44 !important; }
+
+    /* Hamburger — desktop hidden */
+    .hamburger-btn { display:none !important; }
+    .mobile-active-label { display:none !important; }
+    .mobile-drawer { display:none; }
+
+    /* ── Mobile ─────────────────────────────────────────── */
+    @media (max-width:768px) {
+      .upper-header-inner { flex-direction:column !important; align-items:center !important; padding:14px 16px !important; gap:12px !important; min-height:unset !important; }
+      .upper-header-logo { justify-content:center !important; padding:0 !important; }
+      .upper-header-right { align-items:center !important; width:100% !important; gap:8px !important; }
+      .upper-search-row { justify-content:center !important; flex-wrap:wrap !important; gap:8px !important; }
+      .upper-search-input { width:130px !important; }
+      .upper-social-row { justify-content:center !important; flex-wrap:wrap !important; }
+      .hamburger-btn { display:flex !important; }
+      .mobile-active-label { display:block !important; }
+      .desktop-nav-links { display:none !important; }
+      .main-grid { grid-template-columns:1fr !important; gap:36px !important; }
+      .main-section { padding:28px 14px 48px !important; }
+      .featured-img { height:200px !important; }
+      .hero-carousel { height:240px !important; }
+      .partners-grid { grid-template-columns:repeat(2,1fr) !important; }
+      .corp-name { font-size:clamp(14px,4vw,22px) !important; }
+      .login-modal { width:min(340px,92vw) !important; }
+    }
+  
+    /* ── Spoločné pre všetky podstránky ──────────────────── */
+    .page-section { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
+
+    .breadcrumb { font-size:12.5px; color:#777; margin-bottom:24px; letter-spacing:0.02em; }
+    .breadcrumb a { color:#777; text-decoration:none; }
+    .breadcrumb a:hover { color:#009a44; }
+    .breadcrumb span { color:#ccc; margin:0 7px; }
+
+    .page-title {
+      margin:0 0 8px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(28px,3.4vw,34px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .page-lead { margin:0 0 40px; font-size:15px; color:#666; line-height:1.7; }
+    .page-empty {
+      border:1.5px dashed rgba(0,154,68,0.35); border-radius:12px; padding:32px 24px;
+      text-align:center; font-size:13.5px; color:#8aa89a; line-height:1.8;
+    }
+
+    /* ── Kontaktné karty (prevzaté z html-kontakt/kontakt-novy.html) ── */
+    /* ─────────────────────────────────────────
+       SHARED TOKENS
+    ───────────────────────────────────────── */
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .role-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .person-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000000;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .person-title {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .contact-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      min-width: 52px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: #222222;
+    }
+
+    .contact-email {
+      font-size: 15px;
+      font-weight: 700;
+      color: #009a44;
+      text-decoration: none;
+    }
+
+    .contact-email:hover { text-decoration: underline; }
+
+    .portrait {
+      border-radius: 12px;
+      background: linear-gradient(145deg, #e8f5ee, #c8e8d4);
+      border: 1px solid rgba(0,154,68,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .portrait-initials {
+      color: #009a44;
+      font-weight: 400;
+      user-select: none;
+      letter-spacing: 0.04em;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-weight: 700;
+      color: #000000;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,154,68,0.4), transparent);
+    }
+
+    .duty-divider {
+      border-top: 1px solid rgba(0,154,68,0.15);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .duty-heading {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #009a44;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .duty-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .duty-list li { display: flex; gap: 8px; align-items: baseline; }
+
+    .duty-dash { color: #009a44; font-size: 15px; font-weight: 700; line-height: 1.6; flex-shrink: 0; }
+
+    .duty-text { font-size: 15px; color: #333333; line-height: 1.6; }
+
+    .section-heading h2 { font-size: 17px; }
+
+    /* Mobile card padding */
+    .card { padding: 22px 18px; margin-bottom: 12px; }
+
+    .card:last-child { margin-bottom: 0; }
+
+    /* Portrait cards: portrait centred on top, text below */
+    .card-portrait {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .portrait.size-portrait {
+      width: 150px;
+      height: 150px;
+    }
+
+    .portrait-initials { font-size: 48px; }
+
+    .card-body { width: 100%; }
+
+    .section-heading h2 { font-size: 22px; }
+
+    .card { padding: 28px 32px; margin-bottom: 14px; }
+
+    /* Portrait cards: portrait left, text right */
+      .card-portrait {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 28px;
+      }
+
+    .portrait.size-portrait {
+        width: 110px;
+        height: 110px;
+      }
+
+    .portrait-initials { font-size: 36px; }
+
+    .card-body { flex: 1; min-width: 0; }
+
+    .contact-page .section { margin-bottom: 52px; }
+    .contact-page .section-heading h2 { font-size: 22px; }
+    .contact-page .card { padding: 28px 32px; margin-bottom: 14px; }
+    .contact-page .card-portrait { display:flex; flex-direction:row; align-items:flex-start; gap:28px; }
+    .contact-page .portrait.size-portrait { width:110px; height:110px; }
+    .contact-page .card-body { flex:1; min-width:0; }
+    @media (max-width: 767px) {
+      .contact-page .card-portrait { flex-direction:column; align-items:center; gap:20px; }
+      .contact-page .portrait.size-portrait { width:150px; height:150px; }
+      /* The delivered design keeps contact rows on one line; long addresses
+         overflow a 390px screen, so they wrap here. */
+      .contact-page .contact-row { white-space:normal; flex-wrap:wrap; }
+      /* Department names are longer than a phone screen; the design pins them to
+         one line, which pushes the page sideways. */
+      .contact-page .section-heading { flex-wrap:wrap; }
+      .contact-page .section-heading h2 { white-space:normal; font-size:18px; }
+      .contact-page .contact-email { overflow-wrap:anywhere; }
+      .contact-page .card { padding:22px 18px; }
+    }
+
+    /* ── Označenie členského obsahu ──────────────────────── */
+    .members-tag {
+      display:inline-block; margin-left:8px; padding:2px 8px; border-radius:20px;
+      background:rgba(0,154,68,0.10); color:#009a44; font-size:10.5px; font-weight:700;
+      letter-spacing:0.06em; text-transform:uppercase; vertical-align:middle;
+    }
+    .members-note {
+      margin:0 0 32px; padding:14px 18px; border-left:4px solid #009a44;
+      background:#f4faf6; border-radius:0 8px 8px 0; font-size:13.5px; color:#33604a;
+      line-height:1.6;
+    }
+
+    /* ── Detail príspevku ────────────────────────────────── */
+    .doc-title {
+      margin:0 0 20px; font-family:'DM Serif Display',serif; font-weight:400; color:#000;
+      font-size:clamp(30px,3.8vw,42px); line-height:1.15; letter-spacing:-0.01em;
+    }
+    .doc-meta { margin:0 0 52px; font-size:14px; font-weight:500; color:#4a4a4a;
+      line-height:1.7; letter-spacing:0.01em; }
+    .doc-meta-item { display:inline-block; }
+    .doc-meta-sep { color:#009a44; margin:0 10px; font-weight:700; }
+
+    .doc-body h2, .doc-body h3, .doc-body h4, .doc-body h5, .doc-body h6 {
+      margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px; font-weight:700;
+      color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+    .doc-body p {
+      margin:0 0 36px; font-size:16px; font-weight:400; color:#000; line-height:1.85;
+      letter-spacing:0.004em; text-align:justify; overflow-wrap:anywhere;
+    }
+    .doc-body ul, .doc-body ol { margin:0 0 36px; padding-left:24px; font-size:16px;
+      line-height:1.85; letter-spacing:0.004em; }
+    .doc-body ul { list-style:none; padding-left:22px; }
+    .doc-body li { margin-bottom:10px; }
+    .doc-body ul > li { position:relative; }
+    .doc-body ul > li::before {
+      content:''; position:absolute; left:-18px; top:0.7em; width:7px; height:7px;
+      border-radius:50%; background:#009a44;
+    }
+    .doc-body a { color:#009a44; text-decoration:underline; text-underline-offset:3px;
+      overflow-wrap:anywhere; }
+    .doc-body a.external::after { content:' ↗'; font-size:0.85em; text-decoration:none;
+      display:inline-block; }
+    .doc-body strong { font-weight:600; }
+    .doc-body table { border-collapse:collapse; width:100%; font-size:15px; line-height:1.6;
+      margin:0 0 36px; display:block; overflow-x:auto; }
+    .doc-body th, .doc-body td { padding:10px 14px; border:1px solid #e6e6e6;
+      text-align:left; vertical-align:top; }
+    .doc-body th { background:#e6f5ed; font-weight:600; }
+
+    /* Obrázky sú samostatné bloky, text okolo nich neobteká. */
+    .doc-figure { float:none; clear:both; display:block; margin:0 auto 36px; width:100%;
+      text-align:center; }
+    .doc-figure img { float:none; display:block; width:auto; max-width:100%; height:auto;
+      margin:0 auto; border-radius:12px; }
+    .doc-figure iframe, .doc-figure video, .doc-figure embed, .doc-figure object {
+      float:none; display:block; width:100%; max-width:100%; aspect-ratio:16/9; height:auto;
+      border:0; border-radius:12px;
+    }
+
+    /* ── Výpis článkov ───────────────────────────────────── */
+    .feed-card { display:flex; gap:28px; align-items:flex-start; padding-bottom:28px;
+      margin-bottom:28px; border-bottom:1px solid rgba(0,0,0,0.07); }
+    .feed-card:last-of-type { border-bottom:0; }
+    .feed-text { flex:1; min-width:0; }
+    .feed-date { font-size:12px; font-weight:600; color:#009a44; letter-spacing:0.02em;
+      margin-bottom:8px; }
+    .feed-title { margin:0 0 10px; font-family:'DM Serif Display',serif; font-size:22px;
+      font-weight:400; line-height:1.3; }
+    .feed-title a { color:#000; text-decoration:none; transition:color 0.2s ease; }
+    .feed-title a:hover { color:#009a44; }
+    .feed-excerpt { margin:0 0 10px; font-size:14.5px; color:#555; line-height:1.7;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .feed-author { font-size:12px; color:#999; font-style:italic; }
+    .feed-thumb { width:200px; height:134px; border-radius:12px; overflow:hidden;
+      flex-shrink:0; background:#e6f5ed; display:block; }
+    .feed-thumb img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .feed-thumb:hover img { transform:scale(1.05); }
+
+    /* Odseky z dodanej šablóny charakteristiky */
+    .doc-intro { margin:0 0 52px; font-size:16px; font-weight:500; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-para { margin:0 0 36px; font-size:16px; font-weight:400; color:#000;
+      line-height:1.85; letter-spacing:0.004em; text-align:justify; }
+    .doc-subheading { margin:0 0 24px; font-family:'Inter',sans-serif; font-size:22px;
+      font-weight:700; color:#009a44; line-height:1.25; letter-spacing:-0.015em; }
+
+    /* ── Videoarchív ─────────────────────────────────────── */
+    .yt-card {
+      max-width:640px; margin:0 auto; background:#fff; border-radius:14px;
+      padding:32px 28px; text-align:center;
+      box-shadow:0 4px 28px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .yt-mark {
+      width:52px; height:52px; margin:0 auto 18px; border-radius:12px;
+      background:#e02f2f; display:flex; align-items:center; justify-content:center;
+    }
+    .yt-label {
+      margin:0 0 6px; font-size:11px; font-weight:700; letter-spacing:0.1em;
+      color:#009a44; text-transform:uppercase;
+    }
+    .yt-text { margin:0 0 22px; font-size:14px; color:#555; line-height:1.6; }
+    .yt-btn {
+      display:inline-block; background:#009a44; color:#fff; text-decoration:none;
+      font-size:13px; font-weight:600; letter-spacing:0.02em;
+      padding:12px 26px; border-radius:999px;
+      box-shadow:0 4px 14px rgba(0,154,68,0.35); transition:background 0.2s ease;
+    }
+    .yt-btn:hover { background:#007d36; }
+
+    /* ── Zoznam albumov ──────────────────────────────────── */
+    .album-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .album-card { display:flex; flex-direction:column; gap:12px; text-decoration:none; }
+    .album-cover { position:relative; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .album-cover img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .album-card:hover .album-cover img { transform:scale(1.05); }
+    .album-count { position:absolute; right:10px; bottom:10px; background:rgba(0,0,0,0.62);
+      color:#fff; font-size:11px; font-weight:600; padding:4px 9px; border-radius:20px; }
+    .album-title { font-size:14px; font-weight:600; color:#000; line-height:1.45;
+      transition:color 0.2s ease; display:-webkit-box; -webkit-line-clamp:3;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .album-card:hover .album-title { color:#009a44; }
+
+    /* ── Album fotografií ────────────────────────────────── */
+    .photo-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .photo { display:block; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+      background:#e6f5ed; }
+    .photo img { width:100%; height:100%; object-fit:cover; display:block;
+      transition:transform 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .photo:hover img { transform:scale(1.05); }
+
+    /* Secondary headings on article-template pages are the chamber green. */
+    .section-heading-plain {
+      margin:0 0 20px; font-family:'Inter',sans-serif; font-weight:700;
+      font-size:22px; color:#009a44; line-height:1.25; letter-spacing:-0.015em;
+    }
+
+    /* ── Rozcestník sekcie ───────────────────────────────── */
+    .section-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .section-card {
+      display:flex; align-items:center; min-height:76px; padding:18px 20px;
+      border:1px solid rgba(0,0,0,0.10); border-left:3px solid #009a44; border-radius:12px;
+      text-decoration:none; color:#000; font-size:14.5px; font-weight:600; line-height:1.45;
+      transition:all 0.2s ease; background:#fff;
+    }
+    .section-card:hover { border-color:#009a44; color:#009a44;
+      box-shadow:0 4px 20px rgba(0,154,68,0.10); }
+
+    @media (max-width:1024px) {
+      .photo-grid, .album-grid { grid-template-columns:repeat(3,1fr); }
+      .section-grid { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:768px) {
+      .page-section { padding:28px 14px 56px; }
+      .photo-grid, .album-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .section-grid { grid-template-columns:1fr; }
+      .feed-card { flex-direction:column-reverse; gap:14px; }
+      .feed-thumb { width:100%; height:190px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<main class="page-section">
+
+  <nav class="breadcrumb"><a href="../../../index.html">Úvod</a><span>/</span><a href="../../index.html">medzinarodne aktivity</a><span>/</span><a href="../index.html">COPA-COGECA</a><span>/</span>Dopad COVID-19 na sektory poľnohospodárstva a rybného hospodárstva</nav>
+
+  <article>
+    <h1 class="doc-title">Dopad COVID-19 na sektory poľnohospodárstva a rybného hospodárstva</h1>
+    <p class="doc-meta"><span class="doc-meta-item">Copa-Cogeca</span><span class="doc-meta-sep">•</span><span class="doc-meta-item">19. mája 2020</span></p>
+
+    <div class="doc-body">
+<h2 class="doc-subheading">HODNOTENIE COPA A COGECA</h2>
+
+<h2 class="doc-subheading">29. apríl - 12. máj 2020</h2>
+
+
+
+<p>Táto informácia poskytuje aktualizáciu hodnotenia, ktoré bolo uverejnené 30. apríla.</p>
+
+
+
+<p>Domnievate sa, že opatrenia navrhnuté a prijaté ako reakcia na vplyv COVID-19 na poľnohospodárske odvetvie EÚ sú účinné a dostatočné?</p>
+
+
+
+<p>Dodávka agropotravinárskych výrobkov zostáva stabilná. Nekoordinované opatrenia prijaté členskými štátmi na boj proti COVID-19 spočiatku viedli k narušeniam jednotného trhu, ktoré ovplyvnili fungovanie potravinových dodávateľských reťazcov. Európski poľnohospodári a poľnohospodárske družstvá dokázali udržiavať stabilné dodávky vysokokvalitných, bezpečných a cenovo dostupných potravín občanom EÚ. Stále sme odhodlaní hrať svoju úlohu pri zabezpečovaní potravinovej bezpečnosti.</p>
+
+
+
+<p>Oceňujeme úsilie Európskej komisie a členských štátov o zabezpečenie hladkého fungovania vnútorného trhu. Stále však čelíme ťažkostiam pri udržiavaní dobrého výkonu agropotravinárskeho reťazca.</p>
+
+
+
+<p>Poľnohospodári a ich družstvá čelia čoraz ťažšej situácii. Eskalácia tejto krízy ohrozuje jednotný trh (vrátane pracovnej sily), aj medzinárodné trhy, čo ohrozuje dodávateľské reťazce. Z krátkodobého hľadiska potrebujeme všetky opatrenia, ktoré dokážu ochrániť a zaručiť fungovanie trhov, vrátane zavedenia dodatočných a primeraných opatrení na riadenie trhu na podporu poľnohospodárskych výrobcov. Chceli by sme sa poďakovať členským štátom za ich podporu pri urýchlenom schválení prvého balíka navrhnutého Komisiou. Vyzývame Európsky parlament, aby urýchlil schvaľovanie rôznych delegovaných aktov.</p>
+
+
+
+<p>Existujú podľa vášho názoru nejaké ďalšie opatrenia, ktoré by sa mali zvážiť? Ak áno, ako by ste navrhli financovanie takýchto opatrení?</p>
+
+
+
+<p>Výnimočné okolnosti si vyžadujú výnimočné opatrenia. Podpora by preto mala pochádzať z rozpočtu mimo poľnohospodárstva. Samotná SPP nie je dostatočne pripravená na krízu tohto rozsahu a je potrebné zvážiť a ďalej preskúmať možnosti mimo tohto rámca. V tejto súvislosti použitie krízovej rezervy v rámci rozpočtovej položky pre poľnohospodárstvo nezmierni trhové problémy, ktorým v súčasnosti čelia poľnohospodári a ich družstvá.</p>
+
+
+
+<p>V liste, ktorý pán komisár Wojciechowski adresoval ministrom poľnohospodárstva členských štátov 8. apríla, vyzval, aby sa v čo najväčšej miere využili dostupné možnosti a flexibilita dostupných fondov na rozvoj vidieka. To je niečo, čo silne podporujeme.</p>
+
+
+
+<p>Musí byť jasné, že úroveň podpory požadovaná v tomto sektore ide nad rámec dostupných fondov na rozvoj vidieka, ktoré zostávajú na konci súčasného obdobia VFR. Za týchto výnimočných okolností sa preto musia prideliť dodatočné finančné prostriedky pochádzajúce mimo rozpočtovej položky pre poľnohospodárstvo. Ako uviedol pán komisár Wojciechowski vo svojom liste, samotná SPP nie je dostatočne pripravená alebo vybavená na krízu tohto rozsahu a je potrebné preskúmať možnosti mimo jej rámca.</p>
+
+<p>• Sektorová analýza:</p>
+
+
+
+<h2 class="doc-subheading">Víno</h2>
+
+<p>Situácia sa zhoršuje každý deň. Kríza bude mať dlhodobý vplyv na toto odvetvie. Pokles spotreby na vnútornom trhu, ako aj pokles vývozu (očakávaný pokles o 14% v porovnaní s minulým rokom) nie sú vôbec kompenzované maloobchodným a online predajom. Len v dôsledku uzavretia kanála HoReCa sa stratilo 30% trhu, čo predstavuje 50% trhovej hodnoty. Zásoby sa hromadia a vážne ovplyvňujú najmä výrobky vysokej hodnoty.</p>
+
+
+
+<p>Hoci vítame návrhy Komisie na zvýšenie flexibility opatrení v rámci národných podporných programov pre víno (NSP), ako aj výnimočné opatrenia navrhované podľa článku 219, ako sú krízová destilácia, súkromné skladovanie a zelený zber, sú tieto návrhy z rozpočtového hľadiska nedostatočné. Nie je možné, aby prevádzkovatelia implementovali takéto opatrenia so zvyšnými prostriedkami NSP. Pracovná skupina okrem prvého súboru žiadostí nedávno predložila komisárovi pre poľnohospodárstvo návrh dlhodobého investičného plánu pre vinársky sektor EÚ. Potrebný je silný európsky rozpočet mimo poľnohospodárskych fondov. Každá producentská krajina vyžaduje rozpočet, ktorý sa skladá zo zodpovedajúcej ročnej sumy jej národného plánu. Tento rozpočet by sa mal dať použiť na financovanie širokého spektra opatrení, ktoré členské štáty vykonávajú podľa svojich konkrétnych potrieb, počas troch rokov.</p>
+
+
+
+<h2 class="doc-subheading">Ovocie a zelenina:</h2>
+
+<p>Členovia Copa a Cogeca naliehavo žiadajú Európsky parlament a členské štáty, aby prijali DELEGOVANÉ NARIADENIE KOMISIE (EÚ)… / ... z 4.5.2020 C (2020) 2908 / F1, ktorým sa na rok 2020 ustanovuje výnimka z delegovaného nariadenia Komisie (EÚ) 2017/891, pokiaľ ide o sektor ovocia a zeleniny, a od delegovaného nariadenia Komisie (EÚ) 2016/1149, pokiaľ ide o sektor vína, ktorý podlieha regulačnému postupu s preskúmaním.</p>
+
+
+
+<p>Toto delegované nariadenie poskytne členským štátom a organizáciám výrobcov 16 odchýlok, ktoré ponúkajú väčšiu flexibilitu pre prevádzkové fondy. Copa a Cogeca však vyzývajú Komisiu, aby navrhla poskytnutie dodatočnej flexibility operačným fondom, t. j. oprávnenosť netrvácnych množiteľských materiálov rastlín a osobitných ochranných pomôcok a nástrojov pre pracovníkov.</p>
+
+
+
+<p>Pokiaľ ide o trh, ceny sezónnych výrobkov majú tendenciu klesať v dôsledku sezónnych okolností. Pokiaľ ide o obchod, vývoz papriky do tretích krajín zostáva problematický z dôvodu vysokých cien za leteckú dopravu. Hlavnými problémami zostávajú dopravné náklady, vykonávanie krízových opatrení a dostupnosť pracovnej sily. Od maloobchodníkov je vyšší dopyt po balených výrobkoch.</p>
+
+
+
+<h2 class="doc-subheading">Zemiaky</h2>
+
+<p>Komisia 8. mája schválila holandskú štátnu pomoc vo výške 50 miliónov EUR na odškodnenie škôd spôsobených prepuknutím koronavírusu spoločnostiam v sektore zemiakov. Kompenzácia, ktorá má formu priamych grantov, môže pokryť maximálne 44% straty príjmov alebo dodatočných nákladov, ktoré vzniknú pestovateľom zemiakov. V skutočnosti však táto schéma narúša hospodársku súťaž medzi pestovateľmi zemiakov.</p>
+
+
+
+<h2 class="doc-subheading">Obilniny</h2>
+
+<p>Automatický mechanizmus výpočtu dovozného cla bol spustený 27. apríla a stanovil dovozné clo na kukuricu, cirok a raž na 5,27 EUR za tonu. Nový výpočet spôsobil od 5. mája revidované clo vo výške 10,40 EUR za tonu. Zrútenie cien ropy viedlo v USA k poklesu dopytu po bioetanolových palivách ak zníženiu nákladov na prepravu. Okrem toho v hospodárskom roku 2020/2021 očakáva celosvetová rekordná úroda kukurice. Kombinácia týchto faktorov viedla k americkej trhovej cene CIF pre kukuricu v prístave Rotterdam vo výške 146,63 EUR za tonu.</p>
+
+
+
+<h2 class="doc-subheading">Olejniny</h2>
+
+<p>Repka má problémy, pretože v súčasnosti nie je schopná konkurovať sójovej múčke. Ceny repky sa však v posledných dňoch konečne mierne zvýšili vďaka silnému nárastu cien ropy (+ 60%!). EÚ postupne uvoľňuje blokujúce opatrenia. Vzhľadom na to by sa globálna spotreba paliva mohla rýchlo zvýšiť, čo by bolo prínosom pre všetky suroviny použité pri výrobe biopalív.</p>
+
+
+
+<p>V záujme ochrany odbytísk rastlinného oleja Copa a Cogeca vyzývajú Komisiu, aby zachovala zmiešavanie biopalív na báze plodín vo fosílnych palivách, ako aj antidumpingové a vyrovnávacie opatrenia na dovoz bionafty (B99) s pôvodom v USA. Biopalivá získané z európskych plodín pestovaných na ornej pôde zlepšujú dodávku krmiva pre živočíšnu výrobu bohatého na bielkoviny.</p>
+
+
+
+<h2 class="doc-subheading">Kvety a okrasné rastliny</h2>
+
+<p>Uznanie, že tento sektor bol tvrdo zasiahnutý, vítame. Podľa nášho názoru opatrenia vrátane výnimky z pravidiel hospodárskej súťaže na obdobie šiestich mesiacov na základe článku 222 nariadenia č. 1308/2013 neprinesú žiadne hmatateľnú alebo okamžitú úľavu podnikateľom v odvetví kvetinárstva EÚ, ktorí čelia veľkým finančným problémom, vrátane problémov s peňažnými tokmi a vysokými nákladmi na zničenie produkcie. Aj keď zmiernenie krízových opatrení v niektorých členských štátoch by mohlo mať určité pozitívne účinky, je ešte príliš skoro na to odpovedať.</p>
+
+
+
+<h2 class="doc-subheading">Sektory mlieka a mliečnych výrobkov a mäsa</h2>
+
+<p>Celkovo je situácia rovnaká ako v posledných týždňoch. Dopad krízy COVID-19 na ceny bravčového mäsa a hydiny je však teraz zrejmý (- 20 EUR / 100 kg za posledných sedem týždňov). Uzavretie kľúčových kanálov (napr. HoReCa) stavia náš vnútorný trh pod zvýšený tlak. Tento dovoz bez alternatívneho predaja sa hromadí v mraziacich boxoch. Opätovné uvedenie na trh po zrušení obmedzení môže spôsobiť vážne narušenie trhu. Žiadame, aby sa pri riadení dovozu zohľadnili zmeny na spotrebiteľskom trhu.</p>
+
+<p>Sektor bravčového mäsa požiadal o súkromné skladovanie ciciakov určených na pečenie a pre čerstvú šunku, na ktoré sa vzťahujú európske systémy kvality, ako napríklad Prosciutto di Parma alebo Jamón Ibérico.</p>
+
+
+
+<p>Copa-Cogeca zaslala Komisii list so žiadosťou o okamžité sprístupnenie pomoci na súkromné skladovanie v sektore teľacieho mäsa, ktorý nebol zahrnutý do prvého balíka Európskej komisie. Okrem COVID-19 bolo odvetvie chovu hospodárskych zvierat zasiahnuté aj suchom. Spolu s našimi členmi posudzujeme situáciu.</p>
+
+
+
+<p>Trh s mliekom a mliečnymi výrobkami zostáva pod tlakom v dôsledku prepuknutia choroby COVID-19. Nedávno boli zavedené trhové opatrenia, ktoré pomáhajú zlepšovať náladu na trhu. Alokácia pomoci na súkromné skladovanie sa však môže ukázať ako nedostatočná na zvládnutie rozsahu krízy.</p>
+
+
+
+<h2 class="doc-subheading">Olivový olej</h2>
+
+<p>V dôsledku uzavretia kanála HoReCa na vnútornom aj medzinárodnom trhu došlo k značnému poklesu spotreby. Niektoré tretie krajiny zaviedli obmedzenia, ktoré majú výrazný vplyv na vývoz a očakáva sa, že v porovnaní s minulým rokom poklesne o 8%. Zastavenie biznisu v cestovnom ruchu je tiež hlavným dôvodom na obavy. Pracovná skupina dokončuje list so širokou škálou návrhov vrátane trhových opatrení a nástrojov na podporu dopytu a čelenie kríze COVID-19.</p>
+
+
+
+<h2 class="doc-subheading">Cukor</h2>
+
+<p>Odborníci z Observatória trhu s cukrom, ktorí sa stretli 6. mája, poskytli dôkazy o klesajúcom trende v spotrebe cukru v EÚ. Diskusia o bilancii cukru EÚ v obchodnom roku 2019/2020 potvrdila zvýšenie konečných zásob v porovnaní s predchádzajúcim odhadom. Podľa analytikov sa spotové trhové ceny EÚ v prvom májovom týždni ešte viac znížili.</p>
+
+
+
+<p>Pretrvávajúce oslabenie brazílskeho realu voči doláru je hlavným faktorom ovplyvňujúcom svetové ceny cukru. Real 7. mája spadol na nové rekordné minimum 5,88744 Real/USD. Slabší real negatívne ovplyvňuje trh s cukrom, pretože povzbudzuje export brazílskych výrobcov cukru. V skutočnosti, zatiaľ čo ceny cukru vyjadrené v brazílskej mene zostali dosť stabilné, prepadli sa v dolároch a eurách.</p>
+
+
+
+<p>Svetové ceny cukru zostávajú pod tlakom v dôsledku poslednej prognózy oficiálnej vládnej predpovednej agentúry Brazílie Conab. 5. mája Conab oznámil, že výroba cukru v Brazílii sa v roku 2020/21 sa zvýši o 18,5% v porovnaní s predchádzajúcim rokom na 35,3 mil. ton, pretože mlyny dodávajú viac trstinovej šťavy na výrobu cukru. Je to preto, že výhľad spracovania na</p>
+
+
+
+<p>etanol je neistý v dôsledku poklesu spotreby a cien. Conab predpovedá, že brazílske mlyny prevedú v roku 2020/21 až 42,4% trstinovej šťavy na výrobu cukru, čo je nárast z 34,9% v roku 2019/20.</p>
+
+
+
+<p>Cukor WTO CXL erga omnes TRQ so zníženým clom vo výške 98 EUR / t začal vstupovať na trh EÚ, čo odráža relatívnu príťažlivosť trhu EÚ a veľmi nízku úroveň dovozných cien cukru. Podľa posledných údajov Komisie bol celkový dovoz v roku 2019/20 do polovice apríla o 25% vyšší ako v minulom roku v rovnakom období a vývoz v roku 2019/20 bol o 56% nižší ako v rovnakom období minulého roka.</p>
+
+
+
+<p>Sektor vyzýva Komisiu, aby prijala opatrenia, pretože cena cukru na trhu EÚ bola 28 po sebe nasledujúcich mesiacov pod referenčnou cenou a súčasný trend je veľmi negatívny.</p>
+
+
+
+<h2 class="doc-subheading">Ekologické poľnohospodárstvo</h2>
+
+<p>Aj keď vplyv COVID-19 na ekologické odvetvie závisí od krajiny a príslušnej komodity, v niekoľkých krajinách došlo k nárastu maloobchodného predaja. Napríklad v Nemecku sa maloobchodný predaj biopotravín v prvom štvrťroku 2020 v porovnaní s predchádzajúcim rokom zvýšil o 25%.</p>
+
+
+
+<p>V posledných niekoľkých týždňoch začali ekologickí poľnohospodári v niekoľkých členských štátoch, ako napríklad vo Švédsku, Belgicku, Spojenom kráľovstve a Taliansku, mať určité ťažkosti pri získavaní ekologického krmiva, najmä pre neprežúvavce. Tieto ťažkosti sú väčšinou spôsobené narušenými tokmi od hlavných dodávateľov ekologických krmív, ako sú Čína a India. V niektorých regiónoch sa cena za ekologické krmivo zvýšila o viac ako 25%.</p>
+
+
+
+<h2 class="doc-subheading">Tabak</h2>
+
+<p>Kvôli nedostatku prístupu k sezónnym pracovníkom neboli poľnohospodári v niektorých krajinách schopní vysadiť všetky sadenice. Napríklad v Nemecku sa predpokladá, že v roku 2020 dôjde k zníženiu pestovania tabaku o 20%. Vývoz sa zastavuje, pretože pri colnom odbavení majú prednosť iné výrobky.</p>
+
+
+
+<h2 class="doc-subheading">Akvakultúra</h2>
+
+<p>Situácia v oblasti sladkovodnej akvakultúry je v niektorých krajinách stále alarmujúca z dôvodu zatvorenia HoReCa a vývozných kanálov. V prípade morskej akvakultúry sa však v Taliansku, Francúzsku a Španielsku zvýšil predaj miestnych morských rias a tresiek.</p>
+
+
+
+<h2 class="doc-subheading">Neprimerané obchodné podmienky</h2>
+
+<p>Správy od členov Copa-Cogeca naznačujú zvýšenie využívania neprimeraných obchodných podmienok. Medzi najčastejšie hlásené situácie patria jednostranné zmeny podmienok, cien a / alebo podmienok, najmä v prípade výrobkov rýchlo sa kaziacich a s krátkou trvanlivosťou. Rôzne situácie hlásené v predchádzajúcich týždňoch zostávajú rovnaké.</p>
+    </div>
+  </article>
+
+</main>
+
+</body>
+</html>

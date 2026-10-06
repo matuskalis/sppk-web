@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPPK – Menu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f5f5f5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ─────────────────────────────────────────────────────────── */
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid #009a44;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: 0 2px 12px rgba(0,154,68,0.06);
+    }
+    .navbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Desktop links */
+    .desktop-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      justify-content: center;
+    }
+    .nav-btn {
+      background: none;
+      border: none;
+      color: #000000;
+      font-size: 13.5px;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      padding: 16px 18px;
+      font-family: 'Inter', sans-serif;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+    .nav-btn:hover { color: #009a44; }
+    .nav-btn.active {
+      color: #009a44;
+      font-weight: 600;
+    }
+    .nav-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 18px;
+      right: 18px;
+      height: 2px;
+      background: #009a44;
+      border-radius: 1px 1px 0 0;
+    }
+
+    /* Hamburger */
+    .hamburger-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 14px 8px;
+      flex-direction: column;
+      gap: 5px;
+      align-items: center;
+      justify-content: center;
+    }
+    .hamburger-btn span {
+      display: block;
+      width: 24px;
+      height: 2.5px;
+      background: #000;
+      border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+    .hamburger-btn.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+    .hamburger-btn.open span:nth-child(2) { opacity: 0; }
+    .hamburger-btn.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+    /* Mobile active label */
+    .mobile-active-label {
+      display: none;
+      font-size: 14px;
+      font-weight: 600;
+      color: #009a44;
+      padding: 16px 0;
+    }
+
+    /* Mobile drawer */
+    .mobile-drawer {
+      display: none;
+      flex-direction: column;
+      border-top: 1px solid rgba(0,154,68,0.15);
+      background: #ffffff;
+      padding: 8px 0 12px;
+    }
+    .mobile-drawer.open { display: flex; }
+    .drawer-btn {
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 13px 24px;
+      font-size: 15px;
+      font-weight: 400;
+      color: #000;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      border-left: 3px solid transparent;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+    .drawer-btn:hover { background: rgba(0,154,68,0.05); }
+    .drawer-btn.active {
+      font-weight: 700;
+      color: #009a44;
+      border-left-color: #009a44;
+    }
+
+    /* ── Mobile breakpoint ───────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .desktop-nav-links { display: none !important; }
+      .hamburger-btn { display: flex !important; }
+      .mobile-active-label { display: block !important; }
+    }
+  
+    /* the delivered component styled <button>; these are links now */
+    .nav-btn { text-decoration: none; display: inline-block; }
+    .drawer-btn { text-decoration: none; display: block; }
+    .nav-item { position: relative; }
+    .nav-item:hover .nav-panel { display: block; }
+    .nav-panel {
+      display: none; position: absolute; top: 100%; left: 0; z-index: 300;
+      /* No overflow here: it would clip the flyouts that open to the side. */
+      min-width: 280px; max-width: 380px;
+      background: #fff; border: 1px solid rgba(0,154,68,0.18); border-radius: 0 0 12px 12px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12); padding: 10px 0;
+    }
+    .nav-group { padding: 4px 0; }
+    .nav-sub {
+      display: block; padding: 8px 18px; font-size: 13.5px; font-weight: 600; color: #000;
+      text-decoration: none; line-height: 1.35;
+    }
+    .nav-sub:hover { color: #009a44; background: rgba(0,154,68,0.06); }
+    .nav-leaf {
+      display: block; padding: 6px 18px 6px 32px; font-size: 12.5px; font-weight: 400;
+      color: #555; text-decoration: none; line-height: 1.35;
+    }
+    .nav-leaf:hover { color: #009a44; background: rgba(0,154,68,0.05); }
+    .nav-branch { position: relative; }
+    .nav-branch > .nav-flyout { display: none; }
+    .nav-branch:hover > .nav-flyout { display: block; }
+    .nav-flyout {
+      position: absolute; top: -10px; left: 100%; z-index: 320;
+      min-width: 260px; max-width: 340px;
+      background: #fff; border: 1px solid rgba(0,154,68,0.18); border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12); padding: 10px 0;
+    }
+    .nav-more { float: right; color: #009a44; font-weight: 700; opacity: 0.7; }
+    .drawer-group { border-bottom: 1px solid rgba(0,0,0,0.06); }
+    .drawer-sub {
+      display: block; padding: 9px 24px 9px 36px; font-size: 13.5px; color: #333;
+      text-decoration: none;
+    }
+    .drawer-leaf {
+      display: block; padding: 7px 24px 7px 50px; font-size: 12.5px; color: #666;
+      text-decoration: none;
+    }
+    @media (max-width: 768px) { .nav-panel { display: none !important; } }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+
+    <!-- Desktop nav links -->
+    <div class="desktop-nav-links" id="desktopNav">
+      <div class="nav-item">
+        <a class="nav-btn" href="/uvod/index.html">Úvod</a>
+        <div class="nav-panel">
+            <div class="nav-branch">
+            <a class="nav-sub" href="/uvod/o%20nas/index.html">O nás<span class="nav-more">›</span></a>
+              <div class="nav-flyout">
+              <a class="nav-leaf" href="/uvod/o%20nas/charakteristika%20SPPK/index.html">Charakteristika SPPK</a>
+              <div class="nav-branch">
+              <a class="nav-leaf" href="/uvod/o%20nas/valne%20zhromazdenia/index.html">Valné zhromaždenia<span class="nav-more">›</span></a>
+                <div class="nav-flyout">
+                <a class="nav-leaf" href="https://www.sppk.sk/nitra-2024">Nitra 2024</a>
+                <a class="nav-leaf" href="https://www.sppk.sk/nitra-2023">Nitra 2023</a>
+                <a class="nav-leaf" href="https://www.sppk.sk/nitra-2022">Nitra 2022</a>
+                <a class="nav-leaf" href="https://www.sppk.sk/nitra-2021">Nitra 2021</a>
+                <a class="nav-leaf" href="https://www.sppk.sk/nitra-2020">Nitra 2020</a>
+                <a class="nav-leaf" href="https://www.sppk.sk/nitra-2019">Nitra 2019</a>
+                <a class="nav-leaf" href="https://www.sppk.sk/nitra-2018">Nitra 2018</a>
+                <a class="nav-leaf" href="https://www.sppk.sk/nitra_2017">Nitra 2017</a>
+                <a class="nav-leaf" href="https://www.sppk.sk/vz-v-nitre-2016">Nitra 2016</a>
+                <a class="nav-leaf" href="https://www.sppk.sk/vz-v-bratislave-2015">Bratislava 2015</a>
+                <a class="nav-leaf" href="https://www.sppk.sk/nitra-2025">Nitra 2025</a>
+                <a class="nav-leaf" href="https://www.sppk.sk/nitra-2026">Nitra 2026</a>
+                </div>
+              </div>
+              </div>
+            </div>
+            <a class="nav-sub" href="/uvod/stan%20sa%20clenom%20SPPK/index.html">Staňte sa členom SPPK</a>
+            <div class="nav-branch">
+            <a class="nav-sub" href="/uvod/projekty%20SPPK/index.html">Projekty SPPK<span class="nav-more">›</span></a>
+              <div class="nav-flyout">
+              <div class="nav-branch">
+              <a class="nav-leaf" href="/uvod/projekty%20SPPK/hovorme%20o%20jedle/index.html">Hovorme o jedle<span class="nav-more">›</span></a>
+                <div class="nav-flyout">
+                <a class="nav-leaf" href="https://www.sppk.skhttps://www.opotravinach.sk/">oficiálna webová stránka Hovorme o jedle</a>
+                <a class="nav-leaf" href="/uvod/projekty%20SPPK/hovorme%20o%20jedle/index.html">Aktuality Hovorme o jedle</a>
+                </div>
+              </div>
+              <div class="nav-branch">
+              <a class="nav-leaf" href="/uvod/projekty%20SPPK/podpor%20svoj%20odbor/index.html">Podpor svoj odbor<span class="nav-more">›</span></a>
+                <div class="nav-flyout">
+                <a class="nav-leaf" href="https://www.sppk.skhttps://podporodbor.sk/">oficiálna webová stránka Podpor svoj odbor</a>
+                <a class="nav-leaf" href="/uvod/projekty%20SPPK/podpor%20svoj%20odbor/index.html">Aktuality Podpor svoj odbor</a>
+                <a class="nav-leaf" href="/uvod/projekty%20SPPK/podpor%20svoj%20odbor/index.html">Youtube Podbor svoj odbor</a>
+                </div>
+              </div>
+              <a class="nav-leaf" href="/uvod/projekty%20SPPK/vy%20pomahate,%20my%20dakujeme%202021/index.html">Vy pomáhate, my ďakujeme 2021</a>
+              <div class="nav-branch">
+              <a class="nav-leaf" href="/uvod/projekty%20SPPK/zasejme%20dobro/index.html">Zasejme dobro<span class="nav-more">›</span></a>
+                <div class="nav-flyout">
+                <a class="nav-leaf" href="/uvod/projekty%20SPPK/zasejme%20dobro/index.html">Aktuality Zasejme dobro</a>
+                <a class="nav-leaf" href="https://www.sppk.skhttps://www.google.com/maps/d/edit?mid=1EnptESFT4uGyYFzC3kBdSbqZrEbOQqk&usp=sharing">Mapa pomoci seniorom</a>
+                <a class="nav-leaf" href="/galeria/Zasejme%20dobro%202025/index.html">Fotogaléria Zasejme dobro 2025</a>
+                </div>
+              </div>
+              </div>
+            </div>
+            <a class="nav-sub" href="/uvod/zaujimave%20informacie/index.html">Zaujímavé informácie</a>
+            <a class="nav-sub" href="/uvod/pracovne%20ponuky/index.html">Pracovné ponuky</a>
+            <div class="nav-branch">
+            <a class="nav-sub" href="/uvod/na%20navsteve/index.html">Na návšteve<span class="nav-more">›</span></a>
+              <div class="nav-flyout">
+              <a class="nav-leaf" href="/uvod/na%20navsteve/na%20navsteve%20u%20clenov%20SPPK/index.html">Na návšteve u členov SPPK</a>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a class="nav-btn" href="/media/index.html">Médiá</a>
+        <div class="nav-panel">
+            <a class="nav-sub" href="/media/tlacove%20spravy/index.html">Tlačové správy</a>
+            <a class="nav-sub" href="/media/tlacove%20besedy/index.html">Tlačové besedy</a>
+            <a class="nav-sub" href="/media/diskusie/index.html">Diskusie</a>
+            <a class="nav-sub" href="/media/hovorca/index.html">Hovorca</a>
+            <a class="nav-sub" href="/media/press%20kit/index.html">Press kit</a>
+            <a class="nav-sub" href="/media/farmarska%20mapa/index.html">Farmárska mapa</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a class="nav-btn" href="/polnohospodarstvo/index.html">Poľnohospodárstvo</a>
+        <div class="nav-panel">
+            <a class="nav-sub" href="/polnohospodarstvo/aktualne%20informacie/index.html">Aktuálne informácie</a>
+            <a class="nav-sub" href="/polnohospodarstvo/spolocna%20polnohospodarska%20politika/index.html">Spoločná poľnohospodárska politika</a>
+            <a class="nav-sub" href="/polnohospodarstvo/rastlinne%20komodity/index.html">Rastlinné komodity</a>
+            <a class="nav-sub" href="/polnohospodarstvo/zivocisne%20komodity/index.html">Živočíšne komodity</a>
+            <a class="nav-sub" href="/polnohospodarstvo/GMO%20NGT/index.html">GMO/NGT</a>
+            <a class="nav-sub" href="/polnohospodarstvo/odborne%20vzdelavanie/index.html">Odborné vzdelávanie</a>
+            <a class="nav-sub" href="/polnohospodarstvo/SLAK/index.html">SLAK</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a class="nav-btn" href="/potravinarstvo/index.html">Potravinárstvo</a>
+        <div class="nav-panel">
+            <div class="nav-branch">
+            <a class="nav-sub" href="/potravinarstvo/EFSA/index.html">EFSA<span class="nav-more">›</span></a>
+              <div class="nav-flyout">
+              <a class="nav-leaf" href="/potravinarstvo/EFSA/spravy%20z%20EFSA/index.html">Správy z EFSA</a>
+              <a class="nav-leaf" href="/potravinarstvo/EFSA/co%20je%20EFSA/index.html">Čo je EFSA?</a>
+              </div>
+            </div>
+            <div class="nav-branch">
+            <a class="nav-sub" href="/potravinarstvo/statistika/index.html">Štatistika<span class="nav-more">›</span></a>
+              <div class="nav-flyout">
+              <a class="nav-leaf" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202014/index.html">Ekonomické štatistiky za rok 2014</a>
+              <a class="nav-leaf" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202015/index.html">Ekonomické štatistiky za rok 2015</a>
+              <a class="nav-leaf" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202016/index.html">Ekonomické štatistiky za rok 2016</a>
+              <a class="nav-leaf" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202017/index.html">Ekonomické štatistiky za rok 2017</a>
+              <a class="nav-leaf" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202018/index.html">Ekonomické štatistiky za rok 2018</a>
+              <a class="nav-leaf" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202019/index.html">Ekonomické štatistiky za rok 2019</a>
+              <a class="nav-leaf" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202020/index.html">Ekonomické štatistiky za rok 2020</a>
+              <a class="nav-leaf" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202021/index.html">Ekonomické štatistiky za rok 2021</a>
+              <a class="nav-leaf" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202022/index.html">Ekonomické štatistiky za rok 2022</a>
+              <a class="nav-leaf" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202023/index.html">Ekonomické štatistiky za rok 2023</a>
+              <a class="nav-leaf" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202024/index.html">Ekonomické štatistiky za rok 2024</a>
+              <a class="nav-leaf" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202025/index.html">Ekonomické štatistiky za rok 2025</a>
+              <a class="nav-leaf" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202026/index.html">Ekonomické štatistiky za rok 2026</a>
+              </div>
+            </div>
+            <div class="nav-branch">
+            <a class="nav-sub" href="/potravinarstvo/obchod%20s%20potravinami/index.html">Obchod s potravinami<span class="nav-more">›</span></a>
+              <div class="nav-flyout">
+              <a class="nav-leaf" href="/potravinarstvo/obchod%20s%20potravinami/problematika%20OR%20v%20SR/index.html">Problematika OR v SR</a>
+              <a class="nav-leaf" href="/potravinarstvo/obchod%20s%20potravinami/problematika%20OR%20v%20EU/index.html">Problematika OR v EU</a>
+              <a class="nav-leaf" href="/potravinarstvo/obchod%20s%20potravinami/neprimerane%20podmienky%20v%20obchode%20s%20potravinami/index.html">Neprimerané podmienky v obchode s potravinami</a>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a class="nav-btn" href="/legislativa/index.html">Legislatíva</a>
+        <div class="nav-panel">
+            <a class="nav-sub" href="/legislativa/system%20platenia%20clenskych%20poplatkov/index.html">Systém platenia členských poplatkov</a>
+            <div class="nav-branch">
+            <a class="nav-sub" href="/legislativa/index.html">Legislatíva SR<span class="nav-more">›</span></a>
+              <div class="nav-flyout">
+              <a class="nav-leaf" href="/legislativa/legislativ%20SR/aktuality,oznamy/index.html">Aktuality/Oznamy</a>
+              </div>
+            </div>
+            <a class="nav-sub" href="/legislativa/GDPR/index.html">GDPR</a>
+            <a class="nav-sub" href="/legislativa/dokumenty%20SPPK/index.html">Dokumenty SPPK</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a class="nav-btn" href="/vzdelavanie/index.html">Vzdelávanie</a>
+        <div class="nav-panel">
+            <div class="nav-branch">
+            <a class="nav-sub" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/index.html">Stredoškolské odborné vzdelávanie<span class="nav-more">›</span></a>
+              <div class="nav-flyout">
+              <div class="nav-branch">
+              <a class="nav-leaf" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/COVP/index.html">COVP<span class="nav-more">›</span></a>
+                <div class="nav-flyout">
+                <div class="nav-branch">
+                <a class="nav-leaf" href="#">Zriadené COVP<span class="nav-more">›</span></a>
+                  <div class="nav-flyout">
+                  <a class="nav-leaf" href="/polnohospodarstvo/index.html">Poľnohospodárstvo</a>
+                  <a class="nav-leaf" href="/potravinarstvo/index.html">Potravinárstvo</a>
+                  <a class="nav-leaf" href="https://www.sppk.sk/lesne-hospodarstvo-covp">Lesné hospodárstvo</a>
+                  <a class="nav-leaf" href="https://www.sppk.sk/veterinarne-vedy">Veterinárne vedy</a>
+                  <a class="nav-leaf" href="https://www.sppk.sk/sumar-zriadene-covp">SUMÁR – zriadené COVP</a>
+                  </div>
+                </div>
+                <a class="nav-leaf" href="/polnohospodarstvo/aktualne%20informacie/index.html">Aktuálne informácie</a>
+                </div>
+              </div>
+              <a class="nav-leaf" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/vseobecna%20posobnot/index.html">Vecná pôsobnosť</a>
+              <a class="nav-leaf" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/ulohu%20SPPK%20v%20OVP%20a%20SDV/index.html">Úlohy SPPK v OVP a SDV</a>
+              <a class="nav-leaf" href="/legislativa/index.html">Legislatíva</a>
+              <a class="nav-leaf" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/instruktor%20praktickeho%20vyucovania-SSV/index.html">Inštruktor praktického vyučovania - SŠV</a>
+              <a class="nav-leaf" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/zastupcovia%20SPPK%20v%20KR%20pre%20OVP%20a%20RS%20pri%20SOS/index.html">Zástupcovia SPPK v KR pre OVP a RŠ pri SOŠ</a>
+              <div class="nav-branch">
+              <a class="nav-leaf" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/ucebne%20texty/index.html">Učebné texty<span class="nav-more">›</span></a>
+                <div class="nav-flyout">
+                <a class="nav-leaf" href="https://www.sppk.sk/skupina-odborov-29-Potravinárstvo">Skupina odborov 29 Potravinárstvo</a>
+                <a class="nav-leaf" href="https://www.sppk.sk/skupina-odborov-42-45-polnohospodarstvo-lesne-hospodarstvo-a-rozvoj-vidieka ">Skupina odborov 42 a 45 Poľnohospodárstvo, lesné hospodárstvo a rozvoj vidieka</a>
+                <a class="nav-leaf" href="https://www.sppk.sk/skupina-odborov-43-veterinarne-vedy">Skupina odborov 43 Veterinárne vedy</a>
+                </div>
+              </div>
+              <a class="nav-leaf" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/SkVP/index.html">ŠkVP</a>
+              <a class="nav-leaf" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/analyzy%20odborneho%20vzdelavania%20a%20pripravvy/index.html">Analýzy odborného vzdelávania a prípravy</a>
+              <a class="nav-leaf" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/ukoncovanie%20studia/index.html">Ukončovanie štúdia</a>
+              <div class="nav-branch">
+              <a class="nav-leaf" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/NP%20CEOVP/index.html">NP CEOVP<span class="nav-more">›</span></a>
+                <div class="nav-flyout">
+                <a class="nav-leaf" href="https://www.sppk.sk/np-ceovp-odporucane-ucebne-plany">Odporúčané učebné plány</a>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="nav-branch">
+            <a class="nav-sub" href="/vzdelavanie/system%20dualneho%20vzdelavania/index.html">Systém duálneho vzdelávania<span class="nav-more">›</span></a>
+              <div class="nav-flyout">
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/co%20je%20system%20dualneho%20vzdelavania/index.html">Čo je systém duálneho vzdelávania</a>
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/system%20dualneho%20vzdelavania-prirucky/index.html">Systém duálneho vzdelávania - príručky</a>
+              <div class="nav-branch">
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/postup%20a%20vzorove%20tlaciva%20pre%20zamestnavatela/index.html">Postup a vzorové tlačivá pre zamestnávateľa<span class="nav-more">›</span></a>
+                <div class="nav-flyout">
+                <a class="nav-leaf" href="https://www.sppk.sk/vzorove-tlaciva">Vzorové tlačivá</a>
+                </div>
+              </div>
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/opakovane%20overenie%20sposobilosti%20zamestnavatela/index.html">Opakované overenie spôsobilosti zamestnávateľa</a>
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/manualy/index.html">Manuály</a>
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/vnutorny%20poriadok%20pracoviska%20praktickeho%20vyucovania%20%20a%20priebeh%20praktickeho%20vyucovania/index.html">Vnútorný poriadok pracoviska praktického vyučovania a priebeh praktického vyučovania</a>
+              <div class="nav-branch">
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/dualne%20vzdelavanie%2018+/index.html">Duálne vzdelávanie 18+<span class="nav-more">›</span></a>
+                <div class="nav-flyout">
+                <a class="nav-leaf" href="https://www.sppk.sk/informacie_dual_18">Informácie</a>
+                </div>
+              </div>
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/zoznam%20PPV/index.html">Zoznam PPV</a>
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/zoznam%20odborne%20sposobilych%20osob/index.html">Zoznam odborne spôsobilých osôb</a>
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/koordinatori%20pre%20SVD%20a%20OVP/index.html">Koordinátori pre SDV a OVP</a>
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/statut%20komisie%20pre%20overenie%20sposobilosti%20zamestnavatela/index.html">Štatút komisie pre overenie spôsobilosti zamestnávateľa</a>
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/hlavny%20instruktor%20praktickeho%20vyucovania-SDV/index.html">Hlavný inštruktor praktického vyučovania – SDV</a>
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/regionalny%20koordinator%20pre%20system%20dualneho%20vzdelavania/index.html">Regionálny koordinátor pre systém duálneho vzdelávania</a>
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/vecna%20posobnost%20k%20odborom%20studia/index.html">Vecná pôsobnosť k odborom štúdia</a>
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/videa%20k%20profesiam%20spadajucim%20pod%20gesciu%20SPPK/index.html">Videá k profesiám spadajúcim pod gesciu SPPK</a>
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/kontakty/index.html">Kontakty</a>
+              <a class="nav-leaf" href="/vzdelavanie/system%20dualneho%20vzdelavania/nadpodnikove%20vzdelavacie%20centrum/index.html">Nadpodnikové vzdelávacie centrum</a>
+              </div>
+            </div>
+            <a class="nav-sub" href="/vzdelavanie/zo%20zivota%20skoly/index.html">Zo života školy</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a class="nav-btn" href="/medzinarodne%20aktivity/index.html">Medzinárodné aktivity</a>
+        <div class="nav-panel">
+            <div class="nav-branch">
+            <a class="nav-sub" href="/medzinarodne%20aktivity/COPA-COGECA/index.html">COPA-COGECA<span class="nav-more">›</span></a>
+              <div class="nav-flyout">
+              <a class="nav-leaf" href="/medzinarodne%20aktivity/COPA-COGECA/organizacia%20COPA-COGECA/index.html">Organizácia COPA-COGECA</a>
+              <a class="nav-leaf" href="/medzinarodne%20aktivity/COPA-COGECA/spravy%20zo%20zasadnutiC-C/index.html">Správy zo zasadnutí C-C</a>
+              <a class="nav-leaf" href="/medzinarodne%20aktivity/COPA-COGECA/aktuality%20C-C/index.html">Aktuality C-C</a>
+              </div>
+            </div>
+            <div class="nav-branch">
+            <a class="nav-sub" href="/medzinarodne%20aktivity/V4/index.html">V4<span class="nav-more">›</span></a>
+              <div class="nav-flyout">
+              <a class="nav-leaf" href="/medzinarodne%20aktivity/V4/Spolupraca%20%20Vysehradshej%20stvorky/index.html">Spolupráca Vyšehradskej štvorky</a>
+              <a class="nav-leaf" href="/medzinarodne%20aktivity/V4/Zasadnutia%20a%20aktivity/index.html">Zasadnutia a aktivity V4</a>
+              <a class="nav-leaf" href="/medzinarodne%20aktivity/V4/Projekt%20V4/index.html">Projekt V4</a>
+              </div>
+            </div>
+            <div class="nav-branch">
+            <a class="nav-sub" href="/medzinarodne%20aktivity/medzinarodne%20podujatia%20a%20projekty/index.html">Medzinárodné podujatia a projekty<span class="nav-more">›</span></a>
+              <div class="nav-flyout">
+              <a class="nav-leaf" href="/medzinarodne%20aktivity/medzinarodne%20podujatia%20a%20projekty/medzinarodne%20konferencie/index.html">Medzinárodné konferencie</a>
+              <a class="nav-leaf" href="/medzinarodne%20aktivity/medzinarodne%20podujatia%20a%20projekty/projekty%20s%20medzinarodnou%20ucastou/index.html">Projekty s medzinárodnou účasťou</a>
+              </div>
+            </div>
+            <a class="nav-sub" href="/medzinarodne%20aktivity/SPRAVY%20Z%20BRUSELU/index.html">Správy z Bruselu</a>
+            <a class="nav-sub" href="/medzinarodne%20aktivity/Bratislavska%20deklaracia/index.html">Bratislavská deklarácia</a>
+            <div class="nav-branch">
+            <a class="nav-sub" href="/medzinarodne%20aktivity/Europsky%20hospodarsky%20a%20soc.%20vybor/index.html">Európsky hospodársky a soc. Výbor<span class="nav-more">›</span></a>
+              <div class="nav-flyout">
+              <a class="nav-leaf" href="/medzinarodne%20aktivity/Europsky%20hospodarsky%20a%20soc.%20vybor/Co%20je%20EHSV/index.html">Čo je EHSV?</a>
+              <a class="nav-leaf" href="/medzinarodne%20aktivity/Europsky%20hospodarsky%20a%20soc.%20vybor/Spravy%20z%20EHSV/index.html">Správy z EHSV</a>
+              <a class="nav-leaf" href="/medzinarodne%20aktivity/Europsky%20hospodarsky%20a%20soc.%20vybor/sekcia%20pre%20polnohospodarstvo/index.html">Sekcia pre poľnohospodárstvo</a>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a class="nav-btn" href="/galeria/index.html">Galéria</a>
+        <div class="nav-panel">
+            <a class="nav-sub" href="/galeria/index.html">Fotogaléria</a>
+            <a class="nav-sub" href="#">Videoarchív SPPK</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a class="nav-btn" href="/kontakt/index.html">Kontakt</a>
+        <div class="nav-panel">
+            <a class="nav-sub" href="https://www.sppk.sk/struktura_a_kontakty">Štruktúra a kontakty</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hamburger (mobile) -->
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Otvoriť menu" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <!-- Active label (mobile) -->
+    <span class="mobile-active-label" id="mobileLabel">Úvod</span>
+
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <div class="drawer-group">
+      <a class="drawer-btn" href="/uvod/index.html">Úvod</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/uvod/o%20nas/index.html">O nás</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/uvod/o%20nas/charakteristika%20SPPK/index.html">Charakteristika SPPK</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/uvod/o%20nas/valne%20zhromazdenia/index.html">Valné zhromaždenia</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/nitra-2024">Nitra 2024</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/nitra-2023">Nitra 2023</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/nitra-2022">Nitra 2022</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/nitra-2021">Nitra 2021</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/nitra-2020">Nitra 2020</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/nitra-2019">Nitra 2019</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/nitra-2018">Nitra 2018</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/nitra_2017">Nitra 2017</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/vz-v-nitre-2016">Nitra 2016</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/vz-v-bratislave-2015">Bratislava 2015</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/nitra-2025">Nitra 2025</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/nitra-2026">Nitra 2026</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/uvod/stan%20sa%20clenom%20SPPK/index.html">Staňte sa členom SPPK</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/uvod/projekty%20SPPK/index.html">Projekty SPPK</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/uvod/projekty%20SPPK/hovorme%20o%20jedle/index.html">Hovorme o jedle</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.skhttps://www.opotravinach.sk/">oficiálna webová stránka Hovorme o jedle</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="/uvod/projekty%20SPPK/hovorme%20o%20jedle/index.html">Aktuality Hovorme o jedle</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/uvod/projekty%20SPPK/podpor%20svoj%20odbor/index.html">Podpor svoj odbor</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.skhttps://podporodbor.sk/">oficiálna webová stránka Podpor svoj odbor</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="/uvod/projekty%20SPPK/podpor%20svoj%20odbor/index.html">Aktuality Podpor svoj odbor</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="/uvod/projekty%20SPPK/podpor%20svoj%20odbor/index.html">Youtube Podbor svoj odbor</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/uvod/projekty%20SPPK/vy%20pomahate,%20my%20dakujeme%202021/index.html">Vy pomáhate, my ďakujeme 2021</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/uvod/projekty%20SPPK/zasejme%20dobro/index.html">Zasejme dobro</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="/uvod/projekty%20SPPK/zasejme%20dobro/index.html">Aktuality Zasejme dobro</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.skhttps://www.google.com/maps/d/edit?mid=1EnptESFT4uGyYFzC3kBdSbqZrEbOQqk&usp=sharing">Mapa pomoci seniorom</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="/galeria/Zasejme%20dobro%202025/index.html">Fotogaléria Zasejme dobro 2025</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/uvod/zaujimave%20informacie/index.html">Zaujímavé informácie</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/uvod/pracovne%20ponuky/index.html">Pracovné ponuky</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/uvod/na%20navsteve/index.html">Na návšteve</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/uvod/na%20navsteve/na%20navsteve%20u%20clenov%20SPPK/index.html">Na návšteve u členov SPPK</a>
+    </div>
+    <div class="drawer-group">
+      <a class="drawer-btn" href="/media/index.html">Médiá</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/media/tlacove%20spravy/index.html">Tlačové správy</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/media/tlacove%20besedy/index.html">Tlačové besedy</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/media/diskusie/index.html">Diskusie</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/media/hovorca/index.html">Hovorca</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/media/press%20kit/index.html">Press kit</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/media/farmarska%20mapa/index.html">Farmárska mapa</a>
+    </div>
+    <div class="drawer-group">
+      <a class="drawer-btn" href="/polnohospodarstvo/index.html">Poľnohospodárstvo</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/polnohospodarstvo/aktualne%20informacie/index.html">Aktuálne informácie</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/polnohospodarstvo/spolocna%20polnohospodarska%20politika/index.html">Spoločná poľnohospodárska politika</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/polnohospodarstvo/rastlinne%20komodity/index.html">Rastlinné komodity</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/polnohospodarstvo/zivocisne%20komodity/index.html">Živočíšne komodity</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/polnohospodarstvo/GMO%20NGT/index.html">GMO/NGT</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/polnohospodarstvo/odborne%20vzdelavanie/index.html">Odborné vzdelávanie</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/polnohospodarstvo/SLAK/index.html">SLAK</a>
+    </div>
+    <div class="drawer-group">
+      <a class="drawer-btn" href="/potravinarstvo/index.html">Potravinárstvo</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/potravinarstvo/EFSA/index.html">EFSA</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/EFSA/spravy%20z%20EFSA/index.html">Správy z EFSA</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/EFSA/co%20je%20EFSA/index.html">Čo je EFSA?</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/potravinarstvo/statistika/index.html">Štatistika</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202014/index.html">Ekonomické štatistiky za rok 2014</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202015/index.html">Ekonomické štatistiky za rok 2015</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202016/index.html">Ekonomické štatistiky za rok 2016</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202017/index.html">Ekonomické štatistiky za rok 2017</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202018/index.html">Ekonomické štatistiky za rok 2018</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202019/index.html">Ekonomické štatistiky za rok 2019</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202020/index.html">Ekonomické štatistiky za rok 2020</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202021/index.html">Ekonomické štatistiky za rok 2021</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202022/index.html">Ekonomické štatistiky za rok 2022</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202023/index.html">Ekonomické štatistiky za rok 2023</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202024/index.html">Ekonomické štatistiky za rok 2024</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202025/index.html">Ekonomické štatistiky za rok 2025</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/statistika/ekonomicke%20statistiky%20za%20rok%202026/index.html">Ekonomické štatistiky za rok 2026</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/potravinarstvo/obchod%20s%20potravinami/index.html">Obchod s potravinami</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/obchod%20s%20potravinami/problematika%20OR%20v%20SR/index.html">Problematika OR v SR</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/obchod%20s%20potravinami/problematika%20OR%20v%20EU/index.html">Problematika OR v EU</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/potravinarstvo/obchod%20s%20potravinami/neprimerane%20podmienky%20v%20obchode%20s%20potravinami/index.html">Neprimerané podmienky v obchode s potravinami</a>
+    </div>
+    <div class="drawer-group">
+      <a class="drawer-btn" href="/legislativa/index.html">Legislatíva</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/legislativa/system%20platenia%20clenskych%20poplatkov/index.html">Systém platenia členských poplatkov</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/legislativa/index.html">Legislatíva SR</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/legislativa/legislativ%20SR/aktuality,oznamy/index.html">Aktuality/Oznamy</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/legislativa/GDPR/index.html">GDPR</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/legislativa/dokumenty%20SPPK/index.html">Dokumenty SPPK</a>
+    </div>
+    <div class="drawer-group">
+      <a class="drawer-btn" href="/vzdelavanie/index.html">Vzdelávanie</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/index.html">Stredoškolské odborné vzdelávanie</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/COVP/index.html">COVP</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="#">Zriadené COVP</a>
+      <a class="drawer-leaf" style="padding-left:80px" href="/polnohospodarstvo/index.html">Poľnohospodárstvo</a>
+      <a class="drawer-leaf" style="padding-left:80px" href="/potravinarstvo/index.html">Potravinárstvo</a>
+      <a class="drawer-leaf" style="padding-left:80px" href="https://www.sppk.sk/lesne-hospodarstvo-covp">Lesné hospodárstvo</a>
+      <a class="drawer-leaf" style="padding-left:80px" href="https://www.sppk.sk/veterinarne-vedy">Veterinárne vedy</a>
+      <a class="drawer-leaf" style="padding-left:80px" href="https://www.sppk.sk/sumar-zriadene-covp">SUMÁR – zriadené COVP</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="/polnohospodarstvo/aktualne%20informacie/index.html">Aktuálne informácie</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/vseobecna%20posobnot/index.html">Vecná pôsobnosť</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/ulohu%20SPPK%20v%20OVP%20a%20SDV/index.html">Úlohy SPPK v OVP a SDV</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/legislativa/index.html">Legislatíva</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/instruktor%20praktickeho%20vyucovania-SSV/index.html">Inštruktor praktického vyučovania - SŠV</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/zastupcovia%20SPPK%20v%20KR%20pre%20OVP%20a%20RS%20pri%20SOS/index.html">Zástupcovia SPPK v KR pre OVP a RŠ pri SOŠ</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/ucebne%20texty/index.html">Učebné texty</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/skupina-odborov-29-Potravinárstvo">Skupina odborov 29 Potravinárstvo</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/skupina-odborov-42-45-polnohospodarstvo-lesne-hospodarstvo-a-rozvoj-vidieka ">Skupina odborov 42 a 45 Poľnohospodárstvo, lesné hospodárstvo a rozvoj vidieka</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/skupina-odborov-43-veterinarne-vedy">Skupina odborov 43 Veterinárne vedy</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/SkVP/index.html">ŠkVP</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/analyzy%20odborneho%20vzdelavania%20a%20pripravvy/index.html">Analýzy odborného vzdelávania a prípravy</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/ukoncovanie%20studia/index.html">Ukončovanie štúdia</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/stredoskolske%20odborne%20vzdelavanie/NP%20CEOVP/index.html">NP CEOVP</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/np-ceovp-odporucane-ucebne-plany">Odporúčané učebné plány</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/vzdelavanie/system%20dualneho%20vzdelavania/index.html">Systém duálneho vzdelávania</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/co%20je%20system%20dualneho%20vzdelavania/index.html">Čo je systém duálneho vzdelávania</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/system%20dualneho%20vzdelavania-prirucky/index.html">Systém duálneho vzdelávania - príručky</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/postup%20a%20vzorove%20tlaciva%20pre%20zamestnavatela/index.html">Postup a vzorové tlačivá pre zamestnávateľa</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/vzorove-tlaciva">Vzorové tlačivá</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/opakovane%20overenie%20sposobilosti%20zamestnavatela/index.html">Opakované overenie spôsobilosti zamestnávateľa</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/manualy/index.html">Manuály</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/vnutorny%20poriadok%20pracoviska%20praktickeho%20vyucovania%20%20a%20priebeh%20praktickeho%20vyucovania/index.html">Vnútorný poriadok pracoviska praktického vyučovania a priebeh praktického vyučovania</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/dualne%20vzdelavanie%2018+/index.html">Duálne vzdelávanie 18+</a>
+      <a class="drawer-leaf" style="padding-left:66px" href="https://www.sppk.sk/informacie_dual_18">Informácie</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/zoznam%20PPV/index.html">Zoznam PPV</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/zoznam%20odborne%20sposobilych%20osob/index.html">Zoznam odborne spôsobilých osôb</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/koordinatori%20pre%20SVD%20a%20OVP/index.html">Koordinátori pre SDV a OVP</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/statut%20komisie%20pre%20overenie%20sposobilosti%20zamestnavatela/index.html">Štatút komisie pre overenie spôsobilosti zamestnávateľa</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/hlavny%20instruktor%20praktickeho%20vyucovania-SDV/index.html">Hlavný inštruktor praktického vyučovania – SDV</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/regionalny%20koordinator%20pre%20system%20dualneho%20vzdelavania/index.html">Regionálny koordinátor pre systém duálneho vzdelávania</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/vecna%20posobnost%20k%20odborom%20studia/index.html">Vecná pôsobnosť k odborom štúdia</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/videa%20k%20profesiam%20spadajucim%20pod%20gesciu%20SPPK/index.html">Videá k profesiám spadajúcim pod gesciu SPPK</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/kontakty/index.html">Kontakty</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/vzdelavanie/system%20dualneho%20vzdelavania/nadpodnikove%20vzdelavacie%20centrum/index.html">Nadpodnikové vzdelávacie centrum</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/vzdelavanie/zo%20zivota%20skoly/index.html">Zo života školy</a>
+    </div>
+    <div class="drawer-group">
+      <a class="drawer-btn" href="/medzinarodne%20aktivity/index.html">Medzinárodné aktivity</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/medzinarodne%20aktivity/COPA-COGECA/index.html">COPA-COGECA</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/medzinarodne%20aktivity/COPA-COGECA/organizacia%20COPA-COGECA/index.html">Organizácia COPA-COGECA</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/medzinarodne%20aktivity/COPA-COGECA/spravy%20zo%20zasadnutiC-C/index.html">Správy zo zasadnutí C-C</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/medzinarodne%20aktivity/COPA-COGECA/aktuality%20C-C/index.html">Aktuality C-C</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/medzinarodne%20aktivity/V4/index.html">V4</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/medzinarodne%20aktivity/V4/Spolupraca%20%20Vysehradshej%20stvorky/index.html">Spolupráca Vyšehradskej štvorky</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/medzinarodne%20aktivity/V4/Zasadnutia%20a%20aktivity/index.html">Zasadnutia a aktivity V4</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/medzinarodne%20aktivity/V4/Projekt%20V4/index.html">Projekt V4</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/medzinarodne%20aktivity/medzinarodne%20podujatia%20a%20projekty/index.html">Medzinárodné podujatia a projekty</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/medzinarodne%20aktivity/medzinarodne%20podujatia%20a%20projekty/medzinarodne%20konferencie/index.html">Medzinárodné konferencie</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/medzinarodne%20aktivity/medzinarodne%20podujatia%20a%20projekty/projekty%20s%20medzinarodnou%20ucastou/index.html">Projekty s medzinárodnou účasťou</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/medzinarodne%20aktivity/SPRAVY%20Z%20BRUSELU/index.html">Správy z Bruselu</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/medzinarodne%20aktivity/Bratislavska%20deklaracia/index.html">Bratislavská deklarácia</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/medzinarodne%20aktivity/Europsky%20hospodarsky%20a%20soc.%20vybor/index.html">Európsky hospodársky a soc. Výbor</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/medzinarodne%20aktivity/Europsky%20hospodarsky%20a%20soc.%20vybor/Co%20je%20EHSV/index.html">Čo je EHSV?</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/medzinarodne%20aktivity/Europsky%20hospodarsky%20a%20soc.%20vybor/Spravy%20z%20EHSV/index.html">Správy z EHSV</a>
+      <a class="drawer-leaf" style="padding-left:52px" href="/medzinarodne%20aktivity/Europsky%20hospodarsky%20a%20soc.%20vybor/sekcia%20pre%20polnohospodarstvo/index.html">Sekcia pre poľnohospodárstvo</a>
+    </div>
+    <div class="drawer-group">
+      <a class="drawer-btn" href="/galeria/index.html">Galéria</a>
+      <a class="drawer-sub" style="padding-left:38px" href="/galeria/index.html">Fotogaléria</a>
+      <a class="drawer-sub" style="padding-left:38px" href="#">Videoarchív SPPK</a>
+    </div>
+    <div class="drawer-group">
+      <a class="drawer-btn" href="/kontakt/index.html">Kontakt</a>
+      <a class="drawer-sub" style="padding-left:38px" href="https://www.sppk.sk/struktura_a_kontakty">Štruktúra a kontakty</a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const NAV_LINKS = ["Úvod", "Tlačové správy", "Dokumenty", "Legislatíva", "O nás", "Kontakt"];
+  let active = "Úvod";
+  let menuOpen = false;
+
+  function setActive(link) {
+    active = link;
+    document.getElementById("mobileLabel").textContent = link;
+    menuOpen = false;
+    document.getElementById("mobileDrawer").classList.remove("open");
+    document.getElementById("hamburgerBtn").classList.remove("open");
+  }
+
+  function toggleMenu() {
+    menuOpen = !menuOpen;
+    document.getElementById("mobileDrawer").classList.toggle("open", menuOpen);
+    document.getElementById("hamburgerBtn").classList.toggle("open", menuOpen);
+  }
+
+  function renderDesktop() {
+    const nav = document.getElementById("desktopNav");
+    nav.innerHTML = NAV_LINKS.map(link => `
+      <button
+        class="nav-btn ${link === active ? 'active' : ''}"
+        onclick="setActive('${link}')"
+      >${link}</button>
+    `).join("");
+  }
+
+  function renderDrawer() {
+    const drawer = document.getElementById("mobileDrawer");
+    drawer.innerHTML = NAV_LINKS.map(link => `
+      <button
+        class="drawer-btn ${link === active ? 'active' : ''}"
+        onclick="setActive('${link}')"
+      >${link}</button>
+    `).join("");
+  }
+
+</script>
+
+</body>
+</html>
