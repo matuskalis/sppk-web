@@ -5,6 +5,69 @@ samostatné statické HTML súbory. Vychádza z dizajnov dodaných po častiach 
 Make exporty a z priečinkovej štruktúry webu od klienta. Výstup je 5402 stránok,
 v každom priečinku jeden `index.html`, bez frameworku a bez databázy.
 
+*English in short: a static rebuild of sppk.sk, the Slovak Chamber of Agriculture and
+Food. A Node.js generator turns 5323 articles from the old CMS and a client-supplied
+folder tree into 5402 standalone HTML pages, and a check script verifies all 36 255
+internal links. Screenshots below, no need to read the code.*
+
+## Ako to vyzerá
+
+Obrázky sú z hotového výstupu vo `web/`, nie z mockupov. Stránky sú zámerne len obsah
+bez hlavičky a pätičky. Tie sú samostatné súbory (`web/Header`, `web/Menu`,
+`web/Footer`, `web/tretina`), ktoré sa k stránkam pripájajú až pri nasadení.
+
+**Úvodná stránka:** slider, najnovšie správy, kalendár a pravý stĺpec.
+
+![Úvodná stránka](docs/screenshots/01-uvodna.jpg)
+
+**Výpis tlačových správ:** 408 článkov, každý má vlastnú stránku.
+
+![Výpis tlačových správ](docs/screenshots/02-vypis-tlacovych-sprav.jpg)
+
+**Článok** prenesený zo starého CMS: perex, meta riadok, obrázky vycentrované, text do bloku.
+
+![Článok](docs/screenshots/03-clanok.jpg)
+
+**Kontakt, Úrad komory:** karty s portrétmi a maily dekódovanými z Cloudflare.
+
+![Kontakt](docs/screenshots/04-kontakt-urad-komory.jpg)
+
+**Menu** s 144 položkami, hlbšie úrovne sa otvoria po nabehnutí na rodiča.
+
+![Menu](docs/screenshots/05-menu.jpg)
+
+**Telefón (393 px):** ten istý súbor bez úprav.
+
+<img src="docs/screenshots/06-telefon-uvodna.jpg" alt="Úvodná stránka na telefóne" width="320">
+
+## Pozrieť si to naživo
+
+Netreba nič inštalovať okrem Pythonu:
+
+```bash
+git clone https://github.com/matuskalis/sppk-web.git
+cd sppk-web/web
+python3 -m http.server 8099
+```
+
+Potom otvoriť `http://localhost:8099/`. Zaujímavé stránky:
+`/media/tlacove spravy/`, `/kontakt/urad komory/`, `/galeria/`, `/Menu/`.
+
+## Čísla
+
+| | |
+|---|---|
+| stránok vo výstupe | 5402 |
+| interných odkazov, všetky overené | 36 255 |
+| článkov prenesených zo starého CMS | 5323 |
+| položiek menu | 144 |
+| priečinkov v štruktúre od klienta | 197 |
+| albumov v galérii | 48 |
+| generátor | 2 292 riadkov JavaScriptu, jediná závislosť `cheerio` |
+| veľkosť výstupu | 222 MB |
+
+Celý web sa prestaví jedným príkazom a `npm test` ho overí: výsledok `BEZ CHÝB`.
+
 ## Ako to funguje
 
 ```
@@ -64,6 +127,24 @@ funguje `npm test` a prezeranie hotového `web/`, prestavba nie.
 - žiadna stránka nezostala bez jediného odkazu
 
 Každá z týchto chýb sa už raz dostala do odovzdaného výstupu, preto je na ne kontrola.
+
+## Čo na tom bolo ťažké
+
+- **Zhoda obsahu s priečinkami.** Klient poslal strom priečinkov s preklepmi v
+  názvoch, obsah prišiel zo scrapera pod inými titulkami. Generátor páruje najprv
+  podľa URL, potom podľa názvu, nakoniec cez porovnanie trojznakových úsekov, a
+  päť tisíc článkov dostane vlastný priečinok.
+- **Obsah, ktorý nikto nestrážil.** Texty písané vo Worde a v editore starého CMS:
+  odseky v `<div>`, pevné pixelové rozmery, prázdne `&nbsp;` riadky,
+  `Mso*` triedy. Normalizácia bola overená na všetkých 5323 článkoch bez straty
+  odkazu, obrázka, videa, tabuľky alebo položky zoznamu.
+- **Skryté maily.** Cloudflare na sppk.sk maily kóduje (`data-cfemail`). Generátor
+  ich dekóduje späť a vkladá ako `mailto:`: 604 adries v 355 článkoch.
+- **Dizajn dodaný po kúskoch.** Figma Make exporty prichádzali po častiach a niektoré
+  používali Tailwind cez CDN. Výstup je sjednotený na samostatné súbory s inline CSS,
+  aby každý `index.html` fungoval sám, aj keď ho niekto otvorí mimo repa.
+- **Kontrola, ktorá sa učila.** Každá chyba, ktorá raz prešla do odovzdaného webu,
+  dostala v `scripts/kontrola.mjs` vlastné pravidlo.
 
 ## Čo sa pri obsahu rieši
 
