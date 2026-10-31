@@ -1,14 +1,11 @@
 # sppk-web
 
+**Slovensky** | [English](README.en.md)
+
 Prestavba webu sppk.sk (Slovenská poľnohospodárska a potravinárska komora) na
 samostatné statické HTML súbory. Vychádza z dizajnov dodaných po častiach ako Figma
 Make exporty a z priečinkovej štruktúry webu od klienta. Výstup je 5402 stránok,
 v každom priečinku jeden `index.html`, bez frameworku a bez databázy.
-
-*English in short: a static rebuild of sppk.sk, the Slovak Chamber of Agriculture and
-Food. A Node.js generator turns 5323 articles from the old CMS and a client-supplied
-folder tree into 5402 standalone HTML pages, and a check script verifies all 36 255
-internal links. Screenshots below, no need to read the code.*
 
 ## Ako to vyzerá
 
